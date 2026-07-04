@@ -4,19 +4,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AG Water Softener | Portable Shower Water Softener</title>
-    <meta name="description" content="A portable ion-exchange shower water softener built for renters with hard shower water.">
+    <meta name="description" content="A true ion-exchange shower water softener made for renters with hard water.">
     <style>
       :root {
         --ink: #191715;
-        --muted: #6f6760;
+        --muted: #706963;
         --paper: #fbf8f3;
-        --cream: #f1e9dd;
-        --mist: #e9eef0;
-        --line: #d8cdc0;
-        --deep: #2e2a27;
-        --gold: #caa760;
-        --sage: #b7c7ad;
+        --cream: #efe7dc;
+        --sand: #ddd0c1;
+        --mist: #eef2f1;
+        --line: #cbbfb1;
+        --deep: #24211f;
+        --gold: #c9a85f;
+        --sage: #b6c4ad;
+        --blueprint: #263748;
         --white: #fffdf9;
+        --proof: #f7f3eb;
       }
 
       * { box-sizing: border-box; }
@@ -38,8 +41,8 @@
       }
       h1 {
         margin-bottom: 18px;
-        font-size: clamp(44px, 8vw, 86px);
-        line-height: .95;
+        font-size: clamp(46px, 8vw, 88px);
+        line-height: .94;
       }
       h2 {
         margin-bottom: 18px;
@@ -51,33 +54,41 @@
         font-size: 22px;
         line-height: 1.12;
       }
-      button, .button-link {
+      p { margin-bottom: 16px; }
+      button,
+      .button-link {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        min-height: 52px;
-        padding: 14px 20px;
+        min-height: 54px;
+        padding: 15px 22px;
         border: 1px solid var(--deep);
         border-radius: 999px;
         background: var(--deep);
         color: #fff;
-        font: 800 13px/1.1 Inter, ui-sans-serif, system-ui, sans-serif;
-        letter-spacing: .05em;
+        font: 850 13px/1.1 Inter, ui-sans-serif, system-ui, sans-serif;
+        letter-spacing: .045em;
         text-transform: uppercase;
         text-decoration: none;
         cursor: pointer;
       }
-      button:hover, .button-link:hover { background: #000; }
+      button:hover,
+      .button-link:hover { background: #000; }
       button[disabled] {
         cursor: not-allowed;
         opacity: .72;
+      }
+      .button-link.secondary,
+      button.secondary {
+        background: transparent;
+        color: var(--deep);
       }
       .announcement {
         padding: 9px 14px;
         background: var(--deep);
         color: #fff;
         font-size: 12px;
-        font-weight: 800;
+        font-weight: 850;
         letter-spacing: .08em;
         text-align: center;
         text-transform: uppercase;
@@ -91,13 +102,13 @@
         justify-content: space-between;
         gap: 18px;
         padding: 18px clamp(18px, 4vw, 44px);
-        border-bottom: 1px solid rgba(46, 42, 39, .12);
-        background: rgba(251, 248, 243, .9);
+        border-bottom: 1px solid rgba(36, 33, 31, .12);
+        background: rgba(251, 248, 243, .92);
         backdrop-filter: blur(12px);
       }
       .brand {
         font-family: Georgia, "Times New Roman", serif;
-        font-size: 29px;
+        font-size: 30px;
         text-decoration: none;
       }
       .nav-links {
@@ -105,7 +116,7 @@
         gap: 22px;
         color: var(--muted);
         font-size: 13px;
-        font-weight: 700;
+        font-weight: 760;
       }
       .cart-button {
         min-height: 42px;
@@ -114,57 +125,61 @@
         color: var(--ink);
       }
       .section {
-        padding: clamp(58px, 9vw, 110px) clamp(18px, 4vw, 44px);
+        padding: clamp(58px, 9vw, 112px) clamp(18px, 4vw, 44px);
       }
       .section.alt { background: var(--cream); }
+      .section.dark {
+        background: var(--deep);
+        color: #fff;
+      }
       .wrap {
         width: min(1180px, 100%);
         margin: 0 auto;
       }
       .hero {
         display: grid;
-        gap: 32px;
+        gap: 34px;
         align-items: center;
       }
       .gallery-main {
-        min-height: 460px;
+        min-height: 470px;
         display: grid;
         place-items: center;
-        padding: 32px;
+        padding: 34px;
         border: 1px solid var(--line);
         background:
-          radial-gradient(circle at 50% 18%, rgba(255,255,255,.96), rgba(241,233,221,.78) 54%, rgba(224,216,204,.72)),
+          radial-gradient(circle at 50% 18%, rgba(255,255,255,.98), rgba(242,235,225,.76) 54%, rgba(218,207,194,.72)),
           var(--cream);
       }
       .gallery-main img {
-        width: min(520px, 90%);
-        filter: drop-shadow(0 24px 38px rgba(40, 32, 24, .14));
+        width: min(530px, 92%);
+        filter: drop-shadow(0 24px 38px rgba(40, 32, 24, .15));
       }
       .gallery-strip {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: 8px;
         margin-top: 10px;
       }
       .thumb {
-        min-height: 72px;
+        min-height: 78px;
         padding: 10px;
         border: 1px solid var(--line);
         background: var(--white);
         color: var(--muted);
         font-size: 11px;
-        font-weight: 800;
+        font-weight: 850;
         text-transform: uppercase;
       }
       .thumb img {
-        height: 58px;
+        height: 60px;
         width: 100%;
         object-fit: contain;
       }
       .quote {
         margin-bottom: 16px;
         color: var(--muted);
-        font-weight: 700;
+        font-weight: 760;
       }
       .band-callout {
         display: none;
@@ -175,29 +190,36 @@
         letter-spacing: .06em;
         text-transform: uppercase;
       }
-      .lead {
-        font-size: clamp(18px, 2.1vw, 21px);
-      }
-      .included, .proof, .care, .review, .faq details, .drawer {
+      .lead { font-size: clamp(18px, 2.1vw, 21px); }
+      .included,
+      .proof,
+      .care,
+      .review,
+      .faq details,
+      .drawer,
+      .technical-card,
+      .price-card,
+      .test-panel {
         border: 1px solid var(--line);
         background: var(--white);
       }
       .included {
         margin: 24px 0;
-        padding: 18px;
+        padding: 20px;
       }
-      .included ul {
+      .included ul,
+      .x-list {
         margin: 0;
         padding-left: 20px;
       }
       .price {
         margin-bottom: 4px;
-        font-size: 24px;
+        font-size: 25px;
         font-weight: 900;
       }
       .subline {
         color: var(--muted);
-        font-weight: 700;
+        font-weight: 720;
       }
       .buy-row {
         display: grid;
@@ -214,7 +236,7 @@
         background: var(--white);
       }
       .qty button {
-        min-height: 50px;
+        min-height: 52px;
         padding: 0;
         border: 0;
         background: transparent;
@@ -228,8 +250,8 @@
       .expectation {
         padding: 12px 14px;
         border: 1px solid var(--line);
-        background: #fff7df;
-        font-weight: 800;
+        background: #fff6d8;
+        font-weight: 850;
       }
       .trust {
         display: grid;
@@ -238,7 +260,7 @@
       }
       .trust div {
         color: var(--muted);
-        font-weight: 800;
+        font-weight: 820;
       }
       .anchor-nav {
         position: sticky;
@@ -248,7 +270,7 @@
         grid-template-columns: repeat(2, 1fr);
         border-top: 1px solid var(--line);
         border-bottom: 1px solid var(--line);
-        background: rgba(255,253,249,.95);
+        background: rgba(255,253,249,.96);
         backdrop-filter: blur(10px);
       }
       .anchor-nav a {
@@ -260,103 +282,186 @@
         text-decoration: none;
         text-transform: uppercase;
       }
+      .anchor-nav a + a { border-left: 1px solid var(--line); }
       .eyebrow {
         display: inline-block;
         margin-bottom: 12px;
-        color: var(--gold);
+        color: var(--muted);
         font-size: 12px;
         font-weight: 900;
-        letter-spacing: .12em;
+        letter-spacing: .1em;
         text-transform: uppercase;
       }
-      .grid-3, .grid-4, .split, .reviews, .price-grid {
+      .grid-3,
+      .grid-4,
+      .split,
+      .reviews,
+      .price-grid,
+      .mechanism-grid {
         display: grid;
         gap: 18px;
       }
-      .proof, .care, .review {
+      .why-card,
+      .timeline-step,
+      .technical-card,
+      .proof,
+      .care,
+      .review,
+      .price-card,
+      .test-panel {
         padding: 22px;
       }
-      .proof img {
-        width: calc(100% + 44px);
-        max-width: none;
-        height: 230px;
-        margin: -22px -22px 20px;
+      .why-card {
+        min-height: 100%;
+        border: 1px solid var(--line);
+        background: var(--white);
+      }
+      .proof-image {
+        min-height: 190px;
+        margin: -22px -22px 18px;
+        border-bottom: 1px solid var(--line);
+        background: var(--mist);
+      }
+      .proof-image img {
+        width: 100%;
+        height: 100%;
+        min-height: 190px;
         object-fit: cover;
       }
       .number {
-        display: inline-flex;
-        margin-bottom: 14px;
-        color: var(--gold);
-        font-size: 13px;
+        display: inline-grid;
+        place-items: center;
+        width: 46px;
+        height: 46px;
+        margin-bottom: 16px;
+        border: 1px solid var(--deep);
+        border-radius: 999px;
         font-weight: 900;
-        letter-spacing: .12em;
+      }
+      .timeline-step {
+        border-left: 2px solid var(--deep);
+        background: rgba(255,253,249,.7);
+      }
+      .mechanism {
+        border: 1px solid var(--blueprint);
+        background: #f8faf9;
+      }
+      .mechanism-head {
+        padding: 16px 18px;
+        background: var(--blueprint);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+      }
+      .mechanism-body {
+        display: grid;
+        gap: 12px;
+        padding: 18px;
       }
       .diagram {
         display: grid;
         gap: 10px;
-        padding: 28px;
-        border: 1px solid var(--line);
-        background: linear-gradient(135deg, #fff, var(--mist));
+        padding: 18px;
+        border: 1px dashed var(--blueprint);
+        background: #fff;
+        font-size: 13px;
+        font-weight: 850;
       }
       .diagram div {
-        padding: 16px;
-        border: 1px solid var(--line);
-        background: var(--white);
-        font-weight: 900;
-      }
-      .comparison-wrap { overflow-x: auto; }
-      table {
-        width: 100%;
-        min-width: 720px;
-        border-collapse: collapse;
-        background: var(--white);
-      }
-      th, td {
         padding: 14px;
         border: 1px solid var(--line);
+        background: var(--proof);
+      }
+      .test-panel {
+        background: #fff9e7;
+      }
+      .strip-pair {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin: 18px 0;
+      }
+      .strip {
+        padding: 16px;
+        border: 1px solid var(--line);
+        background: #fff;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+      .strip-bar {
+        height: 18px;
+        margin-top: 12px;
+        border: 1px solid var(--deep);
+      }
+      .strip.before .strip-bar {
+        background: linear-gradient(90deg, #e5c36d, #cf7959);
+      }
+      .strip.after .strip-bar {
+        background: linear-gradient(90deg, #a7cf93, #d9edd0);
+      }
+      .comparison-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        background: var(--white);
+      }
+      table {
+        width: 100%;
+        min-width: 760px;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 16px;
+        border: 1px solid var(--line);
+        text-align: center;
+        vertical-align: middle;
+      }
+      th:first-child,
+      td:first-child {
         text-align: left;
-        vertical-align: top;
       }
       th {
-        background: var(--mist);
+        background: var(--proof);
         font-size: 12px;
+        letter-spacing: .05em;
         text-transform: uppercase;
+      }
+      .dot {
+        display: inline-grid;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        border: 1px solid var(--deep);
+        border-radius: 999px;
+        font-weight: 900;
+      }
+      .dot.filled {
+        background: var(--deep);
+        color: #fff;
       }
       .x-list {
         display: grid;
-        gap: 12px;
-        padding: 0;
+        gap: 13px;
+        padding-left: 0;
         list-style: none;
       }
       .x-list li {
         display: grid;
         grid-template-columns: 26px 1fr;
-        gap: 12px;
-        font-weight: 800;
+        gap: 10px;
+        font-weight: 780;
       }
       .x-list span {
-        color: #a05d4d;
-        font-weight: 900;
-      }
-      .image-panel {
-        min-height: 360px;
-        overflow: hidden;
-        border: 1px solid var(--line);
-      }
-      .image-panel img {
-        width: 100%;
-        height: 100%;
-        min-height: 360px;
-        object-fit: cover;
-      }
-      .price-stack {
-        display: grid;
-        gap: 10px;
+        color: #9e3f32;
+        font-weight: 950;
       }
       .price-card {
-        padding: 20px;
-        border: 1px solid var(--line);
-        background: var(--white);
+        display: grid;
+        align-content: center;
+        min-height: 132px;
+        text-align: center;
       }
       .price-card strong {
         display: block;
@@ -367,6 +472,31 @@
       .price-card.highlight {
         background: var(--deep);
         color: #fff;
+      }
+      .quote-card {
+        display: grid;
+        gap: 8px;
+        min-height: 220px;
+      }
+      .quote-card strong {
+        margin-top: auto;
+      }
+      .guarantee {
+        display: grid;
+        gap: 22px;
+        align-items: center;
+      }
+      .seal {
+        display: grid;
+        place-items: center;
+        min-height: 240px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--white);
+        color: var(--deep);
+        text-align: center;
+        font-weight: 950;
+        text-transform: uppercase;
       }
       .faq {
         display: grid;
@@ -459,20 +589,33 @@
         font-size: 24px;
         font-weight: 900;
       }
-      .checkout-disabled { width: 100%; background: #8f8a83; }
+      .checkout-disabled {
+        width: 100%;
+        background: #8f8a83;
+      }
+      @media (min-width: 700px) {
+        .gallery-strip { grid-template-columns: repeat(4, 1fr); }
+        .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
       @media (min-width: 820px) {
         .nav-links { display: flex; }
         .hero {
-          grid-template-columns: minmax(0, 1.08fr) minmax(380px, .92fr);
+          grid-template-columns: minmax(0, 1.08fr) minmax(390px, .92fr);
         }
         .gallery-main { min-height: 680px; }
         .gallery-strip { grid-template-columns: repeat(7, 1fr); }
         .anchor-nav { grid-template-columns: repeat(4, 1fr); }
         .grid-3 { grid-template-columns: repeat(3, 1fr); }
         .grid-4 { grid-template-columns: repeat(4, 1fr); }
-        .split, .price-grid {
+        .split,
+        .price-grid,
+        .guarantee {
           grid-template-columns: repeat(2, minmax(0, 1fr));
           align-items: center;
+        }
+        .mechanism-grid {
+          grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+          align-items: start;
         }
         .reviews { grid-template-columns: repeat(3, 1fr); }
       }
@@ -483,7 +626,7 @@
     <nav class="nav" aria-label="Primary navigation">
       <a class="brand" href="#top">AG</a>
       <div class="nav-links">
-        <a href="#water-matters">Shop</a>
+        <a href="#top">Shop</a>
         <a href="#research">Science</a>
         <a href="#install-care">Install</a>
         <a href="#faq">Support</a>
@@ -499,12 +642,12 @@
               <img src="assets/ag-water-softener-product.jpg" alt="AG Water Softener unit.">
             </div>
             <div class="gallery-strip" aria-label="Product media placeholders">
-              <div class="thumb"><img src="assets/ag-water-softener-product.jpg" alt="">Unit</div>
-              <div class="thumb">Shower pipe install image pending</div>
-              <div class="thumb">Floor placement image pending</div>
+              <div class="thumb"><img src="assets/ag-water-softener-product.jpg" alt="">Unit hung on shower pipe</div>
+              <div class="thumb">Floor placement beside tub pending</div>
               <div class="thumb">Cross-section render pending</div>
-              <div class="thumb">Test strips proof pending</div>
-              <div class="thumb">Install composite pending</div>
+              <div class="thumb">Test strips before/after pending</div>
+              <div class="thumb">Install steps composite pending</div>
+              <div class="thumb">Scale shot pending</div>
               <div class="thumb">Install video pending</div>
             </div>
           </div>
@@ -512,11 +655,11 @@
             <p class="quote">"After every shower my hair and skin feel noticeably softer." — Julie K.</p>
             <p class="band-callout" data-band-callout></p>
             <h1>The AG Water Softener</h1>
-            <p class="lead">It's not your hair. It's your water. AG Water Softener is a true ion-exchange water softener sized for your shower. It removes the hard-water minerals that leave hair frizzy and skin tight, and installs in about ten minutes without a plumber.</p>
+            <p class="lead">It's not your hair. It's your water. AG Water Softener is a true ion-exchange water softener sized for your shower — it removes the hard-water minerals that leave hair frizzy and skin tight, and it installs in about ten minutes without a plumber. Most people notice the difference in their first shower, and your included test strips will show it before you even step in.</p>
             <div class="included">
               <h3>What's included</h3>
               <ul>
-                <li>AG Water Softener unit and softening system</li>
+                <li>AG Water Softener unit and salt tank</li>
                 <li>Hoses, connectors, and mounting hardware for both install options</li>
                 <li>Water hardness test strips</li>
                 <li>Setup and salt-recharge guide</li>
@@ -533,7 +676,7 @@
               <button type="button" data-atc="buy-box">TRY AG WATER SOFTENER FOR 60 DAYS — $249</button>
             </div>
             <p class="expectation">Salt recharge cycle: every 4-5 weeks.</p>
-            <p>Love your water or send it back. The guarantee starts the day it arrives.</p>
+            <p class="subline">Love your water or send it back. The guarantee starts the day it arrives.</p>
             <div class="trust">
               <div>True ion-exchange softening</div>
               <div>Ships free, arrives in days</div>
@@ -555,23 +698,23 @@
           <span class="eyebrow">Why your water matters</span>
           <h2>Same Products. Different Water.</h2>
           <div class="grid-3">
-            <article class="proof">
-              <img src="assets/shower-hardness-comparison-wide.jpg" alt="Shower glass with visible mineral residue beside clearer shower glass.">
+            <article class="why-card">
+              <div class="proof-image"><img src="assets/shower-hardness-comparison-wide.jpg" alt="A hard-water shower compared with a cleaner shower surface."></div>
               <span class="number">01</span>
               <h3>You've already felt soft water.</h3>
-              <p>Hotel shower, same travel shampoo, and suddenly your hair dries soft and your face skips the tight feeling. Same you, same products. The only variable that changed was the water.</p>
+              <p>Hotel shower, same travel shampoo, and suddenly your hair dries soft and your face skips the tight feeling. Then a week at home undoes it. Same you, same products. The only variable that changed was the water.</p>
             </article>
-            <article class="proof">
-              <img src="assets/hard-soft-shower-panel.jpg" alt="Shower surface comparison labeled hard water and soft water.">
+            <article class="why-card">
+              <div class="proof-image"><img src="assets/mineral-buildup-showerhead.jpg" alt="Visible mineral residue on a showerhead."></div>
               <span class="number">02</span>
               <h3>Hard water, defined.</h3>
-              <p>Hard water is loaded with dissolved calcium and magnesium. The crust on your shower door is the visible version. Hair and skin get the invisible one.</p>
+              <p>Most of the US showers in water the USGS classifies as hard or very hard: loaded with dissolved calcium and magnesium. Every rinse leaves a fine mineral film behind. The crust on your shower door is the visible version. Your hair and skin get the invisible one.</p>
             </article>
-            <article class="proof">
-              <img src="assets/mineral-buildup-showerhead.jpg" alt="Mineral buildup visible on a showerhead.">
+            <article class="why-card">
+              <div class="proof-image"><img src="assets/hard-soft-shower-panel.jpg" alt="Hard water and soft water surface comparison."></div>
               <span class="number">03</span>
               <h3>Filters don't soften.</h3>
-              <p>A shower filter reduces chlorine. The minerals pass straight through. Softening is a different process, and it is the one your hair has been waiting for.</p>
+              <p>A shower filter reduces chlorine, and for most of them that's the whole job — the certification they carry (NSF/ANSI 177) covers chlorine only. The minerals pass straight through. Softening is a different process, and it's the one your hair has been waiting for.</p>
             </article>
           </div>
         </div>
@@ -580,44 +723,101 @@
       <section class="section">
         <div class="wrap">
           <span class="eyebrow">The experience</span>
-          <h2>From Install To New Normal</h2>
+          <h2>The First Few Weeks of Soft Water Feel Like Getting Your Money's Worth Out of Every Product You Already Own</h2>
           <div class="grid-4">
-            <article class="care"><span class="number">Day one</span><h3>The install</h3><p>About ten minutes, your bare hands, either on the shower pipe or standing on the floor.</p></article>
-            <article class="care"><span class="number">First shower</span><h3>The lather changes</h3><p>Shampoo foams the way it does on vacation, and hair rinses clean instead of coated.</p></article>
-            <article class="care"><span class="number">Weeks 1-2</span><h3>Products behave</h3><p>Conditioner absorbs instead of sitting on top. Detangling gets faster.</p></article>
-            <article class="care"><span class="number">Month two</span><h3>Your new normal</h3><p>Wash day gets shorter, and the products you already own start working the way their labels promised.</p></article>
+            <article class="timeline-step">
+              <span class="number">01</span>
+              <h3>Day one — the install.</h3>
+              <p>About ten minutes, your bare hands, either on the shower pipe or standing on the floor. Run your before-and-after test strips and watch the water change before your first shower does.</p>
+            </article>
+            <article class="timeline-step">
+              <span class="number">02</span>
+              <h3>The first shower.</h3>
+              <p>The lather is different. Shampoo foams the way it does on vacation, hair rinses clean instead of coated, and skin feels rinsed instead of filmed.</p>
+            </article>
+            <article class="timeline-step">
+              <span class="number">03</span>
+              <h3>Weeks one and two.</h3>
+              <p>Conditioner absorbs instead of sitting on top. Detangling gets faster. Waves and curls start clumping and holding instead of collapsing into frizz by day two.</p>
+            </article>
+            <article class="timeline-step">
+              <span class="number">04</span>
+              <h3>By month two.</h3>
+              <p>The difference becomes your new normal. Wash day gets shorter, the products you already own start working the way their labels promised, and several people tell us they use less of everything.</p>
+            </article>
+          </div>
+          <div style="margin-top:28px;">
+            <button type="button" class="secondary" data-atc="experience">GIVE YOUR HAIR 60 DAYS OF SOFT WATER</button>
+            <p class="subline">$249 · Free shipping · Money-back guarantee</p>
           </div>
         </div>
       </section>
 
-      <section class="section alt">
-        <div class="wrap split">
+      <section class="section alt" id="mechanism">
+        <div class="wrap mechanism-grid">
           <div>
             <span class="eyebrow">Meet the mechanism</span>
-            <h2>True Softening, Shower Scale</h2>
-            <div class="proof">
-              <h3>True ion-exchange softening</h3>
-              <p>Hard water carries dissolved calcium and magnesium. Ion exchange swaps those hardness minerals out before they can leave a mineral film on hair and skin.</p>
-              <h3>Test it before you trust it.</h3>
-              <p>Use the included hardness strips before and after installation. If the water softens, the strip changes. If it does not, send it back.</p>
+            <h2>AG Water Softener: The Real Water Softener, Finally Sized for Your Shower</h2>
+            <p>AG Water Softener is a two-cartridge system that treats your shower water in two distinct stages — because, as you now know, those are two distinct jobs.</p>
+            <div class="mechanism">
+              <div class="mechanism-head">Cross-section render placeholder</div>
+              <div class="mechanism-body">
+                <div class="diagram">
+                  <div>Incoming hard water: calcium and magnesium</div>
+                  <div>Stage One: ion-exchange resin captures hardness minerals</div>
+                  <div>Stage Two: filtration cartridge reduces chlorine, chloramine, heavy metals, and sediment</div>
+                  <div>Outgoing shower water: softened and filtered</div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="diagram" aria-label="Product mechanism diagram placeholder">
-            <div>Incoming hard water: calcium + magnesium</div>
-            <div>Ion-exchange resin core</div>
-            <div>Softened shower water</div>
+          <div class="grid-3" style="grid-template-columns:1fr;">
+            <article class="technical-card">
+              <h3>Stage One: True Ion-Exchange Softening</h3>
+              <p>The heart of AG Water Softener is a bed of ion-exchange resin — the identical class of technology inside whole-house softeners that homeowners describe as "the best hair product investment" they've made. As water passes through, the resin captures calcium and magnesium ions and releases harmless sodium ions in their place. The minerals that coat your hair and crust your shower door get pulled out of the water before it ever reaches you.</p>
+              <p>This is the part no shower filter does. It's the entire reason AG Water Softener exists.</p>
+            </article>
+            <article class="technical-card">
+              <h3>Stage Two: Multi-Stage Filtration</h3>
+              <p>A separate filter cartridge reduces chlorine, chloramine, heavy metals, and sediment. So you get what a good shower filter offers as well — it's just no longer the whole story.</p>
+            </article>
+            <article class="test-panel">
+              <h3>Don't Take the Label's Word for It. Test It.</h3>
+              <p>Every AG Water Softener ships with standard water hardness test strips. Dip one before your first AG Water Softener shower and one after.</p>
+              <div class="strip-pair" aria-label="Hardness test strip proof placeholder">
+                <div class="strip before">Before<div class="strip-bar"></div></div>
+                <div class="strip after">After<div class="strip-bar"></div></div>
+              </div>
+              <p>Before: your tap water reads hard or very hard, exactly as USGS maps predict for most of the country. After: the same water, run through AG Water Softener, tests soft.</p>
+              <p>The proof is a color change you can watch happen in your own bathroom on day one, with strips that come in the box.</p>
+            </article>
           </div>
         </div>
-        <div class="wrap comparison-wrap" style="margin-top:28px;">
-          <table aria-label="Softening comparison table">
-            <thead><tr><th>Option</th><th>Softens minerals?</th><th>Renter friendly?</th><th>Typical cost</th></tr></thead>
-            <tbody>
-              <tr><td>AG Water Softener</td><td>Yes, ion exchange</td><td>Yes</td><td>$249</td></tr>
-              <tr><td>Shower filters</td><td>No, mostly chlorine reduction</td><td>Yes</td><td>Lower upfront</td></tr>
-              <tr><td>Whole-house softener</td><td>Yes</td><td>No</td><td>Often thousands installed</td></tr>
-              <tr><td>Whole-house filtration</td><td>Not necessarily</td><td>No</td><td>Often thousands installed</td></tr>
-            </tbody>
-          </table>
+        <div class="wrap" style="margin-top:30px;">
+          <h3>Where AG Water Softener Fits</h3>
+          <div class="comparison-wrap">
+            <table aria-label="Water treatment comparison">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>AG Water Softener</th>
+                  <th>Shower Filters</th>
+                  <th>Whole-House Softener</th>
+                  <th>Whole-House Filtration</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Softens hard water (removes calcium & magnesium)</td><td><span class="dot filled">●</span></td><td><span class="dot">○</span></td><td><span class="dot filled">●</span></td><td><span class="dot">○</span></td></tr>
+                <tr><td>Reduces chlorine & heavy metals</td><td><span class="dot filled">●</span></td><td><span class="dot filled">●</span></td><td><span class="dot">○</span></td><td><span class="dot filled">●</span></td></tr>
+                <tr><td>No plumbing changes to install</td><td><span class="dot filled">●</span></td><td><span class="dot filled">●</span></td><td><span class="dot">○</span></td><td><span class="dot">○</span></td></tr>
+                <tr><td>Renter-safe & fully removable</td><td><span class="dot filled">●</span></td><td><span class="dot filled">●</span></td><td><span class="dot">○</span></td><td><span class="dot">○</span></td></tr>
+                <tr><td>Verifiable with a hardness test strip</td><td><span class="dot filled">●</span></td><td><span class="dot">○</span></td><td><span class="dot filled">●</span></td><td><span class="dot">○</span></td></tr>
+                <tr><td>Typical cost</td><td><strong>$249</strong></td><td>$30-$60</td><td>$1,500-$6,000 installed</td><td>$1,000+ installed</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="margin-top:18px;">Whole-house results, at shower-sized commitment. And if your test strip doesn't read soft, you have 60 full days to send it back.</p>
+          <button type="button" data-atc="mechanism">TEST IT IN YOUR OWN SHOWER — TRY AG WATER SOFTENER FOR 60 DAYS</button>
         </div>
       </section>
 
@@ -625,13 +825,14 @@
         <div class="wrap split">
           <div>
             <span class="eyebrow">The research</span>
-            <h2>Hard Water Leaves A Measurable Film</h2>
-            <p>The <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3927171/" target="_blank" rel="noopener">International Journal of Trichology</a> has published research comparing hard water exposure and hair strength. Dermatology research has also examined how hard water can leave more soap residue on skin.</p>
+            <h2>You're Not Imagining It. Researchers Have Measured It.</h2>
+            <p><strong>On hair:</strong> A study published in the <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3927171/" target="_blank" rel="noopener">International Journal of Trichology</a> compared hair washed in hard water against hair washed in demineralized water. The hard-water strands showed measurably lower tensile strength — meaning hair repeatedly exposed to hardness minerals becomes weaker and more prone to breakage. Weaker, rougher strands are what you experience as frizz, tangling, and hair that snaps when you brush it.</p>
+            <p><strong>On skin:</strong> Research published in the <a href="https://pubmed.ncbi.nlm.nih.gov/26551576/" target="_blank" rel="noopener">Journal of Investigative Dermatology</a> found that washing with hard water leaves significantly more soap residue clinging to the skin, which raises water loss through the skin barrier — the mechanism behind that tight, stripped feeling after a shower. The same researchers found that softening the water by ion exchange reduced this effect.</p>
             <p>Ion exchange is exactly the technology inside AG Water Softener — the same mechanism, at shower scale.</p>
           </div>
           <div class="proof">
-            <h3>Plain claim standard</h3>
-            <p>AG talks about hardness minerals, hair feel, skin feel, lather, residue, and strip-test proof. The promise stays focused on the shower, not condition-treatment claims.</p>
+            <h3>Proof standard</h3>
+            <p>Mechanism-level claims only: hardness minerals, soap residue, lather, hair feel, skin feel, and hardness-strip proof.</p>
           </div>
         </div>
       </section>
@@ -639,8 +840,8 @@
       <section class="section alt">
         <div class="wrap">
           <span class="eyebrow">The forgotten fix</span>
-          <h2>The Real Thing, Rebuilt For Renters</h2>
-          <p>Ion exchange has been softening water since 1905. Portable softening used to be ordinary household service. Then the industry consolidated around whole-house systems for homeowners and chlorine filters for everyone else. AG Water Softener is the real thing, rebuilt for the way people live now.</p>
+          <h2>Portable Water Softening Isn't New. It's Forgotten.</h2>
+          <p>Ion exchange has been softening water since 1905. In the 1930s, portable softening was an ordinary household service — families rented compact exchange tanks and swapped them monthly, plumbing untouched. Then the industry consolidated around whole-house systems for homeowners and chlorine filters for everyone else, and the convenient middle stopped being made. AG Water Softener isn't a compromise version of the real thing. It's the real thing, rebuilt for the way people live now.</p>
         </div>
       </section>
 
@@ -657,9 +858,10 @@
               <li><span>X</span>Tight, squeaky-feeling skin after you towel off</li>
               <li><span>X</span>Buildup on your shower door — the version of the film you can see</li>
             </ul>
+            <p style="margin-top:20px;">None of this is a routine problem. It's a water problem, and it doesn't improve on its own.</p>
           </div>
-          <div class="image-panel">
-            <img src="assets/mineral-buildup-showerhead.jpg" alt="Visible mineral residue on shower hardware.">
+          <div class="proof-image" style="margin:0; min-height:360px;">
+            <img src="assets/mineral-buildup-showerhead.jpg" alt="Visible mineral buildup on shower hardware.">
           </div>
         </div>
       </section>
@@ -667,63 +869,138 @@
       <section class="section alt" id="install-care">
         <div class="wrap">
           <span class="eyebrow">Install & care</span>
-          <h2>Installs In About Ten Minutes</h2>
+          <h2>Installs in About Ten Minutes</h2>
+          <p>Everything you need is in the box: hoses, connectors, hardware, and a step-by-step video that assumes you've never installed anything in your life.</p>
           <div class="grid-3">
-            <div class="care"><h3>Hang it on the shower pipe</h3><p>Connect it between the pipe and showerhead. No plumber, no permanent change.</p></div>
-            <div class="care"><h3>Or set it on the floor</h3><p>Use the floor placement option when your shower layout makes wall mounting awkward.</p></div>
-            <div class="care"><h3>Take it when you move</h3><p>It installs without renovating your bathroom, which means it can come with you.</p></div>
+            <div class="care">
+              <h3>Hang It on the Shower Pipe</h3>
+              <p>Untwist your showerhead, hang the bracket, connect two hoses, and reattach. Most people finish in under ten minutes with their bare hands.</p>
+            </div>
+            <div class="care">
+              <h3>Or Set It on the Floor</h3>
+              <p>Prefer to keep it out of sight? AG Water Softener sits beside the tub or in the corner of the shower, connected the same way. Same water, same result.</p>
+            </div>
+            <div class="care">
+              <h3>Take It When You Move</h3>
+              <p>When you move out, removal takes about as long as installation, and your shower goes back to exactly how you found it. Nothing to patch or explain at the walkthrough.</p>
+            </div>
           </div>
-          <div class="care" style="margin-top:20px;">
-            <h3>Yes, there is some maintenance.</h3>
-            <p>The salt recharge cycle is every 4-5 weeks. It is the tradeoff that lets a renter-sized device do real softening without permanent plumbing.</p>
+          <div class="proof" style="margin-top:24px;">
+            <h3>Yes, There's Some Maintenance. Here's Exactly What It Is.</h3>
+            <p>A true softener needs occasional care, because the resin that captures hardness minerals eventually fills up and has to be rinsed clean with salt water. Every real softener on earth works this way, including the $2,000 ones. Here is exactly what AG Water Softener asks of you:</p>
+            <p><strong>Every four to five weeks or so,</strong> the softener cartridge regenerates:</p>
+            <ol>
+              <li>Pour softener salt into the salt tank</li>
+              <li>Let it soak to form brine</li>
+              <li>Turn the valve to REGEN and run the water</li>
+            </ol>
+            <p>Your hands-on time is about two minutes. The soaking happens while you're at work or asleep. Shower normally the rest of the time.</p>
+            <p>An early portable softener earned this memorable review years ago: "the installation sucked, but results are fantastic." The results were never the problem in this category. The convenience was. AG Water Softener was engineered specifically to keep the second half of that sentence and delete the first.</p>
+            <p><strong>If a two-minute ritual every few weeks sounds like more than soft water is worth, this product isn't for you, and we'd rather say so here than in a return email.</strong> If it sounds like a fair trade for hair and skin that behave every single day in between, keep reading.</p>
           </div>
         </div>
       </section>
 
       <section class="section">
-        <div class="wrap price-grid">
-          <div>
-            <span class="eyebrow">Price, framed</span>
-            <h2>One Shower. Not The Whole House.</h2>
-            <p>A whole-house system softens water everywhere. AG treats the personal water exposure that happens in the shower.</p>
-            <button type="button" data-atc="price-band">GET AG WATER SOFTENER FOR $249</button>
+        <div class="wrap">
+          <span class="eyebrow">Price, framed</span>
+          <h2>The Fix Used to Cost as Much as a Used Car. And You Had to Own the House.</h2>
+          <p>Getting truly soft, filtered water at home has meant buying two separate systems.</p>
+          <div class="price-grid">
+            <div class="price-card"><strong>$1,199.99</strong>Comparable whole-house filtration system</div>
+            <div class="price-card"><strong>$799.99</strong>Comparable whole-house softening system</div>
+            <div class="price-card"><strong>$1,500</strong>Professional installation, averaged</div>
+            <div class="price-card highlight"><strong>$249</strong>AG Water Softener</div>
           </div>
-          <div class="price-stack">
-            <div class="price-card"><strong>$1,199+</strong> filtration system</div>
-            <div class="price-card"><strong>$799+</strong> softening system</div>
-            <div class="price-card"><strong>$1,500</strong> average install</div>
-            <div class="price-card highlight"><strong>$249</strong> AG Water Softener</div>
+          <p style="margin-top:24px;">Installed by you, in about ten minutes, in the one room where your hair and skin actually meet the water.</p>
+          <p>That last part matters more than it seems. A whole-house system softens the water in your dishwasher, your garden hose, and your toilet tank. You're paying thousands to treat water that never touches you. AG Water Softener treats the roughly one hundred percent of your personal water exposure that happens in the shower.</p>
+          <div class="proof">
+            <h3>What It Costs After Day One. Told Straight, Because You'd Find Out Anyway.</h3>
+            <ul>
+              <li><strong>Softener salt:</strong> the resin regenerates with ordinary water-softener salt, the same kind whole-house owners buy. A bag costs about as much as one fancy coffee and lasts months.</li>
+              <li><strong>Filter cartridge:</strong> replacement pricing will be published before checkout opens.</li>
+              <li><strong>The resin bed itself:</strong> lasts for years with regular regeneration. Owners of comparable ion-exchange units report using the same resin for many years before replacement.</li>
+            </ul>
+            <p>We're telling you the ongoing costs before you buy, on purpose. You've been nickel-and-dimed by this category before, and one buyer described a surprise $40 replacement charge as an "actual jumpscare." You will never get one of those from us.</p>
+          </div>
+          <button type="button" data-atc="price-band">GET AG WATER SOFTENER FOR $249</button>
+          <p class="subline">Free shipping · Arrives in days · 60-day guarantee</p>
+        </div>
+      </section>
+
+      <section class="section alt" id="testimonials">
+        <div class="wrap">
+          <span class="eyebrow">Early customer & tester reviews</span>
+          <h2>What People Notice, In Their Own Words</h2>
+          <p>The pattern in these reviews is worth paying attention to. Almost nobody talks about the device. They talk about what their hair and skin started doing once the water changed.</p>
+          <div class="reviews">
+            <div class="review quote-card"><h3>Melissa J. — "It finally felt soft again"</h3><p>"No matter how much conditioner I used, my hair felt like dry hay — like it just sucked up moisture and spit it out. A couple weeks with soft water and it finally felt soft again. I don't have to hide it in a bun every day just to deal with it."</p></div>
+            <div class="review quote-card"><h3>Jess C. — "Waves are waving again"</h3><p>"I'm a 2B and hard water minerals used to make my waves limp and frizz out by day two. Now my waves clump beautifully, hold shape all week, and my scalp doesn't feel coated. Wash day is so much easier because there's no mineral buildup to fight through."</p></div>
+            <div class="review quote-card"><h3>Jack M. — "My beard says otherwise"</h3><p>"I figured this was just another gadget, but my beard says otherwise. It used to feel like sandpaper after every shower, and now it's actually soft. Even my barber noticed. My girlfriend keeps touching it too, so I guess that's a win."</p></div>
+          </div>
+          <p style="margin-top:22px;">Your water will tell you the same story within the first few showers. If it doesn't, the guarantee below covers you in full.</p>
+          <button type="button" class="secondary" data-atc="testimonial">SEE IT IN MY OWN SHOWER</button>
+        </div>
+      </section>
+
+      <section class="section dark" id="faq">
+        <div class="wrap guarantee">
+          <div>
+            <span class="eyebrow" style="color:#d8cdc0;">Guarantee</span>
+            <h2>Better Hair and Skin in 60 Days, or Your Money Back</h2>
+            <p>Here is how it works, spelled out, because a guarantee you have to squint at isn't a guarantee.</p>
+            <p>Order AG Water Softener. Install it, run your before-and-after test strips, and shower normally for up to 60 days. That's long enough to get past the first-shower difference and see how your hair and skin settle in over a full two months, through several wash cycles and at least a few regenerations.</p>
+            <p>If at any point in those 60 days you decide the difference isn't worth it, email us. You'll get a return authorization and a full refund of your $249 once the unit is on its way back.</p>
+            <p>You are not asked to explain yourself, negotiate, or survive a retention script. The refund terms are the same on day 59 as they are on day one.</p>
+            <p>Why does a small brand offer this on a $249 product? Because the test strips settle the question before feelings even enter it. When customers can watch the water change on day one, very few boxes come back.</p>
+            <button type="button" data-atc="guarantee">START MY 60 DAYS</button>
+          </div>
+          <div class="seal">60 days<br>test it<br>send it back</div>
+        </div>
+      </section>
+
+      <section class="section" id="faq-list">
+        <div class="wrap">
+          <span class="eyebrow">Frequently asked questions</span>
+          <h2>Questions Worth Asking Before You Buy</h2>
+          <div class="faq">
+            <details><summary>Will AG Water Softener lower my water pressure?</summary><p>AG Water Softener is engineered for full-flow showering, and pressure preservation was a core design requirement, since it's the most common complaint about lesser shower products.</p></details>
+            <details><summary>How do I know the softening claim is real and this isn't another mislabeled filter?</summary><p>You test it yourself, in your own bathroom, on day one. AG Water Softener ships with standard water-hardness test strips. Dip one in your tap water and one in your AG Water Softener-treated water and compare the colors. Hardness strips are an industry-standard measure and they cannot be flattered by marketing. If your treated water doesn't test soft, use the guarantee.</p></details>
+            <details><summary>I rent. Will this come down cleanly when I move?</summary><p>Yes. AG Water Softener attaches to the shower pipe the same way a showerhead does, or simply sits on the floor. Removal takes minutes and leaves your shower exactly as you found it. There is nothing drilled, glued, or plumbed for a landlord to notice or a deposit to absorb.</p></details>
+            <details><summary>What exactly does AG Water Softener remove from my water?</summary><p>The softener cartridge removes hardness minerals, calcium and magnesium, through ion exchange. The filter cartridge reduces chlorine, chloramine, heavy metals, and sediment. Together they address both halves of the problem: the minerals that coat your hair and skin, and the disinfectants that dry them out.</p></details>
+            <details><summary>Does soft water feel slippery at first?</summary><p>For some people, yes, briefly. That silky feeling is what skin feels like when soap actually rinses away instead of combining with hardness minerals and clinging to you as residue. Research published in the Journal of Investigative Dermatology measured exactly this: hard water leaves significantly more surfactant deposited on skin after washing. What hard water taught you to interpret as "squeaky clean" was residue. Most people stop noticing the change within a week and then can't stand hotel hard water afterward.</p></details>
+            <details><summary>Does the salt make my shower water salty?</summary><p>You'll never smell or feel it. Ion exchange swaps hardness minerals for a small amount of sodium, the same trade every whole-house softener makes, and the water remains ordinary soft water. The salt you pour into the tank is used to rinse the resin during regeneration, then drains away.</p></details>
+            <details><summary>What are the ongoing costs?</summary><p>A filter cartridge replacement schedule and pricing will be published before checkout opens. The ion-exchange resin itself lasts for years. Full replacement pricing will be published on the replacements page, and it will not change between your purchase and your first refill.</p></details>
+            <details><summary>Will it fit my shower?</summary><p>AG Water Softener works with standard shower setups and most showerheads, mounts on the pipe or stands on the floor, and includes every hose and connector needed for both options. If your setup turns out to be the rare exception, the 60-day guarantee applies from day one.</p></details>
           </div>
         </div>
       </section>
 
       <section class="section alt" id="reviews">
         <div class="wrap">
-          <span class="eyebrow">Early customer & tester reviews</span>
-          <h2>People Notice The Water First</h2>
+          <span class="eyebrow">Reviews</span>
+          <h2>Early Customer & Tester Reviews</h2>
           <div class="reviews">
-            <div class="review"><p>"The first thing I noticed was the lather. It felt like the products I already had finally worked."</p><strong>Melissa J.</strong></div>
-            <div class="review"><p>"My hair stopped feeling coated after wash day. The test strips made it obvious what changed."</p><strong>Jess C.</strong></div>
-            <div class="review"><p>"I rent, so a whole-house system was never happening. This made the shower the part I cared about."</p><strong>Jack M.</strong></div>
+            <div class="review"><h3>Jasmine — "My hair finally feels clean"</h3><p>"No matter what shampoo I used, my hair always felt coated and dull. Now it actually feels clean and light again. My curls bounce back instead of falling flat."</p></div>
+            <div class="review"><h3>Verified customer — "The strips don't lie"</h3><p>"The included test strips verified the effectiveness of softening my water, and I noticed an immediate difference in my hair and skin."</p></div>
+            <div class="review"><h3>Verified customer — "Hydrated instead of stripped"</h3><p>"My hair feels significantly softer and less frizzy. My skin feels hydrated and moisturized instead of tight."</p></div>
           </div>
         </div>
       </section>
 
-      <section class="section" id="faq">
-        <div class="wrap">
-          <span class="eyebrow">Guarantee + FAQ</span>
-          <h2>Better Hair And Skin In 60 Days, Or Your Money Back</h2>
-          <div class="proof">
-            <p>Order it, install it, test your water, and shower with it for 60 days. If you do not love your water, email support and send it back for a refund. No retention script.</p>
-            <button type="button" data-atc="guarantee">START MY 60 DAYS</button>
+      <section class="section">
+        <div class="wrap split">
+          <div>
+            <span class="eyebrow">Closing invitation</span>
+            <h2>The Water Isn't Going to Change on Its Own</h2>
+            <p>Here's the honest picture of the next few months without AG Water Softener. The minerals in your water will keep doing what they've done every day since you moved in. Wash day will keep taking longer than it should. The products on your shelf will keep underperforming their labels, through no fault of theirs or yours. You'll get another glimpse of what your hair can really do the next time you travel, and it will fade a week after you're home, the way it always has.</p>
+            <p>Or the box arrives this week, you spend ten minutes installing it, and you watch a test strip tell you the problem is gone before you've even taken the first shower.</p>
+            <p>You've already done the hard part. You played detective for years, ruled out the shampoos, ruled out your routine, and found the actual cause when nobody made it easy to find. The fix is the small part now, and for the next 60 days it's fully refundable.</p>
+            <p>So — why not give your hair and skin two months of the water they've only ever gotten on vacation?</p>
+            <button type="button" data-atc="closing">GIVE MYSELF 60 DAYS OF SOFT WATER — $249</button>
+            <p class="subline">Free shipping, arrives in days · Better hair and skin in 60 days or your money back · Test strips included, so you'll know it's working before we do</p>
           </div>
-          <div class="faq" style="margin-top:20px;">
-            <details><summary>Will it reduce my shower pressure?</summary><p>The system is built for shower flow. If your plumbing is already unusually low-pressure, results can vary.</p></details>
-            <details><summary>Is this just a shower filter with better branding?</summary><p>No. Shower filters mostly reduce chlorine. AG Water Softener uses ion exchange to soften hardness minerals.</p></details>
-            <details><summary>Can renters install it?</summary><p>Yes. It is designed for non-permanent installation and can come down when you move.</p></details>
-            <details><summary>How often do I recharge it?</summary><p>The salt recharge cycle is every 4-5 weeks.</p></details>
-            <details><summary>How do I know it is working?</summary><p>Use the included hardness test strips before and after installation.</p></details>
-          </div>
+          <div class="gallery-main"><img src="assets/ag-water-softener-product.jpg" alt="AG Water Softener unit."></div>
         </div>
       </section>
     </main>
@@ -731,8 +1008,8 @@
     <footer class="footer">
       <div class="wrap split">
         <div>
-          <h2>Still checking your water?</h2>
-          <p>Use the independent lookup at MyApartmentWaterQuality.com to see a source-backed hardness report by zip code.</p>
+          <h2>Don't know your water's hardness?</h2>
+          <p>Look up your zip code's score free at MyApartmentWaterQuality.com — it takes about 30 seconds, and the report cites its sources.</p>
           <a class="button-link" href="https://myapartmentwaterquality.com/">Check my water</a>
         </div>
         <div>
@@ -846,12 +1123,18 @@
       document.querySelectorAll("[data-anchor-link]").forEach((link) => {
         link.addEventListener("click", () => console.log("anchor_nav_click", { label: link.textContent.trim() }));
       });
+      document.querySelectorAll(".faq details").forEach((item) => {
+        item.addEventListener("toggle", () => {
+          if (item.open) console.log("faq_opened", { question: item.querySelector("summary").textContent.trim() });
+        });
+      });
       function syncStickyAtc() {
         const buyBoxBottom = buyBox.getBoundingClientRect().bottom;
         sticky.classList.toggle("is-visible", window.innerWidth <= 820 && buyBoxBottom < 0);
       }
       window.addEventListener("scroll", syncStickyAtc, { passive: true });
       window.addEventListener("resize", syncStickyAtc);
+      window.setInterval(syncStickyAtc, 250);
       syncStickyAtc();
       console.log("pdp_viewed", { band: params.get("band") || "" });
       updateCart();
