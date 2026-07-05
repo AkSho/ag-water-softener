@@ -1,10 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Check,
   ChevronDown,
-  ChevronLeft,
-  ChevronRight,
   Minus,
   Plus,
   Search,
@@ -15,6 +13,9 @@ import {
 import { AnnouncementBar } from "@/components/site/AnnouncementBar";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { HeroGallery } from "@/components/site/HeroGallery";
+import { StickyBuyBar } from "@/components/site/StickyBuyBar";
+
 import { useCart, money } from "@/lib/cart";
 import { PDP_FEATURES } from "@/lib/pdp-features";
 
@@ -59,6 +60,10 @@ const installShowerAsset = { url: "/assets/install-shower.png" };
 const installUnderSinkAsset = { url: "/assets/install-under-sink.png" };
 const testStripsAsset = { url: "/assets/test-strips.png" };
 const vacationMomentAsset = { url: "/assets/vacation-moment.png" };
+import showerheadHardWaterAsset from "@/assets/showerhead_hard_water.png.asset.json";
+import hairHardWaterAsset from "@/assets/hair_hard_water.png.asset.json";
+import beardHardWaterAsset from "@/assets/beard_hard_water.png.asset.json";
+import lifestyleShot2Asset from "@/assets/lifestyle_shot-2.png.asset.json";
 
 const GALLERY: { key: string; src: string; alt: string }[] = [
   { key: "g1", src: heroAsset.url, alt: "AG Water Softener — product front view" },
@@ -73,7 +78,7 @@ const PRODUCT_TITLE = "The AG Water Softener";
 
 function ProductPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-24 lg:pb-0">
       <AnnouncementBar />
       <SiteHeader />
       <ProductHero />
@@ -84,11 +89,17 @@ function ProductPage() {
       <ForgottenFix />
       <MeetTheSoftener />
       <ProofWall />
-      
+
       <InstallAndMaintenance />
       <FAQSection />
       <SiteFooter />
-      <MobileAtcBar />
+      <StickyBuyBar
+        price={PRICE}
+        productId="ag-softener"
+        productTitle={PRODUCT_TITLE}
+        variantLabel="Single unit"
+        image={heroAsset.url}
+      />
       <WaterReportModal />
     </div>
   );
@@ -114,32 +125,11 @@ function BandPrehead() {
 
 
 function ProductHero() {
-  const [activeIdx, setActiveIdx] = useState(0);
   const [finish, setFinish] = useState(FINISHES[0].id);
   const [subscribe, setSubscribe] = useState(false);
   const [qty, setQty] = useState(1);
   const infoRef = useRef<HTMLDivElement>(null);
-  const galleryRef = useRef<HTMLDivElement>(null);
   const { add } = useCart();
-
-  useEffect(() => {
-    const root = galleryRef.current;
-    if (!root) return;
-    const panels = Array.from(root.querySelectorAll<HTMLElement>("[data-gallery-panel]"));
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting && e.intersectionRatio > 0.5) {
-            const idx = panels.indexOf(e.target as HTMLElement);
-            if (idx >= 0) setActiveIdx(idx);
-          }
-        });
-      },
-      { threshold: [0.5, 0.75] },
-    );
-    panels.forEach((p) => io.observe(p));
-    return () => io.disconnect();
-  }, []);
 
   const selectedFinish = FINISHES.find((f) => f.id === finish)!;
   const variantLabel = PDP_FEATURES.finishes ? selectedFinish.label : "Single unit";
@@ -152,47 +142,29 @@ function ProductHero() {
   ];
 
   return (
-    <section data-hero className="mx-auto max-w-[1400px] px-4 pb-14 pt-2 md:px-8 md:pt-4">
-      <div className="grid gap-6 md:grid-cols-2 md:gap-8">
-        {/* Gallery */}
-        <div ref={galleryRef} className="space-y-3 md:space-y-4">
-          {GALLERY.map((g, idx) => (
-            <div
-              key={g.key}
-              data-gallery-panel
-              className="relative aspect-square w-full overflow-hidden bg-muted"
-              aria-label={g.alt}
-            >
-              <img
-                src={g.src}
-                alt={g.alt}
-                className="absolute inset-0 h-full w-full object-cover"
-                loading={idx === 0 ? "eager" : "lazy"}
-                fetchPriority={idx === 0 ? "high" : "auto"}
-              />
-              {idx === 0 && <GalleryOverlay activeIdx={activeIdx} total={GALLERY.length} onNav={(i: number) => {
-                const el = galleryRef.current?.querySelectorAll<HTMLElement>("[data-gallery-panel]")[i];
-                el?.scrollIntoView({ behavior: "smooth", block: "start" });
-              }} />}
-            </div>
-          ))}
-        </div>
+    <section
+      data-hero
+      className="mx-auto max-w-[1400px] px-5 pb-10 pt-2 md:px-8 md:pb-14 md:pt-4"
+    >
+      <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
+        {/* Gallery — mobile swipe carousel, desktop stack */}
+        <HeroGallery items={GALLERY} />
 
         {/* Sticky info column */}
-        <div className="md:sticky md:top-24 md:h-fit md:pl-4 lg:pl-10" ref={infoRef}>
+        <div className="lg:sticky lg:top-24 lg:h-fit lg:pl-4 xl:pl-10" ref={infoRef}>
           {/* Review quote strip — no aggregate star rating until real reviews accumulate */}
-          <div className="mb-6 border-l-2 border-foreground/30 pl-3 text-xs italic text-foreground/70">
+          <div className="mb-5 border-l-2 border-foreground/30 pl-3 text-xs italic text-foreground/70 md:mb-6">
             &ldquo;After every shower my hair and skin feel noticeably softer.&rdquo; — Julie K.
           </div>
 
           <BandPrehead />
 
-          <h1 className="font-display text-3xl leading-[1.05] line-clamp-3 sm:text-4xl md:text-[32px] lg:text-[36px]">
+          <h1 className="font-display text-3xl leading-[1.05] line-clamp-3 md:text-4xl lg:text-[36px]">
             AG Water Softener — Hard Water Shower Softener
           </h1>
 
           {/* Subhead */}
-          <p className="mt-3 text-[15px] leading-[1.65] text-foreground/90">
+          <p className="mt-3 max-w-prose text-[15px] leading-[1.65] text-foreground/90">
             The AG Water Softener pulls the hard-water minerals out of your shower before they ever touch your hair and skin, so the soft, swishy hair you only get on vacation becomes what home feels like. Most people notice the difference in their very first shower.
           </p>
 
@@ -295,9 +267,9 @@ function ProductHero() {
               }
               className="h-auto bg-black px-4 py-3 text-[12px] font-medium uppercase tracking-[0.14em] text-white transition hover:opacity-90"
             >
-              <span className="block">Give your hair 60 days of soft water</span>
+              <span className="block">Start Now</span>
               <span className="mt-1 block text-[10px] font-normal normal-case tracking-normal opacity-80">
-                {money(PRICE)} · Free shipping · Money-back guarantee
+                {money(PRICE)} · 60-day money-back guarantee
               </span>
             </button>
           </div>
@@ -344,7 +316,7 @@ const TABS = [
   { label: "The Problem", href: "#the-problem" },
   { label: "What Changes", href: "#what-changes" },
   { label: "The Fix", href: "#the-fix" },
-  { label: "Proof", href: "#proof" },
+  { label: "Reviews", href: "#proof" },
   { label: "FAQ", href: "#faq" },
 ] as const;
 
@@ -371,8 +343,16 @@ function TabBar() {
 
   return (
     <div className="sticky top-14 z-30 border-y border-border/60 bg-background/95 backdrop-blur md:top-16">
-      <div className="mx-auto max-w-[1400px] overflow-x-auto px-4 md:px-8 no-scrollbar">
-        <nav className="flex min-w-max gap-8 py-4 text-sm">
+      <div
+        className="mx-auto max-w-[1400px] overflow-x-auto px-4 md:px-8 no-scrollbar"
+        style={{
+          maskImage:
+            "linear-gradient(to right, black calc(100% - 32px), transparent)",
+          WebkitMaskImage:
+            "linear-gradient(to right, black calc(100% - 32px), transparent)",
+        }}
+      >
+        <nav className="flex min-w-max gap-8 py-3 text-sm md:py-4">
           {TABS.map((t) => (
             <a
               key={t.href}
@@ -381,7 +361,7 @@ function TabBar() {
               className={`relative pb-2 transition ${active === t.href ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
             >
               {t.label}
-              {active === t.href && <span className="absolute -bottom-4 left-0 right-0 h-px bg-foreground" />}
+              {active === t.href && <span className="absolute -bottom-3 left-0 right-0 h-px bg-foreground md:-bottom-4" />}
             </a>
           ))}
         </nav>
@@ -394,22 +374,34 @@ function TabBar() {
 
 function VacationMoment() {
   return (
-    <section id="vacation" className="mx-auto max-w-[1400px] px-4 py-20 md:px-8 md:py-28">
-      <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] md:gap-16">
+    <section id="vacation" className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
+      <div className="grid gap-8 md:gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-16">
+        {/* Desktop image (left column) */}
         <img
           src={vacationMomentAsset.url}
           alt="Woman in hotel bathrobe, towel-drying soft hair, warm light"
-          className="aspect-[4/5] w-full object-cover"
+          className="hidden aspect-[4/5] w-full object-cover lg:block"
           loading="lazy"
         />
         <div className="max-w-[560px] self-center">
-          <h2 className="font-display text-3xl leading-[1.05] line-clamp-3 sm:text-4xl md:text-[42px]">
+          <h2 className="font-display text-3xl leading-[1.05] line-clamp-3 md:text-4xl lg:text-[42px]">
             YOU'VE ALREADY FELT SOFT WATER. YOU JUST DIDN'T KNOW THAT'S WHAT IT WAS.
           </h2>
-          <div className="mt-8 space-y-5 text-[15px] leading-[1.7] text-foreground/90">
+          <div className="mt-6 space-y-5 text-[15px] leading-[1.7] text-foreground/90 md:mt-8">
             <p>Maybe it was a hotel. Or a week at your sister's place in another city.</p>
             <p>You washed your hair with the same shampoo you use at home, out of the same travel bottle. And something strange happened...it lathered. Your hair dried soft and swishy instead of poofy and wiry. Your face didn't feel tight ten minutes after you stepped out.</p>
             <p>You probably credited the hotel shampoo or just being relaxed.</p>
+          </div>
+
+          {/* Mobile-only image break between paragraphs */}
+          <img
+            src={vacationMomentAsset.url}
+            alt="Woman in hotel bathrobe, towel-drying soft hair, warm light"
+            className="my-8 aspect-[4/5] w-full object-cover lg:hidden"
+            loading="lazy"
+          />
+
+          <div className="space-y-5 text-[15px] leading-[1.7] text-foreground/90">
             <p>Then you came home, showered in your own bathroom, and within days everything went back: the frizz, the tangles, the tightness, the flakes.</p>
             <p>Same you. Same products.</p>
             <p>The only thing that changed was the water.</p>
@@ -433,13 +425,13 @@ function VacationMoment() {
 function WhyNothingWorked() {
   return (
     <section id="the-problem" className="border-t border-border/60">
-      <div className="mx-auto max-w-[1400px] px-4 py-20 md:px-8 md:py-28">
+      <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
         <div className="grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] md:gap-16">
           {/* Product photo */}
           <div className="order-2 md:order-1">
             <img
-              src={randomProductsAsset.url}
-              alt="Shower products that don't solve hard water — clarifying shampoos, filtered showerheads, and treatments"
+              src={showerheadHardWaterAsset.url}
+              alt="Before and after — a showerhead caked in hard-water scale next to a clean, softened one"
               className="aspect-[4/5] w-full object-cover"
               loading="lazy"
             />
@@ -461,7 +453,7 @@ function WhyNothingWorked() {
 
       {/* Full-width reveal band */}
       <div className="border-y border-border/60 bg-foreground text-background">
-        <div className="mx-auto max-w-[1000px] px-4 py-20 md:px-8 md:py-28">
+        <div className="mx-auto max-w-[1000px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
           <h3 className="font-display text-3xl leading-[1.05] line-clamp-3 sm:text-4xl md:text-[46px]">
             FILTERING WATER AND SOFTENING WATER ARE TWO DIFFERENT THINGS.
           </h3>
@@ -482,21 +474,24 @@ function WhyNothingWorked() {
 function WhatSoftWaterChanges() {
   const timeline = [
     {
+      emoji: "🚿",
       when: "The first shower",
       body: "The lather is different. Shampoo foams the way it does on vacation, because it's no longer fighting minerals to do its job. When you rinse, your hair feels clean instead of coated. Your skin feels rinsed instead of filmed.",
     },
     {
+      emoji: "✨",
       when: "The first week or two",
       body: "Your hair starts behaving. Conditioner absorbs instead of sitting on top. Detangling gets faster. If you have waves or curls, they start clumping and holding shape again instead of collapsing into frizz by day two. Skin stops feeling tight the moment you towel off.",
     },
     {
+      emoji: "🌿",
       when: "By the second month",
       body: "The difference stops being an event and becomes your new normal. Wash day gets shorter because there's no mineral buildup to fight through. The products you already own quietly start working the way their labels promised. Several people tell us they end up using less of everything.",
     },
   ];
   return (
     <section id="what-changes" className="border-t border-border/60">
-      <div className="mx-auto max-w-[1400px] px-4 py-20 md:px-8 md:py-28">
+      <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
         <div className="mx-auto max-w-[900px]">
           <h2 className="font-display text-3xl leading-[1.05] line-clamp-3 sm:text-4xl md:text-[38px]">
             THE FIRST FEW WEEKS OF SOFT WATER FEEL LIKE GETTING YOUR MONEY'S WORTH OUT OF EVERY PRODUCT YOU ALREADY OWN
@@ -504,17 +499,31 @@ function WhatSoftWaterChanges() {
           <p className="mt-8 text-[15px] leading-[1.7] text-foreground/90">
             People who finally get soft water at home tend to describe it the same way, in the same order.
           </p>
+
+          <figure className="mt-10">
+            <img
+              src={hairHardWaterAsset.url}
+              alt="Before and after — the same blonde hair, frizzy and dry vs. defined soft curls"
+              className="aspect-[3/2] w-full object-cover"
+              loading="lazy"
+            />
+            <figcaption className="mt-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              Before / After — same hair, same products, different water.
+            </figcaption>
+          </figure>
         </div>
 
         {/* Timeline */}
-        <ol className="mx-auto mt-14 max-w-[900px] space-y-10 border-l border-border/60 pl-8 md:space-y-14 md:pl-12">
+        <ol className="mx-auto mt-14 max-w-[900px] space-y-12 border-l border-border/60 pl-10 md:space-y-16 md:pl-14">
           {timeline.map((t) => (
             <li key={t.when} className="relative">
               <span
-                className="absolute -left-[41px] top-2 grid h-4 w-4 place-items-center rounded-full bg-foreground md:-left-[49px]"
                 aria-hidden
-              />
-              <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                className="absolute -left-[52px] top-0 grid h-10 w-10 place-items-center rounded-full bg-foreground text-2xl leading-none ring-1 ring-foreground md:-left-[60px] md:h-11 md:w-11 md:text-[26px]"
+              >
+                {t.emoji}
+              </span>
+              <div className="pt-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
                 {t.when}
               </div>
               <p className="mt-3 text-[15px] leading-[1.7] text-foreground/90">{t.body}</p>
@@ -529,7 +538,7 @@ function WhatSoftWaterChanges() {
 
       {/* Research band */}
       <div className="border-y border-border/60 bg-surface">
-        <div className="mx-auto max-w-[900px] px-4 py-20 md:px-8 md:py-24">
+        <div className="mx-auto max-w-[900px] px-5 py-12 md:px-8 md:py-16 lg:py-20">
           <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             Research
           </div>
@@ -546,7 +555,18 @@ function WhatSoftWaterChanges() {
             </div>
             <div>
               <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">On skin</div>
-              <p className="mt-3">
+              <figure className="mt-4">
+                <img
+                  src={beardHardWaterAsset.url}
+                  alt="Before and after — irritated, red neck after shaving in hard water vs. calm skin after softened water"
+                  className="aspect-[3/2] w-full object-cover"
+                  loading="lazy"
+                />
+                <figcaption className="mt-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                  Before / After — hard-water irritation after shaving vs. softened water.
+                </figcaption>
+              </figure>
+              <p className="mt-4">
                 Research published in the <em>Journal of Investigative Dermatology</em> found that washing with hard water leaves significantly more soap residue clinging to the skin, which raises water loss through the skin barrier — the mechanism behind that tight, stripped feeling after a shower. The same researchers found that <span className="font-medium">softening the water by ion exchange reduced this effect.</span>
               </p>
             </div>
@@ -558,13 +578,13 @@ function WhatSoftWaterChanges() {
       </div>
 
       {/* Soft mid-page CTA */}
-      <div className="mx-auto max-w-[1400px] px-4 py-16 text-center md:px-8 md:py-20">
+      <div className="mx-auto max-w-[1400px] px-5 py-10 text-center md:px-8 md:py-16">
         <a
           href="#top"
           onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
           className="inline-flex items-center bg-black px-8 py-5 text-[12px] font-medium uppercase tracking-[0.16em] text-white transition hover:opacity-90"
         >
-          Try the AG Water Softener in your own shower
+          Try The AG Water Softener In Your Shower
         </a>
       </div>
     </section>
@@ -579,7 +599,7 @@ function ForgottenFix() {
       className="border-t border-border/60"
       style={{ backgroundColor: "oklch(0.94 0.010 80)" }}
     >
-      <div className="mx-auto max-w-[1400px] px-4 py-20 md:px-8 md:py-28">
+      <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
         <div className="grid gap-10 md:grid-cols-2 md:gap-16">
           <div className="text-left">
             <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
@@ -622,7 +642,7 @@ function MeetTheSoftener() {
   ];
   return (
     <section id="the-fix" className="border-t border-border/60">
-      <div className="mx-auto max-w-[1400px] px-4 py-20 md:px-8 md:py-28">
+      <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
         <div className="mx-auto max-w-[900px]">
           <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">The fix</div>
           <h2 className="mt-4 font-display text-3xl leading-[1.05] line-clamp-3 sm:text-4xl md:text-[42px]">
@@ -699,15 +719,16 @@ function MeetTheSoftener() {
           <div className="mx-auto mt-10 max-w-[1000px] overflow-x-auto">
             <table className="w-full min-w-[640px] border-collapse text-sm">
               <thead>
-                <tr className="border-b border-foreground/80 text-left">
-                  <th className="py-4 pr-4 font-normal text-muted-foreground"></th>
-                  <th className="py-4 px-3 text-center">
-                    <div className="font-display text-base uppercase leading-tight sm:text-lg">AG Water<br />Softener</div>
+                <tr className="text-left">
+                  <th className="border-b border-foreground/80 py-4 pr-4 font-normal text-muted-foreground"></th>
+                  <th className="border-t-2 border-b-2 border-foreground bg-foreground/[0.05] py-4 px-3 text-center">
+                    <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground/70">Our pick</div>
+                    <div className="mt-1 font-display text-lg uppercase leading-tight sm:text-xl">AG Water<br />Softener</div>
                   </th>
-                  <th className="py-4 px-3 text-center text-muted-foreground">
+                  <th className="border-b border-foreground/80 py-4 px-3 text-center text-muted-foreground">
                     <div className="text-xs uppercase tracking-[0.14em]">Shower<br />Filters</div>
                   </th>
-                  <th className="py-4 px-3 text-center text-muted-foreground">
+                  <th className="border-b border-foreground/80 py-4 px-3 text-center text-muted-foreground">
                     <div className="text-xs uppercase tracking-[0.14em]">Whole-House<br />Softener</div>
                   </th>
                 </tr>
@@ -716,14 +737,14 @@ function MeetTheSoftener() {
                 {compareRows.map((r) => (
                   <tr key={r.label} className="border-b border-border/60">
                     <td className="py-4 pr-4 text-[14px]">{r.label}</td>
-                    <td className="py-4 px-3 text-center"><Dot filled={r.ag} strong /></td>
+                    <td className="bg-foreground/[0.05] py-4 px-3 text-center"><Dot filled={r.ag} strong /></td>
                     <td className="py-4 px-3 text-center"><Dot filled={r.filter} /></td>
                     <td className="py-4 px-3 text-center"><Dot filled={r.whole} /></td>
                   </tr>
                 ))}
                 <tr>
                   <td className="py-5 pr-4 text-[14px]">Typical cost</td>
-                  <td className="py-5 px-3 text-center font-display text-lg">$249</td>
+                  <td className="border-b-2 border-foreground bg-foreground/[0.05] py-5 px-3 text-center font-display text-lg">$249</td>
                   <td className="py-5 px-3 text-center text-sm text-muted-foreground">$30-$190</td>
                   <td className="py-5 px-3 text-center text-sm text-muted-foreground">$1,500–$6,000<br />installed</td>
                 </tr>
@@ -742,7 +763,7 @@ function MeetTheSoftener() {
             onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
             className="inline-flex items-center justify-center bg-black px-8 py-5 text-[12px] font-medium uppercase tracking-[0.14em] text-white transition hover:opacity-90"
           >
-            Try the AG Water Softener in your own shower
+            Try The AG Water Softener In Your Shower
           </a>
         </div>
       </div>
@@ -790,29 +811,51 @@ const PROOF_REVIEWS = [
 ];
 
 function ProofWall() {
+  const [expanded, setExpanded] = useState(false);
+  const MOBILE_CAP = 2;
   return (
     <section id="proof" className="border-t border-border/60 bg-surface/40">
-      <div className="mx-auto max-w-[1400px] px-4 py-20 md:px-8 md:py-28">
+      <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
         <div className="mx-auto max-w-[900px]">
           <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             Early customer & tester reviews
           </div>
-          <h2 className="mt-4 font-display text-3xl leading-[1.05] line-clamp-3 sm:text-4xl md:text-[46px]">
+          <h2 className="mt-4 font-display text-3xl leading-[1.05] line-clamp-3 md:text-4xl lg:text-[46px]">
             WHAT PEOPLE NOTICE, IN THEIR OWN WORDS
           </h2>
         </div>
 
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {PROOF_REVIEWS.map((r) => (
-            <article key={r.title + r.name} className="flex flex-col border border-border/60 bg-background p-6">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                {r.name}
-              </div>
-              <h3 className="mt-3 font-display text-xl italic leading-[1.2]">"{r.title}"</h3>
-              <p className="mt-4 text-[14px] leading-[1.65] text-foreground/85">{r.body}</p>
-            </article>
-          ))}
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3">
+          {PROOF_REVIEWS.map((r, i) => {
+            const hideOnMobile = !expanded && i >= MOBILE_CAP;
+            return (
+              <article
+                key={r.title + r.name}
+                className={`flex flex-col border border-border/60 bg-background p-6 ${
+                  hideOnMobile ? "hidden sm:flex" : ""
+                }`}
+              >
+                <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  {r.name}
+                </div>
+                <h3 className="mt-3 font-display text-xl italic leading-[1.2]">"{r.title}"</h3>
+                <p className="mt-4 text-[14px] leading-[1.65] text-foreground/85">{r.body}</p>
+              </article>
+            );
+          })}
         </div>
+
+        {PROOF_REVIEWS.length > MOBILE_CAP && !expanded && (
+          <div className="mt-6 flex justify-center sm:hidden">
+            <button
+              type="button"
+              onClick={() => setExpanded(true)}
+              className="border border-foreground/70 px-6 py-3 text-[12px] font-medium uppercase tracking-[0.14em] text-foreground transition hover:bg-foreground hover:text-background"
+            >
+              Show More Reviews
+            </button>
+          </div>
+        )}
 
         <div className="mt-12 flex flex-col items-center gap-3">
           <a
@@ -838,7 +881,7 @@ function ProofWall() {
 function InstallAndMaintenance() {
   return (
     <section id="install" className="border-t border-border/60 bg-surface/40">
-      <div className="mx-auto max-w-[1400px] px-4 py-20 md:px-8 md:py-28">
+      <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
         <div className="mx-auto max-w-[900px]">
           <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             Installation
@@ -951,13 +994,21 @@ function FAQSection() {
   const [open, setOpen] = useState<number | null>(0);
   return (
     <section id="faq" className="border-t border-border/60">
-      <div className="mx-auto max-w-[1400px] px-4 py-20 md:px-8 md:py-28">
+      <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
         <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] md:gap-16">
           <div>
-            <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">FAQ</div>
-            <h2 className="mt-4 font-display text-4xl leading-[0.95] line-clamp-3 sm:text-5xl md:text-[64px]">
-              FREQUENTLY ASKED QUESTIONS
-            </h2>
+            <div className="md:sticky md:top-24">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">FAQ</div>
+              <h2 className="mt-4 font-display text-4xl leading-[0.95] line-clamp-3 sm:text-5xl md:text-[56px]">
+                FREQUENTLY ASKED QUESTIONS
+              </h2>
+              <img
+                src={lifestyleShot2Asset.url}
+                alt="Woman in profile after a soft-water shower — smooth wet hair, calm skin"
+                className="mt-8 aspect-[3/4] w-full object-cover"
+                loading="lazy"
+              />
+            </div>
           </div>
           <div>
             <ul className="divide-y divide-border/60 border-y border-border/60">
@@ -988,75 +1039,7 @@ function FAQSection() {
 
 
 
-/* ─────────────────────────────── MOBILE STICKY ATC BAR ─────────────────────────────── */
 
-function MobileAtcBar() {
-  const [show, setShow] = useState(false);
-  const { add } = useCart();
-  useEffect(() => {
-    const hero = document.querySelector("[data-hero]");
-    if (!hero) return;
-    const io = new IntersectionObserver(([e]) => setShow(!e.isIntersecting), { threshold: 0 });
-    io.observe(hero);
-    return () => io.disconnect();
-  }, []);
-  const total = useMemo(() => money(PRICE), []);
-  if (!show) return null;
-  return (
-    <div className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-[1fr_auto] items-center gap-3 border-t border-border bg-background p-3 shadow-[0_-8px_24px_-16px_rgba(0,0,0,0.2)] md:hidden">
-      <div className="min-w-0">
-        <div className="truncate text-xs font-medium uppercase tracking-wider">THE AG WATER SOFTENER</div>
-        <div className="text-xs text-muted-foreground">60-day guarantee</div>
-      </div>
-      <button
-        onClick={() =>
-          add({
-            id: "ag-softener",
-            title: PRODUCT_TITLE,
-            variantLabel: "Single unit",
-            price: PRICE,
-          })
-        }
-        className="bg-foreground px-4 py-3 text-xs font-medium uppercase tracking-[0.14em] text-background"
-      >
-        Try for 60 days – {total}
-      </button>
-    </div>
-  );
-}
-
-/* ─────────────────────────────── GALLERY OVERLAY ─────────────────────────────── */
-
-function GalleryOverlay({ activeIdx, total, onNav }: { activeIdx: number; total: number; onNav: (i: number) => void }) {
-  return (
-    <>
-      <button
-        aria-label="Previous image"
-        onClick={() => onNav(Math.max(0, activeIdx - 1))}
-        className="absolute left-3 top-1/2 hidden -translate-y-1/2 items-center justify-center rounded-full bg-background/80 p-2 shadow-sm backdrop-blur transition hover:bg-background md:inline-flex"
-      >
-        <ChevronLeft className="h-4 w-4" />
-      </button>
-      <button
-        aria-label="Next image"
-        onClick={() => onNav(Math.min(total - 1, activeIdx + 1))}
-        className="absolute right-3 top-1/2 hidden -translate-y-1/2 items-center justify-center rounded-full bg-background/80 p-2 shadow-sm backdrop-blur transition hover:bg-background md:inline-flex"
-      >
-        <ChevronRight className="h-4 w-4" />
-      </button>
-      <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-1.5">
-        {Array.from({ length: total }).map((_, i) => (
-          <button
-            key={i}
-            aria-label={`Go to image ${i + 1}`}
-            onClick={() => onNav(i)}
-            className={`h-1.5 w-1.5 rounded-full transition ${i === activeIdx ? "bg-foreground" : "bg-foreground/25"}`}
-          />
-        ))}
-      </div>
-    </>
-  );
-}
 
 /* ─────────────────────────────── FILTER FREQUENCY DROPDOWN (feature-flagged) ─────────────────────────────── */
 

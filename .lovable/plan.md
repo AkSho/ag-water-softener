@@ -1,20 +1,20 @@
-# Commit real image files into `public/assets`
+## 1. Emoji rail markers on black
 
-Right now all 12 product/hero images live only as `.asset.json` pointers to Lovable's CDN (`/__l5e/assets-v1/...`). GitHub gets the JSON pointers, not the actual PNGs. This plan puts the real binaries in the repo so `AkSho/ag-water-softener` and Vercel serve them independently of the Lovable CDN.
+`src/routes/index.tsx` — `WhatSoftWaterChanges` timeline marker span. Change classes from `bg-background ... ring-1 ring-border` to **`bg-foreground text-background ring-1 ring-foreground`** so each emoji sits on a black disc. Size/position unchanged.
 
-## Steps
+## 2. Reviews CTA rename
 
-1. **Download binaries from the CDN** for each of the 12 assets in `src/assets/*.png.asset.json` and save them to `public/assets/<filename>.png` (e.g. `public/assets/hero.png`). Filenames match the `original_filename` in each pointer.
+`src/routes/index.tsx` line 854: `Show all {PROOF_REVIEWS.length} reviews` → **`Show More Reviews`**.
 
-2. **Rewrite `src/routes/index.tsx`** imports (lines ~50–61): remove the 12 `.asset.json` imports and replace usages (`heroAsset.url`, etc.) with plain string paths like `/assets/hero.png`. Vercel serves `public/` at the site root, so these URLs work in prod and dev.
+## 3. Lifestyle image inside FAQ
 
-3. **Delete the `.asset.json` pointer files** in `src/assets/` since nothing imports them anymore. Leave the `src/assets/` directory (empty) or remove it — will remove if empty.
+Upload `lifestyle_shot-2.png` via `lovable-assets` → import in `src/routes/index.tsx`. Restructure `FAQSection` inner container into a **2-column grid** on `md+` (`grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]`, gap-12):
 
-4. **Verify** with `bunx tsgo --noEmit` and a quick `bun run build` to confirm the images resolve and no dangling imports remain.
+- Left: `<img>` at `aspect-[3/4]`, `object-cover`, `sticky top-24` so it stays visible as the accordion scrolls.
+- Right: the existing FAQ eyebrow + heading + accordion.
+- Mobile: single column — image renders full-width above the eyebrow.
 
-## Notes
+## Files
 
-- No CDN deletion — the pointers on Lovable's CDN stay live (harmless; previous deploys keep working).
-- `public/assets/` files add ~a few MB to the git repo; that's the tradeoff for Vercel-native hosting.
-- No behavior/visual changes; same images, just served from `agsoftener.com/assets/*` instead of the Lovable CDN.
-- Does not touch `?band=` logic, cart drawer, or any other route.
+- `src/routes/index.tsx` — marker classes, CTA copy, FAQ layout + image import.
+- `src/assets/lifestyle_shot-2.png.asset.json` (new)
