@@ -76,6 +76,15 @@ function isSpareLineItem(item: Stripe.LineItem, sparePriceId: string) {
   return item.price?.id === sparePriceId;
 }
 
+function isOptionalItemTaxBehaviorError(error: unknown) {
+  return (
+    error instanceof Stripe.errors.StripeInvalidRequestError &&
+    error.param === "optional_items[0][price]" &&
+    typeof error.message === "string" &&
+    error.message.includes("automatic tax")
+  );
+}
+
 async function syncToEsp(payload: EspPurchasePayload) {
   console.info("ESP sync placeholder", {
     tag: "purchased",
@@ -152,7 +161,23 @@ async function createCheckoutSession(request: Request) {
     params.optional_items = [{ price: sparePrice, quantity: 1 }];
   }
 
-  const session = await stripe.checkout.sessions.create(params);
+  let session: Stripe.Checkout.Session;
+
+  try {
+    session = await stripe.checkout.sessions.create(params);
+  } catch (error) {
+    if (!params.optional_items || !isOptionalItemTaxBehaviorError(error)) {
+      throw error;
+    }
+
+    console.warn(
+      "Stripe optional spare cross-sell skipped because the spare Price needs tax behavior configured.",
+      error,
+    );
+    const { optional_items: _optionalItems, ...fallbackParams } = params;
+    session = await stripe.checkout.sessions.create(fallbackParams);
+  }
+
   return json({ url: session.url });
 }
 
