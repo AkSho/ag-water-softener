@@ -1,33 +1,15 @@
 ## Goal
 
-Move the four CDN-hosted images into the repo at `public/assets/` and update `src/routes/index.tsx` to reference them by local path.
+Add the uploaded quick-connect exploded-view image to the hero gallery, committed at `public/assets/quick-connect.png` and referenced by local path in `src/routes/index.tsx`.
 
-## Files to materialize
+## Steps
 
-Download each asset from its CDN URL into `public/assets/`:
+1. **Copy image**: `cp /mnt/user-uploads/Screenshot_2026-07-05_at_3.00.47_PM.png public/assets/quick-connect.png`
+2. **In `src/routes/index.tsx`** (around lines 51–74):
+   - Add: `const quickConnectAsset = { url: "/assets/quick-connect.png" };` alongside the other asset consts.
+   - Add a new `GALLERY` entry as `g6`: `{ key: "g6", src: quickConnectAsset.url, alt: "Quick-Connect Water Softener — exploded view showing 4-ring seal and no-leakage fitting" }`. Insert it as the second slide (right after `g1` hero) so the exploded/feature detail appears early in the carousel — placement is a small judgment call; if you'd prefer it at the end, say so.
+3. **Verification**: typecheck; visually confirm the new slide appears in the mobile carousel and desktop stack on `/`.
 
-- `public/assets/beard_hard_water.png` (from `beard_hard_water.png.asset.json`)
-- `public/assets/hair_hard_water.png` (from `hair_hard_water.png.asset.json`)
-- `public/assets/showerhead_hard_water.png` (from `showerhead_hard_water.png.asset.json`)
-- `public/assets/lifestyle_shot-2.png` (from `lifestyle_shot-2.png.asset.json`)
+## Out of scope
 
-Fetch via `curl` using the `url` field in each pointer JSON.
-
-## Code changes
-
-In `src/routes/index.tsx`:
-
-- Remove the four `import ... from "@/assets/*.png.asset.json"` lines.
-- Replace each `<img src={xxxAsset.url} ...>` with `<img src="/assets/<filename>.png" ...>` (files in `public/` are served from the site root).
-
-## Cleanup
-
-Delete the four `.asset.json` pointer files from `src/assets/` after references are switched. (Skipping `lovable-assets delete` so the CDN copies remain intact in case of revert; user can prune later.)
-
-## Verification
-
-Run typecheck; visually confirm images still render on `/`.
-
-## Note
-
-This is the reverse of the standard Lovable pattern (which externalizes binaries to CDN to keep the repo light). Committing ~9 MB of PNGs into `public/assets/` will bloat the repo — proceeding because you explicitly asked.
+No cropping/resizing, no other layout changes, no changes to gallery UI.

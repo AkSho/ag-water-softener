@@ -64,9 +64,11 @@ const showerheadHardWaterAsset = { url: "/assets/showerhead_hard_water.png" };
 const hairHardWaterAsset = { url: "/assets/hair_hard_water.png" };
 const beardHardWaterAsset = { url: "/assets/beard_hard_water.png" };
 const lifestyleShot2Asset = { url: "/assets/lifestyle_shot-2.png" };
+const quickConnectAsset = { url: "/assets/quick-connect.png" };
 
 const GALLERY: { key: string; src: string; alt: string }[] = [
   { key: "g1", src: heroAsset.url, alt: "AG Water Softener — product front view" },
+  { key: "g6", src: quickConnectAsset.url, alt: "Quick-Connect Water Softener — exploded view showing 4-ring seal and no-leakage fitting" },
   { key: "g2", src: wholeSetAsset.url, alt: "AG Water Softener with brine tank — whole set" },
   { key: "g3", src: crossSectionAsset.url, alt: "Cross-section showing ion-exchange resin core" },
   { key: "g4", src: inShowerAsset.url, alt: "AG Water Softener installed inline in a shower" },
@@ -708,45 +710,54 @@ function MeetTheSoftener() {
 
         </div>
 
-        {/* Comparison table */}
+        {/* Comparison */}
         <div className="mt-20">
           <div className="mx-auto max-w-[900px] text-center">
             <h3 className="font-display text-2xl leading-[1.15] line-clamp-3 sm:text-3xl md:text-[34px]">
               WHERE THE AG WATER SOFTENER FITS
             </h3>
+            <p className="mt-4 text-[14px] leading-[1.6] text-muted-foreground">
+              How it compares to shower filters and whole-house softeners.
+            </p>
           </div>
 
-          <div className="mx-auto mt-10 max-w-[1000px] overflow-x-auto">
-            <table className="w-full min-w-[640px] border-collapse text-sm">
+          <div className="mx-auto mt-10 max-w-[1000px]">
+            <table className="w-full table-fixed border-collapse text-sm">
+              <colgroup>
+                <col style={{ width: "40%" }} />
+                <col style={{ width: "22%" }} />
+                <col style={{ width: "19%" }} />
+                <col style={{ width: "19%" }} />
+              </colgroup>
               <thead>
                 <tr className="text-left">
-                  <th className="border-b border-foreground/80 py-4 pr-4 font-normal text-muted-foreground"></th>
-                  <th className="border-t-2 border-b-2 border-foreground bg-foreground/[0.05] py-4 px-3 text-center">
-                    <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground/70">Our pick</div>
-                    <div className="mt-1 font-display text-lg uppercase leading-tight sm:text-xl">AG Water<br />Softener</div>
+                  <th className="border-b border-foreground/80 py-3 pr-2 font-normal text-muted-foreground sm:py-4 sm:pr-4"></th>
+                  <th className="border-t-2 border-b-2 border-foreground bg-foreground/[0.05] px-1.5 py-3 text-center sm:px-3 sm:py-4">
+                    <div className="text-[9px] font-semibold uppercase tracking-[0.15em] text-foreground/70 sm:text-[10px] sm:tracking-[0.2em]">Our pick</div>
+                    <div className="mt-1 font-display text-[13px] uppercase leading-tight sm:text-lg md:text-xl">AG Water<br />Softener</div>
                   </th>
-                  <th className="border-b border-foreground/80 py-4 px-3 text-center text-muted-foreground">
-                    <div className="text-xs uppercase tracking-[0.14em]">Shower<br />Filters</div>
+                  <th className="border-b border-foreground/80 px-1.5 py-3 text-center text-muted-foreground sm:px-3 sm:py-4">
+                    <div className="text-[10px] uppercase leading-tight tracking-[0.1em] sm:text-xs sm:tracking-[0.14em]">Shower<br />Filters</div>
                   </th>
-                  <th className="border-b border-foreground/80 py-4 px-3 text-center text-muted-foreground">
-                    <div className="text-xs uppercase tracking-[0.14em]">Whole-House<br />Softener</div>
+                  <th className="border-b border-foreground/80 px-1.5 py-3 text-center text-muted-foreground sm:px-3 sm:py-4">
+                    <div className="text-[10px] uppercase leading-tight tracking-[0.1em] sm:text-xs sm:tracking-[0.14em]">Whole-House<br />Softener</div>
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {compareRows.map((r) => (
                   <tr key={r.label} className="border-b border-border/60">
-                    <td className="py-4 pr-4 text-[14px]">{r.label}</td>
-                    <td className="bg-foreground/[0.05] py-4 px-3 text-center"><Dot filled={r.ag} strong /></td>
-                    <td className="py-4 px-3 text-center"><Dot filled={r.filter} /></td>
-                    <td className="py-4 px-3 text-center"><Dot filled={r.whole} /></td>
+                    <td className="py-3 pr-2 text-[12px] leading-[1.35] sm:py-4 sm:pr-4 sm:text-[14px]">{r.label}</td>
+                    <td className="bg-foreground/[0.05] px-1.5 py-3 text-center sm:px-3 sm:py-4"><Dot filled={r.ag} strong /></td>
+                    <td className="px-1.5 py-3 text-center sm:px-3 sm:py-4"><Dot filled={r.filter} /></td>
+                    <td className="px-1.5 py-3 text-center sm:px-3 sm:py-4"><Dot filled={r.whole} /></td>
                   </tr>
                 ))}
                 <tr>
-                  <td className="py-5 pr-4 text-[14px]">Typical cost</td>
-                  <td className="border-b-2 border-foreground bg-foreground/[0.05] py-5 px-3 text-center font-display text-lg">$249</td>
-                  <td className="py-5 px-3 text-center text-sm text-muted-foreground">$30-$190</td>
-                  <td className="py-5 px-3 text-center text-sm text-muted-foreground">$1,500–$6,000<br />installed</td>
+                  <td className="py-4 pr-2 text-[12px] leading-[1.35] sm:py-5 sm:pr-4 sm:text-[14px]">Typical cost</td>
+                  <td className="border-b-2 border-foreground bg-foreground/[0.05] px-1.5 py-4 text-center font-display text-[13px] sm:px-3 sm:py-5 sm:text-lg">$249</td>
+                  <td className="px-1.5 py-4 text-center text-[11px] leading-[1.3] text-muted-foreground sm:px-3 sm:py-5 sm:text-sm">$30–$190</td>
+                  <td className="px-1.5 py-4 text-center text-[11px] leading-[1.3] text-muted-foreground sm:px-3 sm:py-5 sm:text-sm">$1,500–$6,000<br />installed</td>
                 </tr>
               </tbody>
             </table>
