@@ -60,10 +60,10 @@ const installShowerAsset = { url: "/assets/install-shower.png" };
 const installUnderSinkAsset = { url: "/assets/install-under-sink.png" };
 const testStripsAsset = { url: "/assets/test-strips.png" };
 const vacationMomentAsset = { url: "/assets/vacation-moment.png" };
-import showerheadHardWaterAsset from "@/assets/showerhead_hard_water.png.asset.json";
-import hairHardWaterAsset from "@/assets/hair_hard_water.png.asset.json";
-import beardHardWaterAsset from "@/assets/beard_hard_water.png.asset.json";
-import lifestyleShot2Asset from "@/assets/lifestyle_shot-2.png.asset.json";
+const showerheadHardWaterAsset = { url: "/assets/showerhead_hard_water.png" };
+const hairHardWaterAsset = { url: "/assets/hair_hard_water.png" };
+const beardHardWaterAsset = { url: "/assets/beard_hard_water.png" };
+const lifestyleShot2Asset = { url: "/assets/lifestyle_shot-2.png" };
 
 const GALLERY: { key: string; src: string; alt: string }[] = [
   { key: "g1", src: heroAsset.url, alt: "AG Water Softener — product front view" },
