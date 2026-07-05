@@ -47,18 +47,18 @@ const FINISHES = [
   { id: "brick", label: "Brick", ring: "linear-gradient(135deg,#b04a34 0%,#6a2717 100%)", dot: "radial-gradient(circle at 40% 35%, #c1583f 0%, #7a2d1c 60%, #3e1409 100%)" },
 ];
 
-import heroAsset from "@/assets/hero.png.asset.json";
-import wholeSetAsset from "@/assets/whole-set.png.asset.json";
-import crossSectionAsset from "@/assets/cross-section.png.asset.json";
-import inShowerAsset from "@/assets/in-shower.png.asset.json";
-import underSinkAsset from "@/assets/under-sink.png.asset.json";
-import randomProductsAsset from "@/assets/random-products.png.asset.json";
-import portableTankAsset from "@/assets/portable-tank-1930s.png.asset.json";
-import crossSection2Asset from "@/assets/ag-softener-cross-2.png.asset.json";
-import installShowerAsset from "@/assets/install-shower.png.asset.json";
-import installUnderSinkAsset from "@/assets/install-under-sink.png.asset.json";
-import testStripsAsset from "@/assets/test-strips.png.asset.json";
-import vacationMomentAsset from "@/assets/vacation-moment.png.asset.json";
+const heroAsset = { url: "/assets/hero.png" };
+const wholeSetAsset = { url: "/assets/whole-set.png" };
+const crossSectionAsset = { url: "/assets/cross-section.png" };
+const inShowerAsset = { url: "/assets/in-shower.png" };
+const underSinkAsset = { url: "/assets/under-sink.png" };
+const randomProductsAsset = { url: "/assets/random-products.png" };
+const portableTankAsset = { url: "/assets/portable-tank-1930s.png" };
+const crossSection2Asset = { url: "/assets/ag-softener-cross-2.png" };
+const installShowerAsset = { url: "/assets/install-shower.png" };
+const installUnderSinkAsset = { url: "/assets/install-under-sink.png" };
+const testStripsAsset = { url: "/assets/test-strips.png" };
+const vacationMomentAsset = { url: "/assets/vacation-moment.png" };
 
 const GALLERY: { key: string; src: string; alt: string }[] = [
   { key: "g1", src: heroAsset.url, alt: "AG Water Softener — product front view" },
@@ -97,15 +97,7 @@ function ProductPage() {
 /* ─────────────────────────────── HERO (Section 1) ─────────────────────────────── */
 
 function BandPrehead() {
-  const { band: routeBand } = Route.useSearch();
-  const [clientBand, setClientBand] = useState<BandSearch["band"]>(routeBand);
-
-  useEffect(() => {
-    const rawBand = new URLSearchParams(window.location.search).get("band")?.toLowerCase();
-    setClientBand(rawBand === "hard" || rawBand === "veryhard" ? rawBand : undefined);
-  }, [routeBand]);
-
-  const band = routeBand ?? clientBand;
+  const { band } = Route.useSearch();
   const line =
     band === "hard"
       ? "Your zip tested hard. This is the fix for exactly that."

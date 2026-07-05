@@ -42,7 +42,7 @@
 :root {
   --radius: 0;
 
-  /* Warm product-page palette */
+  /* Jolie palette sampled from live site */
   --background: oklch(0.978 0.007 85);        /* warm cream #f9f7f2 */
   --foreground: oklch(0.20 0.010 60);         /* near-black ink */
   --cream: oklch(0.978 0.007 85);
@@ -127,3 +127,4 @@
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
+

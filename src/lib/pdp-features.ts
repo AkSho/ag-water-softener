@@ -5,5 +5,4 @@ export const PDP_FEATURES = {
   subscription: false,
   finishes: false,
   filterFrequency: false,
-  spareCartridge: false,
 } as const;

@@ -1,45 +1,20 @@
-## Goal
+# Commit real image files into `public/assets`
 
-Add `?band=hard` / `?band=veryhard` contextual pre-head above the H1 in the hero, using TanStack Router's typed search params so it works under SSR on Vercel.
+Right now all 12 product/hero images live only as `.asset.json` pointers to Lovable's CDN (`/__l5e/assets-v1/...`). GitHub gets the JSON pointers, not the actual PNGs. This plan puts the real binaries in the repo so `AkSho/ag-water-softener` and Vercel serve them independently of the Lovable CDN.
 
-## Changes
+## Steps
 
-**`src/routes/index.tsx`**
+1. **Download binaries from the CDN** for each of the 12 assets in `src/assets/*.png.asset.json` and save them to `public/assets/<filename>.png` (e.g. `public/assets/hero.png`). Filenames match the `original_filename` in each pointer.
 
-1. Add `validateSearch` to the `/` route:
-   ```ts
-   type BandSearch = { band?: "hard" | "veryhard" };
-   validateSearch: (raw): BandSearch => {
-     const b = typeof raw.band === "string" ? raw.band.toLowerCase() : undefined;
-     return b === "hard" || b === "veryhard" ? { band: b } : {};
-   },
-   ```
-   Silently drops `soft`, `moderate`, unknown values, and missing param — component just sees `band === undefined`.
+2. **Rewrite `src/routes/index.tsx`** imports (lines ~50–61): remove the 12 `.asset.json` imports and replace usages (`heroAsset.url`, etc.) with plain string paths like `/assets/hero.png`. Vercel serves `public/` at the site root, so these URLs work in prod and dev.
 
-2. In `ProductHero`, read it with `Route.useSearch()` and render the pre-head between the italic review quote and the `<h1>`:
-   ```tsx
-   const { band } = Route.useSearch();
-   const bandLine =
-     band === "hard" ? "Your zip tested hard. This is the fix for exactly that." :
-     band === "veryhard" ? "Your zip tested very hard. This is the fix for exactly that." :
-     null;
-   ```
-   ```tsx
-   {bandLine && (
-     <p className="mb-3 font-display text-[13px] uppercase tracking-[0.14em] text-foreground/80">
-       {bandLine}
-     </p>
-   )}
-   ```
-   Small, uppercase, tracked — feels like an eyebrow/pre-head, not an alert banner. Matches the existing display type used elsewhere in the hero.
+3. **Delete the `.asset.json` pointer files** in `src/assets/` since nothing imports them anymore. Leave the `src/assets/` directory (empty) or remove it — will remove if empty.
 
-3. No zip captured, stored, or displayed. No cart / drawer / route changes.
+4. **Verify** with `bunx tsgo --noEmit` and a quick `bun run build` to confirm the images resolve and no dangling imports remain.
 
-## Verify
+## Notes
 
-- Sandbox build passes.
-- Playwright hits `/`, `/?band=hard`, `/?band=veryhard`, `/?band=soft`, `/?band=bogus` — screenshot each; confirm the line appears only on the two intended URLs and the H1 renders on first paint (SSR — no hydration flash).
-
-## Out of scope
-
-Water Test repo, cart drawer, home route path, anything else in the plan file's earlier steps (Vercel preset already shipped in the prior turn).
+- No CDN deletion — the pointers on Lovable's CDN stay live (harmless; previous deploys keep working).
+- `public/assets/` files add ~a few MB to the git repo; that's the tradeoff for Vercel-native hosting.
+- No behavior/visual changes; same images, just served from `agsoftener.com/assets/*` instead of the Lovable CDN.
+- Does not touch `?band=` logic, cart drawer, or any other route.
