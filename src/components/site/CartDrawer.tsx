@@ -1,7 +1,8 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useCart, money } from "@/lib/cart";
+import { track } from "@/lib/analytics";
 import { Minus, Plus, X } from "lucide-react";
-import { toast } from "sonner";
+import { useState } from "react";
 
 const SPARE_ID = "ag-softener-spare";
 
@@ -9,6 +10,43 @@ export function CartDrawer() {
   const { isOpen, close, items, updateQty, remove, subtotal, add } = useCart();
   const hasMain = items.some((i) => i.id.startsWith("ag-softener") && i.id !== SPARE_ID);
   const hasSpare = items.some((i) => i.id === SPARE_ID);
+  const unitQty = items
+    .filter((i) => i.id.startsWith("ag-softener") && i.id !== SPARE_ID)
+    .reduce((sum, item) => sum + item.quantity, 0);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [checkoutError, setCheckoutError] = useState("");
+
+  async function startCheckout() {
+    setCheckoutError("");
+
+    if (unitQty < 1) {
+      setCheckoutError("Something went wrong — try again");
+      return;
+    }
+
+    setIsCheckingOut(true);
+    track("checkout_started", { includeSpare: hasSpare, unitQty });
+
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ unitQty, includeSpare: hasSpare }),
+      });
+      const payload = (await response.json().catch(() => null)) as { url?: string } | null;
+
+      if (!response.ok || !payload?.url) {
+        throw new Error("Checkout request failed");
+      }
+
+      window.location.assign(payload.url);
+    } catch (error) {
+      console.error(error);
+      setCheckoutError("Something went wrong — try again");
+      setIsCheckingOut(false);
+    }
+  }
+
   return (
     <Sheet open={isOpen} onOpenChange={(o) => (o ? null : close())}>
       <SheetContent side="right" className="flex w-full flex-col gap-0 border-l border-border/60 bg-background p-0 sm:max-w-md">
@@ -65,14 +103,15 @@ export function CartDrawer() {
                 One softens while the other soaks and skip the recharge downtime entirely.
               </p>
               <button
-                onClick={() =>
+                onClick={() => {
+                  setCheckoutError("");
                   add({
                     id: SPARE_ID,
                     title: "Spare Softener Cartridge",
                     variantLabel: "Backup unit",
                     price: 39,
                   })
-                }
+                }}
                 className="w-full border border-foreground bg-foreground py-2 text-xs font-medium tracking-wide text-background transition hover:opacity-90"
               >
                 ADD SPARE — {money(39)}
@@ -84,12 +123,17 @@ export function CartDrawer() {
             <span className="font-medium tabular-nums">{money(subtotal)}</span>
           </div>
           <p className="mb-3 text-[11px] text-muted-foreground">Shipping and taxes calculated at checkout.</p>
+          {checkoutError && (
+            <p className="mb-3 text-sm font-medium text-red-700" role="alert">
+              {checkoutError}
+            </p>
+          )}
           <button
-            disabled={items.length === 0}
-            onClick={() => toast("Connect Shopify to enable checkout.", { description: "Say 'connect Shopify' to wire up real checkout." })}
+            disabled={items.length === 0 || isCheckingOut}
+            onClick={startCheckout}
             className="w-full bg-foreground py-3 text-sm font-medium tracking-wide text-background transition hover:opacity-90 disabled:opacity-40"
           >
-            CHECKOUT
+            {isCheckingOut ? "OPENING CHECKOUT..." : "CHECKOUT"}
           </button>
         </div>
       </SheetContent>
