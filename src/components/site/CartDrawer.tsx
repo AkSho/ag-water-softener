@@ -1,7 +1,7 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useCart, money } from "@/lib/cart";
+import { PDP_FEATURES } from "@/lib/pdp-features";
 import { Minus, Plus, X } from "lucide-react";
-import { toast } from "sonner";
 
 const SPARE_ID = "ag-softener-spare";
 
@@ -56,7 +56,7 @@ export function CartDrawer() {
         </div>
 
         <div className="border-t border-border/60 px-6 py-5">
-          {hasMain && !hasSpare && (
+          {PDP_FEATURES.spareCartridge && hasMain && !hasSpare && (
             <div className="mb-4 border-2 border-foreground/80 bg-surface p-4">
               <div className="mb-1 font-display text-sm font-semibold tracking-wide text-foreground">
                 ADD A SPARE SOFTENER
@@ -85,11 +85,10 @@ export function CartDrawer() {
           </div>
           <p className="mb-3 text-[11px] text-muted-foreground">Shipping and taxes calculated at checkout.</p>
           <button
-            disabled={items.length === 0}
-            onClick={() => toast("Connect Shopify to enable checkout.", { description: "Say 'connect Shopify' to wire up real checkout." })}
+            disabled
             className="w-full bg-foreground py-3 text-sm font-medium tracking-wide text-background transition hover:opacity-90 disabled:opacity-40"
           >
-            CHECKOUT
+            CHECKOUT OPENING SOON
           </button>
         </div>
       </SheetContent>
