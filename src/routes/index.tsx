@@ -97,7 +97,15 @@ function ProductPage() {
 /* ─────────────────────────────── HERO (Section 1) ─────────────────────────────── */
 
 function BandPrehead() {
-  const { band } = Route.useSearch();
+  const { band: routeBand } = Route.useSearch();
+  const [clientBand, setClientBand] = useState<BandSearch["band"]>(routeBand);
+
+  useEffect(() => {
+    const rawBand = new URLSearchParams(window.location.search).get("band")?.toLowerCase();
+    setClientBand(rawBand === "hard" || rawBand === "veryhard" ? rawBand : undefined);
+  }, [routeBand]);
+
+  const band = routeBand ?? clientBand;
   const line =
     band === "hard"
       ? "Your zip tested hard. This is the fix for exactly that."
