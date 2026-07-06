@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="AG">
+  <rect width="256" height="256" rx="56" fill="#FAF7F0"/>
+  <rect x="196" width="60" height="60" fill="#F7D154"/>
+  <text
+    x="128"
+    y="153"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-family="Cormorant Garamond, Georgia, serif"
+    font-size="118"
+    font-weight="600"
+    letter-spacing="-9"
+    fill="#1E2530"
+  >AG</text>
+</svg>
