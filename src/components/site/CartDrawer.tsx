@@ -122,7 +122,7 @@ export function CartDrawer() {
             <span className="text-muted-foreground">Subtotal</span>
             <span className="font-medium tabular-nums">{money(subtotal)}</span>
           </div>
-          <p className="mb-3 text-[11px] text-muted-foreground">Shipping and taxes calculated at checkout.</p>
+          <p className="mb-3 text-[11px] text-muted-foreground">Free shipping. Taxes calculated at checkout.</p>
           {checkoutError && (
             <p className="mb-3 text-sm font-medium text-red-700" role="alert">
               {checkoutError}

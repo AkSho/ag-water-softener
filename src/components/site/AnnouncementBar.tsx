@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const MESSAGES = [
-  "Softer hair and skin from your first shower · 60-day money-back guarantee",
+  "Free shipping · Softer hair and skin from your first shower · 60-day money-back guarantee",
 ];
 
 export function AnnouncementBar() {
