@@ -141,21 +141,6 @@ function ThanksPage() {
                   <span className="tabular-nums">{summary.formattedTotal}</span>
                 </div>
               </div>
-
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a
-                  href="#install-video-coming-soon"
-                  className="inline-flex justify-center rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background transition hover:opacity-90"
-                >
-                  Install video
-                </a>
-                <a
-                  href="#salt-recharge-guide-coming-soon"
-                  className="inline-flex justify-center rounded-full border border-foreground px-6 py-3 text-sm font-medium text-foreground transition hover:bg-foreground hover:text-background"
-                >
-                  Salt-recharge guide
-                </a>
-              </div>
             </section>
           ) : (
             <OrderPanel
