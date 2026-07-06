@@ -161,7 +161,7 @@ function ProductHero() {
 
           <BandPrehead />
 
-          <h1 className="font-display text-3xl leading-[1.05] line-clamp-3 md:text-4xl lg:text-[36px]">
+          <h1 className="font-display text-3xl leading-[1.05] md:text-4xl lg:text-[36px]">
             AG Water Softener — Hard Water Shower Softener
           </h1>
 
@@ -386,7 +386,7 @@ function VacationMoment() {
           loading="lazy"
         />
         <div className="max-w-[560px] self-center">
-          <h2 className="font-display text-3xl leading-[1.05] line-clamp-3 md:text-4xl lg:text-[42px]">
+          <h2 className="font-display text-3xl leading-[1.05] md:text-4xl lg:text-[42px]">
             YOU'VE ALREADY FELT SOFT WATER. YOU JUST DIDN'T KNOW THAT'S WHAT IT WAS.
           </h2>
           <div className="mt-6 space-y-5 text-[15px] leading-[1.7] text-foreground/90 md:mt-8">
@@ -441,7 +441,7 @@ function WhyNothingWorked() {
 
           {/* Copy */}
           <div className="order-1 md:order-2">
-            <h2 className="font-display text-3xl leading-[1.05] line-clamp-3 sm:text-4xl md:text-[42px]">
+            <h2 className="font-display text-3xl leading-[1.05] sm:text-4xl md:text-[42px]">
               YOU DIDN'T BUY THE WRONG PRODUCTS. YOU WERE SOLD THE WRONG CATEGORY.
             </h2>
             <div className="mt-8 space-y-5 text-[15px] leading-[1.7] text-foreground/90">
@@ -456,7 +456,7 @@ function WhyNothingWorked() {
       {/* Full-width reveal band */}
       <div className="border-y border-border/60 bg-foreground text-background">
         <div className="mx-auto max-w-[1000px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
-          <h3 className="font-display text-3xl leading-[1.05] line-clamp-3 sm:text-4xl md:text-[46px]">
+          <h3 className="font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
             FILTERING WATER AND SOFTENING WATER ARE TWO DIFFERENT THINGS.
           </h3>
           <div className="mt-8 space-y-5 text-[15px] leading-[1.7] text-background/85">
@@ -495,7 +495,7 @@ function WhatSoftWaterChanges() {
     <section id="what-changes" className="border-t border-border/60">
       <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
         <div className="mx-auto max-w-[900px]">
-          <h2 className="font-display text-3xl leading-[1.05] line-clamp-3 sm:text-4xl md:text-[38px]">
+          <h2 className="font-display text-3xl leading-[1.05] sm:text-4xl md:text-[38px]">
             THE FIRST FEW WEEKS OF SOFT WATER FEEL LIKE GETTING YOUR MONEY'S WORTH OUT OF EVERY PRODUCT YOU ALREADY OWN
           </h2>
           <p className="mt-8 text-[15px] leading-[1.7] text-foreground/90">
@@ -544,7 +544,7 @@ function WhatSoftWaterChanges() {
           <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             Research
           </div>
-          <h3 className="mt-4 font-display text-2xl italic leading-[1.15] line-clamp-3 sm:text-3xl md:text-[38px]">
+          <h3 className="mt-4 font-display text-2xl italic leading-[1.15] sm:text-3xl md:text-[38px]">
             You're Not Imagining It. Researchers Have Measured It.
           </h3>
 
@@ -607,7 +607,7 @@ function ForgottenFix() {
             <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
               A short history
             </div>
-            <h2 className="mt-4 font-display text-3xl leading-[1.1] line-clamp-3 sm:text-4xl md:text-[44px]">
+            <h2 className="mt-4 font-display text-3xl leading-[1.1] sm:text-4xl md:text-[44px]">
               PORTABLE WATER SOFTENING ISN'T NEW. IT'S FORGOTTEN.
             </h2>
             <div className="mt-10 space-y-5 text-[15px] leading-[1.75] text-foreground/90">
@@ -647,7 +647,7 @@ function MeetTheSoftener() {
       <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
         <div className="mx-auto max-w-[900px]">
           <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">The fix</div>
-          <h2 className="mt-4 font-display text-3xl leading-[1.05] line-clamp-3 sm:text-4xl md:text-[42px]">
+          <h2 className="mt-4 font-display text-3xl leading-[1.05] sm:text-4xl md:text-[42px]">
             THE AG WATER SOFTENER: REAL SOFTENING, FINALLY SIZED FOR YOUR SHOWER
           </h2>
           <p className="mt-8 text-[15px] leading-[1.7] text-foreground/90">
@@ -667,7 +667,7 @@ function MeetTheSoftener() {
             <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
               Inside the unit
             </div>
-            <h3 className="mt-3 font-display text-2xl leading-[1.15] line-clamp-3 sm:text-3xl md:text-[34px]">
+            <h3 className="mt-3 font-display text-2xl leading-[1.15] sm:text-3xl md:text-[34px]">
               A True Ion-Exchange Resin Bed
             </h3>
             <p className="mt-6 text-[15px] leading-[1.7] text-foreground/90">
@@ -688,7 +688,7 @@ function MeetTheSoftener() {
         {/* Test-strip proof */}
         <div className="mt-20">
           <div className="mx-auto max-w-[900px] text-center">
-            <h3 className="font-display text-2xl leading-[1.15] line-clamp-3 sm:text-3xl md:text-[38px]">
+            <h3 className="font-display text-2xl leading-[1.15] sm:text-3xl md:text-[38px]">
               DON'T TAKE THE LABEL'S WORD FOR IT. TEST IT.
             </h3>
             <p className="mt-6 text-[15px] leading-[1.7] text-foreground/90">
@@ -713,7 +713,7 @@ function MeetTheSoftener() {
         {/* Comparison */}
         <div className="mt-20">
           <div className="mx-auto max-w-[900px] text-center">
-            <h3 className="font-display text-2xl leading-[1.15] line-clamp-3 sm:text-3xl md:text-[34px]">
+            <h3 className="font-display text-2xl leading-[1.15] sm:text-3xl md:text-[34px]">
               WHERE THE AG WATER SOFTENER FITS
             </h3>
             <p className="mt-4 text-[14px] leading-[1.6] text-muted-foreground">
@@ -831,7 +831,7 @@ function ProofWall() {
           <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             Early customer & tester reviews
           </div>
-          <h2 className="mt-4 font-display text-3xl leading-[1.05] line-clamp-3 md:text-4xl lg:text-[46px]">
+          <h2 className="mt-4 font-display text-3xl leading-[1.05] md:text-4xl lg:text-[46px]">
             WHAT PEOPLE NOTICE, IN THEIR OWN WORDS
           </h2>
         </div>
@@ -897,7 +897,7 @@ function InstallAndMaintenance() {
           <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             Installation
           </div>
-          <h2 className="mt-4 font-display text-3xl leading-[1.05] line-clamp-3 sm:text-4xl md:text-[46px]">
+          <h2 className="mt-4 font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
             INSTALLS IN ABOUT TEN MINUTES
           </h2>
           <p className="mt-8 text-[15px] leading-[1.7] text-foreground/90">
@@ -933,7 +933,7 @@ function InstallAndMaintenance() {
           <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             Maintenance
           </div>
-          <h3 className="mt-3 font-display text-xl italic leading-[1.2] line-clamp-3 sm:text-2xl">
+          <h3 className="mt-3 font-display text-xl italic leading-[1.2] sm:text-2xl">
             Yes, There's Some Maintenance. Here's Exactly What It Is.
           </h3>
           <p className="mt-6 text-[15px] leading-[1.7] text-foreground/90">
@@ -1010,7 +1010,7 @@ function FAQSection() {
           <div>
             <div className="md:sticky md:top-24">
               <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">FAQ</div>
-              <h2 className="mt-4 font-display text-4xl leading-[0.95] line-clamp-3 sm:text-5xl md:text-[56px]">
+              <h2 className="mt-4 font-display text-4xl leading-[0.95] sm:text-5xl md:text-[56px]">
                 FREQUENTLY ASKED QUESTIONS
               </h2>
               <img
