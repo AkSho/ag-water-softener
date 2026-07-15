@@ -344,7 +344,7 @@ function TabBar() {
   }, []);
 
   return (
-    <div className="sticky top-14 z-30 border-y border-border/60 bg-background/95 backdrop-blur md:top-16">
+    <div className="sticky top-14 z-30 border-y border-border/60 bg-surface/95 backdrop-blur md:top-16">
       <div
         className="mx-auto max-w-[1400px] overflow-x-auto px-4 md:px-8 no-scrollbar"
         style={{
@@ -732,7 +732,7 @@ function MeetTheSoftener() {
               <thead>
                 <tr className="text-left">
                   <th className="border-b border-foreground/80 py-3 pr-2 font-normal text-muted-foreground sm:py-4 sm:pr-4"></th>
-                  <th className="border-t-2 border-b-2 border-foreground bg-foreground/[0.05] px-1.5 py-3 text-center sm:px-3 sm:py-4">
+                  <th className="border-t-2 border-b-2 border-foreground bg-sage px-1.5 py-3 text-center sm:px-3 sm:py-4">
                     <div className="text-[9px] font-semibold uppercase tracking-[0.15em] text-foreground/70 sm:text-[10px] sm:tracking-[0.2em]">Our pick</div>
                     <div className="mt-1 font-display text-[13px] uppercase leading-tight sm:text-lg md:text-xl">AG Water<br />Softener</div>
                   </th>
@@ -748,14 +748,14 @@ function MeetTheSoftener() {
                 {compareRows.map((r) => (
                   <tr key={r.label} className="border-b border-border/60">
                     <td className="py-3 pr-2 text-[12px] leading-[1.35] sm:py-4 sm:pr-4 sm:text-[14px]">{r.label}</td>
-                    <td className="bg-foreground/[0.05] px-1.5 py-3 text-center sm:px-3 sm:py-4"><Dot filled={r.ag} strong /></td>
+                    <td className="bg-sage px-1.5 py-3 text-center sm:px-3 sm:py-4"><Dot filled={r.ag} strong /></td>
                     <td className="px-1.5 py-3 text-center sm:px-3 sm:py-4"><Dot filled={r.filter} /></td>
                     <td className="px-1.5 py-3 text-center sm:px-3 sm:py-4"><Dot filled={r.whole} /></td>
                   </tr>
                 ))}
                 <tr>
                   <td className="py-4 pr-2 text-[12px] leading-[1.35] sm:py-5 sm:pr-4 sm:text-[14px]">Typical cost</td>
-                  <td className="border-b-2 border-foreground bg-foreground/[0.05] px-1.5 py-4 text-center font-display text-[13px] sm:px-3 sm:py-5 sm:text-lg">$249</td>
+                  <td className="border-b-2 border-foreground bg-sage px-1.5 py-4 text-center font-display text-[13px] sm:px-3 sm:py-5 sm:text-lg">$249</td>
                   <td className="px-1.5 py-4 text-center text-[11px] leading-[1.3] text-muted-foreground sm:px-3 sm:py-5 sm:text-sm">$30–$190</td>
                   <td className="px-1.5 py-4 text-center text-[11px] leading-[1.3] text-muted-foreground sm:px-3 sm:py-5 sm:text-sm">$1,500–$6,000<br />installed</td>
                 </tr>
@@ -1108,7 +1108,7 @@ function FilterFrequencyDropdown() {
 function BeautyMarquee() {
   const text = "IT'S NOT YOUR HAIR. IT'S YOUR WATER.";
   return (
-    <section aria-label={text} className="overflow-hidden border-y border-border/60 bg-background py-10 md:py-16">
+    <section aria-label={text} className="overflow-hidden border-y border-border/60 bg-sage py-10 md:py-16">
       <div className="flex whitespace-nowrap" style={{ animation: "marquee 40s linear infinite" }}>
         {Array.from({ length: 6 }).map((_, i) => (
           <span key={i} className="font-display px-8 text-6xl leading-none tracking-tight sm:text-7xl md:text-[120px]">

@@ -3,7 +3,7 @@ export function SiteFooter() {
   const support = ["About AG", "Refunds & Returns", "Terms of Service", "Installation Guide", "Contact us"];
 
   return (
-    <footer className="border-t border-border/60 bg-background">
+    <footer className="border-t border-border/60 bg-surface">
       <div className="mx-auto grid max-w-[1400px] gap-10 px-4 py-14 sm:grid-cols-2 md:px-8">
         <FooterCol title="SHOP" items={shop} />
         <FooterCol title="SUPPORT" items={support} />

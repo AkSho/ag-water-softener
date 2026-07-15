@@ -11,7 +11,7 @@ export function AnnouncementBar() {
     return () => clearInterval(i);
   }, []);
   return (
-    <div className="border-b border-border/60 bg-background">
+    <div className="border-b border-border/60 bg-sage">
       <div className="mx-auto flex h-8 max-w-[1400px] items-center justify-center px-4 text-[11px] tracking-wide text-foreground/80">
         <span key={idx} className="animate-in fade-in duration-500">{MESSAGES[idx]}</span>
       </div>

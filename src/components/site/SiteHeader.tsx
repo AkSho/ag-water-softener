@@ -4,7 +4,7 @@ import { useCart } from "@/lib/cart";
 export function SiteHeader() {
   const { open, count } = useCart();
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background">
+    <header className="sticky top-0 z-40 border-b border-border/60 bg-surface">
       <div className="mx-auto grid h-16 max-w-[1400px] grid-cols-[auto_1fr_auto] items-center gap-4 px-4 md:h-20 md:px-8">
         {/* logo */}
         <a href="/" className="flex flex-col leading-none" aria-label="AG Water Softener — Home">
