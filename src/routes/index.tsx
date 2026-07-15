@@ -18,6 +18,7 @@ import { StickyBuyBar } from "@/components/site/StickyBuyBar";
 
 import { useCart, money } from "@/lib/cart";
 import { PDP_FEATURES } from "@/lib/pdp-features";
+import { fbPixel } from "@/lib/analytics";
 
 export const openWaterReport = () =>
   document.dispatchEvent(new CustomEvent("open-water-report"));
@@ -79,6 +80,16 @@ const PRICE = 249;
 const PRODUCT_TITLE = "The AG Water Softener";
 
 function ProductPage() {
+  useEffect(() => {
+    fbPixel("track", "ViewContent", {
+      content_name: "AG Water Softener",
+      content_ids: ["ag-softener"],
+      content_type: "product",
+      value: PRICE,
+      currency: "USD",
+    });
+  }, []);
+
   return (
     <div className="min-h-screen bg-background pb-24 lg:pb-0">
       <AnnouncementBar />

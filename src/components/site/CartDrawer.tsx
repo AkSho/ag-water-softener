@@ -1,6 +1,6 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useCart, money } from "@/lib/cart";
-import { track } from "@/lib/analytics";
+import { track, fbPixel } from "@/lib/analytics";
 import { Minus, Plus, X } from "lucide-react";
 import { useState } from "react";
 
@@ -26,6 +26,11 @@ export function CartDrawer() {
 
     setIsCheckingOut(true);
     track("checkout_started", { includeSpare: hasSpare, unitQty });
+    fbPixel("track", "InitiateCheckout", {
+      value: subtotal,
+      currency: "USD",
+      num_items: unitQty + (hasSpare ? 1 : 0),
+    });
 
     try {
       const response = await fetch("/api/checkout", {

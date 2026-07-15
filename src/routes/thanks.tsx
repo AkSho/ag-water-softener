@@ -4,7 +4,7 @@ import { Check } from "lucide-react";
 
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
-import { track } from "@/lib/analytics";
+import { track, fbPixel } from "@/lib/analytics";
 
 type ThanksSearch = { session_id?: string };
 
@@ -86,6 +86,13 @@ function ThanksPage() {
       revenue: typeof summary.amountTotal === "number" ? summary.amountTotal / 100 : undefined,
       currency: summary.currency?.toUpperCase() || "USD",
       items: summary.items,
+    });
+
+    fbPixel("track", "Purchase", {
+      value: typeof summary.amountTotal === "number" ? summary.amountTotal / 100 : 0,
+      currency: summary.currency?.toUpperCase() || "USD",
+      content_ids: summary.items?.map((i) => i.id) || [],
+      content_type: "product",
     });
 
     if (summary.sparePurchased && summary.bumpSource) {

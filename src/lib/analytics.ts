@@ -3,6 +3,7 @@ type AnalyticsPayload = Record<string, unknown>;
 declare global {
   interface Window {
     dataLayer?: AnalyticsPayload[];
+    fbq?: (...args: unknown[]) => void;
   }
 }
 
@@ -15,4 +16,13 @@ export function track(event: string, payload: AnalyticsPayload = {}) {
   if (import.meta.env.DEV) {
     console.info("[analytics]", data);
   }
+}
+
+export function fbPixel(
+  method: "track" | "trackCustom",
+  event: string,
+  params: AnalyticsPayload = {},
+) {
+  if (typeof window === "undefined" || typeof window.fbq !== "function") return;
+  window.fbq(method, event, params);
 }
