@@ -1,10 +1,13 @@
 import Stripe from "stripe";
+import { createHash } from "crypto";
 
 let stripeClient: Stripe | undefined;
 
 type CheckoutBody = {
   unitQty?: unknown;
   includeSpare?: unknown;
+  fbp?: unknown;
+  fbc?: unknown;
 };
 
 type EspPurchasePayload = {
@@ -93,10 +96,99 @@ async function syncToEsp(payload: EspPurchasePayload) {
   });
 }
 
+function sha256(value: string) {
+  return createHash("sha256").update(value).digest("hex");
+}
+
+function resolveOrigin(request: Request) {
+  const host =
+    request.headers.get("x-forwarded-host") ||
+    request.headers.get("host") ||
+    "www.agsoftener.com";
+  return `https://${host}`;
+}
+
+async function sendMetaCapiPurchase({
+  session,
+  request,
+}: {
+  session: Stripe.Checkout.Session;
+  request: Request;
+}) {
+  const pixelId = process.env.META_PIXEL_ID;
+  const accessToken = process.env.META_CAPI_ACCESS_TOKEN;
+  if (!pixelId || !accessToken) return;
+
+  const email = session.customer_details?.email?.trim().toLowerCase();
+  const zip = session.customer_details?.address?.postal_code?.trim();
+  const fbp = session.metadata?.fbp || "";
+  const fbc = session.metadata?.fbc || "";
+
+  const userData: Record<string, unknown> = {
+    client_ip_address:
+      request.headers.get("x-forwarded-for") || "",
+    client_user_agent: request.headers.get("user-agent") || "",
+  };
+  if (email) userData.em = [sha256(email)];
+  if (zip) userData.zp = [sha256(zip)];
+  if (fbp) userData.fbp = fbp;
+  if (fbc) userData.fbc = fbc;
+
+  const event = {
+    event_name: "Purchase",
+    event_time: Math.floor(Date.now() / 1000),
+    event_id: session.id,
+    action_source: "website",
+    event_source_url: `${resolveOrigin(request)}/thanks?session_id=${encodeURIComponent(session.id)}`,
+    user_data: userData,
+    custom_data: {
+      value:
+        typeof session.amount_total === "number"
+          ? session.amount_total / 100
+          : 0,
+      currency: "usd",
+    },
+  };
+
+  const payload: Record<string, unknown> = { data: [event] };
+  const testCode = process.env.META_TEST_EVENT_CODE;
+  if (testCode) payload.test_event_code = testCode;
+
+  try {
+    const response = await fetch(
+      `https://graph.facebook.com/v21.0/${encodeURIComponent(pixelId)}/events?access_token=${encodeURIComponent(accessToken)}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      },
+    );
+    if (!response.ok) {
+      const detail = await response.text();
+      console.error(
+        JSON.stringify({
+          event: "meta_capi_error",
+          status: response.status,
+          detail: detail.slice(0, 500),
+        }),
+      );
+    }
+  } catch (err) {
+    console.error(
+      JSON.stringify({
+        event: "meta_capi_exception",
+        message: err instanceof Error ? err.message : String(err),
+      }),
+    );
+  }
+}
+
 async function createCheckoutSession(request: Request) {
   const body = (await request.json().catch(() => ({}))) as CheckoutBody;
   const unitQty = body.unitQty;
   const includeSpare = body.includeSpare === true;
+  const fbp = typeof body.fbp === "string" ? body.fbp : "";
+  const fbc = typeof body.fbc === "string" ? body.fbc : "";
 
   if (!isPositiveInteger(unitQty)) {
     return json({ error: "Invalid unit quantity" }, { status: 400 });
@@ -154,6 +246,8 @@ async function createCheckoutSession(request: Request) {
       requested_unit_qty: String(unitQty),
       requested_include_spare: String(includeSpare),
       source: "ag_pdp",
+      fbp,
+      fbc,
     },
   };
 
@@ -295,6 +389,8 @@ async function handleStripeWebhook(request: Request) {
       amountTotal: item.amount_total,
     })),
   });
+
+  sendMetaCapiPurchase({ session, request }).catch(() => {});
 
   return json({ received: true });
 }

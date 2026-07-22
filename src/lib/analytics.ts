@@ -22,7 +22,12 @@ export function fbPixel(
   method: "track" | "trackCustom",
   event: string,
   params: AnalyticsPayload = {},
+  options?: AnalyticsPayload,
 ) {
   if (typeof window === "undefined" || typeof window.fbq !== "function") return;
-  window.fbq(method, event, params);
+  if (options) {
+    window.fbq(method, event, params, options);
+  } else {
+    window.fbq(method, event, params);
+  }
 }

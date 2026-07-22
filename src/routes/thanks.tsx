@@ -93,7 +93,7 @@ function ThanksPage() {
       currency: summary.currency?.toUpperCase() || "USD",
       content_ids: summary.items?.map((i) => i.id) || [],
       content_type: "product",
-    });
+    }, { eventID: summary.id });
 
     if (summary.sparePurchased && summary.bumpSource) {
       track("bump_accepted", { source: summary.bumpSource });

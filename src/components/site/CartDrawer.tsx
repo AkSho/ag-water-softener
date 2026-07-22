@@ -33,10 +33,18 @@ export function CartDrawer() {
     });
 
     try {
+      const cookies = Object.fromEntries(
+        document.cookie.split("; ").filter(Boolean).map((c) => c.split("=")),
+      );
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ unitQty, includeSpare: hasSpare }),
+        body: JSON.stringify({
+          unitQty,
+          includeSpare: hasSpare,
+          fbp: cookies._fbp || "",
+          fbc: cookies._fbc || "",
+        }),
       });
       const payload = (await response.json().catch(() => null)) as { url?: string } | null;
 
