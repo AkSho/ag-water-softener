@@ -154,7 +154,7 @@ function BandPrehead() {
       : "Your zip tested very hard. This is the fix for exactly that.";
 
   return (
-    <p className="mb-3 font-display text-[13px] uppercase tracking-[0.14em] text-foreground/80">
+    <p className="mb-3 w-full rounded-sm bg-butter px-3 py-2 text-[13px] tracking-[0.14em] text-foreground/90">
       {line}
     </p>
   );
@@ -189,11 +189,6 @@ function ProductHero() {
 
         {/* Sticky info column */}
         <div className="lg:sticky lg:top-24 lg:h-fit lg:pl-4 xl:pl-10" ref={infoRef}>
-          {/* Review quote strip — no aggregate star rating until real reviews accumulate */}
-          <div className="mb-5 border-l-2 border-foreground/30 pl-3 text-xs italic text-foreground/70 md:mb-6">
-            &ldquo;After every shower my hair and skin feel noticeably softer.&rdquo; — Julie K.
-          </div>
-
           <BandPrehead />
 
           <h1 className="font-display text-3xl leading-[1.05] md:text-4xl lg:text-[36px]">
@@ -422,7 +417,7 @@ function VacationMoment() {
         />
         <div className="max-w-[560px] self-center">
           <h2 className="font-display text-3xl leading-[1.05] md:text-4xl lg:text-[42px]">
-            YOU'VE ALREADY FELT SOFT WATER. YOU JUST DIDN'T KNOW THAT'S WHAT IT WAS.
+            You've already felt soft water. You just didn't know that's what it was.
           </h2>
           <div className="mt-6 space-y-5 text-[15px] leading-[1.7] text-foreground/90 md:mt-8">
             <p>Maybe it was a hotel. Or a week at your sister's place in another city.</p>
@@ -477,7 +472,7 @@ function WhyNothingWorked() {
           {/* Copy */}
           <div className="order-1 md:order-2">
             <h2 className="font-display text-3xl leading-[1.05] sm:text-4xl md:text-[42px]">
-              YOU DIDN'T BUY THE WRONG PRODUCTS. YOU WERE SOLD THE WRONG CATEGORY.
+              You didn't buy the wrong products. You were sold the wrong category.
             </h2>
             <div className="mt-8 space-y-5 text-[15px] leading-[1.7] text-foreground/90">
               <p>If your bathroom has seen a clarifying shampoo, a Malibu C packet, a vinegar rinse, a bottle of "hard water" leave-in, or at least one filtered showerhead from Amazon, you're in good company. Nearly everyone dealing with hard water goes through this.</p>
@@ -492,7 +487,7 @@ function WhyNothingWorked() {
       <div className="border-y border-border/60 bg-foreground text-background">
         <div className="mx-auto max-w-[1000px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
           <h3 className="font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
-            FILTERING WATER AND SOFTENING WATER ARE TWO DIFFERENT THINGS.
+            Filtering water and softening water are two different things.
           </h3>
           <div className="mt-8 space-y-5 text-[15px] leading-[1.7] text-background/85">
             <p>A shower filter reduces chlorine. That's worthwhile, but chlorine was never what made your hair frizzy or your skin tight. Hardness minerals did. And a filter does not remove them.</p>
@@ -531,7 +526,7 @@ function WhatSoftWaterChanges() {
       <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
         <div className="mx-auto max-w-[900px]">
           <h2 className="font-display text-3xl leading-[1.05] sm:text-4xl md:text-[38px]">
-            THE FIRST FEW WEEKS OF SOFT WATER FEEL LIKE GETTING YOUR MONEY'S WORTH OUT OF EVERY PRODUCT YOU ALREADY OWN
+            The first few weeks of soft water feel like getting your money's worth out of every product you already own
           </h2>
           <p className="mt-8 text-[15px] leading-[1.7] text-foreground/90">
             People who finally get soft water at home tend to describe it the same way, in the same order.
@@ -580,7 +575,7 @@ function WhatSoftWaterChanges() {
             Research
           </div>
           <h3 className="mt-4 font-display text-2xl italic leading-[1.15] sm:text-3xl md:text-[38px]">
-            You're Not Imagining It. Researchers Have Measured It.
+            You're not imagining it. Researchers have measured it.
           </h3>
 
           <div className="mt-10 space-y-8 text-[15px] leading-[1.7] text-foreground/90">
@@ -643,7 +638,7 @@ function ForgottenFix() {
               A short history
             </div>
             <h2 className="mt-4 font-display text-3xl leading-[1.1] sm:text-4xl md:text-[44px]">
-              PORTABLE WATER SOFTENING ISN'T NEW. IT'S FORGOTTEN.
+              Portable water softening isn't new. It's forgotten.
             </h2>
             <div className="mt-10 space-y-5 text-[15px] leading-[1.75] text-foreground/90">
               <p>The chemistry that removes hardness minerals from water — ion exchange — has been understood since 1905.</p>
@@ -683,7 +678,7 @@ function MeetTheSoftener() {
         <div className="mx-auto max-w-[900px]">
           <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">The fix</div>
           <h2 className="mt-4 font-display text-3xl leading-[1.05] sm:text-4xl md:text-[42px]">
-            THE AG WATER SOFTENER: REAL SOFTENING, FINALLY SIZED FOR YOUR SHOWER
+            The AG Water Softener: real softening, finally sized for your shower
           </h2>
           <p className="mt-8 text-[15px] leading-[1.7] text-foreground/90">
             The AG Water Softener is deliberately a one-job machine. As you now know, filtering and softening are two different jobs — this is the one that fixes hard water, and the one no filter can do.
@@ -703,7 +698,7 @@ function MeetTheSoftener() {
               Inside the unit
             </div>
             <h3 className="mt-3 font-display text-2xl leading-[1.15] sm:text-3xl md:text-[34px]">
-              A True Ion-Exchange Resin Bed
+              A true ion-exchange resin bed
             </h3>
             <p className="mt-6 text-[15px] leading-[1.7] text-foreground/90">
               The heart of the AG Water Softener is a bed of ion-exchange resin — the same class of tech inside whole-house softeners that homeowners describe as "the best hair product investment" they've made.
@@ -724,7 +719,7 @@ function MeetTheSoftener() {
         <div className="mt-20">
           <div className="mx-auto max-w-[900px] text-center">
             <h3 className="font-display text-2xl leading-[1.15] sm:text-3xl md:text-[38px]">
-              DON'T TAKE THE LABEL'S WORD FOR IT. TEST IT.
+              Don't take the label's word for it. Test it.
             </h3>
             <p className="mt-6 text-[15px] leading-[1.7] text-foreground/90">
               Every AG Water Softener ships with standard water hardness test strips. Dip one in your tap water today, and another once the AG Water Softener is installed.
@@ -749,7 +744,7 @@ function MeetTheSoftener() {
         <div className="mt-20">
           <div className="mx-auto max-w-[900px] text-center">
             <h3 className="font-display text-2xl leading-[1.15] sm:text-3xl md:text-[34px]">
-              WHERE THE AG WATER SOFTENER FITS
+              Where the AG Water Softener fits
             </h3>
             <p className="mt-4 text-[14px] leading-[1.6] text-muted-foreground">
               How it compares to shower filters and whole-house softeners.
@@ -867,7 +862,7 @@ function ProofWall() {
             Early customer & tester reviews
           </div>
           <h2 className="mt-4 font-display text-3xl leading-[1.05] md:text-4xl lg:text-[46px]">
-            WHAT PEOPLE NOTICE, IN THEIR OWN WORDS
+            What people notice, in their own words
           </h2>
         </div>
 
@@ -933,7 +928,7 @@ function InstallAndMaintenance() {
             Installation
           </div>
           <h2 className="mt-4 font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
-            INSTALLS IN ABOUT TEN MINUTES
+            Installs in about ten minutes
           </h2>
           <p className="mt-8 text-[15px] leading-[1.7] text-foreground/90">
             Everything you need is in the box: hoses, connectors, hardware, and a step-by-step video that assumes you've never installed anything in your life.
@@ -943,7 +938,7 @@ function InstallAndMaintenance() {
         <div className="mt-14 grid gap-6 md:grid-cols-2">
           <InstallCard
             n="01"
-            title="Hang It on the Shower Pipe"
+            title="Hang it on the shower pipe"
             body="Untwist your showerhead, hang the bracket, connect two hoses, and reattach. Most people finish in under ten minutes with their bare hands."
             tone="oklch(0.90 0.012 200)"
             image={installShowerAsset.url}
@@ -951,7 +946,7 @@ function InstallAndMaintenance() {
           />
           <InstallCard
             n="02"
-            title="Or Set It on the Floor"
+            title="Or set it on the floor"
             body="If you'd rather keep it out of sight, or use it for your sink, the unit sits can sit in the corner, connected the same way. Same water, same result."
             tone="oklch(0.91 0.014 90)"
             image={installUnderSinkAsset.url}
@@ -969,7 +964,7 @@ function InstallAndMaintenance() {
             Maintenance
           </div>
           <h3 className="mt-3 font-display text-xl italic leading-[1.2] sm:text-2xl">
-            Yes, There's Some Maintenance. Here's Exactly What It Is.
+            Yes, there's some maintenance. Here's exactly what it is.
           </h3>
           <p className="mt-6 text-[15px] leading-[1.7] text-foreground/90">
             A true softener needs occasional care, because the resin that captures hardness minerals eventually fills up and has to be rinsed clean with salt water. Every real softener on earth works this way, including the $2,000 ones. Here is exactly what the AG Water Softener asks of you:
@@ -1046,7 +1041,7 @@ function FAQSection() {
             <div className="md:sticky md:top-24">
               <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">FAQ</div>
               <h2 className="mt-4 font-display text-4xl leading-[0.95] sm:text-5xl md:text-[56px]">
-                FREQUENTLY ASKED QUESTIONS
+                Frequently asked questions
               </h2>
               <img
                 src={lifestyleShot2Asset.url}
@@ -1182,7 +1177,7 @@ function WaterReportModal() {
         {!submitted ? (
           <>
             <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">Water Report</div>
-            <h3 className="mt-3 font-display text-3xl leading-[1.05]">SEE WHAT'S IN<br />YOUR WATER</h3>
+            <h3 className="mt-3 font-display text-3xl leading-[1.05]">See what's in<br />your water</h3>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
               Enter your zip code and we'll send a personalized report of the hardness likely present in your tap water.
             </p>
@@ -1208,7 +1203,7 @@ function WaterReportModal() {
         ) : (
           <>
             <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">Water Report</div>
-            <h3 className="mt-3 font-display text-3xl leading-[1.05]">CHECK YOUR<br />INBOX</h3>
+            <h3 className="mt-3 font-display text-3xl leading-[1.05]">Check your<br />inbox</h3>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
               Your report for {zip} is on its way.
             </p>

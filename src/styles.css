@@ -33,6 +33,7 @@
   --color-surface: var(--surface);
   --color-sage: var(--sage);
   --color-cream: var(--cream);
+  --color-butter: var(--butter);
 
   --font-display: "Cormorant Garamond", ui-serif, Georgia, serif;
   --font-sans: "Work Sans", ui-sans-serif, system-ui, sans-serif;
@@ -48,6 +49,7 @@
   --cream: oklch(0.978 0.007 85);
   --surface: oklch(0.955 0.010 85);           /* slightly deeper cream card */
   --sage: oklch(0.86 0.035 155);              /* muted mint accent */
+  --butter: oklch(0.93 0.07 90);              /* warm butter-yellow accent */
 
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.20 0.010 60);
@@ -80,6 +82,7 @@
   --cream: oklch(0.16 0.008 60);
   --surface: oklch(0.20 0.008 60);
   --sage: oklch(0.55 0.05 155);
+  --butter: oklch(0.50 0.06 90);
   --card: oklch(0.22 0.008 60);
   --card-foreground: oklch(0.96 0.007 85);
   --popover: oklch(0.22 0.008 60);
@@ -112,7 +115,6 @@
     font-family: var(--font-display);
     font-weight: 400;
     letter-spacing: 0em;
-    text-transform: uppercase;
   }
 
 }
