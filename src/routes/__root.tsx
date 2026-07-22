@@ -7,7 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -126,6 +126,19 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+function ClientOnlyAnalytics() {
+  const [Analytics, setAnalytics] = useState<(() => JSX.Element | null) | null>(null);
+
+  useEffect(() => {
+    import("@vercel/analytics/react").then((mod) => {
+      setAnalytics(() => mod.Analytics);
+    });
+  }, []);
+
+  if (!Analytics) return null;
+  return <Analytics />;
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
@@ -151,6 +164,7 @@ function RootComponent() {
         <Outlet />
         <CartDrawer />
         <Toaster position="bottom-right" />
+        <ClientOnlyAnalytics />
       </CartProvider>
     </QueryClientProvider>
   );
