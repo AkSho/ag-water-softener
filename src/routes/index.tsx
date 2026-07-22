@@ -120,15 +120,39 @@ function ProductPage() {
 
 /* ─────────────────────────────── HERO (Section 1) ─────────────────────────────── */
 
+function isValidBand(v: unknown): v is "hard" | "veryhard" {
+  return v === "hard" || v === "veryhard";
+}
+
+function useBand(): "hard" | "veryhard" | null {
+  const { band: searchBand } = Route.useSearch();
+  const [band] = useState<"hard" | "veryhard" | null>(() => {
+    if (isValidBand(searchBand)) return searchBand;
+    if (typeof window === "undefined") return null;
+    const stored = sessionStorage.getItem("band");
+    return isValidBand(stored) ? stored : null;
+  });
+
+  useEffect(() => {
+    if (isValidBand(searchBand)) {
+      sessionStorage.setItem("band", searchBand);
+    }
+  }, [searchBand]);
+
+  return band;
+}
+
 function BandPrehead() {
-  const { band } = Route.useSearch();
+  const band = useBand();
+
+  if (import.meta.env.VITE_BAND_BANNER !== "true") return null;
+  if (!band) return null;
+
   const line =
     band === "hard"
       ? "Your zip tested hard. This is the fix for exactly that."
-      : band === "veryhard"
-        ? "Your zip tested very hard. This is the fix for exactly that."
-        : null;
-  if (!line) return null;
+      : "Your zip tested very hard. This is the fix for exactly that.";
+
   return (
     <p className="mb-3 font-display text-[13px] uppercase tracking-[0.14em] text-foreground/80">
       {line}

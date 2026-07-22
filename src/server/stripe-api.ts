@@ -2,6 +2,7 @@ import Stripe from "stripe";
 import { createHash } from "crypto";
 
 let stripeClient: Stripe | undefined;
+const processedSessions = new Set<string>();
 
 type CheckoutBody = {
   unitQty?: unknown;
@@ -356,6 +357,13 @@ async function handleStripeWebhook(request: Request) {
   }
 
   const session = stripeEvent.data.object as Stripe.Checkout.Session;
+
+  const isRetry = processedSessions.has(session.id);
+  if (isRetry) {
+    console.warn("Webhook retry: session already processed in this runtime", { sessionId: session.id });
+  }
+  processedSessions.add(session.id);
+
   const sparePrice = requiredEnv("STRIPE_PRICE_SPARE");
   const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
     limit: 20,
@@ -373,6 +381,7 @@ async function handleStripeWebhook(request: Request) {
   };
 
   await syncToEsp(payload);
+  sendMetaCapiPurchase({ session, request }).catch(() => {});
 
   console.info("Stripe checkout completed", {
     eventId: stripeEvent.id,
@@ -382,6 +391,7 @@ async function handleStripeWebhook(request: Request) {
     currency: session.currency,
     customerEmail: payload.email,
     sparePurchased,
+    isRetry,
     lineItems: lineItems.data.map((item) => ({
       description: item.description,
       quantity: item.quantity,
@@ -389,8 +399,6 @@ async function handleStripeWebhook(request: Request) {
       amountTotal: item.amount_total,
     })),
   });
-
-  sendMetaCapiPurchase({ session, request }).catch(() => {});
 
   return json({ received: true });
 }
