@@ -468,7 +468,7 @@ function WhyNothingWorked() {
             <img
               src={showerheadHardWaterAsset.url}
               alt="Before and after — a showerhead caked in hard-water scale next to a clean, softened one"
-              className="aspect-[4/5] w-full object-cover"
+              className="w-full max-h-[70vh] object-cover md:max-h-none md:h-full"
               loading="lazy"
             />
           </div>
