@@ -76,6 +76,7 @@ const GALLERY: { key: string; src: string; alt: string }[] = [
   { key: "g4", src: wholeSetAsset.url, alt: "AG Water Softener with brine tank — whole set" },
   { key: "g5", src: crossSectionAsset.url, alt: "Cross-section showing ion-exchange resin core" },
   { key: "g6", src: inShowerAsset.url, alt: "AG Water Softener installed inline in a shower" },
+  { key: "g7", src: "/assets/gallery-chart.png", alt: "Water hardness comparison chart" },
 ];
 
 const PRICE = 249;
