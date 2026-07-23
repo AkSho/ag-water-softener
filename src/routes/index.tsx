@@ -74,8 +74,8 @@ const GALLERY: HeroGalleryItem[] = [
   { key: "g2", src: testStripsAsset.url, alt: "Hardness test strips — verify your water tests soft" },
   { key: "g3", src: beforeAfterAsset.url, alt: "Before and after — hair and skin results with the AG Water Softener", contain: true, overlay: (
     <div className="flex pb-2">
-      <div className="flex w-1/2 justify-center"><span className="text-xl font-bold text-black sm:text-2xl lg:text-3xl">Before</span></div>
-      <div className="flex w-1/2 justify-center"><span className="text-xl font-bold text-black sm:text-2xl lg:text-3xl">After</span></div>
+      <div className="flex w-1/2 justify-center"><span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground/70 sm:text-xs">Before</span></div>
+      <div className="flex w-1/2 justify-center"><span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground/70 sm:text-xs">After</span></div>
     </div>
   ) },
   { key: "g4", src: wholeSetAsset.url, alt: "AG Water Softener with brine tank — whole set" },

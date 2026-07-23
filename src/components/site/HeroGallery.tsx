@@ -71,16 +71,16 @@ function MobileCarousel({ items }: Props) {
             aria-roledescription="slide"
             aria-label={`${idx + 1} of ${items.length}: ${g.alt}`}
           >
-            {g.overlay && <div>{g.overlay}</div>}
+            {g.overlay}
             <div className="relative aspect-square bg-muted">
-            <img
-              src={g.src}
-              alt={g.alt}
-              className={`absolute inset-0 h-full w-full ${g.contain ? "object-contain" : "object-cover"}`}
-              loading={idx === 0 ? "eager" : "lazy"}
-              fetchPriority={idx === 0 ? "high" : "auto"}
-              draggable={false}
-            />
+              <img
+                src={g.src}
+                alt={g.alt}
+                className={`absolute inset-0 h-full w-full ${g.contain ? "object-contain" : "object-cover"}`}
+                loading={idx === 0 ? "eager" : "lazy"}
+                fetchPriority={idx === 0 ? "high" : "auto"}
+                draggable={false}
+              />
             </div>
           </div>
         ))}
@@ -113,7 +113,7 @@ function DesktopStack({ items }: Props) {
     <div className="hidden space-y-4 lg:block">
       {items.map((g, idx) => (
         <div key={g.key} aria-label={g.alt}>
-          {g.overlay && <div>{g.overlay}</div>}
+          {g.overlay}
           <div className="relative aspect-square w-full overflow-hidden bg-muted">
             <img
               src={g.src}
