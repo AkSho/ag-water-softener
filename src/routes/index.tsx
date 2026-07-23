@@ -72,7 +72,7 @@ const beforeAfterAsset = { url: "/assets/before-after.png" };
 const GALLERY: { key: string; src: string; alt: string }[] = [
   { key: "g1", src: heroAsset.url, alt: "AG Water Softener — product front view" },
   { key: "g2", src: testStripsAsset.url, alt: "Hardness test strips — verify your water tests soft" },
-  { key: "g3", src: beforeAfterAsset.url, alt: "Before and after — hair and skin results with the AG Water Softener" },
+  { key: "g3", src: beforeAfterAsset.url, alt: "Before and after — hair and skin results with the AG Water Softener", contain: true },
   { key: "g4", src: wholeSetAsset.url, alt: "AG Water Softener with brine tank — whole set" },
   { key: "g5", src: crossSectionAsset.url, alt: "Cross-section showing ion-exchange resin core" },
   { key: "g6", src: inShowerAsset.url, alt: "AG Water Softener installed inline in a shower" },

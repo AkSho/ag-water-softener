@@ -4,6 +4,7 @@ export type HeroGalleryItem = {
   key: string;
   src: string;
   alt: string;
+  contain?: boolean;
 };
 
 type Props = {
@@ -72,7 +73,7 @@ function MobileCarousel({ items }: Props) {
             <img
               src={g.src}
               alt={g.alt}
-              className="absolute inset-0 h-full w-full object-cover"
+              className={`absolute inset-0 h-full w-full ${g.contain ? "object-contain" : "object-cover"}`}
               loading={idx === 0 ? "eager" : "lazy"}
               fetchPriority={idx === 0 ? "high" : "auto"}
               draggable={false}
@@ -115,7 +116,7 @@ function DesktopStack({ items }: Props) {
           <img
             src={g.src}
             alt={g.alt}
-            className="absolute inset-0 h-full w-full object-cover"
+            className={`absolute inset-0 h-full w-full ${g.contain ? "object-contain" : "object-cover"}`}
             loading={idx === 0 ? "eager" : "lazy"}
             fetchPriority={idx === 0 ? "high" : "auto"}
           />
