@@ -588,7 +588,7 @@ function WhatSoftWaterChanges() {
             <div>
               <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">On hair</div>
               <p className="mt-3">
-                A study published in the <em>International Journal of Trichology</em> (<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3927171/" target="_blank" rel="noopener" className="underline">see the study</a>) compared hair washed in hard water against hair washed in demineralized water. The hard-water strands showed measurably lower tensile strength — meaning hair repeatedly exposed to hardness minerals becomes weaker and more prone to breakage. Weaker, rougher strands are what you experience as frizz, and as hair that snaps when you brush it.
+                Dermatology researchers washed hair in hard water for thirty days and examined it under an electron microscope (<a href="https://pubmed.ncbi.nlm.nih.gov/26711619/" target="_blank" rel="noopener" className="underline">see the study</a>). The hard-water strands carried about three times the calcium and four times the magnesium of strands washed in distilled water, measured thinner, and showed a ruffled surface instead of a smooth one. That roughened surface is what you experience as coarseness and dullness.
               </p>
             </div>
             <div>
