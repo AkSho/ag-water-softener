@@ -105,6 +105,7 @@ function ProductPage() {
 
       <InstallAndMaintenance />
       <FAQSection />
+      <ClosingSection />
       <SiteFooter />
       <StickyBuyBar
         price={PRICE}
@@ -192,16 +193,16 @@ function ProductHero() {
           <BandPrehead />
 
           <h1 className="font-display text-3xl leading-[1.05] md:text-4xl lg:text-[36px]">
-            AG Water Softener — Hard Water Shower Softener
+            AG Water Softener
           </h1>
 
           {/* Subhead */}
-          <p className="mt-3 max-w-prose text-[15px] leading-[1.65] text-foreground/90">
+          <p className="mt-2 max-w-prose text-[15px] leading-[1.65] text-foreground/90 md:mt-3">
             The AG Water Softener pulls the hard-water minerals out of your shower before they ever touch your hair and skin, so the soft, swishy hair you only get on vacation becomes what home feels like. Most people notice the difference in their very first shower.
           </p>
 
           {/* Checkmark bullets */}
-          <ul className="mt-6 space-y-3">
+          <ul className="mt-4 space-y-2 md:mt-6 md:space-y-3">
             {bullets.map((b) => (
               <li key={b} className="grid grid-cols-[auto_1fr] items-start gap-3 text-[14px] leading-[1.55]">
                 <Check className="mt-[3px] h-4 w-4 shrink-0 text-foreground" strokeWidth={2.25} />
@@ -211,12 +212,15 @@ function ProductHero() {
           </ul>
 
           {/* Price block */}
-          <div className="mt-8 border-t border-border/60 pt-6">
+          <div className="mt-5 border-t border-border/60 pt-4 md:mt-8 md:pt-6">
             <div className="flex items-baseline gap-3">
               <span className="font-display text-4xl leading-none">{money(PRICE)}</span>
             </div>
             <p className="mt-2 text-xs italic text-muted-foreground">
               The softening technology inside $2,000 whole-house systems, sized to fit your shower.
+            </p>
+            <p className="mt-2 text-xs italic text-muted-foreground">
+              Most of a whole-house system's price is the plumbing and the installer. This is the part that actually softens your water.
             </p>
           </div>
 
@@ -274,7 +278,7 @@ function ProductHero() {
           )}
 
           {/* Qty + primary CTA */}
-          <div className="mt-6 grid grid-cols-[auto_1fr] gap-2">
+          <div className="mt-4 grid grid-cols-[auto_1fr] gap-2 md:mt-6">
             <div className="inline-flex items-center border border-border">
               <button className="grid h-14 w-11 place-items-center" onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="Decrease">
                 <Minus className="h-3.5 w-3.5" />
@@ -299,7 +303,7 @@ function ProductHero() {
               }
               className="h-auto bg-black px-4 py-3 text-[12px] font-medium uppercase tracking-[0.14em] text-white transition hover:opacity-90"
             >
-              <span className="block">Start Now</span>
+              <span className="block">Add to Cart</span>
               <span className="mt-1 block text-[10px] font-normal normal-case tracking-normal opacity-80">
                 {money(PRICE)} · 60-day money-back guarantee
               </span>
@@ -582,7 +586,7 @@ function WhatSoftWaterChanges() {
             <div>
               <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">On hair</div>
               <p className="mt-3">
-                A study published in the <em>International Journal of Trichology</em> compared hair washed in hard water against hair washed in demineralized water. The hard-water strands showed measurably lower tensile strength — meaning hair repeatedly exposed to hardness minerals becomes weaker and more prone to breakage. Weaker, rougher strands are what you experience as frizz, and as hair that snaps when you brush it.
+                A study published in the <em>International Journal of Trichology</em> (<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3927171/" target="_blank" rel="noopener" className="underline">see the study</a>) compared hair washed in hard water against hair washed in demineralized water. The hard-water strands showed measurably lower tensile strength — meaning hair repeatedly exposed to hardness minerals becomes weaker and more prone to breakage. Weaker, rougher strands are what you experience as frizz, and as hair that snaps when you brush it.
               </p>
             </div>
             <div>
@@ -599,7 +603,7 @@ function WhatSoftWaterChanges() {
                 </figcaption>
               </figure>
               <p className="mt-4">
-                Research published in the <em>Journal of Investigative Dermatology</em> found that washing with hard water leaves significantly more soap residue clinging to the skin, which raises water loss through the skin barrier — the mechanism behind that tight, stripped feeling after a shower. The same researchers found that <span className="font-medium">softening the water by ion exchange reduced this effect.</span>
+                Research published in the <em>Journal of Investigative Dermatology</em> (<a href="https://www.jidonline.org/article/S0022-202X(17)32938-X/fulltext" target="_blank" rel="noopener" className="underline">see the study</a>) found that washing with hard water leaves significantly more soap residue clinging to the skin, which raises water loss through the skin barrier — the mechanism behind that tight, stripped feeling after a shower. The same researchers found that <span className="font-medium">softening the water by ion exchange reduced this effect.</span>
               </p>
             </div>
             <p className="border-t border-border/60 pt-6 text-[13px] italic text-muted-foreground">
@@ -797,6 +801,9 @@ function MeetTheSoftener() {
         <p className="mx-auto mt-16 max-w-[820px] text-center text-[15px] leading-[1.7] text-foreground/90">
           Whole-house results, at shower-sized commitment. And if your test strip doesn't read soft, you have 60 full days to send it back.
         </p>
+        <p className="mx-auto mt-6 max-w-[820px] text-center text-[15px] leading-[1.7] text-foreground/90">
+          A whole-house softener's price tag is mostly installation, plumbing runs, and the labor to tie it all together. The AG is the softening part alone, the ion-exchange core that does the actual work, which is why it can cost $249 instead of $2,000.
+        </p>
 
         <div className="mt-10 flex justify-center">
           <a
@@ -947,7 +954,7 @@ function InstallAndMaintenance() {
           <InstallCard
             n="02"
             title="Or set it on the floor"
-            body="If you'd rather keep it out of sight, or use it for your sink, the unit sits can sit in the corner, connected the same way. Same water, same result."
+            body="If you'd rather keep it out of sight, or use it for your sink, the unit can sit in the corner, connected the same way. Same water, same result."
             tone="oklch(0.91 0.014 90)"
             image={installUnderSinkAsset.url}
             alt="AG Water Softener installed under a sink, connected to supply lines."
@@ -987,7 +994,7 @@ function InstallAndMaintenance() {
             </li>
           </ol>
           <p className="mt-6 text-[15px] leading-[1.7] text-foreground/90">
-            Your hands-on time is about 40 minutes....every 4-5 weeks. The soaking happens while you're at work or asleep. Shower normally the rest of the time.
+            Your hands-on time is about ten minutes. The full recharge takes about forty, and the soaking part happens while you're at work or asleep. Shower normally the rest of the time.
           </p>
           <p className="mt-6 border-t border-border/60 pt-6 text-[15px] leading-[1.7] text-foreground/90">
             If that ritual every month or so sounds like more than soft water is worth, this product isn't for you, and we'd rather say so here than in a return email. If it sounds like a fair trade for hair and skin that behave every single day in between, keep reading.
@@ -1081,6 +1088,45 @@ function FAQSection() {
 
 
 
+
+/* ─────────────────────────────── SECTION 12 — CLOSING CTA ─────────────────────────────── */
+
+function ClosingSection() {
+  const { add } = useCart();
+  return (
+    <section className="border-t border-border/60">
+      <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
+        <div className="mx-auto max-w-[900px]">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+            The guarantee
+          </div>
+          <h2 className="mt-4 font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
+            Try it against your own test strip
+          </h2>
+          <p className="mt-8 text-[15px] leading-[1.7] text-foreground/90">
+            Dip a hardness strip in your tap water today. Install the AG, then dip another strip. If the second strip doesn't read soft, you have 60 full days to send it back for a complete refund. Softer hair and skin in the meantime.
+          </p>
+          <div className="mt-8">
+            <button
+              onClick={() =>
+                add({
+                  id: "ag-softener",
+                  title: PRODUCT_TITLE,
+                  variantLabel: "Single unit",
+                  price: PRICE,
+                  image: heroAsset.url,
+                })
+              }
+              className="bg-black px-8 py-5 text-[12px] font-medium uppercase tracking-[0.14em] text-white transition hover:opacity-90"
+            >
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 /* ─────────────────────────────── FILTER FREQUENCY DROPDOWN (feature-flagged) ─────────────────────────────── */
 

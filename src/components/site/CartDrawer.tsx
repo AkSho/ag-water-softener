@@ -110,7 +110,7 @@ export function CartDrawer() {
           {hasMain && !hasSpare && (
             <div className="mb-4 border-2 border-foreground/80 bg-surface p-4">
               <div className="mb-1 font-display text-sm font-semibold tracking-wide text-foreground">
-                ADD A SPARE SOFTENER
+                ADD A SPARE CARTRIDGE
               </div>
               <p className="mb-3 text-sm leading-snug text-foreground">
                 One softens while the other soaks and skip the recharge downtime entirely.
@@ -148,6 +148,7 @@ export function CartDrawer() {
           >
             {isCheckingOut ? "OPENING CHECKOUT..." : "CHECKOUT"}
           </button>
+          <p className="mt-2 text-center text-[11px] text-muted-foreground">60-day money-back guarantee · Free shipping</p>
         </div>
       </SheetContent>
     </Sheet>
