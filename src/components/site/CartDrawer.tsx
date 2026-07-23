@@ -123,6 +123,7 @@ export function CartDrawer() {
                     title: "Spare Softener Cartridge",
                     variantLabel: "Backup unit",
                     price: 39,
+                    image: "/assets/hero.png",
                   })
                 }}
                 className="w-full border border-foreground bg-foreground py-2 text-xs font-medium tracking-wide text-background transition hover:opacity-90"
