@@ -112,7 +112,7 @@ function ProductPage() {
         productId="ag-softener"
         productTitle={PRODUCT_TITLE}
         variantLabel="Single unit"
-        image={wholeSetAsset.url}
+        image="/assets/cart-main.png"
       />
       <WaterReportModal />
     </div>
@@ -296,7 +296,7 @@ function ProductHero() {
                     title: PRODUCT_TITLE,
                     variantLabel,
                     price: PRICE,
-                    image: wholeSetAsset.url,
+                    image: "/assets/cart-main.png",
                   },
                   qty,
                 )
@@ -1114,7 +1114,7 @@ function ClosingSection() {
                   title: PRODUCT_TITLE,
                   variantLabel: "Single unit",
                   price: PRICE,
-                  image: wholeSetAsset.url,
+                  image: "/assets/cart-main.png",
                 })
               }
               className="bg-black px-8 py-5 text-[12px] font-medium uppercase tracking-[0.14em] text-white transition hover:opacity-90"
