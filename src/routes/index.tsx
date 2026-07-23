@@ -412,14 +412,14 @@ function VacationMoment() {
   return (
     <section id="vacation" className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
       <div className="grid gap-8 md:gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-16">
-        {/* Desktop image (left column) */}
+        {/* Desktop image (right column on lg) */}
         <img
           src={vacationMomentAsset.url}
           alt="Woman in hotel bathrobe, towel-drying soft hair, warm light"
-          className="hidden aspect-[4/5] w-full object-cover lg:block"
+          className="hidden aspect-[4/5] w-full object-cover lg:order-2 lg:block"
           loading="lazy"
         />
-        <div className="max-w-[560px] self-center">
+        <div className="max-w-[560px] self-center lg:order-1">
           <h2 className="font-display text-3xl leading-[1.05] md:text-4xl lg:text-[42px]">
             You've already felt soft water. You just didn't know that's what it was.
           </h2>
