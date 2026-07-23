@@ -13,7 +13,7 @@ import {
 import { AnnouncementBar } from "@/components/site/AnnouncementBar";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
-import { HeroGallery } from "@/components/site/HeroGallery";
+import { HeroGallery, type HeroGalleryItem } from "@/components/site/HeroGallery";
 import { StickyBuyBar } from "@/components/site/StickyBuyBar";
 
 import { useCart, money } from "@/lib/cart";
@@ -69,10 +69,15 @@ const quickConnectAsset = { url: "/assets/quick-connect.png" };
 
 const beforeAfterAsset = { url: "/assets/before-after.png" };
 
-const GALLERY: { key: string; src: string; alt: string }[] = [
+const GALLERY: HeroGalleryItem[] = [
   { key: "g1", src: heroAsset.url, alt: "AG Water Softener — product front view" },
   { key: "g2", src: testStripsAsset.url, alt: "Hardness test strips — verify your water tests soft" },
-  { key: "g3", src: beforeAfterAsset.url, alt: "Before and after — hair and skin results with the AG Water Softener", contain: true },
+  { key: "g3", src: beforeAfterAsset.url, alt: "Before and after — hair and skin results with the AG Water Softener", contain: true, overlay: (
+    <div className="flex h-full">
+      <div className="flex w-1/2 items-start justify-center pt-3"><span className="text-sm font-bold text-black">Before</span></div>
+      <div className="flex w-1/2 items-start justify-center pt-3"><span className="text-sm font-bold text-black">After</span></div>
+    </div>
+  ) },
   { key: "g4", src: wholeSetAsset.url, alt: "AG Water Softener with brine tank — whole set" },
   { key: "g5", src: crossSectionAsset.url, alt: "Cross-section showing ion-exchange resin core" },
   { key: "g6", src: inShowerAsset.url, alt: "AG Water Softener installed inline in a shower" },

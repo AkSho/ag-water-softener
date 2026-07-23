@@ -5,6 +5,7 @@ export type HeroGalleryItem = {
   src: string;
   alt: string;
   contain?: boolean;
+  overlay?: React.ReactNode;
 };
 
 type Props = {
@@ -78,6 +79,7 @@ function MobileCarousel({ items }: Props) {
               fetchPriority={idx === 0 ? "high" : "auto"}
               draggable={false}
             />
+            {g.overlay && <div className="absolute inset-0 pointer-events-none">{g.overlay}</div>}
           </div>
         ))}
       </div>
@@ -120,6 +122,7 @@ function DesktopStack({ items }: Props) {
             loading={idx === 0 ? "eager" : "lazy"}
             fetchPriority={idx === 0 ? "high" : "auto"}
           />
+          {g.overlay && <div className="absolute inset-0 pointer-events-none">{g.overlay}</div>}
         </div>
       ))}
     </div>
