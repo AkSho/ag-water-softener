@@ -67,10 +67,12 @@ function MobileCarousel({ items }: Props) {
           <div
             key={g.key}
             data-slide
-            className="relative aspect-square w-full shrink-0 snap-center bg-muted"
+            className="w-full shrink-0 snap-center"
             aria-roledescription="slide"
             aria-label={`${idx + 1} of ${items.length}: ${g.alt}`}
           >
+            {g.overlay && <div>{g.overlay}</div>}
+            <div className="relative aspect-square bg-muted">
             <img
               src={g.src}
               alt={g.alt}
@@ -79,7 +81,7 @@ function MobileCarousel({ items }: Props) {
               fetchPriority={idx === 0 ? "high" : "auto"}
               draggable={false}
             />
-            {g.overlay && <div className="absolute inset-0 pointer-events-none">{g.overlay}</div>}
+            </div>
           </div>
         ))}
       </div>
@@ -110,19 +112,17 @@ function DesktopStack({ items }: Props) {
   return (
     <div className="hidden space-y-4 lg:block">
       {items.map((g, idx) => (
-        <div
-          key={g.key}
-          className="relative aspect-square w-full overflow-hidden bg-muted"
-          aria-label={g.alt}
-        >
-          <img
-            src={g.src}
-            alt={g.alt}
-            className={`absolute inset-0 h-full w-full ${g.contain ? "object-contain" : "object-cover"}`}
-            loading={idx === 0 ? "eager" : "lazy"}
-            fetchPriority={idx === 0 ? "high" : "auto"}
-          />
-          {g.overlay && <div className="absolute inset-0 pointer-events-none">{g.overlay}</div>}
+        <div key={g.key} aria-label={g.alt}>
+          {g.overlay && <div>{g.overlay}</div>}
+          <div className="relative aspect-square w-full overflow-hidden bg-muted">
+            <img
+              src={g.src}
+              alt={g.alt}
+              className={`absolute inset-0 h-full w-full ${g.contain ? "object-contain" : "object-cover"}`}
+              loading={idx === 0 ? "eager" : "lazy"}
+              fetchPriority={idx === 0 ? "high" : "auto"}
+            />
+          </div>
         </div>
       ))}
     </div>
