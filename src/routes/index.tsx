@@ -69,11 +69,10 @@ const quickConnectAsset = { url: "/assets/quick-connect.png" };
 
 const GALLERY: { key: string; src: string; alt: string }[] = [
   { key: "g1", src: heroAsset.url, alt: "AG Water Softener — product front view" },
-  { key: "g6", src: quickConnectAsset.url, alt: "Quick-Connect Water Softener — exploded view showing 4-ring seal and no-leakage fitting" },
-  { key: "g2", src: wholeSetAsset.url, alt: "AG Water Softener with brine tank — whole set" },
-  { key: "g3", src: crossSectionAsset.url, alt: "Cross-section showing ion-exchange resin core" },
-  { key: "g4", src: inShowerAsset.url, alt: "AG Water Softener installed inline in a shower" },
-  { key: "g5", src: underSinkAsset.url, alt: "AG Water Softener installed under a bathroom sink" },
+  { key: "g2", src: testStripsAsset.url, alt: "Hardness test strips — verify your water tests soft" },
+  { key: "g3", src: wholeSetAsset.url, alt: "AG Water Softener with brine tank — whole set" },
+  { key: "g4", src: crossSectionAsset.url, alt: "Cross-section showing ion-exchange resin core" },
+  { key: "g5", src: inShowerAsset.url, alt: "AG Water Softener installed inline in a shower" },
 ];
 
 const PRICE = 249;
