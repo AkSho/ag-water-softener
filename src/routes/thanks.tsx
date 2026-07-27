@@ -35,6 +35,7 @@ export const Route = createFileRoute("/thanks")({
     meta: [
       { title: "Order Confirmed — AG Water Softener" },
       { name: "description", content: "Your AG Water Softener order is confirmed." },
+      { name: "robots", content: "noindex" },
     ],
   }),
   component: ThanksPage,

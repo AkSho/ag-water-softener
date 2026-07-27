@@ -107,6 +107,7 @@ function ProductPage() {
       <ProofWall />
 
       <InstallAndMaintenance />
+      <ProductDetails />
       <FAQSection />
       <ClosingSection />
       <SiteFooter />
@@ -1028,6 +1029,70 @@ function InstallCard({ n, title, body, tone, image, alt }: { n: string; title: s
 
 
 
+/* ─────────────────────────────── SECTION 9b — PRODUCT DETAILS (plain text for crawlers) ─────── */
+
+function ProductDetails() {
+  return (
+    <section className="border-t border-border/60">
+      <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
+        <div className="mx-auto max-w-[900px]">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+            Product details
+          </div>
+          <h2 className="mt-4 font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
+            What you need to know
+          </h2>
+
+          <div className="mt-10 space-y-8">
+            <div>
+              <h3 className="text-[13px] font-semibold uppercase tracking-[0.14em]">
+                What ships in the box
+              </h3>
+              {/* PLACEHOLDER — final packing list pending confirmation against physical product.
+                  Two items to confirm: whether salt is included, and whether test strips
+                  ship in the box or are ordered separately. */}
+              <ul className="mt-3 space-y-1.5 text-[15px] leading-[1.7] text-foreground/90">
+                <li>AG Water Softener unit with ion-exchange resin core</li>
+                <li>Brine salt tank</li>
+                <li>Connection hoses and mounting bracket</li>
+                <li>Water hardness test strips</li>
+                <li>Install hardware</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-[13px] font-semibold uppercase tracking-[0.14em]">
+                The strip test
+              </h3>
+              <p className="mt-3 text-[15px] leading-[1.7] text-foreground/90">
+                Dip a hardness test strip in your tap water before you install. After installation, dip another strip in the treated water and compare the two colors to confirm your water now tests soft.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-[13px] font-semibold uppercase tracking-[0.14em]">
+                Recharge cadence
+              </h3>
+              <p className="mt-3 text-[15px] leading-[1.7] text-foreground/90">
+                The resin inside the softener needs to be rinsed with salt water roughly every four to five weeks. Hands-on time is about ten minutes; the soaking step runs on its own.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-[13px] font-semibold uppercase tracking-[0.14em]">
+                Install
+              </h3>
+              <p className="mt-3 text-[15px] leading-[1.7] text-foreground/90">
+                The unit threads onto a standard shower arm or sits on the floor. No plumber, no permanent changes. Everything is fully removable when you move.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ─────────────────────────────── SECTION 11 — FAQ ─────────────────────────────── */
 
 const FAQS = [
@@ -1075,7 +1140,7 @@ function FAQSection() {
                       <span className="text-[15px]">{f.q}</span>
                       <ChevronDown className={`h-4 w-4 text-muted-foreground transition ${isOpen ? "rotate-180" : ""}`} />
                     </button>
-                    {isOpen && <p className="pb-5 pr-8 text-[14px] leading-[1.7] text-foreground/85">{f.a}</p>}
+                    <p className={`pb-5 pr-8 text-[14px] leading-[1.7] text-foreground/85 ${isOpen ? '' : 'hidden'}`}>{f.a}</p>
                   </li>
                 );
               })}

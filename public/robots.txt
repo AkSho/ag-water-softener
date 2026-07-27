@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://agsoftener.com/sitemap.xml
