@@ -80,11 +80,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "AG Water Softener — Real Softening, Sized for Your Shower" },
-      { name: "description", content: "The AG Water Softener uses true ion-exchange to pull calcium and magnesium out of your shower water. Softer hair and skin in your first shower — 60-day money-back guarantee." },
-      { property: "og:title", content: "AG Water Softener — It's Not Your Hair. It's Your Water." },
-      { property: "og:description", content: "Whole-house softening technology, sized for your shower. Renter-safe, installs in 10 minutes, verifiable with a test strip. 60-day money-back guarantee." },
+      { title: "AG Water Softener | Shower Water Softener for Hard Water" },
+      { name: "description", content: "A true ion-exchange shower water softener. Softer hair and skin from your first shower, no plumbing changes. 60-day money-back guarantee." },
+      { property: "og:title", content: "AG Water Softener | Shower Water Softener for Hard Water" },
+      { property: "og:description", content: "A true ion-exchange shower water softener. Softer hair and skin from your first shower, no plumbing changes. 60-day money-back guarantee." },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: "https://agsoftener.com/assets/hero.png" },
+      { property: "og:url", content: "https://agsoftener.com/" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     scripts: [

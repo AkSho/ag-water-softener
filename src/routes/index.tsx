@@ -26,6 +26,17 @@ export const openWaterReport = () =>
 
 type BandSearch = { band?: "hard" | "veryhard" };
 
+const FAQS = [
+  { q: "Will the AG Water Softener lower my water pressure?", a: "The AG Water Softener is engineered for full-flow showering, and pressure preservation was a core design requirement, since it's the most common complaint about lesser shower products." },
+  { q: "How do I know the softening claim is real and this isn't another mislabeled filter?", a: "You test it yourself, in your own bathroom, on day one. The AG Water Softener ships with standard water-hardness test strips. Dip one in your tap water and one in the treated water and compare the colors. Hardness strips are an industry-standard measure and they cannot be flattered by marketing. If your treated water doesn't test soft, use the guarantee." },
+  { q: "I rent. Will this come down cleanly when I move?", a: "Yes. The AG Water Softener attaches to the shower pipe the same way a showerhead does, or simply sits on the floor. Removal takes minutes and leaves your shower exactly as you found it. Nothing is drilled or glued, and there's no plumbing change for a landlord to notice or a deposit to absorb." },
+  { q: "What exactly does the AG Water Softener remove — and what doesn't it?", a: "It removes hardness minerals, calcium and magnesium, through ion exchange — the minerals that coat your hair and crust your shower door. It does not filter chlorine, and we won't pretend otherwise. Chlorine reduction is the job basic shower filters already handle; hardness is the job they can't. If your water report came back hard or very hard, hardness is the half that's been working against your hair and skin." },
+  { q: "Does soft water feel slippery at first?", a: "For some people, yes, briefly. That silky feeling is what skin feels like when soap actually rinses away instead of combining with hardness minerals and clinging to you as residue. Research published in the Journal of Investigative Dermatology measured exactly this: hard water leaves significantly more surfactant deposited on skin after washing. What hard water taught you to interpret as \"squeaky clean\" was residue. Most people stop noticing the change within a week and then can't stand hotel hard water afterward." },
+  { q: "Does the salt make my shower water salty?", a: "You'll never smell or feel it. Ion exchange swaps hardness minerals for a small amount of sodium, the same trade every whole-house softener makes, and the water remains ordinary soft water. The salt you pour into the tank is used to rinse the resin during regeneration, then drains away." },
+  { q: "What are the ongoing costs?", a: "A bag of standard softener salt every few months — that's the only consumable. The ion-exchange resin itself lasts for years with regular recharging, and there's no cartridge subscription waiting to surprise you." },
+  { q: "Will it fit my shower?", a: "The AG Water Softener works with standard shower setups and most showerheads, mounts on the pipe or stands on the floor, and includes every hose and connector needed for both options. If your setup turns out to be the rare exception, the 60-day guarantee applies from day one." },
+];
+
 export const Route = createFileRoute("/")({
   validateSearch: (raw: Record<string, unknown>): BandSearch => {
     const b = typeof raw.band === "string" ? raw.band.toLowerCase() : undefined;
@@ -33,8 +44,43 @@ export const Route = createFileRoute("/")({
   },
   head: () => ({
     meta: [
-      { title: "AG Water Softener — Hard Water Shower Softener" },
-      { name: "description", content: "The AG Water Softener uses true ion-exchange to pull calcium and magnesium out of your shower water. Softer hair and skin in your first shower — 60-day money-back guarantee." },
+      { title: "AG Water Softener | Shower Water Softener for Hard Water" },
+      { name: "description", content: "A true ion-exchange shower water softener. Softer hair and skin from your first shower, no plumbing changes. 60-day money-back guarantee." },
+    ],
+    links: [
+      { rel: "canonical", href: "https://agsoftener.com/" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Product",
+          "name": "AG Water Softener",
+          "brand": { "@type": "Brand", "name": "GRN Labs" },
+          "description": "A true ion-exchange shower water softener. Softer hair and skin from your first shower, no plumbing changes. 60-day money-back guarantee.",
+          "image": "https://agsoftener.com/assets/hero.png",
+          "offers": {
+            "@type": "Offer",
+            "price": "249",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock",
+            "url": "https://agsoftener.com/"
+          }
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": FAQS.map(f => ({
+            "@type": "Question",
+            "name": f.q,
+            "acceptedAnswer": { "@type": "Answer", "text": f.a }
+          }))
+        }),
+      },
     ],
   }),
   component: ProductPage,
@@ -1094,17 +1140,6 @@ function ProductDetails() {
 }
 
 /* ─────────────────────────────── SECTION 11 — FAQ ─────────────────────────────── */
-
-const FAQS = [
-  { q: "Will the AG Water Softener lower my water pressure?", a: "The AG Water Softener is engineered for full-flow showering, and pressure preservation was a core design requirement, since it's the most common complaint about lesser shower products." },
-  { q: "How do I know the softening claim is real and this isn't another mislabeled filter?", a: "You test it yourself, in your own bathroom, on day one. The AG Water Softener ships with standard water-hardness test strips. Dip one in your tap water and one in the treated water and compare the colors. Hardness strips are an industry-standard measure and they cannot be flattered by marketing. If your treated water doesn't test soft, use the guarantee." },
-  { q: "I rent. Will this come down cleanly when I move?", a: "Yes. The AG Water Softener attaches to the shower pipe the same way a showerhead does, or simply sits on the floor. Removal takes minutes and leaves your shower exactly as you found it. Nothing is drilled or glued, and there's no plumbing change for a landlord to notice or a deposit to absorb." },
-  { q: "What exactly does the AG Water Softener remove — and what doesn't it?", a: "It removes hardness minerals, calcium and magnesium, through ion exchange — the minerals that coat your hair and crust your shower door. It does not filter chlorine, and we won't pretend otherwise. Chlorine reduction is the job basic shower filters already handle; hardness is the job they can't. If your water report came back hard or very hard, hardness is the half that's been working against your hair and skin." },
-  { q: "Does soft water feel slippery at first?", a: "For some people, yes, briefly. That silky feeling is what skin feels like when soap actually rinses away instead of combining with hardness minerals and clinging to you as residue. Research published in the Journal of Investigative Dermatology measured exactly this: hard water leaves significantly more surfactant deposited on skin after washing. What hard water taught you to interpret as \"squeaky clean\" was residue. Most people stop noticing the change within a week and then can't stand hotel hard water afterward." },
-  { q: "Does the salt make my shower water salty?", a: "You'll never smell or feel it. Ion exchange swaps hardness minerals for a small amount of sodium, the same trade every whole-house softener makes, and the water remains ordinary soft water. The salt you pour into the tank is used to rinse the resin during regeneration, then drains away." },
-  { q: "What are the ongoing costs?", a: "A bag of standard softener salt every few months — that's the only consumable. The ion-exchange resin itself lasts for years with regular recharging, and there's no cartridge subscription waiting to surprise you." },
-  { q: "Will it fit my shower?", a: "The AG Water Softener works with standard shower setups and most showerheads, mounts on the pipe or stands on the floor, and includes every hose and connector needed for both options. If your setup turns out to be the rare exception, the 60-day guarantee applies from day one." },
-];
 
 function FAQSection() {
   const [open, setOpen] = useState<number | null>(0);
