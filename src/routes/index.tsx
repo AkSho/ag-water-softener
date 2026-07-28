@@ -1175,7 +1175,11 @@ function FAQSection() {
                       <span className="text-[15px]">{f.q}</span>
                       <ChevronDown className={`h-4 w-4 text-muted-foreground transition ${isOpen ? "rotate-180" : ""}`} />
                     </button>
-                    <p className={`pb-5 pr-8 text-[14px] leading-[1.7] text-foreground/85 ${isOpen ? '' : 'hidden'}`}>{f.a}</p>
+                    <p className={`pb-5 pr-8 text-[14px] leading-[1.7] text-foreground/85 ${isOpen ? '' : 'hidden'}`}>
+                      {i === 3
+                        ? <>It removes hardness minerals, calcium and magnesium, through ion exchange — the minerals that coat your hair and crust your shower door. It does not filter chlorine, and we won't pretend otherwise. Chlorine reduction is the job <a href="/shower-filter-vs-water-softener" className="underline hover:opacity-70">basic shower filters</a> already handle; hardness is the job they can't. If your water report came back hard or very hard, hardness is the half that's been working against your hair and skin.</>
+                        : f.a}
+                    </p>
                   </li>
                 );
               })}
