@@ -272,14 +272,6 @@ function ProductHero() {
             <p className="mt-2 text-xs italic text-muted-foreground">
               Most of a whole-house system's price is the plumbing and the installer. This is the part that actually softens your water.
             </p>
-            <img
-              src="/assets/whats-included.png"
-              alt="Everything included with the AG Water Softener: softener, brine tank, regeneration attachment, hoses, mount, and tools"
-              width={1536}
-              height={1024}
-              loading="lazy"
-              className="mt-6 w-full h-auto"
-            />
           </div>
 
           {/* Finishes — hidden by feature flag */}
@@ -750,8 +742,10 @@ function MeetTheSoftener() {
         {/* Cross-section callout */}
         <div className="mt-16 grid gap-10 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:gap-16">
           <img
-            src={crossSection2Asset.url}
-            alt="Cross-section of the AG Water Softener showing ion-exchange resin core and water flow path"
+            src="/assets/ion-exchange-diagram.png"
+            alt="Ion exchange diagram: hard water in, calcium and magnesium removed by resin, soft water out"
+            width={1254}
+            height={1254}
             className="aspect-[4/5] w-full object-contain"
             loading="lazy"
           />
@@ -774,14 +768,6 @@ function MeetTheSoftener() {
             <p className="mt-4 text-[15px] leading-[1.7] text-foreground/90">
               This is the important part no filter does. It's the entire reason the AG Water Softener exists.
             </p>
-            <img
-              src="/assets/ion-exchange-diagram.png"
-              alt="Ion exchange diagram: hard water in, calcium and magnesium removed by resin, soft water out"
-              width={1254}
-              height={1254}
-              loading="lazy"
-              className="mt-8 w-full max-w-[400px] h-auto"
-            />
           </div>
         </div>
 
@@ -1001,30 +987,8 @@ function InstallAndMaintenance() {
             Installation
           </div>
           <h2 className="mt-4 font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
-            Installs in about ten minutes
+            Everything you need is in the box
           </h2>
-          <p className="mt-8 text-[15px] leading-[1.7] text-foreground/90">
-            Everything you need is in the box: hoses, connectors, hardware, and a step-by-step video that assumes you've never installed anything in your life.
-          </p>
-        </div>
-
-        <div className="mt-14 grid gap-6 md:grid-cols-2">
-          <InstallCard
-            n="01"
-            title="Hang it on the shower pipe"
-            body="Untwist your showerhead, hang the bracket, connect two hoses, and reattach. Most people finish in under ten minutes with their bare hands."
-            tone="oklch(0.90 0.012 200)"
-            image={installShowerAsset.url}
-            alt="Three-step install: mount bracket on shower wall, attach softener, connect hoses."
-          />
-          <InstallCard
-            n="02"
-            title="Or set it on the floor"
-            body="If you'd rather keep it out of sight, or use it for your sink, the unit can sit in the corner, connected the same way. Same water, same result."
-            tone="oklch(0.91 0.014 90)"
-            image={installUnderSinkAsset.url}
-            alt="AG Water Softener installed under a sink, connected to supply lines."
-          />
         </div>
 
         <img
@@ -1122,7 +1086,8 @@ function ProductDetails() {
             What you need to know
           </h2>
 
-          <div className="mt-10 space-y-8">
+          <div className="mt-10 grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-14">
+          <div className="space-y-8">
             <div>
               <h3 className="text-[13px] font-semibold uppercase tracking-[0.14em]">
                 What ships in the box
@@ -1165,6 +1130,15 @@ function ProductDetails() {
                 The unit threads onto a standard shower arm or sits on the floor. No plumber, no permanent changes. Everything is fully removable when you move.
               </p>
             </div>
+          </div>
+          <img
+            src="/assets/whats-included.png"
+            alt="Everything included with the AG Water Softener: softener, brine tank, regeneration attachment, hoses, mount, and tools"
+            width={1536}
+            height={1024}
+            loading="lazy"
+            className="w-full h-auto self-start"
+          />
           </div>
         </div>
       </div>
