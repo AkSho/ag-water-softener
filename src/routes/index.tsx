@@ -991,7 +991,7 @@ function InstallAndMaintenance() {
             Installation
           </div>
           <h2 className="mt-4 font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
-            Everything you need is in the box: hoses, connectors, hardware, and a step-by-step instructions that assumes you've never installed anything in your life.
+            Everything you need is in the box: hoses, connectors, hardware, and step-by-step instructions that assume you've never installed anything in your life.
           </h2>
         </div>
 
