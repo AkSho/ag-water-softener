@@ -1,6 +1,10 @@
 export function SiteFooter() {
   const shop = ["The AG Water Softener", "Softener Salt"];
-  const support = ["About AG", "Refunds & Returns", "Terms of Service", "Installation Guide", "Contact us"];
+  const support: { label: string; href: string }[] = [
+    { label: "Shipping", href: "/shipping" },
+    { label: "Returns and refunds", href: "/returns" },
+    { label: "Contact", href: "/contact" },
+  ];
   const guides: { label: string; href: string }[] = [
     { label: "Shower filter vs water softener", href: "/shower-filter-vs-water-softener" },
     { label: "Do shower filters work for hard water?", href: "/do-shower-filters-work-for-hard-water" },
@@ -15,7 +19,14 @@ export function SiteFooter() {
     <footer className="border-t border-border/60 bg-surface">
       <div className="mx-auto grid max-w-[1400px] gap-10 px-4 py-14 sm:grid-cols-2 md:grid-cols-3 md:px-8">
         <FooterCol title="SHOP" items={shop} />
-        <FooterCol title="SUPPORT" items={support} />
+        <div>
+          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Support</div>
+          <ul className="mt-4 space-y-2 text-sm">
+            {support.map((s) => (
+              <li key={s.href}><a href={s.href} className="hover:opacity-70">{s.label}</a></li>
+            ))}
+          </ul>
+        </div>
         <div>
           <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Guides</div>
           <ul className="mt-4 space-y-2 text-sm">
