@@ -987,7 +987,7 @@ function InstallAndMaintenance() {
             Installation
           </div>
           <h2 className="mt-4 font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
-            Everything you need is in the box
+            Everything you need is in the box: hoses, connectors, hardware, and a step-by-step instructions that assumes you've never installed anything in your life.
           </h2>
         </div>
 
@@ -1086,8 +1086,16 @@ function ProductDetails() {
             What you need to know
           </h2>
 
-          <div className="mt-10 grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-14">
-          <div className="space-y-8">
+          <img
+            src="/assets/whats-included.png"
+            alt="Everything included with the AG Water Softener: softener, brine tank, regeneration attachment, hoses, mount, and tools"
+            width={1536}
+            height={1024}
+            loading="lazy"
+            className="mt-10 w-full h-auto"
+          />
+
+          <div className="mt-10 space-y-8">
             <div>
               <h3 className="text-[13px] font-semibold uppercase tracking-[0.14em]">
                 What ships in the box
@@ -1130,15 +1138,6 @@ function ProductDetails() {
                 The unit threads onto a standard shower arm or sits on the floor. No plumber, no permanent changes. Everything is fully removable when you move.
               </p>
             </div>
-          </div>
-          <img
-            src="/assets/whats-included.png"
-            alt="Everything included with the AG Water Softener: softener, brine tank, regeneration attachment, hoses, mount, and tools"
-            width={1536}
-            height={1024}
-            loading="lazy"
-            className="w-full h-auto self-start"
-          />
           </div>
         </div>
       </div>
