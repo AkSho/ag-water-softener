@@ -653,7 +653,7 @@ function WhatSoftWaterChanges() {
                   loading="lazy"
                 />
                 <figcaption className="mt-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                  Before / After — hard-water irritation after shaving vs. softened water.
+                  Before / After — hard-water skin irritation vs. softened water.
                 </figcaption>
               </figure>
               <p className="mt-4">
