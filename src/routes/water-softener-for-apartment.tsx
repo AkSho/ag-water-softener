@@ -13,7 +13,7 @@ const PAGE_FAQS = [
   },
   {
     q: "What's the ongoing cost?",
-    a: "Ordinary salt, the kind sold in grocery stores, used to recharge the resin. No cartridge subscription.",
+    a: "Plain non-iodized salt, sold in any grocery store, used to recharge the resin. No cartridge subscription.",
   },
 ];
 

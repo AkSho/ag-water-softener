@@ -85,8 +85,8 @@ function JolieAlternativePage() {
         </div>
 
         <img
-          src="/assets/in-shower.png"
-          alt="Test strip showing hard water a Jolie filter alternative must actually remove"
+          src="/assets/ion-exchange-diagram.png"
+          alt="Ion exchange diagram: hard water in, calcium and magnesium removed by resin, soft water out"
           width={1254}
           height={1254}
           loading="lazy"
@@ -122,7 +122,7 @@ function JolieAlternativePage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> does the job filters can't. It holds a bed of ion-exchange resin at the shower arm, swaps the calcium and magnesium out of your water, and regenerates with ordinary salt. About ten minutes to install, no tools, and it ships with test strips so the before and after is a measurement on your counter. Hard water in reads 120 ppm and up; the output reads near zero. $249, 60-day money-back guarantee.
+            <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> does the job filters can't. It holds a bed of ion-exchange resin at the shower arm, swaps the calcium and magnesium out of your water, and regenerates with plain non-iodized salt. About ten minutes to install, no tools, and it ships with test strips so the before and after is a measurement on your counter. Hard water in reads 120 ppm and up; the output reads near zero. $249, 60-day money-back guarantee.
           </p>
           <p>
             Trade in the other direction, stated plainly: AG does not remove chlorine. It removes hardness, the thing that was crusting your fixtures and coating your hair.

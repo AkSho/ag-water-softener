@@ -97,10 +97,10 @@ function ShowerFilterVsSoftenerPage() {
         </div>
 
         <img
-          src="/assets/test-strips.png"
-          alt="Test strip comparing shower water before and after a shower filter vs water softener"
-          width={1024}
-          height={1535}
+          src="/assets/ion-exchange-diagram.png"
+          alt="Ion exchange diagram: hard water in, calcium and magnesium removed by resin, soft water out"
+          width={1254}
+          height={1254}
           loading="lazy"
           className="mt-10 w-full max-w-[520px] h-auto"
         />
@@ -187,7 +187,7 @@ function ShowerFilterVsSoftenerPage() {
             Whole-house softeners fix hardness, but they need a plumber, a drain line, and permission to cut into the building's supply. If you rent, own a condo, or just don't want a $2,000 install, that door is closed.
           </p>
           <p>
-            This is the gap <a href="/" className="underline hover:opacity-70">a shower water softener</a> fills. The AG Water Softener is a full ion-exchange unit sized for one shower. It installs on the shower arm in about ten minutes with no tools, recharges with ordinary salt, and comes with test strips so you can measure the before and after yourself instead of taking our word for it. It costs $249 and carries a 60-day money-back guarantee.
+            This is the gap <a href="/" className="underline hover:opacity-70">a shower water softener</a> fills. The AG Water Softener is a full ion-exchange unit sized for one shower. It installs on the shower arm in about ten minutes with no tools, recharges with plain non-iodized salt, and comes with test strips so you can measure the before and after yourself instead of taking our word for it. It costs $249 and carries a 60-day money-back guarantee.
           </p>
           <p>
             We'll be direct about the trade: AG does not remove chlorine. If your water is both hard and heavily chlorinated, soften first, because hardness causes the buildup, then add a basic filter if the chlorine still bothers you.

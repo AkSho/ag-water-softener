@@ -272,6 +272,14 @@ function ProductHero() {
             <p className="mt-2 text-xs italic text-muted-foreground">
               Most of a whole-house system's price is the plumbing and the installer. This is the part that actually softens your water.
             </p>
+            <img
+              src="/assets/whats-included.png"
+              alt="Everything included with the AG Water Softener: softener, brine tank, regeneration attachment, hoses, mount, and tools"
+              width={1536}
+              height={1024}
+              loading="lazy"
+              className="mt-6 w-full h-auto"
+            />
           </div>
 
           {/* Finishes — hidden by feature flag */}
@@ -766,6 +774,14 @@ function MeetTheSoftener() {
             <p className="mt-4 text-[15px] leading-[1.7] text-foreground/90">
               This is the important part no filter does. It's the entire reason the AG Water Softener exists.
             </p>
+            <img
+              src="/assets/ion-exchange-diagram.png"
+              alt="Ion exchange diagram: hard water in, calcium and magnesium removed by resin, soft water out"
+              width={1254}
+              height={1254}
+              loading="lazy"
+              className="mt-8 w-full max-w-[400px] h-auto"
+            />
           </div>
         </div>
 
@@ -1011,6 +1027,15 @@ function InstallAndMaintenance() {
           />
         </div>
 
+        <img
+          src="/assets/install-strip.png"
+          alt="Six-step AG water softener installation, under ten minutes with no tools"
+          width={1536}
+          height={1024}
+          loading="lazy"
+          className="mx-auto mt-14 w-full max-w-[900px] h-auto"
+        />
+
         <p className="mx-auto mt-10 max-w-[820px] text-[15px] leading-[1.7] text-foreground/90">
           When you move out, removal takes about as long as installation, and your shower goes back to exactly how you found it. Nothing to patch or explain at the walkthrough.
         </p>
@@ -1046,6 +1071,14 @@ function InstallAndMaintenance() {
           <p className="mt-6 text-[15px] leading-[1.7] text-foreground/90">
             Your hands-on time is about ten minutes. The full recharge takes about forty, and the soaking part happens while you're at work or asleep. Shower normally the rest of the time.
           </p>
+          <img
+            src="/assets/recharge-guide.png"
+            alt="Four-step AG softener recharge with the included brine tank, about 20 minutes"
+            width={1448}
+            height={1086}
+            loading="lazy"
+            className="mt-8 w-full h-auto"
+          />
           <p className="mt-6 border-t border-border/60 pt-6 text-[15px] leading-[1.7] text-foreground/90">
             If that ritual every month or so sounds like more than soft water is worth, this product isn't for you, and we'd rather say so here than in a return email. If it sounds like a fair trade for hair and skin that behave every single day in between, keep reading.
           </p>

@@ -153,7 +153,7 @@ function DoShowerFiltersWorkPage() {
             Renters, condo owners, and anyone unwilling to cut into their plumbing have been stuck with this problem for years, because the standard advice was "install a whole-house softener" and the standard price was $2,000 plus a plumber.
           </p>
           <p>
-            A shower water softener closes that gap. <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> is an ion-exchange unit that mounts on the shower arm, installs in about ten minutes without tools, and regenerates with ordinary salt. It ships with test strips so the proof is on your counter, not in our copy. $249, 60-day money-back guarantee, and it leaves the building's plumbing untouched when you move out.
+            A shower water softener closes that gap. <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> is an ion-exchange unit that mounts on the shower arm, installs in about ten minutes without tools, and regenerates with plain non-iodized salt. It ships with test strips so the proof is on your counter, not in our copy. $249, 60-day money-back guarantee, and it leaves the building's plumbing untouched when you move out.
           </p>
           <p>
             For a side-by-side of what each device removes, read the <a href="/shower-filter-vs-water-softener" className="underline hover:opacity-70">full filter vs softener comparison</a>.

@@ -125,7 +125,7 @@ function ShowerHeadWaterSoftenerPage() {
             A device that softens shower water has to hold a bed of ion-exchange resin large enough to treat water at two gallons per minute, and it has to regenerate with salt when the resin fills up. That has a physical size, which is why no $18 cartridge in a 4-inch housing does it, and why the real category is small: purpose-built units mounted at the shower arm, not screw-in showerheads.
           </p>
           <p>
-            <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> is built this way: a resin bed at the shower arm, a ten-minute no-tool install, recharges with ordinary salt, and test strips in the box so the claim is checkable on your counter. Hard water in reads 120 ppm and up; the output reads near zero. $249, 60-day money-back guarantee.
+            <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> is built this way: a resin bed at the shower arm, a ten-minute no-tool install, recharges with plain non-iodized salt, and test strips in the box so the claim is checkable on your counter. Hard water in reads 120 ppm and up; the output reads near zero. $249, 60-day money-back guarantee.
           </p>
           <p>
             Yes, that's more than $18. It's also the difference between buying a softener and buying the word.
