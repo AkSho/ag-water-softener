@@ -98,7 +98,7 @@ function WaterSoftenerForApartmentPage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            This is the direct fix. A shower-mounted softener holds a bed of ion-exchange resin, the same material inside a $2,000 whole-house tank, sized for one bathroom. Water passes through on its way to the showerhead, the resin swaps out calcium and magnesium, and the water arriving at your hair is soft. When the resin fills up, you flush it with salt water and it resets.
+            This is the direct fix. A shower-mounted softener holds a bed of ion-exchange resin, the same material inside a $2,000 whole-house tank, sized for one bathroom. Water passes through on its way to the showerhead, the resin swaps out calcium and magnesium, and the water arriving at your hair is soft. When the resin fills up, an automatic salt recharge from the included brine tank resets it.
           </p>
           <p>
             <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> is our version: it mounts on the shower arm in about ten minutes, needs no tools and no plumbing changes, and touches nothing the building owns. It ships with test strips, so you can measure your water before and after instead of trusting the box. $249, 60-day money-back guarantee.

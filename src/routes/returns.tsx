@@ -9,10 +9,10 @@ export const Route = createFileRoute("/returns")({
       {
         name: "description",
         content:
-          "Every AG Water Softener has a 60-day money-back guarantee. We pay return shipping and send you the label. Here is how it works.",
+          "Every AG Water Softener has a 60-day money-back guarantee and a 12-month warranty. We pay return shipping and send you the label.",
       },
       { property: "og:title", content: "Returns and refunds | AG Water Softener" },
-      { property: "og:description", content: "Every AG Water Softener has a 60-day money-back guarantee. We pay return shipping and send you the label. Here is how it works." },
+      { property: "og:description", content: "Every AG Water Softener has a 60-day money-back guarantee and a 12-month warranty. We pay return shipping and send you the label." },
       { property: "og:url", content: "https://agsoftener.com/returns" },
       { property: "og:type", content: "article" },
       { property: "og:image", content: "https://agsoftener.com/assets/hero.png" },
@@ -65,6 +65,15 @@ function ReturnsPage() {
           </p>
           <p>
             Questions before you buy, or anything unclear here: <a href="mailto:support@agsoftener.com" className="underline hover:opacity-70">support@agsoftener.com</a>.
+          </p>
+        </div>
+
+        <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
+          Warranty
+        </h2>
+        <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
+          <p>
+            Beyond the 60-day guarantee, every AG Water Softener is covered by a 12-month warranty against manufacturing defects, counted from the delivery date. If a part fails under normal use within the first year, email <a href="mailto:support@agsoftener.com" className="underline hover:opacity-70">support@agsoftener.com</a> with photos and your order number and we'll ship a replacement part or unit at no cost.
           </p>
         </div>
       </article>

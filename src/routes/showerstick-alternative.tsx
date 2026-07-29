@@ -134,7 +134,7 @@ function ShowerstickAlternativePage() {
                 <tr className="bg-surface/50">
                   <td className="border border-border px-4 py-3 font-semibold">Regeneration</td>
                   <td className="border border-border px-4 py-3">Drain the unit with head and hose on the floor, dissolve a cup of table salt in a liter bottle, pour into the port, flush; typically weekly</td>
-                  <td className="border border-border px-4 py-3">Salt poured in from the top; no drain-and-bottle step</td>
+                  <td className="border border-border px-4 py-3">Automatic recharge from an included brine tank; add salt and the cycle runs itself</td>
                 </tr>
                 <tr>
                   <td className="border border-border px-4 py-3 font-semibold">Proof included</td>
@@ -152,11 +152,16 @@ function ShowerstickAlternativePage() {
                   <td className="border border-border px-4 py-3">60-day money-back guarantee</td>
                 </tr>
                 <tr className="bg-surface/50">
+                  <td className="border border-border px-4 py-3 font-semibold">Warranty</td>
+                  <td className="border border-border px-4 py-3">12 months</td>
+                  <td className="border border-border px-4 py-3">12 months</td>
+                </tr>
+                <tr>
                   <td className="border border-border px-4 py-3 font-semibold">Availability</td>
                   <td className="border border-border px-4 py-3">Handmade in small daily batches; frequently sells out</td>
                   <td className="border border-border px-4 py-3">In stock</td>
                 </tr>
-                <tr>
+                <tr className="bg-surface/50">
                   <td className="border border-border px-4 py-3 font-semibold">Track record</td>
                   <td className="border border-border px-4 py-3">Two decades, deep review base</td>
                   <td className="border border-border px-4 py-3">Newer</td>
@@ -174,7 +179,7 @@ function ShowerstickAlternativePage() {
             The last row is theirs and we won't pretend otherwise: a product with twenty years of users has answered questions a newer one hasn't. Their regeneration routine also isn't the horror story competitors sometimes imply; their customers describe it as easy and about five minutes.
           </p>
           <p>
-            The honest case for AG is smaller and specific. It lives at the shower arm instead of hanging in the shower with you, it works with the showerhead you already like, its recharge skips the drain-and-bottle procedure, and you get 60 days to change your mind instead of 14. Softeners don't fail people on chemistry; they fail when the upkeep stops happening or the hardware never fit the bathroom. Those are the margins AG is built on.
+            The honest case for AG is smaller and specific. It lives at the shower arm instead of hanging in the shower with you, it works with the showerhead you already like, its recharge runs automatically from an included brine tank, and you get 60 days to change your mind instead of 14. Softeners don't fail people on chemistry; they fail when the upkeep stops happening or the hardware never fit the bathroom. Those are the margins AG is built on.
           </p>
         </div>
 
@@ -183,7 +188,7 @@ function ShowerstickAlternativePage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            If the longest track record in the category matters most to you and the handheld-head setup suits your shower, the ShowerStick is a legitimate buy, and we'd genuinely rather you own one than a fake-softener showerhead. If you want the same soft water at the shower arm, with your own showerhead, a simpler recharge, and a 60-day window to verify it with the included strips, that's the case for AG.
+            If the longest track record in the category matters most to you and the handheld-head setup suits your shower, the ShowerStick is a legitimate buy, and we'd genuinely rather you own one than a fake-softener showerhead. If you want the same soft water at the shower arm, with your own showerhead, an automatic recharge, and a 60-day window to verify it with the included strips, that's the case for AG.
           </p>
           <p>
             Either way, confirm your water is actually hard first: <a href="https://www.myapartmentwaterquality.com/" className="underline hover:opacity-70">check it free with our lookup tool</a> or run a strip. Both products are wasted on soft water.

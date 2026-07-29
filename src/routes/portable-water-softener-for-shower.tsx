@@ -9,7 +9,7 @@ const PAGE_FAQS = [
   },
   {
     q: "How is this different from a portable RV softener?",
-    a: "Same chemistry, different body. The RV unit is a freestanding tank with hose fittings; AG mounts at the shower arm with nothing on the floor and a salt recharge designed to happen in a bathroom.",
+    a: "Same chemistry, different body. The RV unit is a freestanding tank with hose fittings; AG mounts at the shower arm, and its salt recharge runs automatically from an included brine tank instead of a manual drain-and-refill routine.",
   },
   {
     q: "Does portable mean less effective?",
@@ -123,7 +123,7 @@ function PortableWaterSoftenerPage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> puts the same resin chemistry in a housing designed for the shower arm. It hangs where the showerhead connects, installs in about ten minutes with no tools, and recharges with ordinary grocery-store salt poured through the top rather than a hose-and-bucket routine. Nothing sits on the floor.
+            <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> puts the same resin chemistry in a housing designed for the shower arm. It hangs where the showerhead connects, installs in about ten minutes with no tools, and recharges automatically from its included brine tank: add ordinary grocery-store salt every few weeks and the cycle runs itself, with no hose-and-bucket routine.
           </p>
           <p>
             Because it threads on like a showerhead, it comes with you when you move: unscrew it, put the original hardware back, done. It ships with test strips so the before and after is a number you read, not a feeling you talk yourself into. $249 with a 60-day money-back guarantee.
