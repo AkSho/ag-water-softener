@@ -7,6 +7,8 @@ export function SiteFooter() {
     { label: "Water softener for an apartment", href: "/water-softener-for-apartment" },
     { label: "Portable water softener for your shower", href: "/portable-water-softener-for-shower" },
     { label: "Shower head water softeners", href: "/shower-head-water-softener" },
+    { label: "Jolie alternative for hard water", href: "/jolie-alternative-for-hard-water" },
+    { label: "ShowerStick vs AG compared", href: "/showerstick-alternative" },
   ];
 
   return (

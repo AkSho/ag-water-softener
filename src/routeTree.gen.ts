@@ -11,9 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WaterSoftenerForApartmentRouteImport } from './routes/water-softener-for-apartment'
 import { Route as ThanksRouteImport } from './routes/thanks'
+import { Route as ShowerstickAlternativeRouteImport } from './routes/showerstick-alternative'
 import { Route as ShowerHeadWaterSoftenerRouteImport } from './routes/shower-head-water-softener'
 import { Route as ShowerFilterVsWaterSoftenerRouteImport } from './routes/shower-filter-vs-water-softener'
 import { Route as PortableWaterSoftenerForShowerRouteImport } from './routes/portable-water-softener-for-shower'
+import { Route as JolieAlternativeForHardWaterRouteImport } from './routes/jolie-alternative-for-hard-water'
 import { Route as DoShowerFiltersWorkForHardWaterRouteImport } from './routes/do-shower-filters-work-for-hard-water'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -26,6 +28,11 @@ const WaterSoftenerForApartmentRoute =
 const ThanksRoute = ThanksRouteImport.update({
   id: '/thanks',
   path: '/thanks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShowerstickAlternativeRoute = ShowerstickAlternativeRouteImport.update({
+  id: '/showerstick-alternative',
+  path: '/showerstick-alternative',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShowerHeadWaterSoftenerRoute = ShowerHeadWaterSoftenerRouteImport.update({
@@ -45,6 +52,12 @@ const PortableWaterSoftenerForShowerRoute =
     path: '/portable-water-softener-for-shower',
     getParentRoute: () => rootRouteImport,
   } as any)
+const JolieAlternativeForHardWaterRoute =
+  JolieAlternativeForHardWaterRouteImport.update({
+    id: '/jolie-alternative-for-hard-water',
+    path: '/jolie-alternative-for-hard-water',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const DoShowerFiltersWorkForHardWaterRoute =
   DoShowerFiltersWorkForHardWaterRouteImport.update({
     id: '/do-shower-filters-work-for-hard-water',
@@ -60,18 +73,22 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/do-shower-filters-work-for-hard-water': typeof DoShowerFiltersWorkForHardWaterRoute
+  '/jolie-alternative-for-hard-water': typeof JolieAlternativeForHardWaterRoute
   '/portable-water-softener-for-shower': typeof PortableWaterSoftenerForShowerRoute
   '/shower-filter-vs-water-softener': typeof ShowerFilterVsWaterSoftenerRoute
   '/shower-head-water-softener': typeof ShowerHeadWaterSoftenerRoute
+  '/showerstick-alternative': typeof ShowerstickAlternativeRoute
   '/thanks': typeof ThanksRoute
   '/water-softener-for-apartment': typeof WaterSoftenerForApartmentRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/do-shower-filters-work-for-hard-water': typeof DoShowerFiltersWorkForHardWaterRoute
+  '/jolie-alternative-for-hard-water': typeof JolieAlternativeForHardWaterRoute
   '/portable-water-softener-for-shower': typeof PortableWaterSoftenerForShowerRoute
   '/shower-filter-vs-water-softener': typeof ShowerFilterVsWaterSoftenerRoute
   '/shower-head-water-softener': typeof ShowerHeadWaterSoftenerRoute
+  '/showerstick-alternative': typeof ShowerstickAlternativeRoute
   '/thanks': typeof ThanksRoute
   '/water-softener-for-apartment': typeof WaterSoftenerForApartmentRoute
 }
@@ -79,9 +96,11 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/do-shower-filters-work-for-hard-water': typeof DoShowerFiltersWorkForHardWaterRoute
+  '/jolie-alternative-for-hard-water': typeof JolieAlternativeForHardWaterRoute
   '/portable-water-softener-for-shower': typeof PortableWaterSoftenerForShowerRoute
   '/shower-filter-vs-water-softener': typeof ShowerFilterVsWaterSoftenerRoute
   '/shower-head-water-softener': typeof ShowerHeadWaterSoftenerRoute
+  '/showerstick-alternative': typeof ShowerstickAlternativeRoute
   '/thanks': typeof ThanksRoute
   '/water-softener-for-apartment': typeof WaterSoftenerForApartmentRoute
 }
@@ -90,27 +109,33 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/do-shower-filters-work-for-hard-water'
+    | '/jolie-alternative-for-hard-water'
     | '/portable-water-softener-for-shower'
     | '/shower-filter-vs-water-softener'
     | '/shower-head-water-softener'
+    | '/showerstick-alternative'
     | '/thanks'
     | '/water-softener-for-apartment'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/do-shower-filters-work-for-hard-water'
+    | '/jolie-alternative-for-hard-water'
     | '/portable-water-softener-for-shower'
     | '/shower-filter-vs-water-softener'
     | '/shower-head-water-softener'
+    | '/showerstick-alternative'
     | '/thanks'
     | '/water-softener-for-apartment'
   id:
     | '__root__'
     | '/'
     | '/do-shower-filters-work-for-hard-water'
+    | '/jolie-alternative-for-hard-water'
     | '/portable-water-softener-for-shower'
     | '/shower-filter-vs-water-softener'
     | '/shower-head-water-softener'
+    | '/showerstick-alternative'
     | '/thanks'
     | '/water-softener-for-apartment'
   fileRoutesById: FileRoutesById
@@ -118,9 +143,11 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DoShowerFiltersWorkForHardWaterRoute: typeof DoShowerFiltersWorkForHardWaterRoute
+  JolieAlternativeForHardWaterRoute: typeof JolieAlternativeForHardWaterRoute
   PortableWaterSoftenerForShowerRoute: typeof PortableWaterSoftenerForShowerRoute
   ShowerFilterVsWaterSoftenerRoute: typeof ShowerFilterVsWaterSoftenerRoute
   ShowerHeadWaterSoftenerRoute: typeof ShowerHeadWaterSoftenerRoute
+  ShowerstickAlternativeRoute: typeof ShowerstickAlternativeRoute
   ThanksRoute: typeof ThanksRoute
   WaterSoftenerForApartmentRoute: typeof WaterSoftenerForApartmentRoute
 }
@@ -139,6 +166,13 @@ declare module '@tanstack/react-router' {
       path: '/thanks'
       fullPath: '/thanks'
       preLoaderRoute: typeof ThanksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/showerstick-alternative': {
+      id: '/showerstick-alternative'
+      path: '/showerstick-alternative'
+      fullPath: '/showerstick-alternative'
+      preLoaderRoute: typeof ShowerstickAlternativeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/shower-head-water-softener': {
@@ -162,6 +196,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortableWaterSoftenerForShowerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/jolie-alternative-for-hard-water': {
+      id: '/jolie-alternative-for-hard-water'
+      path: '/jolie-alternative-for-hard-water'
+      fullPath: '/jolie-alternative-for-hard-water'
+      preLoaderRoute: typeof JolieAlternativeForHardWaterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/do-shower-filters-work-for-hard-water': {
       id: '/do-shower-filters-work-for-hard-water'
       path: '/do-shower-filters-work-for-hard-water'
@@ -182,9 +223,11 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DoShowerFiltersWorkForHardWaterRoute: DoShowerFiltersWorkForHardWaterRoute,
+  JolieAlternativeForHardWaterRoute: JolieAlternativeForHardWaterRoute,
   PortableWaterSoftenerForShowerRoute: PortableWaterSoftenerForShowerRoute,
   ShowerFilterVsWaterSoftenerRoute: ShowerFilterVsWaterSoftenerRoute,
   ShowerHeadWaterSoftenerRoute: ShowerHeadWaterSoftenerRoute,
+  ShowerstickAlternativeRoute: ShowerstickAlternativeRoute,
   ThanksRoute: ThanksRoute,
   WaterSoftenerForApartmentRoute: WaterSoftenerForApartmentRoute,
 }
