@@ -588,9 +588,11 @@ function WhatSoftWaterChanges() {
 
           <figure className="mt-10">
             <img
-              src={hairHardWaterAsset.url}
-              alt="Before and after — the same blonde hair, frizzy and dry vs. defined soft curls"
-              className="aspect-[3/2] w-full object-cover"
+              src="/assets/before-after-hair.png"
+              alt="Before and after — the same hair, frizzy and dry vs. defined soft curls"
+              width={1254}
+              height={627}
+              className="w-full h-auto"
               loading="lazy"
             />
             <figcaption className="mt-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
@@ -643,9 +645,11 @@ function WhatSoftWaterChanges() {
               <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">On skin</div>
               <figure className="mt-4">
                 <img
-                  src={beardHardWaterAsset.url}
-                  alt="Before and after — irritated, red neck after shaving in hard water vs. calm skin after softened water"
-                  className="aspect-[3/2] w-full object-cover"
+                  src="/assets/before-after-skin.png"
+                  alt="Before and after — irritated skin in hard water vs. calm skin after softened water"
+                  width={1254}
+                  height={627}
+                  className="w-full h-auto"
                   loading="lazy"
                 />
                 <figcaption className="mt-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
