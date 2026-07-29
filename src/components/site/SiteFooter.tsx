@@ -1,12 +1,27 @@
 export function SiteFooter() {
   const shop = ["The AG Water Softener", "Softener Salt"];
   const support = ["About AG", "Refunds & Returns", "Terms of Service", "Installation Guide", "Contact us"];
+  const guides: { label: string; href: string }[] = [
+    { label: "Shower filter vs water softener", href: "/shower-filter-vs-water-softener" },
+    { label: "Do shower filters work for hard water?", href: "/do-shower-filters-work-for-hard-water" },
+    { label: "Water softener for an apartment", href: "/water-softener-for-apartment" },
+    { label: "Portable water softener for your shower", href: "/portable-water-softener-for-shower" },
+    { label: "Shower head water softeners", href: "/shower-head-water-softener" },
+  ];
 
   return (
     <footer className="border-t border-border/60 bg-surface">
-      <div className="mx-auto grid max-w-[1400px] gap-10 px-4 py-14 sm:grid-cols-2 md:px-8">
+      <div className="mx-auto grid max-w-[1400px] gap-10 px-4 py-14 sm:grid-cols-2 md:grid-cols-3 md:px-8">
         <FooterCol title="SHOP" items={shop} />
         <FooterCol title="SUPPORT" items={support} />
+        <div>
+          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Guides</div>
+          <ul className="mt-4 space-y-2 text-sm">
+            {guides.map((g) => (
+              <li key={g.href}><a href={g.href} className="hover:opacity-70">{g.label}</a></li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       <div className="border-t border-border/60">

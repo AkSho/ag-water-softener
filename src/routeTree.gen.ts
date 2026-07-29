@@ -9,20 +9,40 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WaterSoftenerForApartmentRouteImport } from './routes/water-softener-for-apartment'
 import { Route as ThanksRouteImport } from './routes/thanks'
+import { Route as ShowerHeadWaterSoftenerRouteImport } from './routes/shower-head-water-softener'
 import { Route as ShowerFilterVsWaterSoftenerRouteImport } from './routes/shower-filter-vs-water-softener'
+import { Route as PortableWaterSoftenerForShowerRouteImport } from './routes/portable-water-softener-for-shower'
 import { Route as DoShowerFiltersWorkForHardWaterRouteImport } from './routes/do-shower-filters-work-for-hard-water'
 import { Route as IndexRouteImport } from './routes/index'
 
+const WaterSoftenerForApartmentRoute =
+  WaterSoftenerForApartmentRouteImport.update({
+    id: '/water-softener-for-apartment',
+    path: '/water-softener-for-apartment',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ThanksRoute = ThanksRouteImport.update({
   id: '/thanks',
   path: '/thanks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShowerHeadWaterSoftenerRoute = ShowerHeadWaterSoftenerRouteImport.update({
+  id: '/shower-head-water-softener',
+  path: '/shower-head-water-softener',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShowerFilterVsWaterSoftenerRoute =
   ShowerFilterVsWaterSoftenerRouteImport.update({
     id: '/shower-filter-vs-water-softener',
     path: '/shower-filter-vs-water-softener',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PortableWaterSoftenerForShowerRoute =
+  PortableWaterSoftenerForShowerRouteImport.update({
+    id: '/portable-water-softener-for-shower',
+    path: '/portable-water-softener-for-shower',
     getParentRoute: () => rootRouteImport,
   } as any)
 const DoShowerFiltersWorkForHardWaterRoute =
@@ -40,52 +60,80 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/do-shower-filters-work-for-hard-water': typeof DoShowerFiltersWorkForHardWaterRoute
+  '/portable-water-softener-for-shower': typeof PortableWaterSoftenerForShowerRoute
   '/shower-filter-vs-water-softener': typeof ShowerFilterVsWaterSoftenerRoute
+  '/shower-head-water-softener': typeof ShowerHeadWaterSoftenerRoute
   '/thanks': typeof ThanksRoute
+  '/water-softener-for-apartment': typeof WaterSoftenerForApartmentRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/do-shower-filters-work-for-hard-water': typeof DoShowerFiltersWorkForHardWaterRoute
+  '/portable-water-softener-for-shower': typeof PortableWaterSoftenerForShowerRoute
   '/shower-filter-vs-water-softener': typeof ShowerFilterVsWaterSoftenerRoute
+  '/shower-head-water-softener': typeof ShowerHeadWaterSoftenerRoute
   '/thanks': typeof ThanksRoute
+  '/water-softener-for-apartment': typeof WaterSoftenerForApartmentRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/do-shower-filters-work-for-hard-water': typeof DoShowerFiltersWorkForHardWaterRoute
+  '/portable-water-softener-for-shower': typeof PortableWaterSoftenerForShowerRoute
   '/shower-filter-vs-water-softener': typeof ShowerFilterVsWaterSoftenerRoute
+  '/shower-head-water-softener': typeof ShowerHeadWaterSoftenerRoute
   '/thanks': typeof ThanksRoute
+  '/water-softener-for-apartment': typeof WaterSoftenerForApartmentRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/do-shower-filters-work-for-hard-water'
+    | '/portable-water-softener-for-shower'
     | '/shower-filter-vs-water-softener'
+    | '/shower-head-water-softener'
     | '/thanks'
+    | '/water-softener-for-apartment'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/do-shower-filters-work-for-hard-water'
+    | '/portable-water-softener-for-shower'
     | '/shower-filter-vs-water-softener'
+    | '/shower-head-water-softener'
     | '/thanks'
+    | '/water-softener-for-apartment'
   id:
     | '__root__'
     | '/'
     | '/do-shower-filters-work-for-hard-water'
+    | '/portable-water-softener-for-shower'
     | '/shower-filter-vs-water-softener'
+    | '/shower-head-water-softener'
     | '/thanks'
+    | '/water-softener-for-apartment'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DoShowerFiltersWorkForHardWaterRoute: typeof DoShowerFiltersWorkForHardWaterRoute
+  PortableWaterSoftenerForShowerRoute: typeof PortableWaterSoftenerForShowerRoute
   ShowerFilterVsWaterSoftenerRoute: typeof ShowerFilterVsWaterSoftenerRoute
+  ShowerHeadWaterSoftenerRoute: typeof ShowerHeadWaterSoftenerRoute
   ThanksRoute: typeof ThanksRoute
+  WaterSoftenerForApartmentRoute: typeof WaterSoftenerForApartmentRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/water-softener-for-apartment': {
+      id: '/water-softener-for-apartment'
+      path: '/water-softener-for-apartment'
+      fullPath: '/water-softener-for-apartment'
+      preLoaderRoute: typeof WaterSoftenerForApartmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/thanks': {
       id: '/thanks'
       path: '/thanks'
@@ -93,11 +141,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ThanksRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/shower-head-water-softener': {
+      id: '/shower-head-water-softener'
+      path: '/shower-head-water-softener'
+      fullPath: '/shower-head-water-softener'
+      preLoaderRoute: typeof ShowerHeadWaterSoftenerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shower-filter-vs-water-softener': {
       id: '/shower-filter-vs-water-softener'
       path: '/shower-filter-vs-water-softener'
       fullPath: '/shower-filter-vs-water-softener'
       preLoaderRoute: typeof ShowerFilterVsWaterSoftenerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portable-water-softener-for-shower': {
+      id: '/portable-water-softener-for-shower'
+      path: '/portable-water-softener-for-shower'
+      fullPath: '/portable-water-softener-for-shower'
+      preLoaderRoute: typeof PortableWaterSoftenerForShowerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/do-shower-filters-work-for-hard-water': {
@@ -120,8 +182,11 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DoShowerFiltersWorkForHardWaterRoute: DoShowerFiltersWorkForHardWaterRoute,
+  PortableWaterSoftenerForShowerRoute: PortableWaterSoftenerForShowerRoute,
   ShowerFilterVsWaterSoftenerRoute: ShowerFilterVsWaterSoftenerRoute,
+  ShowerHeadWaterSoftenerRoute: ShowerHeadWaterSoftenerRoute,
   ThanksRoute: ThanksRoute,
+  WaterSoftenerForApartmentRoute: WaterSoftenerForApartmentRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
