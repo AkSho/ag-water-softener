@@ -60,12 +60,31 @@ export const Route = createFileRoute("/")({
           "brand": { "@type": "Brand", "name": "GRN Labs" },
           "description": "A true ion-exchange shower water softener. Softer hair and skin from your first shower, no plumbing changes. 60-day money-back guarantee.",
           "image": "https://agsoftener.com/assets/hero.png",
+          "mpn": "AG-WS-001",
           "offers": {
             "@type": "Offer",
             "price": "249",
             "priceCurrency": "USD",
             "availability": "https://schema.org/InStock",
-            "url": "https://agsoftener.com/"
+            "url": "https://agsoftener.com/",
+            "shippingDetails": {
+              "@type": "OfferShippingDetails",
+              "shippingRate": { "@type": "MonetaryAmount", "value": "0", "currency": "USD" },
+              "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "US" },
+              "deliveryTime": {
+                "@type": "ShippingDeliveryTime",
+                "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2, "unitCode": "DAY" },
+                "transitTime": { "@type": "QuantitativeValue", "minValue": 9, "maxValue": 13, "unitCode": "DAY" }
+              }
+            },
+            "hasMerchantReturnPolicy": {
+              "@type": "MerchantReturnPolicy",
+              "applicableCountry": "US",
+              "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+              "merchantReturnDays": 60,
+              "returnMethod": "https://schema.org/ReturnByMail",
+              "returnFees": "https://schema.org/FreeReturn"
+            }
           }
         }),
       },
