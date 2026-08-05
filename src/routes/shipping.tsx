@@ -9,10 +9,10 @@ export const Route = createFileRoute("/shipping")({
       {
         name: "description",
         content:
-          "Free shipping on every AG Water Softener order via DHL. Typical delivery is 12 to 18 days, with tracking emailed to you.",
+          "Free shipping on every AG Water Softener order. Typical delivery is 12 to 18 days, with tracking emailed to you.",
       },
       { property: "og:title", content: "Shipping | AG Water Softener" },
-      { property: "og:description", content: "Free shipping on every AG Water Softener order via DHL. Typical delivery is 12 to 18 days, with tracking emailed to you." },
+      { property: "og:description", content: "Free shipping on every AG Water Softener order. Typical delivery is 12 to 18 days, with tracking emailed to you." },
       { property: "og:url", content: "https://agsoftener.com/shipping" },
       { property: "og:type", content: "article" },
       { property: "og:image", content: "https://agsoftener.com/assets/hero.png" },
@@ -46,7 +46,7 @@ function ShippingPage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            Orders ship via DHL and typically arrive within 12 to 18 days of purchase. You'll receive a tracking number by email as soon as your order ships, so you can follow it the whole way.
+            Orders ship via DHL or UPS with tracking and typically arrive within 12 to 18 days of purchase. You'll receive a tracking number by email as soon as your order ships, so you can follow it the whole way.
           </p>
           <p>
             We currently ship within the United States.

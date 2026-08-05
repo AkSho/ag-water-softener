@@ -382,6 +382,9 @@ function ProductHero() {
           <p className="mt-3 text-xs italic text-muted-foreground">
             Love your water or send it back. The guarantee starts the day it arrives.
           </p>
+          <p className="mt-1 text-xs italic text-muted-foreground">
+            Ships free with tracking, typically arriving in 12 to 18 days.
+          </p>
 
           {/* Trust badges rotator */}
           <RotatorStrip
@@ -786,7 +789,7 @@ function MeetTheSoftener() {
               As water passes through, the resin captures calcium and magnesium ions and releases harmless sodium ions in their place. The minerals that coat your hair and crust your shower door get pulled out of the water before it ever reaches you.
             </p>
             <p className="mt-4 text-[15px] leading-[1.7] text-foreground/90">
-              When the resin fills up, the included salt tank recharges it — about forty minutes every 4 to 5 weeks.
+              When the resin fills up, the included salt tank recharges it — about 30 to 40 minutes every 3 to 5 weeks.
             </p>
             <p className="mt-4 text-[15px] leading-[1.7] text-foreground/90">
               This is the important part no filter does. It's the entire reason the AG Water Softener exists.
@@ -1039,7 +1042,7 @@ function InstallAndMaintenance() {
             A true softener needs occasional care, because the resin that captures hardness minerals eventually fills up and has to be rinsed clean with salt water. Every real softener on earth works this way, including the $2,000 ones. Here is exactly what the AG Water Softener asks of you:
           </p>
           <div className="mt-6 text-[13px] font-semibold uppercase tracking-[0.14em]">
-            Every four to five weeks, the softener recharges:
+            Every three to five weeks, the softener recharges:
           </div>
           <ol className="mt-4 space-y-3 text-[14px] leading-[1.65]">
             <li className="grid grid-cols-[auto_1fr] gap-3">
@@ -1056,11 +1059,11 @@ function InstallAndMaintenance() {
             </li>
           </ol>
           <p className="mt-6 text-[15px] leading-[1.7] text-foreground/90">
-            Your hands-on time is about ten minutes. The full recharge takes about forty, and the soaking part happens while you're at work or asleep. Shower normally the rest of the time.
+            Your hands-on time is about ten minutes. The full recharge takes about 30 to 40 min, and the soaking part happens while you step away. Shower normally the rest of the time.
           </p>
           <img
             src="/assets/recharge-guide.png"
-            alt="Four-step AG softener recharge with the included brine tank, about 20 minutes"
+            alt="Four-step AG softener recharge with the included brine tank, about 30 minutes"
             width={1448}
             height={1086}
             loading="lazy"
@@ -1149,7 +1152,7 @@ function ProductDetails() {
                 Recharge cadence
               </h3>
               <p className="mt-3 text-[15px] leading-[1.7] text-foreground/90">
-                The resin inside the softener needs to be rinsed with salt water roughly every four to five weeks. Hands-on time is about ten minutes; the soaking step runs on its own.
+                The resin inside the softener needs to be rinsed with salt water roughly every three to five weeks. Hands-on time is about ten minutes; the soaking step runs on its own.
               </p>
             </div>
 
