@@ -11,6 +11,7 @@ import { useEffect, useRef, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Analytics } from "@vercel/analytics/react";
 import { CartProvider } from "@/lib/cart";
 import { CartDrawer } from "@/components/site/CartDrawer";
 import { Toaster } from "@/components/ui/sonner";
@@ -153,6 +154,7 @@ function RootComponent() {
         <Outlet />
         <CartDrawer />
         <Toaster position="bottom-right" />
+        <Analytics />
       </CartProvider>
     </QueryClientProvider>
   );
