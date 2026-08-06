@@ -124,6 +124,7 @@ function RootShell({ children }: { children: ReactNode }) {
       <body>
         {children}
         <Scripts />
+        <script dangerouslySetInnerHTML={{ __html: `(function(){var p=new URLSearchParams(location.search);if(p.get("internal")==="1")localStorage.setItem("ag_internal","1");if(p.get("internal")==="0")localStorage.removeItem("ag_internal")})()` }} />
       </body>
     </html>
   );
@@ -154,7 +155,7 @@ function RootComponent() {
         <Outlet />
         <CartDrawer />
         <Toaster position="bottom-right" />
-        <Analytics />
+        <Analytics beforeSend={(event) => typeof window !== "undefined" && localStorage.getItem("ag_internal") === "1" ? null : event} />
       </CartProvider>
     </QueryClientProvider>
   );
