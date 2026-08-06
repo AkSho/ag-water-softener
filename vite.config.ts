@@ -14,5 +14,17 @@ export default defineConfig({
   },
   nitro: {
     preset: "vercel",
+    routeRules: {
+      "/shower-filter-vs-water-softener": { swr: 86400 },
+      "/do-shower-filters-work-for-hard-water": { swr: 86400 },
+      "/water-softener-for-apartment": { swr: 86400 },
+      "/portable-water-softener-for-shower": { swr: 86400 },
+      "/shower-head-water-softener": { swr: 86400 },
+      "/jolie-alternative-for-hard-water": { swr: 86400 },
+      "/showerstick-alternative": { swr: 86400 },
+      "/returns": { swr: 86400 },
+      "/shipping": { swr: 86400 },
+      "/contact": { swr: 86400 },
+    },
   },
 });
