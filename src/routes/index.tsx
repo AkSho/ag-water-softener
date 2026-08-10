@@ -1064,7 +1064,7 @@ function InstallAndMaintenance() {
             Your hands-on time is about ten minutes. The full recharge takes about 30 minutes, and the soaking part happens while you step away. Shower normally the rest of the time.
           </p>
           <div className="mt-8">
-            <p className="mb-4 text-center font-display text-lg italic leading-tight text-foreground/80 sm:text-xl">
+            <p className="mb-4 text-center font-display text-2xl font-bold leading-tight text-foreground sm:text-3xl">
               Simple 30-minute AG softener recharge process
             </p>
             <img
