@@ -92,14 +92,40 @@ function AriusVsAgPage() {
           </p>
         </div>
 
-        <img
-          src="/assets/cross-section.png"
-          alt="AG Water Softener cross-section showing ion-exchange resin core"
-          width={1254}
-          height={1254}
-          loading="lazy"
-          className="mt-10 w-full max-w-[520px] h-auto"
-        />
+        <div
+          className="mt-10 grid gap-0 overflow-hidden border border-border sm:grid-cols-[1fr_auto_1fr]"
+          role="img"
+          aria-label="AG Water Softener compared with the Arius One, which is sold as a preorder"
+        >
+          {/* AG panel */}
+          <div className="flex flex-col items-center bg-background p-6 sm:p-8">
+            <img
+              src="/assets/cross-section.png"
+              alt=""
+              width={1254}
+              height={1254}
+              loading="lazy"
+              className="w-full max-w-[240px] h-auto"
+            />
+            <p className="mt-4 text-center font-display text-lg leading-tight sm:text-xl">AG Water Softener</p>
+            <p className="mt-1 text-center text-[13px] text-muted-foreground">$249 — in stock</p>
+          </div>
+
+          {/* VS mark */}
+          <div className="flex items-center justify-center border-y border-border bg-surface px-4 py-2 sm:border-x sm:border-y-0 sm:py-0">
+            <span className="text-[13px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">vs</span>
+          </div>
+
+          {/* Arius panel — typographic only, no product image */}
+          <div className="flex flex-col items-center justify-center bg-surface/40 p-6 sm:p-8">
+            <p className="text-center font-display text-lg leading-tight sm:text-xl">Arius One</p>
+            <div className="mt-4 space-y-1 text-center text-[14px] text-foreground/80">
+              <p>$296.87</p>
+              <p>Preorder</p>
+              <p className="text-[13px] text-muted-foreground">Ships end of August 2026, per Arius</p>
+            </div>
+          </div>
+        </div>
 
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
           Where they agree
