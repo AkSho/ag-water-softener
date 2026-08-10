@@ -14,6 +14,7 @@ export function SiteFooter() {
     { label: "Jolie alternative for hard water", href: "/jolie-alternative-for-hard-water" },
     { label: "ShowerStick vs AG compared", href: "/showerstick-alternative" },
     { label: "Arius vs AG compared", href: "/arius-vs-ag-water-softener" },
+    { label: "Canopy alternative for hard water", href: "/canopy-alternative-for-hard-water" },
   ];
 
   return (

@@ -20,6 +20,7 @@ import { Route as PortableWaterSoftenerForShowerRouteImport } from './routes/por
 import { Route as JolieAlternativeForHardWaterRouteImport } from './routes/jolie-alternative-for-hard-water'
 import { Route as DoShowerFiltersWorkForHardWaterRouteImport } from './routes/do-shower-filters-work-for-hard-water'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CanopyAlternativeForHardWaterRouteImport } from './routes/canopy-alternative-for-hard-water'
 import { Route as AriusVsAgWaterSoftenerRouteImport } from './routes/arius-vs-ag-water-softener'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -83,6 +84,12 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CanopyAlternativeForHardWaterRoute =
+  CanopyAlternativeForHardWaterRouteImport.update({
+    id: '/canopy-alternative-for-hard-water',
+    path: '/canopy-alternative-for-hard-water',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AriusVsAgWaterSoftenerRoute = AriusVsAgWaterSoftenerRouteImport.update({
   id: '/arius-vs-ag-water-softener',
   path: '/arius-vs-ag-water-softener',
@@ -97,6 +104,7 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/arius-vs-ag-water-softener': typeof AriusVsAgWaterSoftenerRoute
+  '/canopy-alternative-for-hard-water': typeof CanopyAlternativeForHardWaterRoute
   '/contact': typeof ContactRoute
   '/do-shower-filters-work-for-hard-water': typeof DoShowerFiltersWorkForHardWaterRoute
   '/jolie-alternative-for-hard-water': typeof JolieAlternativeForHardWaterRoute
@@ -112,6 +120,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/arius-vs-ag-water-softener': typeof AriusVsAgWaterSoftenerRoute
+  '/canopy-alternative-for-hard-water': typeof CanopyAlternativeForHardWaterRoute
   '/contact': typeof ContactRoute
   '/do-shower-filters-work-for-hard-water': typeof DoShowerFiltersWorkForHardWaterRoute
   '/jolie-alternative-for-hard-water': typeof JolieAlternativeForHardWaterRoute
@@ -128,6 +137,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/arius-vs-ag-water-softener': typeof AriusVsAgWaterSoftenerRoute
+  '/canopy-alternative-for-hard-water': typeof CanopyAlternativeForHardWaterRoute
   '/contact': typeof ContactRoute
   '/do-shower-filters-work-for-hard-water': typeof DoShowerFiltersWorkForHardWaterRoute
   '/jolie-alternative-for-hard-water': typeof JolieAlternativeForHardWaterRoute
@@ -145,6 +155,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/arius-vs-ag-water-softener'
+    | '/canopy-alternative-for-hard-water'
     | '/contact'
     | '/do-shower-filters-work-for-hard-water'
     | '/jolie-alternative-for-hard-water'
@@ -160,6 +171,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/arius-vs-ag-water-softener'
+    | '/canopy-alternative-for-hard-water'
     | '/contact'
     | '/do-shower-filters-work-for-hard-water'
     | '/jolie-alternative-for-hard-water'
@@ -175,6 +187,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/arius-vs-ag-water-softener'
+    | '/canopy-alternative-for-hard-water'
     | '/contact'
     | '/do-shower-filters-work-for-hard-water'
     | '/jolie-alternative-for-hard-water'
@@ -191,6 +204,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AriusVsAgWaterSoftenerRoute: typeof AriusVsAgWaterSoftenerRoute
+  CanopyAlternativeForHardWaterRoute: typeof CanopyAlternativeForHardWaterRoute
   ContactRoute: typeof ContactRoute
   DoShowerFiltersWorkForHardWaterRoute: typeof DoShowerFiltersWorkForHardWaterRoute
   JolieAlternativeForHardWaterRoute: typeof JolieAlternativeForHardWaterRoute
@@ -283,6 +297,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/canopy-alternative-for-hard-water': {
+      id: '/canopy-alternative-for-hard-water'
+      path: '/canopy-alternative-for-hard-water'
+      fullPath: '/canopy-alternative-for-hard-water'
+      preLoaderRoute: typeof CanopyAlternativeForHardWaterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/arius-vs-ag-water-softener': {
       id: '/arius-vs-ag-water-softener'
       path: '/arius-vs-ag-water-softener'
@@ -303,6 +324,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AriusVsAgWaterSoftenerRoute: AriusVsAgWaterSoftenerRoute,
+  CanopyAlternativeForHardWaterRoute: CanopyAlternativeForHardWaterRoute,
   ContactRoute: ContactRoute,
   DoShowerFiltersWorkForHardWaterRoute: DoShowerFiltersWorkForHardWaterRoute,
   JolieAlternativeForHardWaterRoute: JolieAlternativeForHardWaterRoute,
