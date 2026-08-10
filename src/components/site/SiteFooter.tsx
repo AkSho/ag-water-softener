@@ -13,6 +13,7 @@ export function SiteFooter() {
     { label: "Shower head water softeners", href: "/shower-head-water-softener" },
     { label: "Jolie alternative for hard water", href: "/jolie-alternative-for-hard-water" },
     { label: "ShowerStick vs AG compared", href: "/showerstick-alternative" },
+    { label: "Arius vs AG compared", href: "/arius-vs-ag-water-softener" },
   ];
 
   return (

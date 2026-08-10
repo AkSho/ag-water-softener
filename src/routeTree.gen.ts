@@ -20,6 +20,7 @@ import { Route as PortableWaterSoftenerForShowerRouteImport } from './routes/por
 import { Route as JolieAlternativeForHardWaterRouteImport } from './routes/jolie-alternative-for-hard-water'
 import { Route as DoShowerFiltersWorkForHardWaterRouteImport } from './routes/do-shower-filters-work-for-hard-water'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AriusVsAgWaterSoftenerRouteImport } from './routes/arius-vs-ag-water-softener'
 import { Route as IndexRouteImport } from './routes/index'
 
 const WaterSoftenerForApartmentRoute =
@@ -82,6 +83,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AriusVsAgWaterSoftenerRoute = AriusVsAgWaterSoftenerRouteImport.update({
+  id: '/arius-vs-ag-water-softener',
+  path: '/arius-vs-ag-water-softener',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -90,6 +96,7 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/arius-vs-ag-water-softener': typeof AriusVsAgWaterSoftenerRoute
   '/contact': typeof ContactRoute
   '/do-shower-filters-work-for-hard-water': typeof DoShowerFiltersWorkForHardWaterRoute
   '/jolie-alternative-for-hard-water': typeof JolieAlternativeForHardWaterRoute
@@ -104,6 +111,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/arius-vs-ag-water-softener': typeof AriusVsAgWaterSoftenerRoute
   '/contact': typeof ContactRoute
   '/do-shower-filters-work-for-hard-water': typeof DoShowerFiltersWorkForHardWaterRoute
   '/jolie-alternative-for-hard-water': typeof JolieAlternativeForHardWaterRoute
@@ -119,6 +127,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/arius-vs-ag-water-softener': typeof AriusVsAgWaterSoftenerRoute
   '/contact': typeof ContactRoute
   '/do-shower-filters-work-for-hard-water': typeof DoShowerFiltersWorkForHardWaterRoute
   '/jolie-alternative-for-hard-water': typeof JolieAlternativeForHardWaterRoute
@@ -135,6 +144,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/arius-vs-ag-water-softener'
     | '/contact'
     | '/do-shower-filters-work-for-hard-water'
     | '/jolie-alternative-for-hard-water'
@@ -149,6 +159,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/arius-vs-ag-water-softener'
     | '/contact'
     | '/do-shower-filters-work-for-hard-water'
     | '/jolie-alternative-for-hard-water'
@@ -163,6 +174,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/arius-vs-ag-water-softener'
     | '/contact'
     | '/do-shower-filters-work-for-hard-water'
     | '/jolie-alternative-for-hard-water'
@@ -178,6 +190,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AriusVsAgWaterSoftenerRoute: typeof AriusVsAgWaterSoftenerRoute
   ContactRoute: typeof ContactRoute
   DoShowerFiltersWorkForHardWaterRoute: typeof DoShowerFiltersWorkForHardWaterRoute
   JolieAlternativeForHardWaterRoute: typeof JolieAlternativeForHardWaterRoute
@@ -270,6 +283,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/arius-vs-ag-water-softener': {
+      id: '/arius-vs-ag-water-softener'
+      path: '/arius-vs-ag-water-softener'
+      fullPath: '/arius-vs-ag-water-softener'
+      preLoaderRoute: typeof AriusVsAgWaterSoftenerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -282,6 +302,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AriusVsAgWaterSoftenerRoute: AriusVsAgWaterSoftenerRoute,
   ContactRoute: ContactRoute,
   DoShowerFiltersWorkForHardWaterRoute: DoShowerFiltersWorkForHardWaterRoute,
   JolieAlternativeForHardWaterRoute: JolieAlternativeForHardWaterRoute,
