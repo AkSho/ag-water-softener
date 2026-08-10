@@ -1263,13 +1263,10 @@ function BurnedBuyerBlock() {
 
           <div className="mt-10 space-y-6 text-[15px] leading-[1.7] text-background/90">
             <p>
-              Plenty of our customers bought a shower filter first. The water smelled better and the spots stayed. Here is what happened.
+              A lot of our customers bought a shower filter first. The water smelled better and the spots stayed. Here's why.
             </p>
             <p>
-              Filter media like carbon and KDF grab chlorine as water passes through. Calcium and magnesium are dissolved minerals, and they pass through those media untouched. The filter did its job. Softening takes different chemistry: ion-exchange resin, which holds hardness minerals the way carbon holds chlorine. The full breakdown is in <a href="/do-shower-filters-work-for-hard-water#filter-did-not-work" className="underline hover:text-background/70">our guide</a>.
-            </p>
-            <p className="border-t border-background/10 pt-6">
-              If you have been burned once already, the guarantee below is for you. Run the AG for 60 days on your own water. If it does not change what you feel, send it back.
+              A filter is full of carbon bits that grab chlorine as the water flows past. Calcium and magnesium (hard water-causing minerals) are different though. They're dissolved in the water (like sugar in tea) so they slide right past the carbon and out of your shower head. So the filter did its job, but hard water needs a different tool: ion-exchange resin. Resin beads hold on to calcium and magnesium the same way carbon holds on to chlorine. The full story is in <a href="/do-shower-filters-work-for-hard-water#filter-did-not-work" className="underline hover:text-background/70">our guide</a>.
             </p>
           </div>
         </div>
