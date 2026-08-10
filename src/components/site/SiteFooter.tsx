@@ -1,5 +1,5 @@
 export function SiteFooter() {
-  const shop = ["The AG Water Softener", "Softener Salt"];
+  const shop = ["The AG Water Softener"];
   const support: { label: string; href: string }[] = [
     { label: "Shipping", href: "/shipping" },
     { label: "Returns and refunds", href: "/returns" },

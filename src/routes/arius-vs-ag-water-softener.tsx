@@ -21,20 +21,20 @@ const PAGE_FAQS = [
   },
   {
     q: "Which one should a renter pick?",
-    a: "Both thread onto a standard half-inch shower arm and come off the same way, so neither requires plumbing changes or landlord permission. The AG is in stock and ships immediately; Arius is currently a preorder.",
+    a: "The AG threads onto a standard half-inch shower arm, so there are no plumbing changes and nothing to ask a landlord about. Check the Arius product page for their install requirements. The AG is in stock and ships immediately; Arius is currently a preorder.",
   },
 ];
 
 export const Route = createFileRoute("/arius-vs-ag-water-softener")({
   head: () => ({
     meta: [
-      { title: "Arius vs AG Water Softener: an honest preorder comparison" },
+      { title: "Arius vs AG Water Softener: preorder-stage comparison" },
       {
         name: "description",
         content:
           "The Arius One and AG Water Softener both use ion-exchange resin. Here is how they compare on regeneration, availability, warranty, and price.",
       },
-      { property: "og:title", content: "Arius vs AG Water Softener: an honest preorder comparison" },
+      { property: "og:title", content: "Arius vs AG Water Softener: preorder-stage comparison" },
       { property: "og:description", content: "The Arius One and AG Water Softener both use ion-exchange resin. Here is how they compare on regeneration, availability, warranty, and price." },
       { property: "og:url", content: "https://agsoftener.com/arius-vs-ag-water-softener" },
       { property: "og:type", content: "article" },
@@ -80,7 +80,7 @@ function AriusVsAgPage() {
 
       <article className="mx-auto max-w-[760px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
         <h1 className="font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
-          Arius vs AG Water Softener: an honest preorder comparison
+          Arius vs AG Water Softener: preorder-stage comparison
         </h1>
         <p className="mt-3 text-[13px] italic text-muted-foreground">
           Checked against the live Arius product page on August 9, 2026. If anything below has changed, tell us and we will correct it.
@@ -88,7 +88,7 @@ function AriusVsAgPage() {
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            The Arius One (formerly the Aquus One) and the AG Water Softener both use ion-exchange resin to soften shower water. That puts them in the same small category of products that actually remove hardness, as opposed to the hundreds of <a href="/shower-filter-vs-water-softener" className="underline hover:opacity-70">shower filters sold as softeners</a> that cannot. The mechanism argument is settled between these two. What differs is how the resin gets recharged, when you can buy each one, and what the purchase terms look like.
+            The Arius One (formerly the Aquus One) and the AG Water Softener both use ion-exchange resin to soften shower water. That puts them in the same small category of products that actually remove hardness, as opposed to the hundreds of <a href="/shower-filter-vs-water-softener" className="underline hover:opacity-70">shower filters sold as softeners</a> that cannot. The mechanism argument is settled between these two. What differs is how the resin gets recharged and what the purchase terms look like.
           </p>
         </div>
 
@@ -106,7 +106,7 @@ function AriusVsAgPage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            Both are genuine ion-exchange softeners. Both thread onto a standard half-inch shower arm. Both require salt to regenerate the resin, and both claim a 60-day satisfaction guarantee. Neither is a filter wearing a softener label, and that distinction matters more than anything separating them from each other.
+            Both are genuine ion-exchange softeners that need salt to recharge the resin. The AG threads onto a standard half-inch shower arm with no tools. Both offer a 60-day satisfaction guarantee. Neither is a filter wearing a softener label, and that distinction matters more than anything separating them from each other.
           </p>
           <p>
             Arius builds filtration and softening into one unit. If you want both in a single system and the preorder timeline works for you, it is a reasonable pick. The AG does one job, softening, and does it without a maintenance schedule.
@@ -159,14 +159,19 @@ function AriusVsAgPage() {
                   <td className="border border-border px-4 py-3">Automatic from included brine tank, ~30 min, every 3 to 5 weeks</td>
                 </tr>
                 <tr className="bg-surface/50">
-                  <td className="border border-border px-4 py-3 font-semibold">Warranty</td>
-                  <td className="border border-border px-4 py-3">60 days</td>
-                  <td className="border border-border px-4 py-3">12 months</td>
+                  <td className="border border-border px-4 py-3 font-semibold">Guarantee</td>
+                  <td className="border border-border px-4 py-3">60-day money-back</td>
+                  <td className="border border-border px-4 py-3">60-day money-back</td>
                 </tr>
                 <tr>
+                  <td className="border border-border px-4 py-3 font-semibold">Warranty</td>
+                  <td className="border border-border px-4 py-3">Not listed separately</td>
+                  <td className="border border-border px-4 py-3">12 months against defects</td>
+                </tr>
+                <tr className="bg-surface/50">
                   <td className="border border-border px-4 py-3 font-semibold">Reviews</td>
                   <td className="border border-border px-4 py-3">Prototype testers (per Arius disclosure)</td>
-                  <td className="border border-border px-4 py-3">First customers; no review count claimed</td>
+                  <td className="border border-border px-4 py-3">Early customers</td>
                 </tr>
               </tbody>
             </table>
@@ -181,10 +186,10 @@ function AriusVsAgPage() {
             If you want filtration and softening in one unit and the Arius preorder timeline fits your plans, it is a legitimate option. The ion-exchange chemistry is real, and the combined-unit design means one less device in your shower.
           </p>
           <p>
-            If you want a softener that is in stock, ships immediately, recharges automatically, and carries a 12-month warranty instead of 60 days, that is the case for <a href="/" className="underline hover:opacity-70">the AG Water Softener</a>. It handles 2.1 gallons per minute at the shower arm, regenerates about 1,300 gallons of capacity per recharge, and threads onto any standard shower connection with no tools and no plumbing changes.
+            If you want a softener that is in stock, ships immediately, recharges automatically, and carries a 12-month warranty beyond the guarantee, that is the case for <a href="/" className="underline hover:opacity-70">the AG Water Softener</a>. It handles 2.1 gallons per minute at the shower arm, regenerates about 1,300 gallons of capacity per recharge, and threads onto any standard shower connection with no tools and no plumbing changes.
           </p>
           <p>
-            Either way, confirm your water is hard first. <a href="https://www.myapartmentwaterquality.com/" className="underline hover:opacity-70">Check your water free</a> with our lookup tool or run a hardness strip. If your water reads soft, neither product will change anything you notice. If it reads hard, the real question is which recharge routine you will stick with, because the chemistry works in both.
+            Either way, confirm your water is hard first. <a href="https://www.myapartmentwaterquality.com/" className="underline hover:opacity-70">Check your water free</a> with our lookup tool or test it yourself. If your water reads soft, neither product will change anything you notice. If it reads hard, the real question is which recharge routine you will stick with.
           </p>
         </div>
 
@@ -193,7 +198,7 @@ function AriusVsAgPage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            Both units mount on a shower arm and come off when you move. The Arius One weighs 19 lbs, which puts it closer to an RV softener in heft than a showerhead accessory. If portability between bathrooms or apartments matters to you, the <a href="/portable-water-softener-for-shower" className="underline hover:opacity-70">portable softener comparison</a> covers the form-factor tradeoffs in more detail.
+            The AG mounts on the shower arm and comes off when you move. The Arius One weighs 19 lbs, which puts it closer to an RV softener in heft than a showerhead accessory. If portability between bathrooms or apartments matters to you, the <a href="/portable-water-softener-for-shower" className="underline hover:opacity-70">portable softener comparison</a> covers the form-factor tradeoffs in more detail.
           </p>
         </div>
 
