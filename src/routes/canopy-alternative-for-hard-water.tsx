@@ -9,7 +9,7 @@ const PAGE_FAQS = [
   },
   {
     q: "Why does Canopy's listing mention calcium and magnesium?",
-    a: "Their listing says the filter helps eliminate chlorine, magnesium, and calcium carbonate. Filter media can reduce some scale-forming particles. Dissolved hardness minerals stay in the water, which is why hard-water problems continue with a filter installed.",
+    a: "Canopy's site says its filter media have been shown to help reduce chlorine, magnesium, and calcium carbonate. Filter media can reduce some scale-forming particles. Dissolved hardness minerals stay in the water, which is why hard-water problems continue with a filter installed.",
   },
   {
     q: "Can I use Canopy and the AG together?",
@@ -92,7 +92,7 @@ function CanopyAlternativePage() {
           <div className="flex flex-col items-center bg-background p-6 sm:p-8">
             <img
               src="/assets/cross-section.png"
-              alt=""
+              alt="AG Water Softener, which removes hardness minerals, compared with the Canopy chlorine filter"
               width={1254}
               height={1254}
               loading="lazy"
@@ -120,7 +120,7 @@ function CanopyAlternativePage() {
 
         <div className="mt-10 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            The Canopy filter is one of the best-known shower filters in the country. It is also a filter, and that is the whole issue if your problem is hard water. Canopy's own listing says it helps with chlorine, and on that job it delivers. Hardness is a different job. Calcium and magnesium are dissolved minerals, and carbon and KDF media do not remove them. Ion-exchange resin does.
+            The Canopy filter is one of the best-known shower filters in the country. It is also a filter, and that is the whole issue if your problem is hard water. Canopy's site says its filter media have been shown to help reduce chlorine, magnesium, and calcium carbonate. On the chlorine job it delivers. Hardness is a different job. Calcium and magnesium are dissolved minerals, and carbon and KDF media do not remove them. Ion-exchange resin does.
           </p>
         </div>
 
@@ -138,7 +138,7 @@ function CanopyAlternativePage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            Canopy's listing says the filter helps eliminate chlorine, magnesium, and calcium carbonate. The media inside are KDF-55, activated carbon, and calcium sulfite. Those materials reduce chlorine well. They do not hold dissolved calcium and magnesium the way ion-exchange resin holds them, which is why a filter can pass a chlorine test and still leave spots on your glass and film on your skin. If you have used a shower filter and your hair still feels coated, this is the reason. The full chemistry is on our page about <a href="/do-shower-filters-work-for-hard-water" className="underline hover:opacity-70">why filter media cannot remove hardness</a>.
+            Canopy's site says its filter media have been shown to help reduce chlorine, magnesium, and calcium carbonate. The media inside are KDF-55, activated carbon, and calcium sulfite. Those materials reduce chlorine well. They do not hold dissolved calcium and magnesium the way ion-exchange resin holds them, which is why a filter can pass a chlorine test and still leave spots on your glass and film on your skin. If you have used a shower filter and your hair still feels coated, this is the reason. The full chemistry is on our page about <a href="/do-shower-filters-work-for-hard-water" className="underline hover:opacity-70">why filter media cannot remove hardness</a>.
           </p>
         </div>
 
@@ -182,12 +182,12 @@ function CanopyAlternativePage() {
                 </tr>
                 <tr className="bg-surface/50">
                   <td className="border border-border px-4 py-3 font-semibold">Ongoing cost</td>
-                  <td className="border border-border px-4 py-3">Replacement filters (~$25 every 90 days)</td>
+                  <td className="border border-border px-4 py-3">Replacement filter $27 every 90 days on subscription ($25 one-time)</td>
                   <td className="border border-border px-4 py-3">Plain non-iodized salt</td>
                 </tr>
                 <tr>
                   <td className="border border-border px-4 py-3 font-semibold">Guarantee</td>
-                  <td className="border border-border px-4 py-3">Check Canopy's site for current terms</td>
+                  <td className="border border-border px-4 py-3">60-day return on devices, minus a handling fee; filters are final sale</td>
                   <td className="border border-border px-4 py-3">60-day money-back, with a 12-month warranty</td>
                 </tr>
               </tbody>
