@@ -175,7 +175,8 @@ function ProductPage() {
       <InstallAndMaintenance />
       <ProductDetails />
       <FAQSection />
-      <DecisionZone />
+      <BurnedBuyerBlock />
+      <ClosingSection />
       <SiteFooter />
       <StickyBuyBar
         price={PRICE}
@@ -790,7 +791,7 @@ function MeetTheSoftener() {
               As water passes through, the resin captures calcium and magnesium ions and releases harmless sodium ions in their place. The minerals that coat your hair and crust your shower door get pulled out of the water before it ever reaches you.
             </p>
             <p className="mt-4 text-[15px] leading-[1.7] text-foreground/90">
-              When the resin fills up, the included salt tank recharges it — about 30 to 40 minutes every 3 to 5 weeks.
+              When the resin fills up, the included salt tank recharges it — about 30 minutes every 3 to 5 weeks.
             </p>
             <p className="mt-4 text-[15px] leading-[1.7] text-foreground/90">
               This is the important part no filter does. It's the entire reason the AG Water Softener exists.
@@ -1060,16 +1061,25 @@ function InstallAndMaintenance() {
             </li>
           </ol>
           <p className="mt-6 text-[15px] leading-[1.7] text-foreground/90">
-            Your hands-on time is about ten minutes. The full recharge takes about 30 to 40 min, and the soaking part happens while you step away. Shower normally the rest of the time.
+            Your hands-on time is about ten minutes. The full recharge takes about 30 minutes, and the soaking part happens while you step away. Shower normally the rest of the time.
           </p>
-          <img
-            src="/assets/recharge-guide.png"
-            alt="Four-step AG softener recharge with the included brine tank, about 30 minutes"
-            width={1448}
-            height={1086}
-            loading="lazy"
-            className="mt-8 w-full h-auto"
-          />
+          <div className="mt-8">
+            <p className="mb-4 text-center font-display text-lg italic leading-tight text-foreground/80 sm:text-xl">
+              Simple 30-minute AG softener recharge process
+            </p>
+            <img
+              src="/assets/recharge-guide-steps.png"
+              alt="Four-step AG softener recharge with the included brine tank, about 30 minutes"
+              width={1448}
+              height={810}
+              loading="lazy"
+              className="w-full h-auto"
+            />
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-[13px] text-muted-foreground">
+              <span>Approximately 30 minutes</span>
+              <span>Minimal active involvement</span>
+            </div>
+          </div>
           <p className="mt-6 border-t border-border/60 pt-6 text-[15px] leading-[1.7] text-foreground/90">
             If that ritual every month or so sounds like more than soft water is worth, this product isn't for you, and we'd rather say so here than in a return email. If it sounds like a fair trade for hair and skin that behave every single day in between, keep reading.
           </p>
@@ -1229,79 +1239,81 @@ function FAQSection() {
 
 
 
-/* ─────────────────────────────── SECTION 12 — BURNED BUYER + CLOSING CTA (dark zone) ─── */
+/* ─────────────────────────────── SECTION 12a — BURNED BUYER (dark panel) ─────────────── */
 
-function DecisionZone() {
+function BurnedBuyerBlock() {
+  return (
+    <section className="bg-foreground text-background">
+      <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
+        <div className="mx-auto max-w-[900px]">
+          <h2 className="font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
+            Already tried a shower filter?
+          </h2>
+
+          <figure className="mx-auto mt-10 max-w-[700px]">
+            <img
+              src="/assets/comparison-filter-vs-softener.png"
+              alt="Side by side diagram. A carbon filter captures chlorine while dissolved calcium and magnesium pass through. Ion-exchange resin holds the hardness minerals and releases softened water."
+              width={1536}
+              height={1024}
+              loading="lazy"
+              className="w-full h-auto rounded-sm"
+            />
+          </figure>
+
+          <div className="mt-10 space-y-6 text-[15px] leading-[1.7] text-background/90">
+            <p>
+              Plenty of our customers bought a shower filter first. The water smelled better and the spots stayed. Here is what happened.
+            </p>
+            <p>
+              Filter media like carbon and KDF grab chlorine as water passes through. Calcium and magnesium are dissolved minerals, and they pass through those media untouched. The filter did its job. Softening takes different chemistry: ion-exchange resin, which holds hardness minerals the way carbon holds chlorine. The full breakdown is in <a href="/do-shower-filters-work-for-hard-water#filter-did-not-work" className="underline hover:text-background/70">our guide</a>.
+            </p>
+            <p className="border-t border-background/10 pt-6">
+              If you have been burned once already, the guarantee below is for you. Run the AG for 60 days on your own water. If it does not change what you feel, send it back.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────── SECTION 12b — CLOSING CTA (cream) ─────────────────── */
+
+function ClosingSection() {
   const { add } = useCart();
   return (
-    <div className="bg-foreground text-background">
-      {/* Burned buyer block */}
-      <section className="border-t border-background/10">
-        <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
-          <div className="mx-auto max-w-[900px]">
-            <h2 className="font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
-              Already tried a shower filter?
-            </h2>
-
-            <figure className="mx-auto mt-10 max-w-[700px]">
-              <img
-                src="/assets/comparison-filter-vs-softener.png"
-                alt="Side by side diagram. A carbon filter captures chlorine while dissolved calcium and magnesium pass through. Ion-exchange resin holds the hardness minerals and releases softened water."
-                width={1536}
-                height={1024}
-                loading="lazy"
-                className="w-full h-auto rounded-sm"
-              />
-            </figure>
-
-            <div className="mt-10 space-y-6 text-[15px] leading-[1.7] text-background/90">
-              <p>
-                Plenty of our customers bought a shower filter first. The water smelled better and the spots stayed. Here is what happened.
-              </p>
-              <p>
-                Filter media like carbon and KDF grab chlorine as water passes through. Calcium and magnesium are dissolved minerals, and they pass through those media untouched. The filter did its job. Softening takes different chemistry: ion-exchange resin, which holds hardness minerals the way carbon holds chlorine. The full breakdown is in <a href="/do-shower-filters-work-for-hard-water#filter-did-not-work" className="underline hover:text-background/70">our guide</a>.
-              </p>
-              <p className="border-t border-background/10 pt-6">
-                If you have been burned once already, the guarantee below is for you. Run the AG for 60 days on your own water. If it does not change what you feel, send it back.
-              </p>
-            </div>
+    <section className="border-t border-border/60">
+      <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
+        <div className="mx-auto max-w-[900px]">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+            The guarantee
+          </div>
+          <h2 className="mt-4 font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
+            Try it against your own test strip
+          </h2>
+          <p className="mt-8 text-[15px] leading-[1.7] text-foreground/90">
+            Dip a hardness strip in your tap water today. Install the AG, then dip another strip. If the second strip doesn't read soft, you have 60 full days to send it back for a complete refund. Softer hair and skin in the meantime.
+          </p>
+          <div className="mt-8">
+            <button
+              onClick={() =>
+                add({
+                  id: "ag-softener",
+                  title: PRODUCT_TITLE,
+                  variantLabel: "Single unit",
+                  price: PRICE,
+                  image: "/assets/cart-main.png",
+                })
+              }
+              className="bg-black px-8 py-5 text-[12px] font-medium uppercase tracking-[0.14em] text-white transition hover:opacity-90"
+            >
+              Add to Cart
+            </button>
           </div>
         </div>
-      </section>
-
-      {/* Guarantee (continuous dark zone) */}
-      <section>
-        <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
-          <div className="mx-auto max-w-[900px]">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-background/60">
-              The guarantee
-            </div>
-            <h2 className="mt-4 font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
-              Try it against your own test strip
-            </h2>
-            <p className="mt-8 text-[15px] leading-[1.7] text-background/90">
-              Dip a hardness strip in your tap water today. Install the AG, then dip another strip. If the second strip doesn't read soft, you have 60 full days to send it back for a complete refund. Softer hair and skin in the meantime.
-            </p>
-            <div className="mt-8">
-              <button
-                onClick={() =>
-                  add({
-                    id: "ag-softener",
-                    title: PRODUCT_TITLE,
-                    variantLabel: "Single unit",
-                    price: PRICE,
-                    image: "/assets/cart-main.png",
-                  })
-                }
-                className="bg-background px-8 py-5 text-[12px] font-medium uppercase tracking-[0.14em] text-foreground transition hover:opacity-90"
-              >
-                Add to Cart
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 }
 
