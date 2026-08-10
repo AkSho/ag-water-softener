@@ -31,6 +31,7 @@ const FAQS = [
   { q: "How do I know the softening claim is real and this isn't another mislabeled filter?", a: "You test it yourself, in your own bathroom, on day one. The AG Water Softener ships with standard water-hardness test strips. Dip one in your tap water and one in the treated water and compare the colors. Hardness strips are an industry-standard measure and they cannot be flattered by marketing. If your treated water doesn't test soft, use the guarantee." },
   { q: "I rent. Will this come down cleanly when I move?", a: "Yes. The AG Water Softener attaches to the shower pipe the same way a showerhead does, or simply sits on the floor. Removal takes minutes and leaves your shower exactly as you found it. Nothing is drilled or glued, and there's no plumbing change for a landlord to notice or a deposit to absorb." },
   { q: "What exactly does the AG Water Softener remove — and what doesn't it?", a: "It removes hardness minerals, calcium and magnesium, through ion exchange — the minerals that coat your hair and crust your shower door. It does not filter chlorine, and we won't pretend otherwise. Chlorine reduction is the job basic shower filters already handle; hardness is the job they can't. If your water report came back hard or very hard, hardness is the half that's been working against your hair and skin." },
+  { q: "I already tried a shower filter and it did not help. How is this different?", a: "A filter removes chlorine with carbon and similar media. Dissolved calcium and magnesium pass through those media, so hard water stays hard with a filter installed. The AG uses ion-exchange resin, which removes the hardness minerals themselves. The 60-day guarantee lets you test that on your own water." },
   { q: "Does soft water feel slippery at first?", a: "For some people, yes, briefly. That silky feeling is what skin feels like when soap actually rinses away instead of combining with hardness minerals and clinging to you as residue. Research published in the Journal of Investigative Dermatology measured exactly this: hard water leaves significantly more surfactant deposited on skin after washing. What hard water taught you to interpret as \"squeaky clean\" was residue. Most people stop noticing the change within a week and then can't stand hotel hard water afterward." },
   { q: "Does the salt make my shower water salty?", a: "You'll never smell or feel it. Ion exchange swaps hardness minerals for a small amount of sodium, the same trade every whole-house softener makes, and the water remains ordinary soft water. The salt you pour into the tank is used to rinse the resin during regeneration, then drains away." },
   { q: "What are the ongoing costs?", a: "A bag of standard softener salt every few months — that's the only consumable. The ion-exchange resin itself lasts for years with regular recharging, and there's no cartridge subscription waiting to surprise you." },
@@ -174,7 +175,7 @@ function ProductPage() {
       <InstallAndMaintenance />
       <ProductDetails />
       <FAQSection />
-      <ClosingSection />
+      <DecisionZone />
       <SiteFooter />
       <StickyBuyBar
         price={PRICE}
@@ -1228,42 +1229,79 @@ function FAQSection() {
 
 
 
-/* ─────────────────────────────── SECTION 12 — CLOSING CTA ─────────────────────────────── */
+/* ─────────────────────────────── SECTION 12 — BURNED BUYER + CLOSING CTA (dark zone) ─── */
 
-function ClosingSection() {
+function DecisionZone() {
   const { add } = useCart();
   return (
-    <section className="border-t border-border/60">
-      <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
-        <div className="mx-auto max-w-[900px]">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            The guarantee
-          </div>
-          <h2 className="mt-4 font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
-            Try it against your own test strip
-          </h2>
-          <p className="mt-8 text-[15px] leading-[1.7] text-foreground/90">
-            Dip a hardness strip in your tap water today. Install the AG, then dip another strip. If the second strip doesn't read soft, you have 60 full days to send it back for a complete refund. Softer hair and skin in the meantime.
-          </p>
-          <div className="mt-8">
-            <button
-              onClick={() =>
-                add({
-                  id: "ag-softener",
-                  title: PRODUCT_TITLE,
-                  variantLabel: "Single unit",
-                  price: PRICE,
-                  image: "/assets/cart-main.png",
-                })
-              }
-              className="bg-black px-8 py-5 text-[12px] font-medium uppercase tracking-[0.14em] text-white transition hover:opacity-90"
-            >
-              Add to Cart
-            </button>
+    <div className="bg-foreground text-background">
+      {/* Burned buyer block */}
+      <section className="border-t border-background/10">
+        <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
+          <div className="mx-auto max-w-[900px]">
+            <h2 className="font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
+              Already tried a shower filter?
+            </h2>
+
+            <figure className="mx-auto mt-10 max-w-[700px]">
+              <img
+                src="/assets/comparison-filter-vs-softener.png"
+                alt="Side by side diagram. A carbon filter captures chlorine while dissolved calcium and magnesium pass through. Ion-exchange resin holds the hardness minerals and releases softened water."
+                width={1536}
+                height={1024}
+                loading="lazy"
+                className="w-full h-auto rounded-sm"
+              />
+            </figure>
+
+            <div className="mt-10 space-y-6 text-[15px] leading-[1.7] text-background/90">
+              <p>
+                Plenty of our customers bought a shower filter first. The water smelled better and the spots stayed. Here is what happened.
+              </p>
+              <p>
+                Filter media like carbon and KDF grab chlorine as water passes through. Calcium and magnesium are dissolved minerals, and they pass through those media untouched. The filter did its job. Softening takes different chemistry: ion-exchange resin, which holds hardness minerals the way carbon holds chlorine. The full breakdown is in <a href="/do-shower-filters-work-for-hard-water#filter-did-not-work" className="underline hover:text-background/70">our guide</a>.
+              </p>
+              <p className="border-t border-background/10 pt-6">
+                If you have been burned once already, the guarantee below is for you. Run the AG for 60 days on your own water. If it does not change what you feel, send it back.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* Guarantee (continuous dark zone) */}
+      <section>
+        <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
+          <div className="mx-auto max-w-[900px]">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-background/60">
+              The guarantee
+            </div>
+            <h2 className="mt-4 font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
+              Try it against your own test strip
+            </h2>
+            <p className="mt-8 text-[15px] leading-[1.7] text-background/90">
+              Dip a hardness strip in your tap water today. Install the AG, then dip another strip. If the second strip doesn't read soft, you have 60 full days to send it back for a complete refund. Softer hair and skin in the meantime.
+            </p>
+            <div className="mt-8">
+              <button
+                onClick={() =>
+                  add({
+                    id: "ag-softener",
+                    title: PRODUCT_TITLE,
+                    variantLabel: "Single unit",
+                    price: PRICE,
+                    image: "/assets/cart-main.png",
+                  })
+                }
+                className="bg-background px-8 py-5 text-[12px] font-medium uppercase tracking-[0.14em] text-foreground transition hover:opacity-90"
+              >
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }
 

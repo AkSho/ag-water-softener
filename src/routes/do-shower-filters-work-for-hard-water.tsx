@@ -160,6 +160,21 @@ function DoShowerFiltersWorkPage() {
           </p>
         </div>
 
+        <h2 id="filter-did-not-work" className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
+          If your shower filter did not work
+        </h2>
+        <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
+          <p>
+            You bought a filter and installed it right. The film on your skin stayed and the spots came back on the glass. The instinct is to blame the brand or your routine. The chemistry says otherwise.
+          </p>
+          <p>
+            Carbon and KDF media capture chlorine. They cannot hold dissolved calcium and magnesium, so every gallon leaves the filter as hard as it arrived. You did everything right. The product was matched to a different problem.
+          </p>
+          <p>
+            If chlorine was bothering you too, keep the filter. For the hardness, the fix is ion-exchange resin, the same chemistry inside a whole-home softener, sized for a shower arm. <a href="/" className="underline hover:opacity-70">See how the AG Water Softener works</a>.
+          </p>
+        </div>
+
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
           Frequently asked questions
         </h2>
