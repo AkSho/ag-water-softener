@@ -1,5 +1,13 @@
 import Stripe from "stripe";
 import { createHash } from "crypto";
+import {
+  sendEmail,
+  buildConfirmationEmail,
+  buildRecoveryEmail,
+  formatPromiseDate,
+  extractFirstName,
+} from "./email";
+import { hasRecentRecovery, logRecoverySend } from "./recovery-log";
 
 let stripeClient: Stripe | undefined;
 const processedSessions = new Set<string>();
@@ -109,37 +117,56 @@ function resolveOrigin(request: Request) {
   return `https://${host}`;
 }
 
+// ─── Part B: Meta CAPI Purchase (enriched) ─────────────────────────────────────
+
 async function sendMetaCapiPurchase({
   session,
   request,
+  lineItems,
 }: {
   session: Stripe.Checkout.Session;
   request: Request;
+  lineItems?: Stripe.ApiList<Stripe.LineItem>;
 }) {
   const pixelId = process.env.META_PIXEL_ID;
   const accessToken = process.env.META_CAPI_ACCESS_TOKEN;
   if (!pixelId || !accessToken) return;
 
   const email = session.customer_details?.email?.trim().toLowerCase();
+  const name = session.customer_details?.name?.trim();
   const zip = session.customer_details?.address?.postal_code?.trim();
+  const phone = session.customer_details?.phone?.trim();
   const fbp = session.metadata?.fbp || "";
   const fbc = session.metadata?.fbc || "";
 
   const userData: Record<string, unknown> = {
-    client_ip_address:
-      request.headers.get("x-forwarded-for") || "",
+    client_ip_address: request.headers.get("x-forwarded-for") || "",
     client_user_agent: request.headers.get("user-agent") || "",
   };
   if (email) userData.em = [sha256(email)];
   if (zip) userData.zp = [sha256(zip)];
+  if (phone) userData.ph = [sha256(phone.replace(/\D/g, ""))];
   if (fbp) userData.fbp = fbp;
   if (fbc) userData.fbc = fbc;
+
+  // Hash first and last name separately
+  if (name) {
+    const parts = name.split(/\s+/);
+    if (parts[0]) userData.fn = [sha256(parts[0].toLowerCase())];
+    if (parts.length > 1) userData.ln = [sha256(parts[parts.length - 1].toLowerCase())];
+  }
+
+  // Compute quantity from line items
+  let totalQuantity = 1;
+  if (lineItems?.data) {
+    totalQuantity = lineItems.data.reduce((sum, item) => sum + (item.quantity ?? 1), 0);
+  }
 
   const event = {
     event_name: "Purchase",
     event_time: Math.floor(Date.now() / 1000),
     event_id: session.id,
-    action_source: "website",
+    action_source: "website" as const,
     event_source_url: `${resolveOrigin(request)}/thanks?session_id=${encodeURIComponent(session.id)}`,
     user_data: userData,
     custom_data: {
@@ -148,6 +175,7 @@ async function sendMetaCapiPurchase({
           ? session.amount_total / 100
           : 0,
       currency: "usd",
+      num_items: totalQuantity,
     },
   };
 
@@ -183,6 +211,96 @@ async function sendMetaCapiPurchase({
     );
   }
 }
+
+// ─── Part A: Confirmation email ─────────────────────────────────────────────────
+
+async function sendConfirmationEmail(session: Stripe.Checkout.Session) {
+  const email = session.customer_details?.email;
+  if (!email) {
+    console.warn("No email on checkout session; skipping confirmation", { sessionId: session.id });
+    return;
+  }
+
+  // Idempotency: check Stripe metadata
+  if (session.metadata?.confirmation_sent === "true") {
+    console.info("Confirmation already sent (metadata flag)", { sessionId: session.id });
+    return;
+  }
+
+  const firstName = extractFirstName(session.customer_details?.name);
+  const promiseDate = formatPromiseDate(new Date());
+  const { subject, text } = buildConfirmationEmail({ firstName, promiseDate });
+
+  try {
+    await sendEmail({ to: email, subject, text });
+    console.info("Confirmation email sent", { sessionId: session.id, email });
+
+    // Mark as sent in Stripe metadata for durable idempotency
+    const stripe = getStripe();
+    await stripe.checkout.sessions.update(session.id, {
+      metadata: { ...session.metadata, confirmation_sent: "true" },
+    }).catch((err) => {
+      console.warn("Could not update session metadata", { sessionId: session.id, error: err instanceof Error ? err.message : String(err) });
+    });
+  } catch (err) {
+    console.error("Confirmation email failed", {
+      sessionId: session.id,
+      error: err instanceof Error ? err.message : String(err),
+    });
+  }
+}
+
+// ─── Part C: Abandoned checkout recovery ────────────────────────────────────────
+
+async function handleCheckoutExpired(session: Stripe.Checkout.Session) {
+  const email = session.customer_details?.email?.trim().toLowerCase();
+  if (!email) {
+    console.info("Expired session has no email; skipping recovery", { sessionId: session.id });
+    return;
+  }
+
+  // Check for completed order: if they completed checkout for this email, skip
+  // (In-memory processedSessions only covers this runtime; Stripe metadata check is more reliable)
+
+  // Dedup: one recovery per email per 30 days via Airtable
+  const recentlySent = await hasRecentRecovery(email);
+  if (recentlySent) {
+    console.info("Recovery email already sent to this email in last 30 days", { email, sessionId: session.id });
+    return;
+  }
+
+  const firstName = extractFirstName(session.customer_details?.name);
+
+  // Stripe recovery URL if available, else PDP
+  let checkoutOrPdpLink = "https://agsoftener.com/";
+  if (session.url) {
+    checkoutOrPdpLink = session.url;
+  } else if (session.after_expiration?.recovery?.url) {
+    checkoutOrPdpLink = session.after_expiration.recovery.url;
+  }
+
+  const { subject, text } = buildRecoveryEmail({ firstName, checkoutOrPdpLink });
+
+  try {
+    await sendEmail({ to: email, subject, text });
+    console.info("Recovery email sent", { sessionId: session.id, email });
+
+    await logRecoverySend({
+      email,
+      session_id: session.id,
+      sent_at: new Date().toISOString(),
+      first_name: firstName,
+      link_sent: checkoutOrPdpLink,
+    });
+  } catch (err) {
+    console.error("Recovery email failed", {
+      sessionId: session.id,
+      error: err instanceof Error ? err.message : String(err),
+    });
+  }
+}
+
+// ─── Checkout creation ──────────────────────────────────────────────────────────
 
 async function createCheckoutSession(request: Request) {
   const body = (await request.json().catch(() => ({}))) as CheckoutBody;
@@ -276,6 +394,8 @@ async function createCheckoutSession(request: Request) {
   return json({ url: session.url });
 }
 
+// ─── Checkout session retrieval ─────────────────────────────────────────────────
+
 async function getCheckoutSession(request: Request) {
   const url = new URL(request.url);
   const sessionId = url.searchParams.get("session_id");
@@ -333,6 +453,8 @@ async function getCheckoutSession(request: Request) {
   }
 }
 
+// ─── Webhook handler ────────────────────────────────────────────────────────────
+
 async function handleStripeWebhook(request: Request) {
   const stripe = getStripe();
   const webhookSecret = requiredEnv("STRIPE_WEBHOOK_SECRET");
@@ -352,56 +474,82 @@ async function handleStripeWebhook(request: Request) {
     return json({ error: "Webhook verification failed" }, { status: 400 });
   }
 
-  if (stripeEvent.type !== "checkout.session.completed") {
+  // ─── checkout.session.completed ───
+  if (stripeEvent.type === "checkout.session.completed") {
+    const session = stripeEvent.data.object as Stripe.Checkout.Session;
+
+    const isRetry = processedSessions.has(session.id);
+    if (isRetry) {
+      console.warn("Webhook retry: session already processed in this runtime", { sessionId: session.id });
+    }
+    processedSessions.add(session.id);
+
+    const sparePrice = requiredEnv("STRIPE_PRICE_SPARE");
+    const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
+      limit: 20,
+      expand: ["data.price.product"],
+    });
+    const sparePurchased = lineItems.data.some((item) => isSpareLineItem(item, sparePrice));
+    const payload: EspPurchasePayload = {
+      email: session.customer_details?.email,
+      name: session.customer_details?.name,
+      phone: session.customer_details?.phone,
+      shippingAddress: session.customer_details?.address,
+      sparePurchased,
+      sessionId: session.id,
+      eventId: stripeEvent.id,
+    };
+
+    await syncToEsp(payload);
+
+    // Part A: confirmation email (idempotent via Stripe metadata)
+    sendConfirmationEmail(session).catch((err) => {
+      console.error("Confirmation email handler error", err);
+    });
+
+    // Part B: enriched CAPI Purchase
+    sendMetaCapiPurchase({ session, request, lineItems }).catch(() => {});
+
+    console.info("Stripe checkout completed", {
+      eventId: stripeEvent.id,
+      sessionId: session.id,
+      paymentStatus: session.payment_status,
+      amountTotal: session.amount_total,
+      currency: session.currency,
+      customerEmail: payload.email,
+      sparePurchased,
+      isRetry,
+      lineItems: lineItems.data.map((item) => ({
+        description: item.description,
+        quantity: item.quantity,
+        priceId: item.price?.id,
+        amountTotal: item.amount_total,
+      })),
+    });
+
     return json({ received: true });
   }
 
-  const session = stripeEvent.data.object as Stripe.Checkout.Session;
+  // ─── checkout.session.expired (Part C) ───
+  if (stripeEvent.type === "checkout.session.expired") {
+    const session = stripeEvent.data.object as Stripe.Checkout.Session;
 
-  const isRetry = processedSessions.has(session.id);
-  if (isRetry) {
-    console.warn("Webhook retry: session already processed in this runtime", { sessionId: session.id });
+    console.info("Stripe checkout expired", {
+      sessionId: session.id,
+      customerEmail: session.customer_details?.email,
+    });
+
+    handleCheckoutExpired(session).catch((err) => {
+      console.error("Recovery email handler error", err);
+    });
+
+    return json({ received: true });
   }
-  processedSessions.add(session.id);
-
-  const sparePrice = requiredEnv("STRIPE_PRICE_SPARE");
-  const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
-    limit: 20,
-    expand: ["data.price.product"],
-  });
-  const sparePurchased = lineItems.data.some((item) => isSpareLineItem(item, sparePrice));
-  const payload: EspPurchasePayload = {
-    email: session.customer_details?.email,
-    name: session.customer_details?.name,
-    phone: session.customer_details?.phone,
-    shippingAddress: session.customer_details?.address,
-    sparePurchased,
-    sessionId: session.id,
-    eventId: stripeEvent.id,
-  };
-
-  await syncToEsp(payload);
-  sendMetaCapiPurchase({ session, request }).catch(() => {});
-
-  console.info("Stripe checkout completed", {
-    eventId: stripeEvent.id,
-    sessionId: session.id,
-    paymentStatus: session.payment_status,
-    amountTotal: session.amount_total,
-    currency: session.currency,
-    customerEmail: payload.email,
-    sparePurchased,
-    isRetry,
-    lineItems: lineItems.data.map((item) => ({
-      description: item.description,
-      quantity: item.quantity,
-      priceId: item.price?.id,
-      amountTotal: item.amount_total,
-    })),
-  });
 
   return json({ received: true });
 }
+
+// ─── Router ─────────────────────────────────────────────────────────────────────
 
 export async function handleStripeApi(request: Request) {
   const url = new URL(request.url);

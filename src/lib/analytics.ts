@@ -7,6 +7,13 @@ declare global {
   }
 }
 
+function generateEventId(): string {
+  if (typeof crypto !== "undefined" && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
 export function track(event: string, payload: AnalyticsPayload = {}) {
   if (typeof window === "undefined") return;
 
@@ -25,9 +32,10 @@ export function fbPixel(
   options?: AnalyticsPayload,
 ) {
   if (typeof window === "undefined" || typeof window.fbq !== "function") return;
-  if (options) {
-    window.fbq(method, event, params, options);
-  } else {
-    window.fbq(method, event, params);
-  }
+
+  // Always include an eventID for Meta dedup (browser + server events)
+  const eventID = (options?.eventID as string) || generateEventId();
+  const opts = { ...options, eventID };
+
+  window.fbq(method, event, params, opts);
 }
