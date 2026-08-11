@@ -32,6 +32,7 @@ export function fbPixel(
   options?: AnalyticsPayload,
 ) {
   if (typeof window === "undefined" || typeof window.fbq !== "function") return;
+  if (localStorage.getItem("ag_internal") === "1") return;
 
   // Always include an eventID for Meta dedup (browser + server events)
   const eventID = (options?.eventID as string) || generateEventId();
