@@ -3,7 +3,6 @@ import "./lib/error-capture";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 import { handleStripeApi } from "./server/stripe-api";
-import { handleTestEmail } from "./server/test-email";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -49,9 +48,6 @@ function isH3SwallowedErrorBody(body: string): boolean {
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
-      const testEmailResponse = await handleTestEmail(request);
-      if (testEmailResponse) return testEmailResponse;
-
       const stripeResponse = await handleStripeApi(request);
       if (stripeResponse) return stripeResponse;
 
