@@ -49,6 +49,17 @@ export const Route = createFileRoute("/arius-vs-ag-water-softener")({
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
+          "@type": "Article",
+          headline: "Arius vs AG Water Softener: preorder-stage comparison",
+          datePublished: "2026-08-10",
+          dateModified: "2026-08-10",
+          author: { "@type": "Organization", name: "AG Water Softener" },
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
           "@type": "FAQPage",
           mainEntity: PAGE_FAQS.map((f) => ({
             "@type": "Question",
@@ -82,6 +93,12 @@ function AriusVsAgPage() {
         <h1 className="font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
           Arius vs AG Water Softener: preorder-stage comparison
         </h1>
+        <p className="mt-3 text-sm text-muted-foreground">
+          Ana · Client Support | AG Water Softener
+        </p>
+        <p className="text-sm text-muted-foreground">
+          Published Aug 10, 2026
+        </p>
         <p className="mt-3 text-[13px] italic text-muted-foreground">
           Checked against the live Arius product page on August 9, 2026. If anything below has changed, tell us and we will correct it.
         </p>

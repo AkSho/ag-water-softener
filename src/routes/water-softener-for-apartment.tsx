@@ -20,13 +20,13 @@ const PAGE_FAQS = [
 export const Route = createFileRoute("/water-softener-for-apartment")({
   head: () => ({
     meta: [
-      { title: "Water softener for an apartment: what actually works" },
+      { title: "Affordable Hard Water Softener for Apartments ($249)" },
       {
         name: "description",
         content:
           "You can't install a whole-house softener in an apartment or condo. A shower-mounted ion-exchange softener is the option that actually softens water.",
       },
-      { property: "og:title", content: "Water softener for an apartment: what actually works" },
+      { property: "og:title", content: "Affordable Hard Water Softener for Apartments ($249)" },
       { property: "og:description", content: "You can't install a whole-house softener in an apartment or condo. A shower-mounted ion-exchange softener is the option that actually softens water." },
       { property: "og:url", content: "https://agsoftener.com/water-softener-for-apartment" },
       { property: "og:type", content: "article" },
@@ -37,6 +37,17 @@ export const Route = createFileRoute("/water-softener-for-apartment")({
       { rel: "canonical", href: "https://agsoftener.com/water-softener-for-apartment" },
     ],
     scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline: "Water softener for an apartment: what actually works",
+          datePublished: "2026-07-28",
+          dateModified: "2026-07-29",
+          author: { "@type": "Organization", name: "AG Water Softener" },
+        }),
+      },
       {
         type: "application/ld+json",
         children: JSON.stringify({
@@ -74,6 +85,12 @@ function WaterSoftenerForApartmentPage() {
         <h1 className="font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
           Water softener for an apartment: what actually works
         </h1>
+        <p className="mt-3 text-sm text-muted-foreground">
+          Ana · Client Support | AG Water Softener
+        </p>
+        <p className="text-sm text-muted-foreground">
+          Published Jul 28, 2026 · Updated Jul 29, 2026
+        </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>

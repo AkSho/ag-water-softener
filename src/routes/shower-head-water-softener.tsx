@@ -41,6 +41,17 @@ export const Route = createFileRoute("/shower-head-water-softener")({
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
+          "@type": "Article",
+          headline: "Shower head water softener: most of them can't soften water",
+          datePublished: "2026-07-28",
+          dateModified: "2026-07-29",
+          author: { "@type": "Organization", name: "AG Water Softener" },
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
           "@type": "FAQPage",
           mainEntity: PAGE_FAQS.map((f) => ({
             "@type": "Question",
@@ -74,6 +85,12 @@ function ShowerHeadWaterSoftenerPage() {
         <h1 className="font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
           Shower head water softener: most of them can't soften water
         </h1>
+        <p className="mt-3 text-sm text-muted-foreground">
+          Ana · Client Support | AG Water Softener
+        </p>
+        <p className="text-sm text-muted-foreground">
+          Published Jul 28, 2026 · Updated Jul 29, 2026
+        </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
