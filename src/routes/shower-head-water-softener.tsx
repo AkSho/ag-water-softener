@@ -44,7 +44,7 @@ export const Route = createFileRoute("/shower-head-water-softener")({
           "@type": "Article",
           headline: "Shower head water softener: most of them can't soften water",
           datePublished: "2026-07-28",
-          dateModified: "2026-07-29",
+          dateModified: "2026-08-12",
           author: { "@type": "Organization", name: "AG Water Softener" },
         }),
       },
@@ -89,7 +89,7 @@ function ShowerHeadWaterSoftenerPage() {
           Ana · Client Support | AG Water Softener
         </p>
         <p className="text-sm text-muted-foreground">
-          Published Jul 28, 2026 · Updated Jul 29, 2026
+          Published Jul 28, 2026 · Updated Aug 12, 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
@@ -142,7 +142,7 @@ function ShowerHeadWaterSoftenerPage() {
             A device that softens shower water has to hold a bed of ion-exchange resin large enough to treat water at two gallons per minute, and it has to regenerate with salt when the resin fills up. That has a physical size, which is why no $18 cartridge in a 4-inch housing does it, and why the real category is small: purpose-built units mounted at the shower arm, not screw-in showerheads.
           </p>
           <p>
-            <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> is built this way: a resin bed at the shower arm, a ten-minute no-tool install, recharges with plain non-iodized salt, and test strips in the box so the claim is checkable on your counter. Hard water in reads 120 ppm and up; the output reads near zero. $249, 60-day money-back guarantee.
+            <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> is built this way: a resin bed at the shower arm, a ten-minute no-tool install, recharges with plain non-iodized salt, and a $10 test strip makes the claim checkable on your counter. Hard water in reads 120 ppm and up; the output reads near zero. $249, 60-day money-back guarantee.
           </p>
           <p>
             Yes, that's more than $18. It's also the difference between buying a softener and buying the word.

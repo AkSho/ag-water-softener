@@ -44,7 +44,7 @@ export const Route = createFileRoute("/jolie-alternative-for-hard-water")({
           "@type": "Article",
           headline: "Jolie alternative for hard water: why a filter didn't help",
           datePublished: "2026-07-28",
-          dateModified: "2026-07-29",
+          dateModified: "2026-08-12",
           author: { "@type": "Organization", name: "AG Water Softener" },
         }),
       },
@@ -89,12 +89,12 @@ function JolieAlternativePage() {
           Ana · Client Support | AG Water Softener
         </p>
         <p className="text-sm text-muted-foreground">
-          Published Jul 28, 2026 · Updated Jul 29, 2026
+          Published Jul 28, 2026 · Updated Aug 12, 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            Let's start with what most "Jolie alternative" pages won't say: the Jolie is a well-made chlorine filter. Its KDF-55 and calcium sulfite media reduce chlorine and heavy metals, the pressure holds up, and if chlorine was your problem, it probably helped.
+            The Jolie is a well-made chlorine filter. Its KDF-55 and calcium sulfite media reduce chlorine and heavy metals, the pressure holds up, and if chlorine was your problem, it probably helped.
           </p>
           <p>
             If you're searching for an alternative anyway, the likely reason is that your problem was never chlorine. It's hardness: dissolved calcium and magnesium, and removing those takes a different chemistry than any filter uses.
@@ -121,7 +121,7 @@ function JolieAlternativePage() {
             Jolie's own materials describe how their media works: KDF-55 is copper-zinc granules that neutralize chlorine and capture heavy metals through redox reactions, and calcium sulfite assists with chlorine at higher temperatures. Both are respected chemistries for exactly those jobs. Neither one is ion exchange, and ion exchange, resin plus salt regeneration, is the process that removes dissolved calcium and magnesium from water. <a href="/shower-filter-vs-water-softener" className="underline hover:opacity-70">The full filter vs softener breakdown</a> walks through why.
           </p>
           <p>
-            You don't have to take our word over theirs. A $10 hardness test strip is the referee: run one on your shower with the filter installed. If your water reads above about 120 ppm through the filter, then whatever the marketing means by "hard water," your hardness is arriving at your hair intact. That reading is the whole argument.
+            A $10 hardness test strip is the referee: run one on your shower with the filter installed. If your water reads above about 120 ppm through the filter, then whatever the marketing means by "hard water," your hardness is arriving at your hair intact. That reading is the whole argument.
           </p>
         </div>
 
@@ -139,10 +139,10 @@ function JolieAlternativePage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> does the job filters can't. It holds a bed of ion-exchange resin at the shower arm, swaps the calcium and magnesium out of your water, and regenerates with plain non-iodized salt. About ten minutes to install, no tools, and it ships with test strips so the before and after is a measurement on your counter. Hard water in reads 120 ppm and up; the output reads near zero. $249, 60-day money-back guarantee.
+            <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> does the job filters can't. It holds a bed of ion-exchange resin at the shower arm, swaps the calcium and magnesium out of your water, and regenerates with plain non-iodized salt. About ten minutes to install, no tools, and a $10 test strip makes the before and after a measurement on your counter. Hard water in reads 120 ppm and up; the output reads near zero. $249, 60-day money-back guarantee.
           </p>
           <p>
-            Trade in the other direction, stated plainly: AG does not remove chlorine. It removes hardness, the thing that was crusting your fixtures and coating your hair.
+            The trade in the other direction: AG does not remove chlorine. It removes hardness, the thing that was crusting your fixtures and coating your hair.
           </p>
         </div>
 

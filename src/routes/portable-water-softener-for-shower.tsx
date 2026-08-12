@@ -13,7 +13,7 @@ const PAGE_FAQS = [
   },
   {
     q: "Does portable mean less effective?",
-    a: "No. Softening is pass or fail chemistry: either resin exchanges the minerals or it doesn't. Size affects how often you recharge, not whether the water gets soft. The included strips let you verify the output yourself.",
+    a: "No. Softening is pass or fail chemistry: either resin exchanges the minerals or it doesn't. Size affects how often you recharge, not whether the water gets soft. A test strip lets you verify the output yourself.",
   },
 ];
 
@@ -44,7 +44,7 @@ export const Route = createFileRoute("/portable-water-softener-for-shower")({
           "@type": "Article",
           headline: "Portable water softener for your shower: the real options",
           datePublished: "2026-07-28",
-          dateModified: "2026-07-29",
+          dateModified: "2026-08-12",
           author: { "@type": "Organization", name: "AG Water Softener" },
         }),
       },
@@ -89,7 +89,7 @@ function PortableWaterSoftenerPage() {
           Ana · Client Support | AG Water Softener
         </p>
         <p className="text-sm text-muted-foreground">
-          Published Jul 28, 2026 · Updated Jul 29, 2026
+          Published Jul 28, 2026 · Updated Aug 12, 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
@@ -143,10 +143,10 @@ function PortableWaterSoftenerPage() {
             <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> puts the same resin chemistry in a housing designed for the shower arm. It hangs where the showerhead connects, installs in about ten minutes with no tools, and recharges automatically from its included brine tank: add plain non-iodized salt every few weeks and the cycle runs itself, with no hose-and-bucket routine.
           </p>
           <p>
-            Because it threads on like a showerhead, it comes with you when you move: unscrew it, put the original hardware back, done. It ships with test strips so the before and after is a number you read, not a feeling you talk yourself into. $249 with a 60-day money-back guarantee.
+            Because it threads on like a showerhead, it comes with you when you move: unscrew it, put the original hardware back, done. A test strip makes the before and after a number you read, not a feeling you talk yourself into. $249 with a 60-day money-back guarantee.
           </p>
           <p>
-            The trade-off in the other direction: an RV tank holds more resin, so it goes longer between recharges. AG trades some capacity for actually belonging in a bathroom. For one or two people showering daily, the recharge cadence is a routine, not a chore.
+            The trade-off in the other direction: an RV tank holds more resin, so it goes longer between recharges. AG trades some capacity for actually belonging in a bathroom. For one or two people showering daily, the recharge cadence stays a light routine.
           </p>
         </div>
 

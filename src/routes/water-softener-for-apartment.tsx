@@ -5,7 +5,7 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 const PAGE_FAQS = [
   {
     q: "Will this violate my lease?",
-    a: "A shower-arm unit is in the same category as swapping a showerhead: it threads on, it threads off, and the original hardware goes back when you move out. No walls are opened and no building plumbing is modified. Check your lease if you're unsure, but there is nothing permanent involved.",
+    a: "A shower-arm unit is in the same category as swapping a showerhead: it threads on and off, and the original hardware goes back when you move out. No walls are opened and no building plumbing is modified. Check your lease if you're unsure, but there is nothing permanent involved.",
   },
   {
     q: "Does it work in a condo I own?",
@@ -44,7 +44,7 @@ export const Route = createFileRoute("/water-softener-for-apartment")({
           "@type": "Article",
           headline: "Water softener for an apartment: what actually works",
           datePublished: "2026-07-28",
-          dateModified: "2026-07-29",
+          dateModified: "2026-08-12",
           author: { "@type": "Organization", name: "AG Water Softener" },
         }),
       },
@@ -89,12 +89,12 @@ function WaterSoftenerForApartmentPage() {
           Ana · Client Support | AG Water Softener
         </p>
         <p className="text-sm text-muted-foreground">
-          Published Jul 28, 2026 · Updated Jul 29, 2026
+          Published Jul 28, 2026 · Updated Aug 12, 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            For years, the honest answer to hard water in an apartment was "you can't fix it." Whole-house softeners need a plumber, a drain line, and the landlord's or HOA's blessing to cut into the building supply. So renters and condo owners got told to rinse with vinegar and live with it.
+            For years, the answer to hard water in an apartment was "you can't fix it." Whole-house softeners need a plumber, a drain line, and the landlord's or HOA's blessing to cut into the building supply. So renters and condo owners got told to rinse with vinegar and live with it.
           </p>
           <p>
             That advice is out of date. Ion exchange, the chemistry inside a whole-house system, now comes in a unit small enough to hang in your shower. Here is what your real options look like, ranked by what they actually accomplish.
@@ -118,10 +118,10 @@ function WaterSoftenerForApartmentPage() {
             This is the direct fix. A shower-mounted softener holds a bed of ion-exchange resin, the same material inside a $2,000 whole-house tank, sized for one bathroom. Water passes through on its way to the showerhead, the resin swaps out calcium and magnesium, and the water arriving at your hair is soft. When the resin fills up, an automatic salt recharge from the included brine tank resets it.
           </p>
           <p>
-            <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> is our version: it mounts on the shower arm in about ten minutes, needs no tools and no plumbing changes, and touches nothing the building owns. It ships with test strips, so you can measure your water before and after instead of trusting the box. $249, 60-day money-back guarantee.
+            <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> is our version: it mounts on the shower arm in about ten minutes, needs no tools and no plumbing changes, and touches nothing the building owns. A $10 test strip measures your water before and after. $249, 60-day money-back guarantee.
           </p>
           <p>
-            The honest limitation: it softens one shower, not your dishwasher or laundry. For most people in apartments, the shower is where hard water hurts, because that is where it meets your hair and skin.
+            The limitation: it softens one shower, not your dishwasher or laundry. For most people in apartments, the shower is where hard water hurts, because that is where it meets your hair and skin.
           </p>
         </div>
 

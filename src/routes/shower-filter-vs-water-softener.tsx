@@ -48,7 +48,7 @@ export const Route = createFileRoute("/shower-filter-vs-water-softener")({
           "@type": "Article",
           headline: "Shower filter vs water softener: which one fixes your water",
           datePublished: "2026-07-28",
-          dateModified: "2026-07-29",
+          dateModified: "2026-08-12",
           author: { "@type": "Organization", name: "AG Water Softener" },
         }),
       },
@@ -103,7 +103,7 @@ function ShowerFilterVsSoftenerPage() {
           Ana · Client Support | AG Water Softener
         </p>
         <p className="text-sm text-muted-foreground">
-          Published Jul 28, 2026 · Updated Jul 29, 2026
+          Published Jul 28, 2026 · Updated Aug 12, 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
@@ -204,10 +204,10 @@ function ShowerFilterVsSoftenerPage() {
             Whole-house softeners fix hardness, but they need a plumber, a drain line, and permission to cut into the building's supply. If you rent, own a condo, or just don't want a $2,000 install, that door is closed.
           </p>
           <p>
-            This is the gap <a href="/" className="underline hover:opacity-70">a shower water softener</a> fills. The AG Water Softener is a full ion-exchange unit sized for one shower. It installs on the shower arm in about ten minutes with no tools, recharges with plain non-iodized salt, and comes with test strips so you can measure the before and after yourself instead of taking our word for it. It costs $249 and carries a 60-day money-back guarantee.
+            This is the gap <a href="/" className="underline hover:opacity-70">a shower water softener</a> fills. The AG Water Softener is a full ion-exchange unit sized for one shower. It installs on the shower arm in about ten minutes with no tools, recharges with plain non-iodized salt, and a $10 test strip lets you measure the before and after yourself. It costs $249 and carries a 60-day money-back guarantee.
           </p>
           <p>
-            We'll be direct about the trade: AG does not remove chlorine. If your water is both hard and heavily chlorinated, soften first, because hardness causes the buildup, then add a basic filter if the chlorine still bothers you.
+            The trade: AG does not remove chlorine. If your water is both hard and heavily chlorinated, soften first, because hardness causes the buildup, then add a basic filter if the chlorine still bothers you.
           </p>
         </div>
 

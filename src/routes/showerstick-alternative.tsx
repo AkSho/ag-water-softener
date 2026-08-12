@@ -94,7 +94,7 @@ function ShowerstickAlternativePage() {
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            The ShowerStick deserves credit before comparison. It has been softening showers with real ion-exchange resin since 2004, it's handmade in the USA by a family company, and its long review base is a big part of why anyone believes a shower-sized softener works at all. If you've researched this category, you found it, and you found people vouching for it, honestly and for good reason.
+            The ShowerStick deserves credit before comparison. It has been softening showers with real ion-exchange resin since 2004, it's handmade in the USA by a family company, and its long review base is a big part of why anyone believes a shower-sized softener works at all. If you've researched this category, you found it, and you found people vouching for it, for good reason.
           </p>
           <p>
             <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> uses the same chemistry. The differences are in everything around the chemistry: how each unit lives in your shower, how it recharges, and the terms behind the purchase. Here is the comparison we'd want if we were the ones shopping.
@@ -154,9 +154,9 @@ function ShowerstickAlternativePage() {
                   <td className="border border-border px-4 py-3">Automatic recharge from an included brine tank; add salt and the cycle runs itself</td>
                 </tr>
                 <tr>
-                  <td className="border border-border px-4 py-3 font-semibold">Proof included</td>
-                  <td className="border border-border px-4 py-3">Hard water test strips</td>
-                  <td className="border border-border px-4 py-3">Test strips in the box</td>
+                  <td className="border border-border px-4 py-3 font-semibold">Verifying it works</td>
+                  <td className="border border-border px-4 py-3">Included test strips</td>
+                  <td className="border border-border px-4 py-3">Any $10 test strip reads the output near zero</td>
                 </tr>
                 <tr className="bg-surface/50">
                   <td className="border border-border px-4 py-3 font-semibold">Price</td>
@@ -189,14 +189,14 @@ function ShowerstickAlternativePage() {
         </div>
 
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
-          Reading that table fairly
+          What the table doesn't show
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            The last row is theirs and we won't pretend otherwise: a product with twenty years of users has answered questions a newer one hasn't. Their regeneration routine also isn't the horror story competitors sometimes imply; their customers describe it as easy and about five minutes.
+            The last row is theirs: a product with twenty years of users has answered questions a newer one hasn't. Their regeneration routine also isn't the horror story competitors sometimes imply; their customers describe it as easy and about five minutes.
           </p>
           <p>
-            The honest case for AG is smaller and specific. It lives at the shower arm instead of hanging in the shower with you, it works with the showerhead you already like, its recharge runs automatically from an included brine tank, and you get 60 days to change your mind instead of 14. Softeners don't fail people on chemistry; they fail when the upkeep stops happening or the hardware never fit the bathroom. Those are the margins AG is built on.
+            The case for AG is smaller and specific. It lives at the shower arm instead of hanging in the shower with you, it works with the showerhead you already like, its recharge runs automatically from an included brine tank, and you get 60 days to change your mind instead of 14. Softeners fail when the upkeep stops happening or the hardware never fit the bathroom. Those are the margins AG is built on.
           </p>
         </div>
 
@@ -205,7 +205,7 @@ function ShowerstickAlternativePage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            If the longest track record in the category matters most to you and the handheld-head setup suits your shower, the ShowerStick is a legitimate buy, and we'd genuinely rather you own one than a fake-softener showerhead. If you want the same soft water at the shower arm, with your own showerhead, an automatic recharge, and a 60-day window to verify it with the included strips, that's the case for AG.
+            If the longest track record in the category matters most to you and the handheld-head setup suits your shower, the ShowerStick is a legitimate buy, and we'd genuinely rather you own one than a fake-softener showerhead. If you want the same soft water at the shower arm, with your own showerhead, an automatic recharge, and a 60-day window to verify it with a test strip, that's the case for AG.
           </p>
           <p>
             Either way, confirm your water is actually hard first: <a href="https://www.myapartmentwaterquality.com/" className="underline hover:opacity-70">check it free with our lookup tool</a> or run a strip. Both products are wasted on soft water.
