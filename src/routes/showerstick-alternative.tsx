@@ -24,10 +24,10 @@ export const Route = createFileRoute("/showerstick-alternative")({
       {
         name: "description",
         content:
-          "The ShowerStick proved shower softening works. Here is an honest comparison with the AG Water Softener: same chemistry, different design and upkeep.",
+          "Same ion-exchange chemistry as the ShowerStick, different recharge routine and terms. The full side-by-side comparison. $249, in stock.",
       },
       { property: "og:title", content: "Affordable ShowerStick Alternative: In Stock at $249" },
-      { property: "og:description", content: "The ShowerStick proved shower softening works. Here is an honest comparison with the AG Water Softener: same chemistry, different design and upkeep." },
+      { property: "og:description", content: "Same ion-exchange chemistry as the ShowerStick, different recharge routine and terms. The full side-by-side comparison. $249, in stock." },
       { property: "og:url", content: "https://agsoftener.com/showerstick-alternative" },
       { property: "og:type", content: "article" },
       { property: "og:image", content: "https://agsoftener.com/assets/hero.png" },
@@ -90,6 +90,50 @@ function ShowerstickAlternativePage() {
         </p>
         <p className="text-sm text-muted-foreground">
           Published Jul 28, 2026 · Updated Aug 12, 2026
+        </p>
+
+        <div
+          className="mt-10 grid gap-0 overflow-hidden border border-border sm:grid-cols-[1fr_auto_1fr]"
+          role="img"
+          aria-label="ShowerStick compared with the AG Water Softener: same chemistry, different design"
+        >
+          {/* AG panel */}
+          <div className="flex flex-col items-center bg-background p-6 sm:p-8">
+            <img
+              src="/assets/cross-section.png"
+              alt=""
+              width={1254}
+              height={1254}
+              loading="lazy"
+              className="w-full max-w-[240px] h-auto"
+            />
+            <p className="mt-4 text-center font-display text-lg leading-tight sm:text-xl">AG Water Softener</p>
+            <div className="mt-4 space-y-1 text-center text-[14px] text-foreground/80">
+              <p>$249</p>
+              <p>Automatic recharge</p>
+              <p>60-day guarantee</p>
+              <p>In stock</p>
+            </div>
+          </div>
+
+          {/* VS mark */}
+          <div className="flex items-center justify-center border-y border-border bg-surface px-4 py-2 sm:border-x sm:border-y-0 sm:py-0">
+            <span className="text-[13px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">vs</span>
+          </div>
+
+          {/* ShowerStick panel — typographic only */}
+          <div className="flex flex-col items-center justify-center bg-surface/40 p-6 sm:p-8">
+            <p className="text-center font-display text-lg leading-tight sm:text-xl">ShowerStick</p>
+            <div className="mt-4 space-y-1 text-center text-[14px] text-foreground/80">
+              <p>$280</p>
+              <p>Manual weekly recharge</p>
+              <p>14-day returns</p>
+              <p>Handmade batches, often sells out</p>
+            </div>
+          </div>
+        </div>
+        <p className="mt-4 text-center text-[14px] text-muted-foreground">
+          Same chemistry. The differences are around it.
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">

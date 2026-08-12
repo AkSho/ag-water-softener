@@ -92,6 +92,45 @@ function JolieAlternativePage() {
           Published Jul 28, 2026 · Updated Aug 12, 2026
         </p>
 
+        {/* Split-card hero */}
+        <div
+          className="mt-10 grid gap-0 overflow-hidden border border-border sm:grid-cols-[1fr_auto_1fr]"
+          role="img"
+          aria-label="AG Water Softener removes hardness, Jolie removes chlorine: different devices for different problems"
+        >
+          {/* AG panel */}
+          <div className="flex flex-col items-center bg-background p-6 sm:p-8">
+            <img
+              src="/assets/cross-section.png"
+              alt=""
+              width={1254}
+              height={1254}
+              loading="lazy"
+              className="w-full max-w-[240px] h-auto"
+            />
+            <p className="mt-4 text-center font-display text-lg leading-tight sm:text-xl">AG Water Softener</p>
+            <div className="mt-4 space-y-1 text-center text-[14px] text-foreground/80">
+              <p>The AG Water Softener removes hardness. That's the job filters can't do.</p>
+            </div>
+          </div>
+
+          {/* Connector */}
+          <div className="flex items-center justify-center border-y border-border bg-surface px-4 py-2 sm:border-x sm:border-y-0 sm:py-0">
+            <span className="text-[13px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">different jobs</span>
+          </div>
+
+          {/* Jolie panel — typographic only */}
+          <div className="flex flex-col items-center justify-center bg-surface/40 p-6 sm:p-8">
+            <p className="text-center font-display text-lg leading-tight sm:text-xl">Jolie</p>
+            <div className="mt-4 space-y-1 text-center text-[14px] text-foreground/80">
+              <p>Jolie removes chlorine. It can't remove hardness.</p>
+            </div>
+          </div>
+        </div>
+        <p className="mt-4 text-center text-[14px] text-muted-foreground">
+          Different devices for different problems. A $10 strip tells you which one you have.
+        </p>
+
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
             The Jolie is a well-made chlorine filter. Its KDF-55 and calcium sulfite media reduce chlorine and heavy metals, the pressure holds up, and if chlorine was your problem, it probably helped.

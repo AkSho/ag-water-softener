@@ -22,13 +22,13 @@ export const Route = createFileRoute(
 )({
   head: () => ({
     meta: [
-      { title: "Do shower filters work for hard water? The honest answer" },
+      { title: "Do Shower Filters Work for Hard Water? No, and What Works Instead" },
       {
         name: "description",
         content:
           "Shower filters remove chlorine, not hardness. Calcium and magnesium pass straight through carbon and KDF. Here is what removes them instead.",
       },
-      { property: "og:title", content: "Do shower filters work for hard water? The honest answer" },
+      { property: "og:title", content: "Do Shower Filters Work for Hard Water? No, and What Works Instead" },
       { property: "og:description", content: "Shower filters remove chlorine, not hardness. Calcium and magnesium pass straight through carbon and KDF. Here is what removes them instead." },
       { property: "og:url", content: "https://agsoftener.com/do-shower-filters-work-for-hard-water" },
       { property: "og:type", content: "article" },
