@@ -338,17 +338,7 @@ async function createCheckoutSession(request: Request) {
     automatic_tax: { enabled: true },
     shipping_address_collection: { allowed_countries: ["US"] },
     shipping_options: [
-      {
-        shipping_rate_data: {
-          type: "fixed_amount",
-          fixed_amount: { amount: 0, currency: "usd" },
-          display_name: "Free shipping",
-          delivery_estimate: {
-            minimum: { unit: "business_day", value: 3 },
-            maximum: { unit: "business_day", value: 7 },
-          },
-        },
-      },
+      { shipping_rate: "shr_1U44sIAzOIlBktzoppQFhxkl" },
     ],
     phone_number_collection: { enabled: true },
     payment_intent_data: { statement_descriptor_suffix: "AGSOFTENER" },
