@@ -1,4 +1,4 @@
-const AIRTABLE_TABLE = "Recovery_Emails";
+const AIRTABLE_TABLE = "Recovery";
 
 interface RecoveryRecord {
   email: string;
