@@ -492,13 +492,17 @@ async function handleStripeWebhook(request: Request) {
 
     await syncToEsp(payload);
 
-    // Part A: confirmation email (idempotent via Stripe metadata)
-    sendConfirmationEmail(session).catch((err) => {
-      console.error("Confirmation email handler error", err);
-    });
+    // Part A + B: await both before returning so the runtime stays alive
+    const [emailResult, capiResult] = await Promise.allSettled([
+      sendConfirmationEmail(session),
+      sendMetaCapiPurchase({ session, request, lineItems }),
+    ]);
 
-    // Part B: enriched CAPI Purchase
-    sendMetaCapiPurchase({ session, request, lineItems }).catch(() => {});
+    console.info("Webhook post-tasks settled", {
+      sessionId: session.id,
+      email: emailResult.status === "fulfilled" ? "sent" : `failed: ${(emailResult as PromiseRejectedResult).reason}`,
+      capi: capiResult.status === "fulfilled" ? "sent" : `failed: ${(capiResult as PromiseRejectedResult).reason}`,
+    });
 
     console.info("Stripe checkout completed", {
       eventId: stripeEvent.id,
