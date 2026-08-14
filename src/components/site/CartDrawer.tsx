@@ -36,6 +36,8 @@ export function CartDrawer() {
       const cookies = Object.fromEntries(
         document.cookie.split("; ").filter(Boolean).map((c) => c.split("=")),
       );
+      let ft: Record<string, unknown> = {};
+      try { ft = JSON.parse(localStorage.getItem("ag_ft") || "{}"); } catch { /* ignore */ }
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -44,6 +46,12 @@ export function CartDrawer() {
           includeSpare: hasSpare,
           fbp: cookies._fbp || "",
           fbc: cookies._fbc || "",
+          ft_src: ft.src || "",
+          ft_ref: ft.ref || "",
+          ft_lp: ft.lp || "",
+          ft_ts: ft.ts || "",
+          ft_mlp: ft.mlp || "",
+          ft_utm: ft.utm ? JSON.stringify(ft.utm) : "",
         }),
       });
       const payload = (await response.json().catch(() => null)) as { url?: string } | null;

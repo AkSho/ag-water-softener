@@ -15,6 +15,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { CartProvider } from "@/lib/cart";
 import { CartDrawer } from "@/components/site/CartDrawer";
 import { Toaster } from "@/components/ui/sonner";
+import { initFirstTouch } from "@/lib/first-touch";
 
 function NotFoundComponent() {
   return (
@@ -134,6 +135,8 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
   const isFirstLoad = useRef(true);
+
+  useEffect(() => { initFirstTouch(); }, []);
 
   useEffect(() => {
     const unsub = router.subscribe("onResolved", () => {

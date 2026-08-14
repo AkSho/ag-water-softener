@@ -8,6 +8,7 @@ import {
   extractFirstName,
 } from "./email";
 import { hasRecentRecovery, logRecoverySend } from "./recovery-log";
+import { writeOrderRow } from "./orders-log";
 
 let stripeClient: Stripe | undefined;
 const processedSessions = new Set<string>();
@@ -17,6 +18,12 @@ type CheckoutBody = {
   includeSpare?: unknown;
   fbp?: unknown;
   fbc?: unknown;
+  ft_src?: unknown;
+  ft_ref?: unknown;
+  ft_lp?: unknown;
+  ft_ts?: unknown;
+  ft_mlp?: unknown;
+  ft_utm?: unknown;
 };
 
 type EspPurchasePayload = {
@@ -58,6 +65,10 @@ function requiredEnv(name: string) {
 
 function isPositiveInteger(value: unknown): value is number {
   return typeof value === "number" && Number.isInteger(value) && value >= 1;
+}
+
+function ftString(value: unknown): string {
+  return typeof value === "string" ? value.slice(0, 200) : "";
 }
 
 function getPdpCancelUrl(baseUrl: string, referrer?: string | null) {
@@ -357,6 +368,12 @@ async function createCheckoutSession(request: Request) {
       source: "ag_pdp",
       fbp,
       fbc,
+      ft_src: ftString(body.ft_src),
+      ft_ref: ftString(body.ft_ref),
+      ft_lp: ftString(body.ft_lp),
+      ft_ts: ftString(body.ft_ts),
+      ft_mlp: ftString(body.ft_mlp),
+      ft_utm: ftString(body.ft_utm),
     },
   };
 
@@ -492,16 +509,36 @@ async function handleStripeWebhook(request: Request) {
 
     await syncToEsp(payload);
 
-    // Part A + B: await both before returning so the runtime stays alive
-    const [emailResult, capiResult] = await Promise.allSettled([
+    // Part A + B + D: await all before returning so the runtime stays alive
+    const orderTs = new Date().toISOString();
+    const [emailResult, capiResult, ordersResult] = await Promise.allSettled([
       sendConfirmationEmail(session),
       sendMetaCapiPurchase({ session, request, lineItems }),
+      writeOrderRow({
+        email: session.customer_details?.email || "",
+        name: session.customer_details?.name || "",
+        amount: typeof session.amount_total === "number" ? session.amount_total / 100 : 0,
+        stripeSessionId: session.id,
+        eventId: stripeEvent.id,
+        orderTs,
+        ftSrc: session.metadata?.ft_src || "",
+        ftRef: session.metadata?.ft_ref || "",
+        ftLp: session.metadata?.ft_lp || "",
+        ftMlp: session.metadata?.ft_mlp || "",
+        ftTs: session.metadata?.ft_ts || "",
+        ftUtm: session.metadata?.ft_utm || "",
+      }),
     ]);
 
     console.info("Webhook post-tasks settled", {
       sessionId: session.id,
       email: emailResult.status === "fulfilled" ? "sent" : `failed: ${(emailResult as PromiseRejectedResult).reason}`,
       capi: capiResult.status === "fulfilled" ? "sent" : `failed: ${(capiResult as PromiseRejectedResult).reason}`,
+      orders_row: ordersResult.status === "fulfilled"
+        ? (ordersResult.value as { ok: boolean; id?: string; error?: string }).ok
+          ? `written: ${(ordersResult.value as { id?: string }).id}`
+          : `failed: ${(ordersResult.value as { error?: string }).error}`
+        : `exception: ${(ordersResult as PromiseRejectedResult).reason}`,
     });
 
     console.info("Stripe checkout completed", {
