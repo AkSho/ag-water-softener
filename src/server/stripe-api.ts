@@ -535,9 +535,9 @@ async function handleStripeWebhook(request: Request) {
       email: emailResult.status === "fulfilled" ? "sent" : `failed: ${(emailResult as PromiseRejectedResult).reason}`,
       capi: capiResult.status === "fulfilled" ? "sent" : `failed: ${(capiResult as PromiseRejectedResult).reason}`,
       orders_row: ordersResult.status === "fulfilled"
-        ? (ordersResult.value as { ok: boolean; id?: string; error?: string }).ok
-          ? `written: ${(ordersResult.value as { id?: string }).id}`
-          : `failed: ${(ordersResult.value as { error?: string }).error}`
+        ? (ordersResult.value as { ok: boolean; id?: string; error?: string; attempt?: number }).ok
+          ? `written: ${(ordersResult.value as { id?: string }).id} (attempt ${(ordersResult.value as { attempt?: number }).attempt})`
+          : `failed: ${(ordersResult.value as { error?: string }).error} (attempt ${(ordersResult.value as { attempt?: number }).attempt})`
         : `exception: ${(ordersResult as PromiseRejectedResult).reason}`,
     });
 

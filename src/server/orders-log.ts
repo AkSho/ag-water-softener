@@ -91,27 +91,43 @@ export async function writeOrderRow(record: OrderRecord): Promise<{ ok: boolean;
     PromisedBy: promiseDate(record.orderTs),
   };
 
-  try {
-    const response = await fetch(
-      `https://api.airtable.com/v0/${encodeURIComponent(config.baseId)}/${encodeURIComponent(ORDERS_TABLE)}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${config.apiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ records: [{ fields }] }),
+  const url = `https://api.airtable.com/v0/${encodeURIComponent(config.baseId)}/${encodeURIComponent(ORDERS_TABLE)}`;
+  const opts: RequestInit = {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${config.apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ records: [{ fields }] }),
+  };
+
+  for (const attempt of [1, 2] as const) {
+    try {
+      const response = await fetch(url, opts);
+
+      if (!response.ok) {
+        const detail = await response.text();
+        const msg = `airtable_${response.status}: ${detail.slice(0, 300)}`;
+        if (attempt === 1 && response.status >= 500) {
+          console.warn(`orders_row_attempt1 failed (retrying): ${msg}`);
+          await new Promise((r) => setTimeout(r, 2500));
+          continue;
+        }
+        return { ok: false, error: msg, attempt };
       }
-    );
 
-    if (!response.ok) {
-      const detail = await response.text();
-      return { ok: false, error: `airtable_${response.status}: ${detail.slice(0, 300)}` };
+      const data = (await response.json()) as { records: Array<{ id: string }> };
+      return { ok: true, id: data.records?.[0]?.id, attempt };
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (attempt === 1) {
+        console.warn(`orders_row_attempt1 exception (retrying): ${msg}`);
+        await new Promise((r) => setTimeout(r, 2500));
+        continue;
+      }
+      return { ok: false, error: msg, attempt };
     }
-
-    const data = (await response.json()) as { records: Array<{ id: string }> };
-    return { ok: true, id: data.records?.[0]?.id };
-  } catch (err) {
-    return { ok: false, error: err instanceof Error ? err.message : String(err) };
   }
+
+  return { ok: false, error: "unreachable" };
 }
