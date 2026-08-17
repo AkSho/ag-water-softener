@@ -1,0 +1,13 @@
+name: Warm PDP cache
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  warm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch PDP
+        run: curl -s -o /dev/null -w "status=%{http_code} ttfb=%{time_starttransfer}s\n" https://agsoftener.com/

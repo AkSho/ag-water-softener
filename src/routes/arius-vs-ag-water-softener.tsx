@@ -118,7 +118,7 @@ function AriusVsAgPage() {
           <div className="flex flex-col items-center bg-background p-6 sm:p-8">
             <img
               src="/assets/cross-section.png"
-              alt=""
+              alt="Cross-section of the AG cartridge showing the ion-exchange resin bed inside"
               width={1254}
               height={1254}
               loading="lazy"
