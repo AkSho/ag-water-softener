@@ -32,10 +32,10 @@ export const Route = createFileRoute("/arius-vs-ag-water-softener")({
       {
         name: "description",
         content:
-          "The Arius One and AG Water Softener both use ion-exchange resin. Here is how they compare on regeneration, availability, warranty, and price.",
+          "The Arius One (formerly the Aquus One) and the AG Water Softener both use ion-exchange resin. Here is how they compare on regeneration, availability, warranty, and price.",
       },
       { property: "og:title", content: "Arius vs AG Water Softener: preorder-stage comparison" },
-      { property: "og:description", content: "The Arius One and AG Water Softener both use ion-exchange resin. Here is how they compare on regeneration, availability, warranty, and price." },
+      { property: "og:description", content: "The Arius One (formerly the Aquus One) and the AG Water Softener both use ion-exchange resin. Here is how they compare on regeneration, availability, warranty, and price." },
       { property: "og:url", content: "https://agsoftener.com/arius-vs-ag-water-softener" },
       { property: "og:type", content: "article" },
       { property: "og:image", content: "https://agsoftener.com/assets/hero.png" },
