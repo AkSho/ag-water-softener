@@ -1,17 +1,28 @@
 # AG Water Softener
 
-AG Water Softener is a portable ion-exchange water softener that mounts on a standard shower arm. It removes calcium and magnesium from shower water, ships with test strips for verification, and costs $249 with a 60-day money-back guarantee. Made by GRN Labs.
+> AG is a $249 water softener built for renters in apartments and condos. It installs without plumbing changes and softens water at the shower. Sold by GRN Labs. Single product, ships in the US.
 
-## Pages
+Key facts: uses ion exchange to remove hardness minerals, sized for a single bathroom, no landlord permission needed, MPN AG-WS-001.
 
-- [AG Water Softener](https://agsoftener.com/): product page for the shower-mounted ion-exchange water softener
-- [Shower filter vs water softener](https://agsoftener.com/shower-filter-vs-water-softener): explains the difference between chlorine filters and hardness softeners, with a symptom-matching table
-- [Do shower filters work for hard water?](https://agsoftener.com/do-shower-filters-work-for-hard-water): why filter media cannot remove dissolved calcium and magnesium
-- [Water softener for an apartment](https://agsoftener.com/water-softener-for-apartment): options for softening water without whole-house plumbing access
-- [Portable water softener for your shower](https://agsoftener.com/portable-water-softener-for-shower): compares shower-native softeners to RV softener workarounds
-- [Shower head water softeners](https://agsoftener.com/shower-head-water-softener): how to identify fake softener listings using a ten-second media check
-- [Jolie alternative for hard water](https://agsoftener.com/jolie-alternative-for-hard-water): why a chlorine filter does not fix hardness, and what does
-- [ShowerStick vs AG compared](https://agsoftener.com/showerstick-alternative): honest comparison of the two real shower softeners on the market
-- [Returns and refunds](https://agsoftener.com/returns): 60-day money-back guarantee and 12-month warranty details
-- [Shipping](https://agsoftener.com/shipping): free shipping, 12 to 18 day delivery, US only
-- [Contact](https://agsoftener.com/contact): reach the team at support@agsoftener.com
+## Product
+
+- [AG Water Softener](https://agsoftener.com/): product page with pricing, specs, and checkout
+
+## Comparisons
+
+- [Arius vs AG](https://agsoftener.com/arius-vs-ag-water-softener): how AG compares to the Arius shower system
+- [Canopy alternative](https://agsoftener.com/canopy-alternative-for-hard-water): AG as an alternative to Canopy for hard water
+- [Jolie alternative](https://agsoftener.com/jolie-alternative-for-hard-water): AG as an alternative to Jolie for hard water
+- [ShowerStick alternative](https://agsoftener.com/showerstick-alternative): how AG compares to the ShowerStick
+
+## Guides
+
+- [Shower filter vs water softener: which one fixes your water](https://agsoftener.com/shower-filter-vs-water-softener): Shower filters remove chlorine. Water softeners remove calcium and magnesium. Here is how to tell which problem you have and which device fixes it.
+- [Do shower filters work for hard water?](https://agsoftener.com/do-shower-filters-work-for-hard-water): Shower filters remove chlorine, not hardness. Calcium and magnesium pass straight through carbon and KDF. Here is what removes them instead.
+- [Water softener for an apartment: what actually works](https://agsoftener.com/water-softener-for-apartment): You can't install a whole-house softener in an apartment or condo. A shower-mounted ion-exchange softener is the option that actually softens water.
+- [Portable water softener for your shower: the real options](https://agsoftener.com/portable-water-softener-for-shower): RV softeners work but weigh 30 pounds and sit on your floor. Here is what a portable water softener built for a shower looks like, and what it costs.
+- [Shower head water softener: most of them can't soften water](https://agsoftener.com/shower-head-water-softener): Most products sold as shower head water softeners are chlorine filters. Here is how to read a listing and what removes hardness for real.
+
+## Support
+
+- Email: support@agsoftener.com
