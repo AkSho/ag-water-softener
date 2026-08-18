@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WaterSoftenerForApartmentRouteImport } from './routes/water-softener-for-apartment'
 import { Route as ThanksRouteImport } from './routes/thanks'
+import { Route as SoftwatercareVsShowerstickVsAgRouteImport } from './routes/softwatercare-vs-showerstick-vs-ag'
 import { Route as ShowerstickAlternativeRouteImport } from './routes/showerstick-alternative'
 import { Route as ShowerHeadWaterSoftenerRouteImport } from './routes/shower-head-water-softener'
 import { Route as ShowerFilterVsWaterSoftenerRouteImport } from './routes/shower-filter-vs-water-softener'
@@ -35,6 +36,12 @@ const ThanksRoute = ThanksRouteImport.update({
   path: '/thanks',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SoftwatercareVsShowerstickVsAgRoute =
+  SoftwatercareVsShowerstickVsAgRouteImport.update({
+    id: '/softwatercare-vs-showerstick-vs-ag',
+    path: '/softwatercare-vs-showerstick-vs-ag',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ShowerstickAlternativeRoute = ShowerstickAlternativeRouteImport.update({
   id: '/showerstick-alternative',
   path: '/showerstick-alternative',
@@ -114,6 +121,7 @@ export interface FileRoutesByFullPath {
   '/shower-filter-vs-water-softener': typeof ShowerFilterVsWaterSoftenerRoute
   '/shower-head-water-softener': typeof ShowerHeadWaterSoftenerRoute
   '/showerstick-alternative': typeof ShowerstickAlternativeRoute
+  '/softwatercare-vs-showerstick-vs-ag': typeof SoftwatercareVsShowerstickVsAgRoute
   '/thanks': typeof ThanksRoute
   '/water-softener-for-apartment': typeof WaterSoftenerForApartmentRoute
 }
@@ -130,6 +138,7 @@ export interface FileRoutesByTo {
   '/shower-filter-vs-water-softener': typeof ShowerFilterVsWaterSoftenerRoute
   '/shower-head-water-softener': typeof ShowerHeadWaterSoftenerRoute
   '/showerstick-alternative': typeof ShowerstickAlternativeRoute
+  '/softwatercare-vs-showerstick-vs-ag': typeof SoftwatercareVsShowerstickVsAgRoute
   '/thanks': typeof ThanksRoute
   '/water-softener-for-apartment': typeof WaterSoftenerForApartmentRoute
 }
@@ -147,6 +156,7 @@ export interface FileRoutesById {
   '/shower-filter-vs-water-softener': typeof ShowerFilterVsWaterSoftenerRoute
   '/shower-head-water-softener': typeof ShowerHeadWaterSoftenerRoute
   '/showerstick-alternative': typeof ShowerstickAlternativeRoute
+  '/softwatercare-vs-showerstick-vs-ag': typeof SoftwatercareVsShowerstickVsAgRoute
   '/thanks': typeof ThanksRoute
   '/water-softener-for-apartment': typeof WaterSoftenerForApartmentRoute
 }
@@ -165,6 +175,7 @@ export interface FileRouteTypes {
     | '/shower-filter-vs-water-softener'
     | '/shower-head-water-softener'
     | '/showerstick-alternative'
+    | '/softwatercare-vs-showerstick-vs-ag'
     | '/thanks'
     | '/water-softener-for-apartment'
   fileRoutesByTo: FileRoutesByTo
@@ -181,6 +192,7 @@ export interface FileRouteTypes {
     | '/shower-filter-vs-water-softener'
     | '/shower-head-water-softener'
     | '/showerstick-alternative'
+    | '/softwatercare-vs-showerstick-vs-ag'
     | '/thanks'
     | '/water-softener-for-apartment'
   id:
@@ -197,6 +209,7 @@ export interface FileRouteTypes {
     | '/shower-filter-vs-water-softener'
     | '/shower-head-water-softener'
     | '/showerstick-alternative'
+    | '/softwatercare-vs-showerstick-vs-ag'
     | '/thanks'
     | '/water-softener-for-apartment'
   fileRoutesById: FileRoutesById
@@ -214,6 +227,7 @@ export interface RootRouteChildren {
   ShowerFilterVsWaterSoftenerRoute: typeof ShowerFilterVsWaterSoftenerRoute
   ShowerHeadWaterSoftenerRoute: typeof ShowerHeadWaterSoftenerRoute
   ShowerstickAlternativeRoute: typeof ShowerstickAlternativeRoute
+  SoftwatercareVsShowerstickVsAgRoute: typeof SoftwatercareVsShowerstickVsAgRoute
   ThanksRoute: typeof ThanksRoute
   WaterSoftenerForApartmentRoute: typeof WaterSoftenerForApartmentRoute
 }
@@ -232,6 +246,13 @@ declare module '@tanstack/react-router' {
       path: '/thanks'
       fullPath: '/thanks'
       preLoaderRoute: typeof ThanksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/softwatercare-vs-showerstick-vs-ag': {
+      id: '/softwatercare-vs-showerstick-vs-ag'
+      path: '/softwatercare-vs-showerstick-vs-ag'
+      fullPath: '/softwatercare-vs-showerstick-vs-ag'
+      preLoaderRoute: typeof SoftwatercareVsShowerstickVsAgRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/showerstick-alternative': {
@@ -334,6 +355,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShowerFilterVsWaterSoftenerRoute: ShowerFilterVsWaterSoftenerRoute,
   ShowerHeadWaterSoftenerRoute: ShowerHeadWaterSoftenerRoute,
   ShowerstickAlternativeRoute: ShowerstickAlternativeRoute,
+  SoftwatercareVsShowerstickVsAgRoute: SoftwatercareVsShowerstickVsAgRoute,
   ThanksRoute: ThanksRoute,
   WaterSoftenerForApartmentRoute: WaterSoftenerForApartmentRoute,
 }
