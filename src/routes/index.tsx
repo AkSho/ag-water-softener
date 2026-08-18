@@ -75,7 +75,7 @@ export const Route = createFileRoute("/")({
               "deliveryTime": {
                 "@type": "ShippingDeliveryTime",
                 "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2, "unitCode": "DAY" },
-                "transitTime": { "@type": "QuantitativeValue", "minValue": 9, "maxValue": 13, "unitCode": "DAY" }
+                "transitTime": { "@type": "QuantitativeValue", "minValue": 11, "maxValue": 16, "unitCode": "DAY" }
               }
             },
             "hasMerchantReturnPolicy": {

@@ -44,7 +44,7 @@ export const Route = createFileRoute("/showerstick-alternative")({
           "@type": "Article",
           headline: "ShowerStick alternative: the side-by-side comparison",
           datePublished: "2026-07-28",
-          dateModified: "2026-08-12",
+          dateModified: "2026-08-18",
           author: { "@type": "Organization", name: "AG Water Softener" },
         }),
       },
@@ -89,7 +89,7 @@ function ShowerstickAlternativePage() {
           Ana · Client Support | AG Water Softener
         </p>
         <p className="text-sm text-muted-foreground">
-          Published Jul 28, 2026 · Updated Aug 12, 2026
+          Published Jul 28, 2026 · Updated Aug 18, 2026
         </p>
 
         <div
@@ -125,7 +125,7 @@ function ShowerstickAlternativePage() {
           <div className="flex flex-col items-center justify-center bg-surface/40 p-6 sm:p-8">
             <p className="text-center font-display text-lg leading-tight sm:text-xl">ShowerStick</p>
             <div className="mt-4 space-y-1 text-center text-[14px] text-foreground/80">
-              <p>$280</p>
+              <p>$260</p>
               <p>Manual weekly recharge</p>
               <p>14-day returns</p>
               <p>Handmade batches, often sells out</p>
@@ -204,7 +204,7 @@ function ShowerstickAlternativePage() {
                 </tr>
                 <tr className="bg-surface/50">
                   <td className="border border-border px-4 py-3 font-semibold">Price</td>
-                  <td className="border border-border px-4 py-3">$280</td>
+                  <td className="border border-border px-4 py-3">$260 <span className="text-[12px] text-muted-foreground">(on sale from $299, checked Aug 18, 2026)</span></td>
                   <td className="border border-border px-4 py-3">$249</td>
                 </tr>
                 <tr>
@@ -249,7 +249,7 @@ function ShowerstickAlternativePage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            If the longest track record in the category matters most to you and the handheld-head setup suits your shower, the ShowerStick is a legitimate buy, and we'd genuinely rather you own one than a fake-softener showerhead. If you want the same soft water at the shower arm, with your own showerhead, an automatic recharge, and a 60-day window to verify it with a test strip, that's the case for AG.
+            If the longest track record in the category matters most to you and the handheld-head setup suits your shower, the ShowerStick is a legitimate buy, and we'd genuinely rather you own one than a fake-softener showerhead. If you want the same soft water at the shower arm, with your own showerhead, an automatic recharge, and a 60-day window to verify it with a test strip, that's the case for AG. For a wider view that includes SoftWaterCare, see the <a href="/softwatercare-vs-showerstick-vs-ag" className="underline hover:opacity-70">three-way comparison</a>.
           </p>
           <p>
             Either way, confirm your water is actually hard first: <a href="https://www.myapartmentwaterquality.com/" className="underline hover:opacity-70">check it free with our lookup tool</a> or run a strip. Both products are wasted on soft water.
