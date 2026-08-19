@@ -4,16 +4,16 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 
 const PAGE_FAQS = [
   {
-    q: "Will this violate my lease?",
-    a: "A shower-arm unit is in the same category as swapping a showerhead: it threads on and off, and the original hardware goes back when you move out. No walls are opened and no building plumbing is modified. Check your lease if you're unsure, but there is nothing permanent involved.",
+    q: "Can I install a water softener in my apartment?",
+    a: "Yes. Shower-arm softeners thread on like a shower head, with no plumbing changes and nothing a landlord needs to approve. Portable RV softeners connect by hose. Only whole-house systems require installation you can\u2019t do in a rental.",
   },
   {
-    q: "Does it work in a condo I own?",
-    a: "Yes, and it's often the only route, since HOAs control the building supply lines even when you own the unit. Nothing outside your bathroom is touched.",
+    q: "Do shower head water softeners work?",
+    a: "Most products sold under that name are chlorine filters and can\u2019t remove hardness. The ones that work contain ion-exchange resin and recharge with salt. If a product doesn\u2019t mention resin and salt, it filters rather than softens.",
   },
   {
-    q: "What's the ongoing cost?",
-    a: "Plain non-iodized salt, sold in any grocery store, used to recharge the resin. No cartridge subscription.",
+    q: "How can you tell if an apartment has hard water?",
+    a: "Scale on the shower glass and coated-feeling hair are the usual signs, along with soap that rinses poorly. A test strip from the hardware store gives you a number in thirty seconds.",
   },
 ];
 
@@ -24,17 +24,33 @@ export const Route = createFileRoute("/water-softener-for-apartment")({
       {
         name: "description",
         content:
-          "You can't install a whole-house softener in an apartment or condo. A shower-mounted ion-exchange softener is the option that actually softens water.",
+          "You can put a water softener in an apartment without touching the plumbing. Here are the real options and what hard water costs over two years.",
       },
-      { property: "og:title", content: "Affordable Hard Water Softener for Apartments ($249)" },
-      { property: "og:description", content: "You can't install a whole-house softener in an apartment or condo. A shower-mounted ion-exchange softener is the option that actually softens water." },
-      { property: "og:url", content: "https://agsoftener.com/water-softener-for-apartment" },
+      {
+        property: "og:title",
+        content: "Affordable Hard Water Softener for Apartments ($249)",
+      },
+      {
+        property: "og:description",
+        content:
+          "You can put a water softener in an apartment without touching the plumbing. Here are the real options and what hard water costs over two years.",
+      },
+      {
+        property: "og:url",
+        content: "https://agsoftener.com/water-softener-for-apartment",
+      },
       { property: "og:type", content: "article" },
-      { property: "og:image", content: "https://agsoftener.com/assets/hero.png" },
+      {
+        property: "og:image",
+        content: "https://agsoftener.com/assets/hero.png",
+      },
       { property: "og:site_name", content: "AG Water Softener" },
     ],
     links: [
-      { rel: "canonical", href: "https://agsoftener.com/water-softener-for-apartment" },
+      {
+        rel: "canonical",
+        href: "https://agsoftener.com/water-softener-for-apartment",
+      },
     ],
     scripts: [
       {
@@ -42,10 +58,14 @@ export const Route = createFileRoute("/water-softener-for-apartment")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Article",
-          headline: "Water softener for an apartment: what actually works",
+          headline:
+            "Water softener for an apartment: what actually works",
           datePublished: "2026-07-28",
-          dateModified: "2026-08-12",
-          author: { "@type": "Organization", name: "AG Water Softener" },
+          dateModified: "2026-08-19",
+          author: {
+            "@type": "Organization",
+            name: "AG Water Softener",
+          },
         }),
       },
       {
@@ -66,8 +86,18 @@ export const Route = createFileRoute("/water-softener-for-apartment")({
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Home", item: "https://agsoftener.com/" },
-            { "@type": "ListItem", position: 2, name: "Water softener for an apartment", item: "https://agsoftener.com/water-softener-for-apartment" },
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: "https://agsoftener.com/",
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Water softener for an apartment",
+              item: "https://agsoftener.com/water-softener-for-apartment",
+            },
           ],
         }),
       },
@@ -85,19 +115,16 @@ function WaterSoftenerForApartmentPage() {
         <h1 className="font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
           Water softener for an apartment: what actually works
         </h1>
-        <p className="mt-3 text-sm text-muted-foreground">
-          Ana · Client Support | AG Water Softener
-        </p>
         <p className="text-sm text-muted-foreground">
-          Published Jul 28, 2026 · Updated Aug 12, 2026
+          Published Jul 28, 2026 · Updated Aug 19, 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            For years, the answer to hard water in an apartment was "you can't fix it." Whole-house softeners need a plumber, a drain line, and the landlord's or HOA's blessing to cut into the building supply. So renters and condo owners got told to rinse with vinegar and live with it.
-          </p>
-          <p>
-            That advice is out of date. Ion exchange, the chemistry inside a whole-house system, now comes in a unit small enough to hang in your shower. Here is what your real options look like, ranked by what they actually accomplish.
+            A water softener can work in an apartment. The whole-house version is
+            off the table, so the fix happens at the shower instead. This page
+            covers your unit; building-wide systems are a landlord purchase, and
+            a different conversation.
           </p>
         </div>
 
@@ -111,54 +138,188 @@ function WaterSoftenerForApartmentPage() {
         />
 
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
-          Option 1: a shower water softener
+          The three real options
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            This is the direct fix. A shower-mounted softener holds a bed of ion-exchange resin, the same material inside a $2,000 whole-house tank, sized for one bathroom. Water passes through on its way to the showerhead, the resin swaps out calcium and magnesium, and the water arriving at your hair is soft. When the resin fills up, an automatic salt recharge from the included brine tank resets it.
+            <strong>A shower-arm softener.</strong> An ion-exchange unit that
+            threads onto the arm behind your shower head. It takes no floor space
+            and needs no plumbing changes, so there's nothing to ask a landlord
+            about. This is what we make, the{" "}
+            <a href="/" className="underline hover:opacity-70">
+              AG Water Softener
+            </a>
+            , and two competitors make true softeners in the same class. The{" "}
+            <a
+              href="/softwatercare-vs-showerstick-vs-ag"
+              className="underline hover:opacity-70"
+            >
+              three-way comparison
+            </a>{" "}
+            covers how they differ on recharge routines and terms.
           </p>
           <p>
-            <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> is our version: it mounts on the shower arm in about ten minutes, needs no tools and no plumbing changes, and touches nothing the building owns. A $10 test strip measures your water before and after. $249, 60-day money-back guarantee.
+            <strong>
+              A{" "}
+              <a
+                href="/portable-water-softener-for-shower"
+                className="underline hover:opacity-70"
+              >
+                portable RV softener
+              </a>
+              .
+            </strong>{" "}
+            These genuinely soften, and prices run from about $165 for compact
+            units to about $280 for larger tanks. The tradeoff is bulk: a tank of
+            about 30 pounds that lives on your shower floor and connects by hose.
+            If you have a big shower and don't mind the tank, they work.
           </p>
           <p>
-            The limitation: it softens one shower, not your dishwasher or laundry. For most people in apartments, the shower is where hard water hurts, because that is where it meets your hair and skin.
+            <strong>Wait until you own.</strong> A whole-house system softens
+            every tap and protects the water heater. It also runs several
+            thousand dollars all-in and requires additional plumbing work, which
+            is why it's perfect for homeowners. If you're renting short-term in a
+            soft-water city, doing nothing is a legitimate answer too.
+          </p>
+          <p>
+            What doesn't belong on this list: shower filters. That surprises a
+            lot of people, so it gets its own section.
           </p>
         </div>
 
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
-          Option 2: a shower filter
+          If you already tried a filter
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            Cheaper, and useful for a different problem. Filters remove chlorine, which helps if your city's water is soft but heavily treated. They do not remove calcium or magnesium, so if your issue is crusty fixtures, coated hair, or soap that won't lather, a filter will disappoint you. <a href="/shower-filter-vs-water-softener" className="underline hover:opacity-70">Filters and softeners do different jobs</a>, and buying the wrong one is the most common mistake in this category.
+            Plenty of renters buy a filtered shower head first. The reviews are
+            good and the price is reasonable. It just{" "}
+            <a
+              href="/do-shower-filters-work-for-hard-water"
+              className="underline hover:opacity-70"
+            >
+              doesn't work on hardness
+            </a>
+            , because it was never built to. Carbon and KDF media remove
+            chlorine, and they do that job well. Calcium and magnesium pass
+            straight through, which is why your water still leaves film on the
+            glass and your hair still feels coated.
+          </p>
+          <p>
+            The label rarely helps. Products sold as "water softener shower
+            heads" are usually chlorine filters with an optimistic name. The test
+            is the mechanism: if it doesn't contain ion-exchange resin and take
+            salt, it can't soften.{" "}
+            <a
+              href="/shower-filter-vs-water-softener"
+              className="underline hover:opacity-70"
+            >
+              Shower filter vs water softener
+            </a>{" "}
+            walks through the chemistry.
+          </p>
+          <p>
+            None of this makes filters a scam. Chlorine removal is a real
+            benefit, and the two devices solve different problems. It just means
+            a filter can't be the answer to hard water, no matter what the
+            listing says.
           </p>
         </div>
 
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
-          Option 3: under-sink or countertop units
+          Can I install a water softener in my apartment?
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            These soften or filter drinking water at one tap. Fine for what they do, but they don't reach the shower, and the shower is usually the complaint.
+            Yes. A shower-arm unit installs the way a shower head does: unthread
+            the old one and thread the new one on. Nothing about it needs
+            landlord permission, because nothing about it is permanent. Portable
+            RV units need even less, just a hose connection. The only version
+            that requires permission and a plumber is the whole-house system, and
+            that's the one renters skip.
           </p>
         </div>
 
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
-          Option 4: ask the landlord or HOA for a building system
+          How to tell if your apartment has hard water
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            Worth one email if hard water is damaging appliances building-wide, since that costs the owner money too. In practice this rarely goes anywhere, and even a yes takes months. Treat it as a bonus, not a plan.
+            The signs show up on their own. White scale builds on the shower
+            glass and fixtures, and hair starts feeling coated a few days after
+            every wash. Soap gives it away too, either refusing to lather or
+            refusing to rinse clean. For a number, a hardness test strip costs a
+            few bucks at any hardware store and reads in thirty seconds.
+          </p>
+          <p>
+            Location is a guide, but a rough one. Las Vegas has a hard-water
+            reputation and measures 291 ppm by its own utility's report. Madison,
+            Wisconsin has no such reputation and measures harder, at 18 to 20
+            grains per gallon by the city's numbers. Test rather than guess.
           </p>
         </div>
 
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
-          First: confirm you actually have hard water
+          What hard water costs over two years
         </h2>
-        <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
-          <p>
-            Before buying anything, <a href="https://www.myapartmentwaterquality.com/" className="underline hover:opacity-70">check your building's water free</a> with our lookup tool, or spend $10 on test strips. Above about 120 ppm (7 gpg) you're in hard territory; many US cities run 200 to 300. If your reading comes back soft, skip the softener entirely and consider whether chlorine is your real complaint.
+        <div className="mt-6 text-[15px] leading-[1.7] text-foreground/90">
+          <p className="mb-6">
+            The purchase price is the smaller number. What separates the options
+            is what they consume.
           </p>
+
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse border border-border text-[14px] leading-[1.6]">
+              <thead>
+                <tr className="bg-surface">
+                  <th className="border border-border px-4 py-3 text-left font-semibold" />
+                  <th className="border border-border px-4 py-3 text-left font-semibold">
+                    Day 1
+                  </th>
+                  <th className="border border-border px-4 py-3 text-left font-semibold">
+                    Year 1 total
+                  </th>
+                  <th className="border border-border px-4 py-3 text-left font-semibold">
+                    Year 2 total
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="border border-border px-4 py-3 font-semibold">
+                    AG Water Softener
+                  </td>
+                  <td className="border border-border px-4 py-3">$249</td>
+                  <td className="border border-border px-4 py-3">$249</td>
+                  <td className="border border-border px-4 py-3">$294</td>
+                </tr>
+                <tr className="bg-surface/50">
+                  <td className="border border-border px-4 py-3 font-semibold">
+                    Jolie (filter, for comparison)
+                  </td>
+                  <td className="border border-border px-4 py-3">$169</td>
+                  <td className="border border-border px-4 py-3">$274</td>
+                  <td className="border border-border px-4 py-3">$414</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-6 space-y-6">
+            <p>
+              The AG runs on one $45 replacement canister a year, and plain salt
+              from the grocery store. Jolie's filter cartridges run $35 about
+              every 90 days. And the two rows aren't doing the same job: the AG
+              softens, while Jolie filters chlorine and leaves hardness in the
+              water. The table exists because the filter route costs more over
+              two years without touching the problem this page is about.
+            </p>
+            <p className="text-[13px] italic text-muted-foreground">
+              Figures checked against retailer listings: Jolie pricing August 19,
+              2026. If they change their prices, tell us and we'll update the
+              table.
+            </p>
+          </div>
         </div>
 
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
@@ -167,15 +328,74 @@ function WaterSoftenerForApartmentPage() {
         <div className="mt-6 space-y-8 text-[15px] leading-[1.7] text-foreground/90">
           {PAGE_FAQS.map((faq) => (
             <div key={faq.q}>
-              <h3 className="text-[16px] font-semibold leading-[1.4]">{faq.q}</h3>
+              <h3 className="text-[16px] font-semibold leading-[1.4]">
+                {faq.q}
+              </h3>
               <p className="mt-2">{faq.a}</p>
             </div>
           ))}
         </div>
 
+        <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
+          Sources
+        </h2>
+        <ul className="mt-6 space-y-2 text-[14px] leading-[1.7] text-foreground/90">
+          <li>
+            <a
+              href="https://www.lvvwd.com/water-quality/facts/index.html"
+              className="underline hover:opacity-70"
+              rel="nofollow noopener"
+              target="_blank"
+            >
+              Las Vegas Valley Water District FAQ
+            </a>
+            , hardness figures, accessed August 19, 2026
+          </li>
+          <li>
+            <a
+              href="https://www.cityofmadison.com/water/water-quality/faq"
+              className="underline hover:opacity-70"
+              rel="nofollow noopener"
+              target="_blank"
+            >
+              City of Madison Water Utility FAQ
+            </a>
+            , hardness figures, accessed August 17, 2026
+          </li>
+          <li>
+            <a
+              href="https://www.portablewatersoftener.com/shop/water-softeners/portable-standard-water-softener"
+              className="underline hover:opacity-70"
+              rel="nofollow noopener"
+              target="_blank"
+            >
+              On The Go Portable Water Softener
+            </a>
+            , pricing, accessed August 19, 2026
+          </li>
+          <li>
+            <a
+              href="https://proaquawater.com/products/portable-water-softener-pro-16-000-grain-premium-grade"
+              className="underline hover:opacity-70"
+              rel="nofollow noopener"
+              target="_blank"
+            >
+              Pro+Aqua Portable Water Softener
+            </a>
+            , pricing, accessed August 19, 2026
+          </li>
+          <li>
+            jolieskinco.com, pricing checked against retailer listings, August
+            19, 2026
+          </li>
+        </ul>
+
         <div className="mt-16 border border-border bg-surface/40 p-8 md:p-10">
           <p className="text-[15px] leading-[1.7] text-foreground/90">
-            <a href="https://www.myapartmentwaterquality.com/" className="underline hover:opacity-70">Check your building's water hardness free</a>, or <a href="/" className="underline hover:opacity-70">see the AG Water Softener</a>.
+            <a href="/" className="underline hover:opacity-70">
+              See the AG Water Softener
+            </a>
+            .
           </p>
         </div>
       </article>
