@@ -36,6 +36,7 @@ const FAQS = [
   { q: "Does the salt make my shower water salty?", a: "You'll never smell or feel it. Ion exchange swaps hardness minerals for a small amount of sodium, the same trade every whole-house softener makes, and the water remains ordinary soft water. The salt you pour into the tank is used to rinse the resin during regeneration, then drains away." },
   { q: "What are the ongoing costs?", a: "A bag of standard softener salt every few months — that's the only consumable. The ion-exchange resin itself lasts for years with regular recharging, and there's no cartridge subscription waiting to surprise you." },
   { q: "Will it fit my shower?", a: "The AG Water Softener works with standard shower setups and most showerheads, mounts on the pipe or stands on the floor, and includes every hose and connector needed for both options. If your setup turns out to be the rare exception, the 60-day guarantee applies from day one." },
+  { q: "Can I use a shower filter with a water softener?", a: "Yes. The AG softens; any standard $25 shower filter removes chlorine. Together they run about $274, less than bundled filter-and-softener systems like the Arius at $296.87. The softening half is the part a filter can't do." },
 ];
 
 export const Route = createFileRoute("/")({
@@ -174,6 +175,7 @@ function ProductPage() {
 
       <InstallAndMaintenance />
       <ProductDetails />
+      <CostTable />
       <FAQSection />
       <BurnedBuyerBlock />
       <ClosingSection />
@@ -585,18 +587,27 @@ function WhatSoftWaterChanges() {
   const timeline = [
     {
       emoji: "🚿",
-      when: "The first shower",
-      body: "The lather is different. Shampoo foams the way it does on vacation, because it's no longer fighting minerals to do its job. When you rinse, your hair feels clean instead of coated. Your skin feels rinsed instead of filmed.",
+      when: "First shower",
+      body: "Water feels different immediately. Soap lathers more and rinses cleaner, because there are no hardness minerals left for it to bind to.",
+      tint: "bg-sage/20",
+    },
+    {
+      emoji: "💆",
+      when: "Week two",
+      body: "Hair holds moisture instead of drying stiff. The mineral film that built up over months starts washing out with each shower.",
+      tint: "bg-sage/30",
+    },
+    {
+      emoji: "🧪",
+      when: "Month two",
+      body: "A hardness test strip tells you what your skin already noticed. Run one on your tap water, then on your shower water, and compare.",
+      tint: "bg-sage/40",
     },
     {
       emoji: "✨",
-      when: "The first week or two",
-      body: "Your hair starts behaving. Conditioner absorbs instead of sitting on top. Detangling gets faster. If you have waves or curls, they start clumping and holding shape again instead of collapsing into frizz by day two. Skin stops feeling tight the moment you towel off.",
-    },
-    {
-      emoji: "🌿",
-      when: "By the second month",
-      body: "The difference stops being an event and becomes your new normal. Wash day gets shorter because there's no mineral buildup to fight through. The products you already own quietly start working the way their labels promised. Several people tell us they end up using less of everything.",
+      when: "Month six",
+      body: "Scale stops building on the shower glass. What was there before is the last of it.",
+      tint: "bg-sage/50",
     },
   ];
   return (
@@ -625,23 +636,18 @@ function WhatSoftWaterChanges() {
           </figure>
         </div>
 
-        {/* Timeline */}
-        <ol className="mx-auto mt-14 max-w-[900px] space-y-12 border-l border-border/60 pl-10 md:space-y-16 md:pl-14">
+        {/* Timeline strip — 4-col → 2×2 → 1-col */}
+        <div className="mx-auto mt-14 grid max-w-[900px] gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {timeline.map((t) => (
-            <li key={t.when} className="relative">
-              <span
-                aria-hidden
-                className="absolute -left-[52px] top-0 grid h-10 w-10 place-items-center rounded-full bg-foreground text-2xl leading-none ring-1 ring-foreground md:-left-[60px] md:h-11 md:w-11 md:text-[26px]"
-              >
-                {t.emoji}
-              </span>
-              <div className="pt-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+            <div key={t.when} className={`border border-border/60 p-6 ${t.tint}`}>
+              <span className="text-3xl leading-none" aria-hidden>{t.emoji}</span>
+              <div className="mt-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground">
                 {t.when}
               </div>
-              <p className="mt-3 text-[15px] leading-[1.7] text-foreground/90">{t.body}</p>
-            </li>
+              <p className="mt-3 text-[14px] leading-[1.6] text-foreground/90">{t.body}</p>
+            </div>
           ))}
-        </ol>
+        </div>
 
         <p className="mx-auto mt-14 max-w-[900px] text-[15px] leading-[1.7] text-foreground/90">
           That's the real outcome here: mornings where your hair and skin cooperate, and a routine that finally pays you back for the effort you put into it.
@@ -1175,6 +1181,65 @@ function ProductDetails() {
                 The unit threads onto a standard shower arm or sits on the floor. No plumber, no permanent changes. Everything is fully removable when you move.
               </p>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────── COST TABLE ─────────────────────────────── */
+
+function CostTable() {
+  const rows = [
+    { name: "AG Water Softener", day1: "$249", yr1: "$249", yr2: "$294" },
+    { name: "Jolie", day1: "$169", yr1: "$274", yr2: "$414" },
+    { name: "Canopy", day1: "$150", yr1: "$231", yr2: "$339" },
+  ];
+  return (
+    <section className="border-t border-border/60">
+      <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
+        <div className="mx-auto max-w-[900px]">
+          <h2 className="font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
+            What it costs over two years
+          </h2>
+          <p className="mt-8 text-[15px] leading-[1.7] text-foreground/90">
+            The purchase price is the smaller number. What separates these products is what they consume.
+          </p>
+
+          <div className="mt-10 overflow-x-auto">
+            <table className="w-full border-collapse border border-border text-[14px] leading-[1.6]">
+              <thead>
+                <tr className="bg-surface">
+                  <th className="border border-border px-4 py-3 text-left font-semibold" />
+                  <th className="border border-border px-4 py-3 text-left font-semibold">Day 1</th>
+                  <th className="border border-border px-4 py-3 text-left font-semibold">Year 1 total</th>
+                  <th className="border border-border px-4 py-3 text-left font-semibold">Year 2 total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((r, i) => (
+                  <tr key={r.name} className={i % 2 === 1 ? "bg-surface/50" : ""}>
+                    <td className="border border-border px-4 py-3 font-semibold">{r.name}</td>
+                    <td className="border border-border px-4 py-3">{r.day1}</td>
+                    <td className="border border-border px-4 py-3">{r.yr1}</td>
+                    <td className="border border-border px-4 py-3">{r.yr2}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-3 text-[13px] italic text-muted-foreground">
+            Competitor prices as of August 19, 2026. Canopy shown at their subscription filter price.
+          </p>
+
+          <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
+            <p>
+              Jolie and Canopy are shower filters. They remove chlorine and do that job well, and neither removes the calcium and magnesium that make water hard. The AG costs more on day one because the cartridge holds ion-exchange resin instead of carbon, and resin is what softening requires.
+            </p>
+            <p>
+              The AG runs on one $45 replacement canister a year, and plain salt from the grocery store. Filter cartridges replace every 90 days. That difference is the whole table.
+            </p>
           </div>
         </div>
       </div>
