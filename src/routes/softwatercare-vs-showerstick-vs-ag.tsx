@@ -120,7 +120,7 @@ function SoftwatercareVsShowerstickVsAgPage() {
           SoftWaterCare vs ShowerStick vs AG: three shower softeners compared
         </h1>
         <p className="text-sm text-muted-foreground">
-          Published Aug 18, 2026
+          Updated Aug 18, 2026
         </p>
         <p className="mt-3 text-[13px] italic text-muted-foreground">
           Checked against live product pages on August 18, 2026. If anything

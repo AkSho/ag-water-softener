@@ -100,11 +100,8 @@ function DoShowerFiltersWorkPage() {
         <h1 className="font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
           Do shower filters work for hard water?
         </h1>
-        <p className="mt-3 text-sm text-muted-foreground">
-          Ana · Client Support | AG Water Softener
-        </p>
         <p className="text-sm text-muted-foreground">
-          Published Jul 28, 2026 · Updated Aug 12, 2026
+          Updated Aug 12, 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">

@@ -89,11 +89,8 @@ function CanopyAlternativePage() {
         <h1 className="font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">
           Canopy alternative for hard water
         </h1>
-        <p className="mt-3 text-sm text-muted-foreground">
-          Ana · Client Support | AG Water Softener
-        </p>
         <p className="text-sm text-muted-foreground">
-          Published Aug 10, 2026
+          Updated Aug 10, 2026
         </p>
         <p className="mt-3 text-[13px] italic text-muted-foreground">
           Checked against the live Canopy product page on August 10, 2026. If anything below has changed, tell us and we will correct it.

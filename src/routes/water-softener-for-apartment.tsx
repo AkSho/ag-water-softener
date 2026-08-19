@@ -116,7 +116,7 @@ function WaterSoftenerForApartmentPage() {
           Water softener for an apartment: what actually works
         </h1>
         <p className="text-sm text-muted-foreground">
-          Published Jul 28, 2026 · Updated Aug 19, 2026
+          Updated Aug 19, 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
