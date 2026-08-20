@@ -24,10 +24,10 @@ export const Route = createFileRoute("/showerstick-alternative")({
       {
         name: "description",
         content:
-          "Same ion-exchange chemistry as the ShowerStick, different recharge routine and terms. The full side-by-side comparison. $249, in stock.",
+          "The ShowerStick softens but needs a salt recharge every week. Here is how it compares with the AG, which recharges every 3 to 5 weeks, on price and terms.",
       },
       { property: "og:title", content: "Affordable ShowerStick Alternative: In Stock at $249" },
-      { property: "og:description", content: "Same ion-exchange chemistry as the ShowerStick, different recharge routine and terms. The full side-by-side comparison. $249, in stock." },
+      { property: "og:description", content: "The ShowerStick softens but needs a salt recharge every week. Here is how it compares with the AG, which recharges every 3 to 5 weeks, on price and terms." },
       { property: "og:url", content: "https://agsoftener.com/showerstick-alternative" },
       { property: "og:type", content: "article" },
       { property: "og:image", content: "https://agsoftener.com/assets/hero.png" },

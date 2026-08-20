@@ -24,10 +24,10 @@ export const Route = createFileRoute("/portable-water-softener-for-shower")({
       {
         name: "description",
         content:
-          "RV softeners work but weigh 30 pounds and sit on your floor. Here is what a portable water softener built for a shower looks like, and what it costs.",
+          "A portable water softener for the shower comes in two forms: 30-pound RV tanks and shower-arm units. Here is what each takes and costs.",
       },
       { property: "og:title", content: "Portable Water Softener for Showers: Affordable at $249" },
-      { property: "og:description", content: "RV softeners work but weigh 30 pounds and sit on your floor. Here is what a portable water softener built for a shower looks like, and what it costs." },
+      { property: "og:description", content: "A portable water softener for the shower comes in two forms: 30-pound RV tanks and shower-arm units. Here is what each takes and costs." },
       { property: "og:url", content: "https://agsoftener.com/portable-water-softener-for-shower" },
       { property: "og:type", content: "article" },
       { property: "og:image", content: "https://agsoftener.com/assets/hero.png" },
@@ -44,7 +44,7 @@ export const Route = createFileRoute("/portable-water-softener-for-shower")({
           "@type": "Article",
           headline: "Portable water softener for your shower: the real options",
           datePublished: "2026-07-28",
-          dateModified: "2026-08-12",
+          dateModified: "2026-08-20",
           author: { "@type": "Organization", name: "AG Water Softener" },
         }),
       },
@@ -86,7 +86,7 @@ function PortableWaterSoftenerPage() {
           Portable water softener for your shower: the real options
         </h1>
         <p className="text-sm text-muted-foreground">
-          Updated Aug 12, 2026
+          Updated Aug 20, 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
@@ -129,6 +129,9 @@ function PortableWaterSoftenerPage() {
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
             Units like the Pro+Aqua Travel Series are real softeners at a fair price, and if you already own one for a camper, adapting it to a shower with garden-hose fittings is a legitimate weekend project. The trade-offs are the ones you'd guess: a tank on the floor or in the tub, hoses crossing the bathroom, and a regeneration process built around outdoor use. As a permanent fixture in the place you shower every day, it wears thin.
+          </p>
+          <p>
+            Current prices run from about $165 for compact units to about $280 for larger tanks, checked against On The Go and Pro+Aqua listings on August 19, 2026.
           </p>
         </div>
 
