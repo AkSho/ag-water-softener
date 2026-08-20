@@ -139,7 +139,7 @@ const beforeAfterAsset = { url: "/assets/before-after.png" };
 const GALLERY: HeroGalleryItem[] = [
   { key: "g1", src: heroAsset.url, alt: "AG Water Softener — product front view" },
   { key: "g2", src: testStripsAsset.url, alt: "Hardness test strips — verify your water tests soft" },
-  { key: "g3", src: beforeAfterAsset.url, alt: "Before and after — hair and skin results with the AG Water Softener", contain: true },
+  { key: "g3", src: "/assets/herogal_Before and After_new.png", alt: "Before and after — hair texture and shine comparison with and without the AG Water Softener", contain: true },
   { key: "g4", src: wholeSetAsset.url, alt: "AG Water Softener with brine tank — whole set" },
   { key: "g5", src: crossSectionAsset.url, alt: "Cross-section showing ion-exchange resin core" },
   { key: "g6", src: inShowerAsset.url, alt: "AG Water Softener installed inline in a shower" },
@@ -542,9 +542,11 @@ function WhyNothingWorked() {
           {/* Product photo */}
           <div className="order-2 md:order-1">
             <img
-              src={showerheadHardWaterAsset.url}
-              alt="Before and after — a showerhead caked in hard-water scale next to a clean, softened one"
-              className="w-full max-h-[70vh] object-cover md:max-h-none md:h-full"
+              src="/assets/showerhead_beforeafter.png"
+              alt="Before and after — a showerhead caked in hard-water mineral buildup next to the same showerhead after softened water"
+              width={1774}
+              height={887}
+              className="w-full h-auto"
               loading="lazy"
             />
           </div>
@@ -621,32 +623,34 @@ function WhatSoftWaterChanges() {
             People who finally get soft water at home tend to describe it the same way, in the same order.
           </p>
 
-          <figure className="mt-10">
+        </div>
+
+        {/* 2-col: timeline left, before/after image right */}
+        <div className="mx-auto mt-14 grid max-w-[1100px] gap-8 md:grid-cols-2 md:gap-12">
+          {/* Image — first on mobile, right on desktop */}
+          <div className="order-1 md:order-2">
             <img
-              src="/assets/before-after-hair.png"
-              alt="Before and after — the same hair, frizzy and dry vs. defined soft curls"
+              src="/assets/firstfewweeks_beforeafter.png"
+              alt="Before and after — scalp close-up showing mineral buildup from hard water versus a clean, healthy scalp after softening"
               width={1254}
-              height={627}
+              height={1254}
               className="w-full h-auto"
               loading="lazy"
             />
-            <figcaption className="mt-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-              Before / After — same hair, same products, different water.
-            </figcaption>
-          </figure>
-        </div>
+          </div>
 
-        {/* Timeline strip — 4-col → 2×2 → 1-col */}
-        <div className="mx-auto mt-14 grid max-w-[900px] gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {timeline.map((t) => (
-            <div key={t.when} className={`border border-border/60 p-6 ${t.tint}`}>
-              <span className="text-3xl leading-none" aria-hidden>{t.emoji}</span>
-              <div className="mt-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground">
-                {t.when}
+          {/* Timeline cards — 2×2 grid within left column */}
+          <div className="order-2 grid grid-cols-2 gap-4 self-center md:order-1">
+            {timeline.map((t) => (
+              <div key={t.when} className={`border border-border/60 p-5 ${t.tint}`}>
+                <span className="text-3xl leading-none" aria-hidden>{t.emoji}</span>
+                <div className="mt-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground">
+                  {t.when}
+                </div>
+                <p className="mt-3 text-[13px] leading-[1.55] text-foreground/90">{t.body}</p>
               </div>
-              <p className="mt-3 text-[14px] leading-[1.6] text-foreground/90">{t.body}</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         <p className="mx-auto mt-14 max-w-[900px] text-[15px] leading-[1.7] text-foreground/90">
