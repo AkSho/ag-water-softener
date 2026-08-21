@@ -222,7 +222,14 @@ function WaterSoftenerForApartmentPage() {
             None of this makes filters a scam. Chlorine removal is a real
             benefit, and the two devices solve different problems. It just means
             a filter can't be the answer to hard water, no matter what the
-            listing says.
+            listing says.{" "}
+            <a
+              href="/reddit-shower-water-softener"
+              className="underline hover:opacity-70"
+            >
+              Reddit threads on shower water softeners
+            </a>{" "}
+            land on the same conclusion independently.
           </p>
         </div>
 

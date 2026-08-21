@@ -17,6 +17,7 @@ import { Route as ShowerHeadWaterSoftenerRouteImport } from './routes/shower-hea
 import { Route as ShowerFilterVsWaterSoftenerRouteImport } from './routes/shower-filter-vs-water-softener'
 import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as ReturnsRouteImport } from './routes/returns'
+import { Route as RedditShowerWaterSoftenerRouteImport } from './routes/reddit-shower-water-softener'
 import { Route as PortableWaterSoftenerForShowerRouteImport } from './routes/portable-water-softener-for-shower'
 import { Route as JolieAlternativeForHardWaterRouteImport } from './routes/jolie-alternative-for-hard-water'
 import { Route as DoShowerFiltersWorkForHardWaterRouteImport } from './routes/do-shower-filters-work-for-hard-water'
@@ -68,6 +69,12 @@ const ReturnsRoute = ReturnsRouteImport.update({
   path: '/returns',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RedditShowerWaterSoftenerRoute =
+  RedditShowerWaterSoftenerRouteImport.update({
+    id: '/reddit-shower-water-softener',
+    path: '/reddit-shower-water-softener',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const PortableWaterSoftenerForShowerRoute =
   PortableWaterSoftenerForShowerRouteImport.update({
     id: '/portable-water-softener-for-shower',
@@ -116,6 +123,7 @@ export interface FileRoutesByFullPath {
   '/do-shower-filters-work-for-hard-water': typeof DoShowerFiltersWorkForHardWaterRoute
   '/jolie-alternative-for-hard-water': typeof JolieAlternativeForHardWaterRoute
   '/portable-water-softener-for-shower': typeof PortableWaterSoftenerForShowerRoute
+  '/reddit-shower-water-softener': typeof RedditShowerWaterSoftenerRoute
   '/returns': typeof ReturnsRoute
   '/shipping': typeof ShippingRoute
   '/shower-filter-vs-water-softener': typeof ShowerFilterVsWaterSoftenerRoute
@@ -133,6 +141,7 @@ export interface FileRoutesByTo {
   '/do-shower-filters-work-for-hard-water': typeof DoShowerFiltersWorkForHardWaterRoute
   '/jolie-alternative-for-hard-water': typeof JolieAlternativeForHardWaterRoute
   '/portable-water-softener-for-shower': typeof PortableWaterSoftenerForShowerRoute
+  '/reddit-shower-water-softener': typeof RedditShowerWaterSoftenerRoute
   '/returns': typeof ReturnsRoute
   '/shipping': typeof ShippingRoute
   '/shower-filter-vs-water-softener': typeof ShowerFilterVsWaterSoftenerRoute
@@ -151,6 +160,7 @@ export interface FileRoutesById {
   '/do-shower-filters-work-for-hard-water': typeof DoShowerFiltersWorkForHardWaterRoute
   '/jolie-alternative-for-hard-water': typeof JolieAlternativeForHardWaterRoute
   '/portable-water-softener-for-shower': typeof PortableWaterSoftenerForShowerRoute
+  '/reddit-shower-water-softener': typeof RedditShowerWaterSoftenerRoute
   '/returns': typeof ReturnsRoute
   '/shipping': typeof ShippingRoute
   '/shower-filter-vs-water-softener': typeof ShowerFilterVsWaterSoftenerRoute
@@ -170,6 +180,7 @@ export interface FileRouteTypes {
     | '/do-shower-filters-work-for-hard-water'
     | '/jolie-alternative-for-hard-water'
     | '/portable-water-softener-for-shower'
+    | '/reddit-shower-water-softener'
     | '/returns'
     | '/shipping'
     | '/shower-filter-vs-water-softener'
@@ -187,6 +198,7 @@ export interface FileRouteTypes {
     | '/do-shower-filters-work-for-hard-water'
     | '/jolie-alternative-for-hard-water'
     | '/portable-water-softener-for-shower'
+    | '/reddit-shower-water-softener'
     | '/returns'
     | '/shipping'
     | '/shower-filter-vs-water-softener'
@@ -204,6 +216,7 @@ export interface FileRouteTypes {
     | '/do-shower-filters-work-for-hard-water'
     | '/jolie-alternative-for-hard-water'
     | '/portable-water-softener-for-shower'
+    | '/reddit-shower-water-softener'
     | '/returns'
     | '/shipping'
     | '/shower-filter-vs-water-softener'
@@ -222,6 +235,7 @@ export interface RootRouteChildren {
   DoShowerFiltersWorkForHardWaterRoute: typeof DoShowerFiltersWorkForHardWaterRoute
   JolieAlternativeForHardWaterRoute: typeof JolieAlternativeForHardWaterRoute
   PortableWaterSoftenerForShowerRoute: typeof PortableWaterSoftenerForShowerRoute
+  RedditShowerWaterSoftenerRoute: typeof RedditShowerWaterSoftenerRoute
   ReturnsRoute: typeof ReturnsRoute
   ShippingRoute: typeof ShippingRoute
   ShowerFilterVsWaterSoftenerRoute: typeof ShowerFilterVsWaterSoftenerRoute
@@ -290,6 +304,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReturnsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reddit-shower-water-softener': {
+      id: '/reddit-shower-water-softener'
+      path: '/reddit-shower-water-softener'
+      fullPath: '/reddit-shower-water-softener'
+      preLoaderRoute: typeof RedditShowerWaterSoftenerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/portable-water-softener-for-shower': {
       id: '/portable-water-softener-for-shower'
       path: '/portable-water-softener-for-shower'
@@ -350,6 +371,7 @@ const rootRouteChildren: RootRouteChildren = {
   DoShowerFiltersWorkForHardWaterRoute: DoShowerFiltersWorkForHardWaterRoute,
   JolieAlternativeForHardWaterRoute: JolieAlternativeForHardWaterRoute,
   PortableWaterSoftenerForShowerRoute: PortableWaterSoftenerForShowerRoute,
+  RedditShowerWaterSoftenerRoute: RedditShowerWaterSoftenerRoute,
   ReturnsRoute: ReturnsRoute,
   ShippingRoute: ShippingRoute,
   ShowerFilterVsWaterSoftenerRoute: ShowerFilterVsWaterSoftenerRoute,
