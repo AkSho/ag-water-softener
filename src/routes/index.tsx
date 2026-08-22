@@ -350,17 +350,22 @@ function ProductHero() {
             </div>
           )}
 
-          {/* Qty + primary CTA */}
-          <div className="mt-4 grid grid-cols-[auto_1fr] gap-2 md:mt-6">
-            <div className="inline-flex items-center border border-border">
-              <button className="grid h-14 w-11 place-items-center" onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="Decrease">
-                <Minus className="h-3.5 w-3.5" />
-              </button>
-              <span className="min-w-6 text-center text-sm tabular-nums">{qty}</span>
-              <button className="grid h-14 w-11 place-items-center" onClick={() => setQty((q) => q + 1)} aria-label="Increase">
-                <Plus className="h-3.5 w-3.5" />
-              </button>
+          {/* Qty selector + primary CTA */}
+          <div className="mt-4 md:mt-6">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-foreground/90">How many showers?</span>
+              <div className="inline-flex items-center">
+                <button className="grid h-9 w-9 place-items-center rounded bg-sage/30 transition hover:bg-sage/50" onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="Decrease">
+                  <Minus className="h-3.5 w-3.5" />
+                </button>
+                <span className="min-w-8 text-center text-sm tabular-nums">{qty}</span>
+                <button className="grid h-9 w-9 place-items-center rounded bg-sage/30 transition hover:bg-sage/50" onClick={() => setQty((q) => q + 1)} aria-label="Increase">
+                  <Plus className="h-3.5 w-3.5" />
+                </button>
+              </div>
             </div>
+            <p className="mt-1 text-xs text-muted-foreground">One unit softens one shower.</p>
+
             <button
               onClick={() =>
                 add(
@@ -374,11 +379,11 @@ function ProductHero() {
                   qty,
                 )
               }
-              className="h-auto bg-black px-4 py-3 text-[12px] font-medium uppercase tracking-[0.14em] text-white transition hover:opacity-90"
+              className="mt-3 w-full bg-black px-4 py-3 text-[12px] font-medium uppercase tracking-[0.14em] text-white transition hover:opacity-90"
             >
               <span className="block">Add to Cart</span>
               <span className="mt-1 block text-[10px] font-normal normal-case tracking-normal opacity-80">
-                {money(PRICE)} · 60-day money-back guarantee
+                {money(PRICE * qty)} · 60-day money-back guarantee
               </span>
             </button>
           </div>
