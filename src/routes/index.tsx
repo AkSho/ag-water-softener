@@ -37,6 +37,7 @@ const FAQS = [
   { q: "What are the ongoing costs?", a: "Plain softener salt from the grocery store and one $45 replacement canister about once a year. The salt runs a few dollars a bag, and there's no cartridge subscription." },
   { q: "Will it fit my shower?", a: "The AG Water Softener works with standard shower setups and most showerheads, mounts on the pipe or stands on the floor, and includes every hose and connector needed for both options. If your setup turns out to be the rare exception, the 60-day guarantee applies from day one." },
   { q: "Can I use a shower filter with a water softener?", a: "Yes. The AG softens; any standard $25 shower filter removes chlorine. Together they run about $274, less than bundled filter-and-softener systems like the Arius at $296.87. The softening half is the part a filter can't do." },
+  { q: "Does a water softener lower the TDS reading?", a: "No, and this surprises a lot of folks. A TDS meter measures the total of everything dissolved in the water. A water softener works by ion exchange. The canister swaps out the calcium and magnesium that make water hard and releases sodium in their place. The total dissolved amount stays about the same and sometimes reads slightly higher, so a TDS meter shows little or no change on fully softened water. The meter reads the same whether the unit is working or still in the box. Hardness test strips measure the hard minerals themselves. That\u2019s the tool that shows the before and after." },
 ];
 
 export const Route = createFileRoute("/")({
@@ -1292,11 +1293,13 @@ function FAQSection() {
                       <span className="text-[15px]">{f.q}</span>
                       <ChevronDown className={`h-4 w-4 text-muted-foreground transition ${isOpen ? "rotate-180" : ""}`} />
                     </button>
-                    <p className={`pb-5 pr-8 text-[14px] leading-[1.7] text-foreground/85 ${isOpen ? '' : 'hidden'}`}>
+                    <div className={`pb-5 pr-8 text-[14px] leading-[1.7] text-foreground/85 ${isOpen ? '' : 'hidden'}`}>
                       {i === 3
-                        ? <>It removes hardness minerals, calcium and magnesium, through ion exchange — the minerals that coat your hair and crust your shower door. It does not filter chlorine, and we won't pretend otherwise. Chlorine reduction is the job <a href="/shower-filter-vs-water-softener" className="underline hover:opacity-70">basic shower filters</a> already handle; hardness is the job they can't. If your water report came back hard or very hard, hardness is the half that's been working against your hair and skin.</>
-                        : f.a}
-                    </p>
+                        ? <p>It removes hardness minerals, calcium and magnesium, through ion exchange — the minerals that coat your hair and crust your shower door. It does not filter chlorine, and we won't pretend otherwise. Chlorine reduction is the job <a href="/shower-filter-vs-water-softener" className="underline hover:opacity-70">basic shower filters</a> already handle; hardness is the job they can't. If your water report came back hard or very hard, hardness is the half that's been working against your hair and skin.</p>
+                        : i === 10
+                        ? <><p>No, and this surprises a lot of folks. A TDS meter measures the total of everything dissolved in the water. A water softener works by ion exchange. The canister swaps out the calcium and magnesium that make water hard and releases sodium in their place. The total dissolved amount stays about the same and sometimes reads slightly higher, so a TDS meter shows little or no change on fully softened water. The meter reads the same whether the unit is working or still in the box.</p><p className="mt-4">Hardness test strips measure the hard minerals themselves. That{"\u2019"}s the tool that shows the before and after.</p></>
+                        : <p>{f.a}</p>}
+                    </div>
                   </li>
                 );
               })}
