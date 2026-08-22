@@ -48,7 +48,8 @@ function deriveVerdict(ftSrc: string, toolTouch: boolean): string {
 }
 
 async function checkToolTouch(config: { apiKey: string; baseId: string }, email: string): Promise<boolean> {
-  const formula = encodeURIComponent(`{Email Address}='${email}'`);
+  const safeEmail = email.replace(/'/g, "\\'");
+  const formula = encodeURIComponent(`{Email Address}='${safeEmail}'`);
   try {
     const response = await fetch(
       `https://api.airtable.com/v0/${encodeURIComponent(config.baseId)}/${encodeURIComponent(SUBMISSIONS_TABLE)}?filterByFormula=${formula}&maxRecords=1`,

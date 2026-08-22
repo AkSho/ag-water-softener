@@ -26,8 +26,9 @@ export async function hasRecentRecovery(email: string, withinDays: number = 30):
   cutoff.setDate(cutoff.getDate() - withinDays);
   const cutoffIso = cutoff.toISOString();
 
+  const safeEmail = email.replace(/'/g, "\\'");
   const formula = encodeURIComponent(
-    `AND({Email}='${email}',IS_AFTER({Sent_At},'${cutoffIso}'))`
+    `AND({Email}='${safeEmail}',IS_AFTER({Sent_At},'${cutoffIso}'))`
   );
 
   try {

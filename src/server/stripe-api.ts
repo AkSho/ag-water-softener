@@ -120,12 +120,8 @@ function sha256(value: string) {
   return createHash("sha256").update(value).digest("hex");
 }
 
-function resolveOrigin(request: Request) {
-  const host =
-    request.headers.get("x-forwarded-host") ||
-    request.headers.get("host") ||
-    "www.agsoftener.com";
-  return `https://${host}`;
+function resolveOrigin(_request: Request) {
+  return "https://www.agsoftener.com";
 }
 
 // ─── Part B: Meta CAPI Purchase (enriched) ─────────────────────────────────────
@@ -321,6 +317,10 @@ async function createCheckoutSession(request: Request) {
   const fbc = typeof body.fbc === "string" ? body.fbc : "";
 
   if (!isPositiveInteger(unitQty)) {
+    return json({ error: "Invalid unit quantity" }, { status: 400 });
+  }
+
+  if (unitQty > 25) {
     return json({ error: "Invalid unit quantity" }, { status: 400 });
   }
 
