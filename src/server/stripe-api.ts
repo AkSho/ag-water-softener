@@ -121,7 +121,7 @@ function sha256(value: string) {
 }
 
 function resolveOrigin(_request: Request) {
-  return "https://www.agsoftener.com";
+  return "https://agsoftener.com";
 }
 
 // ─── Part B: Meta CAPI Purchase (enriched) ─────────────────────────────────────
