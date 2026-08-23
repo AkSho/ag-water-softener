@@ -50,7 +50,7 @@ function ContactPage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            Order status and tracking, returns and the 60-day guarantee, install questions, recharge questions, reading your test strips, and whether the AG is right for your water in the first place. If your water report or strip says your water is soft, we'll tell you not to buy one.
+            Order status and tracking, returns and the 60-day guarantee, install questions, recharge questions, reading test strips, and whether the AG is right for your water in the first place. If your water report or strip says your water is soft, we'll tell you not to buy one.
           </p>
           <p>
             AG Water Softener is made by GRN Labs.

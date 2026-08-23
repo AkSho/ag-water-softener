@@ -37,7 +37,7 @@ function ReturnsPage() {
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            Every AG Water Softener comes with a 60-day money-back guarantee, counted from the day your order is delivered. Use it, test your water with the included strips, and if you're not happy for any reason, send it back for a full refund.
+            Every AG Water Softener comes with a 60-day money-back guarantee, counted from the day your order is delivered. Use it and test your water with a hardness strip. If you're not happy for any reason, send it back for a full refund.
           </p>
         </div>
 

@@ -28,7 +28,7 @@ type BandSearch = { band?: "hard" | "veryhard" };
 
 const FAQS = [
   { q: "Will the AG Water Softener lower my water pressure?", a: "The AG Water Softener is engineered for full-flow showering, and pressure preservation was a core design requirement, since it's the most common complaint about lesser shower products." },
-  { q: "How do I know the softening claim is real and this isn't another mislabeled filter?", a: "You test it yourself, in your own bathroom, on day one. The AG Water Softener ships with standard water-hardness test strips. Dip one in your tap water and one in the treated water and compare the colors. Hardness strips are an industry-standard measure and they cannot be flattered by marketing. If your treated water doesn't test soft, use the guarantee." },
+  { q: "How do I know the softening claim is real and this isn't another mislabeled filter?", a: "You test it yourself, in your own bathroom, on day one. The AG Water Softener works with any standard water-hardness test strip. A pack costs a few bucks on Amazon or at a hardware store. Dip one in your tap water and one in the treated water and compare the colors. Hardness strips are an industry-standard measure and they cannot be flattered by marketing. If your treated water doesn't test soft, use the guarantee." },
   { q: "I rent. Will this come down cleanly when I move?", a: "Yes. The AG Water Softener attaches to the shower pipe the same way a showerhead does, or simply sits on the floor. Removal takes minutes and leaves your shower exactly as you found it. Nothing is drilled or glued, and there's no plumbing change for a landlord to notice or a deposit to absorb." },
   { q: "What exactly does the AG Water Softener remove — and what doesn't it?", a: "It removes hardness minerals, calcium and magnesium, through ion exchange — the minerals that coat your hair and crust your shower door. It does not filter chlorine, and we won't pretend otherwise. Chlorine reduction is the job basic shower filters already handle; hardness is the job they can't. If your water report came back hard or very hard, hardness is the half that's been working against your hair and skin." },
   { q: "I already tried a shower filter and it did not help. How is this different?", a: "A filter removes chlorine with carbon and similar media. Dissolved calcium and magnesium pass through those media, so hard water stays hard with a filter installed. The AG uses ion-exchange resin, which removes the hardness minerals themselves. The 60-day guarantee lets you test that on your own water." },
@@ -139,7 +139,7 @@ const beforeAfterAsset = { url: "/assets/before-after.png" };
 
 const GALLERY: HeroGalleryItem[] = [
   { key: "g1", src: heroAsset.url, alt: "AG Water Softener — product front view" },
-  { key: "g2", src: testStripsAsset.url, alt: "Hardness test strips — verify your water tests soft" },
+  { key: "g2", src: testStripsAsset.url, alt: "Hardness test strip showing a soft reading after installation" },
   { key: "g3", src: "/assets/herogal_Before and After_new.png", alt: "Before and after — hair texture and shine comparison with and without the AG Water Softener", contain: true },
   { key: "g4", src: wholeSetAsset.url, alt: "AG Water Softener with brine tank — whole set" },
   { key: "g5", src: crossSectionAsset.url, alt: "Cross-section showing ion-exchange resin core" },
@@ -608,7 +608,7 @@ function WhatSoftWaterChanges() {
     {
       emoji: "🧪",
       when: "Month two",
-      body: "A hardness test strip tells you what your skin already noticed. Run one on your tap water, then on your shower water, and compare.",
+      body: "A hardness test strip tells you what your skin already noticed. Any $10 strip works. Run one on your tap water, then on your shower water, and compare.",
       tint: "bg-sage/40",
     },
     {
@@ -822,7 +822,7 @@ function MeetTheSoftener() {
               Don't take the label's word for it. Test it.
             </h3>
             <p className="mt-6 text-[15px] leading-[1.7] text-foreground/90">
-              Every AG Water Softener ships with standard water hardness test strips. Dip one in your tap water today, and another once the AG Water Softener is installed.
+              Any standard hardness test strip reads the AG's output. Grab a pack and run the before and after yourself.
             </p>
           </div>
 
@@ -834,7 +834,7 @@ function MeetTheSoftener() {
               loading="lazy"
             />
             <figcaption className="mt-4 text-center text-[13px] leading-[1.6] text-foreground/85">
-              Every unit ships with test strips. The color change is immediate and visible.
+              A standard hardness strip shows the change. The color shift is immediate and visible.
             </figcaption>
           </figure>
 
@@ -895,7 +895,7 @@ function MeetTheSoftener() {
         </div>
 
         <p className="mx-auto mt-16 max-w-[820px] text-center text-[15px] leading-[1.7] text-foreground/90">
-          Whole-house results, at shower-sized commitment. And if your test strip doesn't read soft, you have 60 full days to send it back.
+          Whole-house results, at shower-sized commitment. And if a test strip doesn't read soft, you have 60 full days to send it back.
         </p>
         <p className="mx-auto mt-6 max-w-[820px] text-center text-[15px] leading-[1.7] text-foreground/90">
           A whole-house softener's price tag is mostly installation, plumbing runs, and the labor to tie it all together. The AG is the softening part alone, the ion-exchange core that does the actual work, which is why it can cost $249 instead of $2,000.
@@ -950,7 +950,6 @@ const PROOF_REVIEWS = [
   { name: "Jess C.", title: "Waves are waving again", body: "I'm a 2B and hard water minerals used to make my waves limp and frizz out by day two. Now my waves clump beautifully, hold shape all week, and my scalp doesn't feel coated. Wash day is so much easier because there's no mineral buildup to fight through." },
   { name: "Jack M.", title: "My beard says otherwise", body: "I figured this was just another gadget, but my beard says otherwise. It used to feel like sandpaper after every shower, and now it's actually soft. Even my barber noticed. My girlfriend keeps touching it too, so I guess that's a win." },
   { name: "Jasmine", title: "My hair finally feels clean", body: "No matter what shampoo I used, my hair always felt coated and dull. Now it actually feels clean and light again. My curls bounce back instead of falling flat." },
-  { name: "Verified customer", title: "The strips don't lie", body: "The included test strips verified the effectiveness of softening my water, and I noticed an immediate difference in my hair and skin." },
   { name: "Verified customer", title: "Hydrated instead of stripped", body: "My hair feels significantly softer and less frizzy. My skin feels hydrated and moisturized instead of tight." },
 ];
 
@@ -1160,7 +1159,6 @@ function ProductDetails() {
                 <li>AG Water Softener unit with ion-exchange resin core</li>
                 <li>Brine salt tank</li>
                 <li>Connection hoses and mounting bracket</li>
-                <li>Water hardness test strips</li>
                 <li>Install hardware</li>
               </ul>
             </div>
@@ -1170,7 +1168,7 @@ function ProductDetails() {
                 The strip test
               </h3>
               <p className="mt-3 text-[15px] leading-[1.7] text-foreground/90">
-                Dip a hardness test strip in your tap water before you install. After installation, dip another strip in the treated water and compare the two colors to confirm your water now tests soft.
+                Strips run about $10 at any hardware store. Dip a hardness test strip in your tap water before you install. After installation, dip another strip in the treated water and compare the two colors to confirm your water now tests soft.
               </p>
             </div>
 
@@ -1367,7 +1365,7 @@ function ClosingSection() {
             Try it against your own test strip
           </h2>
           <p className="mt-8 text-[15px] leading-[1.7] text-foreground/90">
-            Dip a hardness strip in your tap water today. Install the AG, then dip another strip. If the second strip doesn't read soft, you have 60 full days to send it back for a complete refund. Softer hair and skin in the meantime.
+            Hardness strips cost about $10 online. Dip a hardness strip in your tap water today. Install the AG, then dip another strip. If the second strip doesn't read soft, you have 60 full days to send it back for a complete refund. Softer hair and skin in the meantime.
           </p>
           <div className="mt-8">
             <button
