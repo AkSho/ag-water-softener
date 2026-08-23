@@ -196,8 +196,8 @@ function ShowerstickAlternativePage() {
                 </tr>
                 <tr>
                   <td className="border border-border px-4 py-3 font-semibold">Verifying it works</td>
-                  <td className="border border-border px-4 py-3">Any $10 hardness strip reads the output soft</td>
-                  <td className="border border-border px-4 py-3">Any $10 test strip reads the output near zero</td>
+                  <td className="border border-border px-4 py-3">A hardness strip reads the output soft</td>
+                  <td className="border border-border px-4 py-3">Same test. A hardness strip reads the output soft</td>
                 </tr>
                 <tr className="bg-surface/50">
                   <td className="border border-border px-4 py-3 font-semibold">Price</td>
