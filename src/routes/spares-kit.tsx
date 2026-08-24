@@ -162,20 +162,6 @@ function SparesKitPage() {
           </p>
         </div>
 
-        <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
-          How the price works
-        </h2>
-        <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
-          <p>
-            Parts are priced at what they cost us plus shipping and a modest margin, with no markup
-            games. The full cost of owning this softener, parts included, sits in the{" "}
-            <a href="/#cost-of-ownership" className="underline hover:opacity-70">
-              ownership table on the product page
-            </a>
-            .
-          </p>
-        </div>
-
         <div className="mt-14 border-t border-border/60 pt-10">
           <h2 className="font-display text-2xl leading-[1.1] sm:text-3xl">FAQ</h2>
           <div className="mt-6 space-y-8 text-[15px] leading-[1.7] text-foreground/90">
