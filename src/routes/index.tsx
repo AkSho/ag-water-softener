@@ -1205,7 +1205,7 @@ function CostTable() {
     { name: "Canopy", day1: "$150", yr1: "$231", yr2: "$339" },
   ];
   return (
-    <section className="border-t border-border/60">
+    <section id="cost-of-ownership" className="border-t border-border/60">
       <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
         <div className="mx-auto max-w-[900px]">
           <h2 className="font-display text-3xl leading-[1.05] sm:text-4xl md:text-[46px]">

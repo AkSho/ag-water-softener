@@ -1,5 +1,8 @@
 export function SiteFooter() {
-  const shop = ["The AG Water Softener"];
+  const shop: { label: string; href: string }[] = [
+    { label: "The AG Water Softener", href: "#" },
+    { label: "AG Spares Kit", href: "/spares-kit" },
+  ];
   const support: { label: string; href: string }[] = [
     { label: "Shipping", href: "/shipping" },
     { label: "Returns and refunds", href: "/returns" },
@@ -20,7 +23,14 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-border/60 bg-surface">
       <div className="mx-auto grid max-w-[1400px] gap-10 px-4 py-14 sm:grid-cols-2 md:grid-cols-3 md:px-8">
-        <FooterCol title="SHOP" items={shop} />
+        <div>
+          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Shop</div>
+          <ul className="mt-4 space-y-2 text-sm">
+            {shop.map((s) => (
+              <li key={s.href}><a href={s.href} className="hover:opacity-70">{s.label}</a></li>
+            ))}
+          </ul>
+        </div>
         <div>
           <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Support</div>
           <ul className="mt-4 space-y-2 text-sm">
