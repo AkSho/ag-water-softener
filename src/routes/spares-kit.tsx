@@ -114,7 +114,7 @@ function SparesKitPage() {
         <div className="mt-4">
           <span className="text-2xl font-semibold">$39</span>
           <p className="mt-1 text-sm text-foreground/70">
-            Ships separately from the unit, in 7 to 12 days.
+            Ships separately from the unit, in 8 to 15 days.
           </p>
         </div>
 
