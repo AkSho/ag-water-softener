@@ -61,7 +61,7 @@ export const Route = createFileRoute("/water-softener-for-apartment")({
           headline:
             "Water softener for an apartment: what actually works",
           datePublished: "2026-07-28",
-          dateModified: "2026-08-19",
+          dateModified: "2026-08-25",
           author: {
             "@type": "Organization",
             name: "AG Water Softener",
@@ -116,7 +116,7 @@ function WaterSoftenerForApartmentPage() {
           Water softener for an apartment: what actually works
         </h1>
         <p className="text-sm text-muted-foreground">
-          Updated Aug 19, 2026
+          Updated Aug 25, 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
@@ -327,6 +327,30 @@ function WaterSoftenerForApartmentPage() {
               table.
             </p>
           </div>
+        </div>
+
+        <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
+          Hosting an Airbnb or short-term rental?
+        </h2>
+        <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
+          <p>
+            Hard water finds its way into guest reviews. Guests notice hair that
+            won't rinse clean and water spots on the glass, even when they can't
+            name the cause.
+          </p>
+          <p>
+            The AG Water Softener treats the one room where guests judge your
+            water. It also cuts the scrubbing between guests: scale stops
+            building on the glass, so turnovers get shorter. It installs without
+            touching the property's plumbing, which matters when you're hosting
+            out of a condo with an HOA or a building you don't own. When you
+            sell or switch properties, removal takes minutes and the shower goes
+            back to how you found it.
+          </p>
+          <p>
+            Recharge day happens every 3-5 weeks and only takes about 30
+            minutes.
+          </p>
         </div>
 
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
