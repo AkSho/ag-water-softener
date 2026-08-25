@@ -44,11 +44,14 @@ export const Route = createFileRoute("/spares-kit")({
           "@type": "Product",
           name: "AG Spares Kit",
           brand: { "@type": "Brand", name: "GRN Labs" },
+          mpn: "AG-SK-001",
+          url: "https://agsoftener.com/spares-kit",
           description:
             "The three replaceable mounting and recharge parts for the AG Water Softener, sold as one kit for $45.",
           image: "https://agsoftener.com/assets/spares_kit_image.png",
           offers: {
             "@type": "Offer",
+            url: "https://agsoftener.com/spares-kit",
             price: "45.00",
             priceCurrency: "USD",
             availability: "https://schema.org/InStock",
