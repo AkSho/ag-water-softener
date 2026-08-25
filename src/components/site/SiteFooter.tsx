@@ -4,6 +4,7 @@ export function SiteFooter() {
     { label: "AG Spares Kit", href: "/spares-kit" },
   ];
   const support: { label: string; href: string }[] = [
+    { label: "Setup guide", href: "/setup" },
     { label: "Shipping", href: "/shipping" },
     { label: "Returns and refunds", href: "/returns" },
     { label: "Contact", href: "/contact" },
