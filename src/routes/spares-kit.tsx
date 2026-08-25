@@ -20,13 +20,13 @@ export const Route = createFileRoute("/spares-kit")({
       {
         name: "description",
         content:
-          "The three replaceable mounting and recharge parts for the AG Water Softener, sold as one kit for $39.",
+          "The three replaceable mounting and recharge parts for the AG Water Softener, sold as one kit for $45.",
       },
       { property: "og:title", content: "AG Spares Kit for the AG Water Softener" },
       {
         property: "og:description",
         content:
-          "The three replaceable mounting and recharge parts for the AG Water Softener, sold as one kit for $39.",
+          "The three replaceable mounting and recharge parts for the AG Water Softener, sold as one kit for $45.",
       },
       { property: "og:url", content: "https://agsoftener.com/spares-kit" },
       { property: "og:type", content: "product" },
@@ -45,11 +45,11 @@ export const Route = createFileRoute("/spares-kit")({
           name: "AG Spares Kit",
           brand: { "@type": "Brand", name: "GRN Labs" },
           description:
-            "The three replaceable mounting and recharge parts for the AG Water Softener, sold as one kit for $39.",
+            "The three replaceable mounting and recharge parts for the AG Water Softener, sold as one kit for $45.",
           image: "https://agsoftener.com/assets/spares_kit_image.png",
           offers: {
             "@type": "Offer",
-            price: "39.00",
+            price: "45.00",
             priceCurrency: "USD",
             availability: "https://schema.org/InStock",
           },
@@ -112,17 +112,17 @@ function SparesKitPage() {
         </h1>
 
         <div className="mt-4">
-          <span className="text-2xl font-semibold">$39</span>
+          <span className="text-2xl font-semibold">$45</span>
           <p className="mt-1 text-sm text-foreground/70">
             Ships separately from the unit, in 8 to 15 days.
           </p>
         </div>
 
         <a
-          href="https://buy.stripe.com/9B600iep88vr4le4fO1sQ0H"
+          href="https://buy.stripe.com/fZu3cubcWh1XcRK9A81sQ0I"
           className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-sage px-8 py-4 text-base font-semibold text-white transition-opacity hover:opacity-90"
         >
-          Add the Spares Kit · $39
+          Add the Spares Kit · $45
         </a>
 
         <div className="mt-10 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
