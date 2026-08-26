@@ -100,6 +100,34 @@ function ThanksPage() {
       track("bump_accepted", { source: summary.bumpSource });
     }
 
+    // --- Google Ads conversion tag (dormant) ---
+    // To activate: replace CONVERSION_ID and CONVERSION_LABEL with your
+    // Google Ads values, then uncomment the block below. The three CSP
+    // domains (googleadservices.com, googlesyndication.com, googletagmanager.com)
+    // are pre-added in report-only mode in vercel.json.
+    //
+    // const CONVERSION_ID = "";     // e.g. "AW-123456789"
+    // const CONVERSION_LABEL = "";  // e.g. "AbCdEfGh"
+    // if (CONVERSION_ID && CONVERSION_LABEL) {
+    //   const gtagScript = document.createElement("script");
+    //   gtagScript.src = `https://www.googletagmanager.com/gtag/js?id=${CONVERSION_ID}`;
+    //   gtagScript.async = true;
+    //   document.head.appendChild(gtagScript);
+    //   gtagScript.onload = () => {
+    //     (window as any).dataLayer = (window as any).dataLayer || [];
+    //     function gtag(...args: any[]) { (window as any).dataLayer.push(args); }
+    //     gtag("js", new Date());
+    //     gtag("config", CONVERSION_ID);
+    //     gtag("event", "conversion", {
+    //       send_to: `${CONVERSION_ID}/${CONVERSION_LABEL}`,
+    //       value: typeof summary.amountTotal === "number" ? summary.amountTotal / 100 : 0,
+    //       currency: summary.currency?.toUpperCase() || "USD",
+    //       transaction_id: summary.id,
+    //     });
+    //   };
+    // }
+    // --- end dormant conversion tag ---
+
     window.localStorage.setItem(purchaseKey, "1");
   }, [summary]);
 

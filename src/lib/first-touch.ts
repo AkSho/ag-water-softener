@@ -2,7 +2,18 @@ const STORAGE_KEY = "ag_ft";
 const INTERNAL_KEY = "ag_internal";
 
 function classifySource(referrer: string, params: URLSearchParams): string {
+  // Click-ID detection takes priority over referrer parsing
+  if (params.has("gclid")) return "google-cpc";
+  if (params.has("msclkid")) return "bing-cpc";
+  if (params.get("utm_medium") === "cpc") {
+    const source = params.get("utm_source");
+    return source ? `${source}-cpc` : "cpc";
+  }
+
+  // Cross-domain token from myapt
   if (params.get("xd") === "myapt") return "myapt";
+
+  // Referrer-based fallback
   if (!referrer) return "direct";
   try {
     const host = new URL(referrer).hostname.toLowerCase();
@@ -38,6 +49,12 @@ export function initFirstTouch(): void {
 
   const mlp = params.get("mlp");
   if (mlp) data.mlp = mlp;
+
+  // Store click IDs bare (no ft_ prefix inside the namespaced object)
+  const gclid = params.get("gclid");
+  if (gclid) data.gclid = gclid;
+  const msclkid = params.get("msclkid");
+  if (msclkid) data.msclkid = msclkid;
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }

@@ -8,7 +8,7 @@
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
         {
           "key": "Content-Security-Policy-Report-Only",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' connect.facebook.net; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.gstatic.com; img-src 'self' data: www.facebook.com; connect-src 'self' www.facebook.com vitals.vercel-insights.com; frame-src 'none'"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' connect.facebook.net googleadservices.com www.googlesyndication.com www.googletagmanager.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.gstatic.com; img-src 'self' data: www.facebook.com; connect-src 'self' www.facebook.com vitals.vercel-insights.com googleadservices.com www.googlesyndication.com www.googletagmanager.com; frame-src 'none'"
         }
       ]
     }

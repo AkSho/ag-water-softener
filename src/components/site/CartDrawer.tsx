@@ -52,6 +52,9 @@ export function CartDrawer() {
           ft_ts: ft.ts || "",
           ft_mlp: ft.mlp || "",
           ft_utm: ft.utm ? JSON.stringify(ft.utm) : "",
+          // Click IDs: bare in ag_ft, prefixed ft_ in Stripe metadata
+          ft_gclid: ft.gclid || "",
+          ft_msclkid: ft.msclkid || "",
         }),
       });
       const payload = (await response.json().catch(() => null)) as { url?: string } | null;

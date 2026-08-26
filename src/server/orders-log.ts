@@ -14,6 +14,8 @@ interface OrderRecord {
   ftMlp: string;
   ftTs: string;
   ftUtm: string;
+  ftGclid: string;
+  ftMsclkid: string;
 }
 
 function airtableConfig() {
@@ -43,7 +45,7 @@ function promiseDate(orderTs: string): string {
 function deriveVerdict(ftSrc: string, toolTouch: boolean): string {
   if (toolTouch) return "tool-lead";
   if (ftSrc === "myapt") return "content-lead";
-  if (["direct", "google", "bing"].includes(ftSrc)) return "direct";
+  if (["direct", "google", "bing", "google-cpc", "bing-cpc"].includes(ftSrc)) return "direct";
   return "unknown";
 }
 
@@ -84,6 +86,8 @@ export async function writeOrderRow(record: OrderRecord): Promise<{ ok: boolean;
     FT_LandingPage: record.ftLp || "",
     FT_MyaptPage: record.ftMlp || "",
     FT_Timestamp: record.ftTs || "",
+    FT_Gclid: record.ftGclid || "",
+    FT_Msclkid: record.ftMsclkid || "",
     DaysToPurchase: daysToPurchase,
     ToolTouch: toolTouch,
     Verdict: verdict,
