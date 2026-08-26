@@ -45,7 +45,8 @@ function promiseDate(orderTs: string): string {
 function deriveVerdict(ftSrc: string, toolTouch: boolean): string {
   if (toolTouch) return "tool-lead";
   if (ftSrc === "myapt") return "content-lead";
-  if (["direct", "google", "bing", "google-cpc", "bing-cpc"].includes(ftSrc)) return "direct";
+  if (ftSrc.endsWith("-cpc")) return "paid";
+  if (["direct", "google", "bing"].includes(ftSrc)) return "direct";
   return "unknown";
 }
 
