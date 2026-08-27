@@ -11,11 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WaterSoftenerForApartmentRouteImport } from './routes/water-softener-for-apartment'
 import { Route as ThanksRouteImport } from './routes/thanks'
+import { Route as SparesKitRouteImport } from './routes/spares-kit'
 import { Route as SoftwatercareVsShowerstickVsAgRouteImport } from './routes/softwatercare-vs-showerstick-vs-ag'
 import { Route as ShowerstickAlternativeRouteImport } from './routes/showerstick-alternative'
 import { Route as ShowerHeadWaterSoftenerRouteImport } from './routes/shower-head-water-softener'
 import { Route as ShowerFilterVsWaterSoftenerRouteImport } from './routes/shower-filter-vs-water-softener'
 import { Route as ShippingRouteImport } from './routes/shipping'
+import { Route as SetupRouteImport } from './routes/setup'
 import { Route as ReturnsRouteImport } from './routes/returns'
 import { Route as RedditShowerWaterSoftenerRouteImport } from './routes/reddit-shower-water-softener'
 import { Route as PortableWaterSoftenerForShowerRouteImport } from './routes/portable-water-softener-for-shower'
@@ -23,6 +25,7 @@ import { Route as JolieAlternativeForHardWaterRouteImport } from './routes/jolie
 import { Route as DoShowerFiltersWorkForHardWaterRouteImport } from './routes/do-shower-filters-work-for-hard-water'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CanopyAlternativeForHardWaterRouteImport } from './routes/canopy-alternative-for-hard-water'
+import { Route as BestShowerWaterSoftenerRouteImport } from './routes/best-shower-water-softener'
 import { Route as AriusVsAgWaterSoftenerRouteImport } from './routes/arius-vs-ag-water-softener'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -35,6 +38,11 @@ const WaterSoftenerForApartmentRoute =
 const ThanksRoute = ThanksRouteImport.update({
   id: '/thanks',
   path: '/thanks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SparesKitRoute = SparesKitRouteImport.update({
+  id: '/spares-kit',
+  path: '/spares-kit',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SoftwatercareVsShowerstickVsAgRoute =
@@ -62,6 +70,11 @@ const ShowerFilterVsWaterSoftenerRoute =
 const ShippingRoute = ShippingRouteImport.update({
   id: '/shipping',
   path: '/shipping',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SetupRoute = SetupRouteImport.update({
+  id: '/setup',
+  path: '/setup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReturnsRoute = ReturnsRouteImport.update({
@@ -104,6 +117,11 @@ const CanopyAlternativeForHardWaterRoute =
     path: '/canopy-alternative-for-hard-water',
     getParentRoute: () => rootRouteImport,
   } as any)
+const BestShowerWaterSoftenerRoute = BestShowerWaterSoftenerRouteImport.update({
+  id: '/best-shower-water-softener',
+  path: '/best-shower-water-softener',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AriusVsAgWaterSoftenerRoute = AriusVsAgWaterSoftenerRouteImport.update({
   id: '/arius-vs-ag-water-softener',
   path: '/arius-vs-ag-water-softener',
@@ -118,6 +136,7 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/arius-vs-ag-water-softener': typeof AriusVsAgWaterSoftenerRoute
+  '/best-shower-water-softener': typeof BestShowerWaterSoftenerRoute
   '/canopy-alternative-for-hard-water': typeof CanopyAlternativeForHardWaterRoute
   '/contact': typeof ContactRoute
   '/do-shower-filters-work-for-hard-water': typeof DoShowerFiltersWorkForHardWaterRoute
@@ -125,17 +144,20 @@ export interface FileRoutesByFullPath {
   '/portable-water-softener-for-shower': typeof PortableWaterSoftenerForShowerRoute
   '/reddit-shower-water-softener': typeof RedditShowerWaterSoftenerRoute
   '/returns': typeof ReturnsRoute
+  '/setup': typeof SetupRoute
   '/shipping': typeof ShippingRoute
   '/shower-filter-vs-water-softener': typeof ShowerFilterVsWaterSoftenerRoute
   '/shower-head-water-softener': typeof ShowerHeadWaterSoftenerRoute
   '/showerstick-alternative': typeof ShowerstickAlternativeRoute
   '/softwatercare-vs-showerstick-vs-ag': typeof SoftwatercareVsShowerstickVsAgRoute
+  '/spares-kit': typeof SparesKitRoute
   '/thanks': typeof ThanksRoute
   '/water-softener-for-apartment': typeof WaterSoftenerForApartmentRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/arius-vs-ag-water-softener': typeof AriusVsAgWaterSoftenerRoute
+  '/best-shower-water-softener': typeof BestShowerWaterSoftenerRoute
   '/canopy-alternative-for-hard-water': typeof CanopyAlternativeForHardWaterRoute
   '/contact': typeof ContactRoute
   '/do-shower-filters-work-for-hard-water': typeof DoShowerFiltersWorkForHardWaterRoute
@@ -143,11 +165,13 @@ export interface FileRoutesByTo {
   '/portable-water-softener-for-shower': typeof PortableWaterSoftenerForShowerRoute
   '/reddit-shower-water-softener': typeof RedditShowerWaterSoftenerRoute
   '/returns': typeof ReturnsRoute
+  '/setup': typeof SetupRoute
   '/shipping': typeof ShippingRoute
   '/shower-filter-vs-water-softener': typeof ShowerFilterVsWaterSoftenerRoute
   '/shower-head-water-softener': typeof ShowerHeadWaterSoftenerRoute
   '/showerstick-alternative': typeof ShowerstickAlternativeRoute
   '/softwatercare-vs-showerstick-vs-ag': typeof SoftwatercareVsShowerstickVsAgRoute
+  '/spares-kit': typeof SparesKitRoute
   '/thanks': typeof ThanksRoute
   '/water-softener-for-apartment': typeof WaterSoftenerForApartmentRoute
 }
@@ -155,6 +179,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/arius-vs-ag-water-softener': typeof AriusVsAgWaterSoftenerRoute
+  '/best-shower-water-softener': typeof BestShowerWaterSoftenerRoute
   '/canopy-alternative-for-hard-water': typeof CanopyAlternativeForHardWaterRoute
   '/contact': typeof ContactRoute
   '/do-shower-filters-work-for-hard-water': typeof DoShowerFiltersWorkForHardWaterRoute
@@ -162,11 +187,13 @@ export interface FileRoutesById {
   '/portable-water-softener-for-shower': typeof PortableWaterSoftenerForShowerRoute
   '/reddit-shower-water-softener': typeof RedditShowerWaterSoftenerRoute
   '/returns': typeof ReturnsRoute
+  '/setup': typeof SetupRoute
   '/shipping': typeof ShippingRoute
   '/shower-filter-vs-water-softener': typeof ShowerFilterVsWaterSoftenerRoute
   '/shower-head-water-softener': typeof ShowerHeadWaterSoftenerRoute
   '/showerstick-alternative': typeof ShowerstickAlternativeRoute
   '/softwatercare-vs-showerstick-vs-ag': typeof SoftwatercareVsShowerstickVsAgRoute
+  '/spares-kit': typeof SparesKitRoute
   '/thanks': typeof ThanksRoute
   '/water-softener-for-apartment': typeof WaterSoftenerForApartmentRoute
 }
@@ -175,6 +202,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/arius-vs-ag-water-softener'
+    | '/best-shower-water-softener'
     | '/canopy-alternative-for-hard-water'
     | '/contact'
     | '/do-shower-filters-work-for-hard-water'
@@ -182,17 +210,20 @@ export interface FileRouteTypes {
     | '/portable-water-softener-for-shower'
     | '/reddit-shower-water-softener'
     | '/returns'
+    | '/setup'
     | '/shipping'
     | '/shower-filter-vs-water-softener'
     | '/shower-head-water-softener'
     | '/showerstick-alternative'
     | '/softwatercare-vs-showerstick-vs-ag'
+    | '/spares-kit'
     | '/thanks'
     | '/water-softener-for-apartment'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/arius-vs-ag-water-softener'
+    | '/best-shower-water-softener'
     | '/canopy-alternative-for-hard-water'
     | '/contact'
     | '/do-shower-filters-work-for-hard-water'
@@ -200,17 +231,20 @@ export interface FileRouteTypes {
     | '/portable-water-softener-for-shower'
     | '/reddit-shower-water-softener'
     | '/returns'
+    | '/setup'
     | '/shipping'
     | '/shower-filter-vs-water-softener'
     | '/shower-head-water-softener'
     | '/showerstick-alternative'
     | '/softwatercare-vs-showerstick-vs-ag'
+    | '/spares-kit'
     | '/thanks'
     | '/water-softener-for-apartment'
   id:
     | '__root__'
     | '/'
     | '/arius-vs-ag-water-softener'
+    | '/best-shower-water-softener'
     | '/canopy-alternative-for-hard-water'
     | '/contact'
     | '/do-shower-filters-work-for-hard-water'
@@ -218,11 +252,13 @@ export interface FileRouteTypes {
     | '/portable-water-softener-for-shower'
     | '/reddit-shower-water-softener'
     | '/returns'
+    | '/setup'
     | '/shipping'
     | '/shower-filter-vs-water-softener'
     | '/shower-head-water-softener'
     | '/showerstick-alternative'
     | '/softwatercare-vs-showerstick-vs-ag'
+    | '/spares-kit'
     | '/thanks'
     | '/water-softener-for-apartment'
   fileRoutesById: FileRoutesById
@@ -230,6 +266,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AriusVsAgWaterSoftenerRoute: typeof AriusVsAgWaterSoftenerRoute
+  BestShowerWaterSoftenerRoute: typeof BestShowerWaterSoftenerRoute
   CanopyAlternativeForHardWaterRoute: typeof CanopyAlternativeForHardWaterRoute
   ContactRoute: typeof ContactRoute
   DoShowerFiltersWorkForHardWaterRoute: typeof DoShowerFiltersWorkForHardWaterRoute
@@ -237,11 +274,13 @@ export interface RootRouteChildren {
   PortableWaterSoftenerForShowerRoute: typeof PortableWaterSoftenerForShowerRoute
   RedditShowerWaterSoftenerRoute: typeof RedditShowerWaterSoftenerRoute
   ReturnsRoute: typeof ReturnsRoute
+  SetupRoute: typeof SetupRoute
   ShippingRoute: typeof ShippingRoute
   ShowerFilterVsWaterSoftenerRoute: typeof ShowerFilterVsWaterSoftenerRoute
   ShowerHeadWaterSoftenerRoute: typeof ShowerHeadWaterSoftenerRoute
   ShowerstickAlternativeRoute: typeof ShowerstickAlternativeRoute
   SoftwatercareVsShowerstickVsAgRoute: typeof SoftwatercareVsShowerstickVsAgRoute
+  SparesKitRoute: typeof SparesKitRoute
   ThanksRoute: typeof ThanksRoute
   WaterSoftenerForApartmentRoute: typeof WaterSoftenerForApartmentRoute
 }
@@ -260,6 +299,13 @@ declare module '@tanstack/react-router' {
       path: '/thanks'
       fullPath: '/thanks'
       preLoaderRoute: typeof ThanksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/spares-kit': {
+      id: '/spares-kit'
+      path: '/spares-kit'
+      fullPath: '/spares-kit'
+      preLoaderRoute: typeof SparesKitRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/softwatercare-vs-showerstick-vs-ag': {
@@ -295,6 +341,13 @@ declare module '@tanstack/react-router' {
       path: '/shipping'
       fullPath: '/shipping'
       preLoaderRoute: typeof ShippingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/setup': {
+      id: '/setup'
+      path: '/setup'
+      fullPath: '/setup'
+      preLoaderRoute: typeof SetupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/returns': {
@@ -346,6 +399,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CanopyAlternativeForHardWaterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/best-shower-water-softener': {
+      id: '/best-shower-water-softener'
+      path: '/best-shower-water-softener'
+      fullPath: '/best-shower-water-softener'
+      preLoaderRoute: typeof BestShowerWaterSoftenerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/arius-vs-ag-water-softener': {
       id: '/arius-vs-ag-water-softener'
       path: '/arius-vs-ag-water-softener'
@@ -366,6 +426,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AriusVsAgWaterSoftenerRoute: AriusVsAgWaterSoftenerRoute,
+  BestShowerWaterSoftenerRoute: BestShowerWaterSoftenerRoute,
   CanopyAlternativeForHardWaterRoute: CanopyAlternativeForHardWaterRoute,
   ContactRoute: ContactRoute,
   DoShowerFiltersWorkForHardWaterRoute: DoShowerFiltersWorkForHardWaterRoute,
@@ -373,11 +434,13 @@ const rootRouteChildren: RootRouteChildren = {
   PortableWaterSoftenerForShowerRoute: PortableWaterSoftenerForShowerRoute,
   RedditShowerWaterSoftenerRoute: RedditShowerWaterSoftenerRoute,
   ReturnsRoute: ReturnsRoute,
+  SetupRoute: SetupRoute,
   ShippingRoute: ShippingRoute,
   ShowerFilterVsWaterSoftenerRoute: ShowerFilterVsWaterSoftenerRoute,
   ShowerHeadWaterSoftenerRoute: ShowerHeadWaterSoftenerRoute,
   ShowerstickAlternativeRoute: ShowerstickAlternativeRoute,
   SoftwatercareVsShowerstickVsAgRoute: SoftwatercareVsShowerstickVsAgRoute,
+  SparesKitRoute: SparesKitRoute,
   ThanksRoute: ThanksRoute,
   WaterSoftenerForApartmentRoute: WaterSoftenerForApartmentRoute,
 }

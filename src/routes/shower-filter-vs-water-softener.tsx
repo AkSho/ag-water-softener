@@ -48,7 +48,7 @@ export const Route = createFileRoute("/shower-filter-vs-water-softener")({
           "@type": "Article",
           headline: "Shower filter vs water softener: which one fixes your water",
           datePublished: "2026-07-28",
-          dateModified: "2026-08-26",
+          dateModified: "2026-08-27",
           author: { "@type": "Organization", name: "AG Water Softener" },
         }),
       },
@@ -100,7 +100,7 @@ function ShowerFilterVsSoftenerPage() {
           Shower filter vs water softener: which one fixes your water
         </h1>
         <p className="text-sm text-muted-foreground">
-          Updated Aug 26, 2026
+          Updated Aug 27, 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
@@ -130,7 +130,7 @@ function ShowerFilterVsSoftenerPage() {
             That matters. Chlorine strips oil from hair and skin, and many people notice less dryness within a couple of weeks of installing a decent filter. Brands like Jolie and Canopy have built real businesses on this, and for chlorine, the products work.
           </p>
           <p>
-            What no filter does is soften water. Calcium and magnesium are dissolved ions, not particles. They are thousands of times smaller than the pores in carbon or KDF media, so at two gallons per minute they flow straight through. Filter brands know this. Some say it plainly, and some bury it, but the chemistry is the same for all of them. The full chemistry is on our page about <a href="/do-shower-filters-work-for-hard-water" className="underline hover:opacity-70">why filter media can't remove hardness</a>. And if you're looking at a listing that says softener, <a href="/shower-head-water-softener" className="underline hover:opacity-70">the ten-second listing check</a> settles it.
+            What no filter does is soften water. Calcium and magnesium are dissolved ions, not particles. They are thousands of times smaller than the pores in carbon or KDF media, so at two gallons per minute they flow straight through. Filter brands know this. Some say it plainly, and some bury it, but the chemistry is the same for all of them. The full chemistry is on our page about <a href="/do-shower-filters-work-for-hard-water" className="underline hover:opacity-70">why filter media can't remove hardness</a>. And if you're looking at a listing that says softener, <a href="/shower-head-water-softener" className="underline hover:opacity-70">the ten-second listing check</a> settles it. If you're comparing the products themselves, <a href="/best-shower-water-softener" className="underline hover:opacity-70">our ranking of shower water softeners</a> covers the field.
           </p>
         </div>
 

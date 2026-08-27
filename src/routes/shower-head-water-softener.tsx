@@ -44,7 +44,7 @@ export const Route = createFileRoute("/shower-head-water-softener")({
           "@type": "Article",
           headline: "Shower head water softener: most of them can't soften water",
           datePublished: "2026-07-28",
-          dateModified: "2026-08-26",
+          dateModified: "2026-08-27",
           author: { "@type": "Organization", name: "AG Water Softener" },
         }),
       },
@@ -86,7 +86,7 @@ function ShowerHeadWaterSoftenerPage() {
           Shower head water softener: most of them can't soften water
         </h1>
         <p className="text-sm text-muted-foreground">
-          Updated Aug 26, 2026
+          Updated Aug 27, 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
@@ -142,7 +142,7 @@ function ShowerHeadWaterSoftenerPage() {
             <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> is built this way: a resin bed at the shower arm, a ten-minute no-tool install, recharges with plain non-iodized salt, and a $10 test strip makes the claim checkable on your counter. Hard water in reads 120 ppm and up; the output reads near zero. $249, 60-day money-back guarantee.
           </p>
           <p>
-            Yes, that's more than $18. It's also the difference between buying a softener and buying the word. For the full side-by-side, read <a href="/shower-filter-vs-water-softener" className="underline hover:opacity-70">the filter vs softener comparison</a>.
+            Yes, that's more than $18. It's also the difference between buying a softener and buying the word. For the full side-by-side, read <a href="/shower-filter-vs-water-softener" className="underline hover:opacity-70">the filter vs softener comparison</a>. The full field is ranked in <a href="/best-shower-water-softener" className="underline hover:opacity-70">our shower water softener list</a>.
           </p>
         </div>
 
