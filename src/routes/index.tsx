@@ -179,6 +179,7 @@ function ProductPage() {
       <CostTable />
       <FAQSection />
       <BurnedBuyerBlock />
+      <IonExchangeProcess />
       <ClosingSection />
       <SiteFooter />
       <StickyBuyBar
@@ -1345,6 +1346,61 @@ function BurnedBuyerBlock() {
             </p>
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────── SECTION 12c — ION EXCHANGE PROCESS ─────────────────── */
+
+function IonExchangeProcess() {
+  const nodes = [
+    {
+      emoji: "🧲",
+      title: "The swap",
+      body: "The canister holds a bed of resin beads loaded with sodium ions. When hard water flows through, calcium and magnesium stick to the resin and sodium enters the water in their place. The minerals that would coat your hair and skin now leave the water before it ever reaches the shower head.",
+      tint: "bg-sage/20",
+    },
+    {
+      emoji: "⏳",
+      title: "The fill",
+      body: "The resin fills up as it works. No shower filter runs this exchange. Resin is the only material that trades hardness out of the water.",
+      tint: "bg-sage/30",
+    },
+    {
+      emoji: "🧂",
+      title: "The recharge",
+      body: "Soaking the resin in salt water pulls the trapped minerals off the beads and reloads them with sodium, which restores its roughly 1,300 gallons of capacity. The recharge is the cost of actually removing minerals instead of filtering around them.",
+      tint: "bg-sage/40",
+    },
+  ];
+  return (
+    <section className="border-t border-border/60">
+      <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
+        <div className="mx-auto max-w-[900px]">
+          <h2 className="font-display text-3xl leading-[1.05] sm:text-4xl md:text-[38px]">
+            How an ion exchange shower softener works
+          </h2>
+          <p className="mt-8 text-[15px] leading-[1.7] text-foreground/90">
+            An ion exchange shower softener removes hardness by swapping minerals, not by filtering them.
+          </p>
+        </div>
+
+        <div className="mx-auto mt-14 grid max-w-[1100px] gap-4 md:grid-cols-3">
+          {nodes.map((n) => (
+            <div key={n.title} className={`border border-border/60 p-5 ${n.tint}`}>
+              <span className="text-3xl leading-none" aria-hidden>{n.emoji}</span>
+              <div className="mt-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground">
+                {n.title}
+              </div>
+              <p className="mt-3 text-[13px] leading-[1.55] text-foreground/90">{n.body}</p>
+            </div>
+          ))}
+        </div>
+
+        <p className="mx-auto mt-14 max-w-[900px] text-[15px] leading-[1.7] text-foreground/90">
+          A hardness test strip dipped before and after the unit shows the swap in your own water.
+        </p>
       </div>
     </section>
   );
