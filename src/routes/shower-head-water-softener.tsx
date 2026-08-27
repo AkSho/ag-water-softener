@@ -44,7 +44,7 @@ export const Route = createFileRoute("/shower-head-water-softener")({
           "@type": "Article",
           headline: "Shower head water softener: most of them can't soften water",
           datePublished: "2026-07-28",
-          dateModified: "2026-08-12",
+          dateModified: "2026-08-26",
           author: { "@type": "Organization", name: "AG Water Softener" },
         }),
       },
@@ -86,12 +86,12 @@ function ShowerHeadWaterSoftenerPage() {
           Shower head water softener: most of them can't soften water
         </h1>
         <p className="text-sm text-muted-foreground">
-          Updated Aug 12, 2026
+          Updated Aug 26, 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            Search "shower head water softener" on Amazon or Walmart and you'll see pages of results between $15 and $35, many with thousands of reviews, promising to soften hard water. Almost none of them can. They are chlorine filters wearing the word "softener" on the listing, and the way to catch them takes about ten seconds once you know where to look.
+            Search "shower head water softener" on Amazon or Walmart and you'll see pages of results from $15 cartridges to $199 "water softener shower heads," prices checked August 2026, many with thousands of reviews, promising to soften hard water. Almost none of them can. They are chlorine filters wearing the word "softener" on the listing, and the way to catch them takes about ten seconds once you know where to look.
           </p>
         </div>
 
@@ -142,7 +142,7 @@ function ShowerHeadWaterSoftenerPage() {
             <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> is built this way: a resin bed at the shower arm, a ten-minute no-tool install, recharges with plain non-iodized salt, and a $10 test strip makes the claim checkable on your counter. Hard water in reads 120 ppm and up; the output reads near zero. $249, 60-day money-back guarantee.
           </p>
           <p>
-            Yes, that's more than $18. It's also the difference between buying a softener and buying the word.
+            Yes, that's more than $18. It's also the difference between buying a softener and buying the word. For the full side-by-side, read <a href="/shower-filter-vs-water-softener" className="underline hover:opacity-70">the filter vs softener comparison</a>.
           </p>
         </div>
 

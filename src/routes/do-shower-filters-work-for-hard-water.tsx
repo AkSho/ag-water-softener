@@ -49,7 +49,7 @@ export const Route = createFileRoute(
           "@type": "Article",
           headline: "Do shower filters work for hard water?",
           datePublished: "2026-07-28",
-          dateModified: "2026-08-12",
+          dateModified: "2026-08-26",
           author: { "@type": "Organization", name: "AG Water Softener" },
         }),
       },
@@ -101,7 +101,7 @@ function DoShowerFiltersWorkPage() {
           Do shower filters work for hard water?
         </h1>
         <p className="text-sm text-muted-foreground">
-          Updated Aug 12, 2026
+          Updated Aug 26, 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
@@ -152,7 +152,7 @@ function DoShowerFiltersWorkPage() {
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>Two ways, both under ten dollars and ten minutes.</p>
           <p>
-            First, check your local water hardness with <a href="https://www.myapartmentwaterquality.com/" className="underline hover:opacity-70">our free report tool</a>. It pulls from public utility and USGS data and shows the number for your area in parts per million. Anything above about 120 ppm counts as hard; plenty of US cities run 200 to 300.
+            First, check your local water hardness with <a href="https://www.myapartmentwaterquality.com/" className="underline hover:opacity-70">our free report tool</a>. It pulls from public utility and USGS data and shows the number for your area in parts per million. Anything above about 120 ppm counts as hard. In <a href="https://www.myapartmentwaterquality.com/hardest-water-cities" className="underline hover:opacity-70">The hardest water cities in America</a>, our verified 25-city study, readings run as high as 350 ppm in San Jose.
           </p>
           <p>
             Second, run a test strip on your own shower. Strips don't care about marketing claims. If the strip reads hard, no filter cartridge will change that reading. A working softener will take the same strip to near zero.
