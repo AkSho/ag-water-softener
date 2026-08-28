@@ -20,6 +20,7 @@ import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as SetupRouteImport } from './routes/setup'
 import { Route as ReturnsRouteImport } from './routes/returns'
 import { Route as RedditShowerWaterSoftenerRouteImport } from './routes/reddit-shower-water-softener'
+import { Route as PreventLimescaleInShowerRouteImport } from './routes/prevent-limescale-in-shower'
 import { Route as PortableWaterSoftenerForShowerRouteImport } from './routes/portable-water-softener-for-shower'
 import { Route as JolieAlternativeForHardWaterRouteImport } from './routes/jolie-alternative-for-hard-water'
 import { Route as DoShowerFiltersWorkForHardWaterRouteImport } from './routes/do-shower-filters-work-for-hard-water'
@@ -88,6 +89,12 @@ const RedditShowerWaterSoftenerRoute =
     path: '/reddit-shower-water-softener',
     getParentRoute: () => rootRouteImport,
   } as any)
+const PreventLimescaleInShowerRoute =
+  PreventLimescaleInShowerRouteImport.update({
+    id: '/prevent-limescale-in-shower',
+    path: '/prevent-limescale-in-shower',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const PortableWaterSoftenerForShowerRoute =
   PortableWaterSoftenerForShowerRouteImport.update({
     id: '/portable-water-softener-for-shower',
@@ -142,6 +149,7 @@ export interface FileRoutesByFullPath {
   '/do-shower-filters-work-for-hard-water': typeof DoShowerFiltersWorkForHardWaterRoute
   '/jolie-alternative-for-hard-water': typeof JolieAlternativeForHardWaterRoute
   '/portable-water-softener-for-shower': typeof PortableWaterSoftenerForShowerRoute
+  '/prevent-limescale-in-shower': typeof PreventLimescaleInShowerRoute
   '/reddit-shower-water-softener': typeof RedditShowerWaterSoftenerRoute
   '/returns': typeof ReturnsRoute
   '/setup': typeof SetupRoute
@@ -163,6 +171,7 @@ export interface FileRoutesByTo {
   '/do-shower-filters-work-for-hard-water': typeof DoShowerFiltersWorkForHardWaterRoute
   '/jolie-alternative-for-hard-water': typeof JolieAlternativeForHardWaterRoute
   '/portable-water-softener-for-shower': typeof PortableWaterSoftenerForShowerRoute
+  '/prevent-limescale-in-shower': typeof PreventLimescaleInShowerRoute
   '/reddit-shower-water-softener': typeof RedditShowerWaterSoftenerRoute
   '/returns': typeof ReturnsRoute
   '/setup': typeof SetupRoute
@@ -185,6 +194,7 @@ export interface FileRoutesById {
   '/do-shower-filters-work-for-hard-water': typeof DoShowerFiltersWorkForHardWaterRoute
   '/jolie-alternative-for-hard-water': typeof JolieAlternativeForHardWaterRoute
   '/portable-water-softener-for-shower': typeof PortableWaterSoftenerForShowerRoute
+  '/prevent-limescale-in-shower': typeof PreventLimescaleInShowerRoute
   '/reddit-shower-water-softener': typeof RedditShowerWaterSoftenerRoute
   '/returns': typeof ReturnsRoute
   '/setup': typeof SetupRoute
@@ -208,6 +218,7 @@ export interface FileRouteTypes {
     | '/do-shower-filters-work-for-hard-water'
     | '/jolie-alternative-for-hard-water'
     | '/portable-water-softener-for-shower'
+    | '/prevent-limescale-in-shower'
     | '/reddit-shower-water-softener'
     | '/returns'
     | '/setup'
@@ -229,6 +240,7 @@ export interface FileRouteTypes {
     | '/do-shower-filters-work-for-hard-water'
     | '/jolie-alternative-for-hard-water'
     | '/portable-water-softener-for-shower'
+    | '/prevent-limescale-in-shower'
     | '/reddit-shower-water-softener'
     | '/returns'
     | '/setup'
@@ -250,6 +262,7 @@ export interface FileRouteTypes {
     | '/do-shower-filters-work-for-hard-water'
     | '/jolie-alternative-for-hard-water'
     | '/portable-water-softener-for-shower'
+    | '/prevent-limescale-in-shower'
     | '/reddit-shower-water-softener'
     | '/returns'
     | '/setup'
@@ -272,6 +285,7 @@ export interface RootRouteChildren {
   DoShowerFiltersWorkForHardWaterRoute: typeof DoShowerFiltersWorkForHardWaterRoute
   JolieAlternativeForHardWaterRoute: typeof JolieAlternativeForHardWaterRoute
   PortableWaterSoftenerForShowerRoute: typeof PortableWaterSoftenerForShowerRoute
+  PreventLimescaleInShowerRoute: typeof PreventLimescaleInShowerRoute
   RedditShowerWaterSoftenerRoute: typeof RedditShowerWaterSoftenerRoute
   ReturnsRoute: typeof ReturnsRoute
   SetupRoute: typeof SetupRoute
@@ -364,6 +378,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RedditShowerWaterSoftenerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/prevent-limescale-in-shower': {
+      id: '/prevent-limescale-in-shower'
+      path: '/prevent-limescale-in-shower'
+      fullPath: '/prevent-limescale-in-shower'
+      preLoaderRoute: typeof PreventLimescaleInShowerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/portable-water-softener-for-shower': {
       id: '/portable-water-softener-for-shower'
       path: '/portable-water-softener-for-shower'
@@ -432,6 +453,7 @@ const rootRouteChildren: RootRouteChildren = {
   DoShowerFiltersWorkForHardWaterRoute: DoShowerFiltersWorkForHardWaterRoute,
   JolieAlternativeForHardWaterRoute: JolieAlternativeForHardWaterRoute,
   PortableWaterSoftenerForShowerRoute: PortableWaterSoftenerForShowerRoute,
+  PreventLimescaleInShowerRoute: PreventLimescaleInShowerRoute,
   RedditShowerWaterSoftenerRoute: RedditShowerWaterSoftenerRoute,
   ReturnsRoute: ReturnsRoute,
   SetupRoute: SetupRoute,
