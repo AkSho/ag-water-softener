@@ -123,6 +123,42 @@ function ThanksPage() {
     };
     // --- end conversion tag ---
 
+    // --- Microsoft UET conversion tag ---
+    (window as any).uetq = (window as any).uetq || [];
+    const uetRevenue = typeof summary.amountTotal === "number" ? summary.amountTotal / 100 : 0;
+    const pushUetPurchase = () => {
+      (window as any).uetq.push("event", "purchase", {
+        revenue_value: uetRevenue,
+        currency: "USD",
+        transaction_id: summary.id,
+      });
+    };
+    if (summary.customerEmail) {
+      const normalized = summary.customerEmail.trim().toLowerCase();
+      crypto.subtle.digest("SHA-256", new TextEncoder().encode(normalized))
+        .then((buf) => {
+          const hash = Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
+          (window as any).uetq.push("set", { pid: { em: hash } });
+          pushUetPurchase();
+        })
+        .catch(() => { pushUetPurchase(); });
+    } else {
+      pushUetPurchase();
+    }
+    const uetScript = document.createElement("script");
+    uetScript.src = "https://bat.bing.net/bat.js";
+    uetScript.async = true;
+    uetScript.onload = () => {
+      (window as any).uetq = new (window as any).UET({
+        ti: "187271291",
+        enableAutoSpaTracking: false,
+        q: (window as any).uetq,
+      });
+      (window as any).uetq.push("pageLoad");
+    };
+    document.head.appendChild(uetScript);
+    // --- end UET conversion tag ---
+
     window.localStorage.setItem(purchaseKey, "1");
   }, [summary]);
 
