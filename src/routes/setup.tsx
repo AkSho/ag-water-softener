@@ -280,6 +280,18 @@ function SetupPage() {
           Before your first shower after a recharge, run the water for one minute to flush out the
           remaining salt water.
         </p>
+
+        <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
+          Frequently asked questions
+        </h2>
+        <div className="mt-6 space-y-8 text-[15px] leading-[1.7] text-foreground/90">
+          <div>
+            <h3 className="text-[16px] font-semibold leading-[1.4]">Does the AG work with a fixed shower head?</h3>
+            <p className="mt-2">
+              The AG connects into a hose line, so it works right away with any handheld or hose-fed shower head. A fixed head screws straight onto its arm with no hose, so the AG can't feed it directly. The fix is a standard handheld conversion kit from any hardware store, usually $20 to $40. The holder screws onto your existing arm and the AG connects in. The new wand hangs right where the fixed head was. And the AG treats only the line it's attached to. If your shower has both a fixed head and a separate handheld, the water splits behind the wall, so you pick one line to soften.
+            </p>
+          </div>
+        </div>
       </article>
 
       <SiteFooter />
