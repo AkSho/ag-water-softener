@@ -44,7 +44,7 @@ export const Route = createFileRoute("/showerstick-alternative")({
           "@type": "Article",
           headline: "ShowerStick alternative: the side-by-side comparison",
           datePublished: "2026-07-28",
-          dateModified: "2026-08-18",
+          dateModified: "2026-08-30",
           author: { "@type": "Organization", name: "AG Water Softener" },
         }),
       },
@@ -86,7 +86,7 @@ function ShowerstickAlternativePage() {
           ShowerStick alternative: the side-by-side comparison
         </h1>
         <p className="text-sm text-muted-foreground">
-          Updated Aug 18, 2026
+          Updated Aug 30, 2026
         </p>
 
         <div
@@ -125,7 +125,7 @@ function ShowerstickAlternativePage() {
               <p>$260</p>
               <p>Manual weekly recharge</p>
               <p>14-day returns</p>
-              <p>Handmade batches, often sells out</p>
+              <p>Handmade batches</p>
             </div>
           </div>
         </div>
@@ -201,7 +201,7 @@ function ShowerstickAlternativePage() {
                 </tr>
                 <tr className="bg-surface/50">
                   <td className="border border-border px-4 py-3 font-semibold">Price</td>
-                  <td className="border border-border px-4 py-3">$260 <span className="text-[12px] text-muted-foreground">(on sale from $299, checked Aug 18, 2026)</span></td>
+                  <td className="border border-border px-4 py-3">$260 <span className="text-[12px] text-muted-foreground">(on sale from $299, checked Aug 30, 2026)</span></td>
                   <td className="border border-border px-4 py-3">$249</td>
                 </tr>
                 <tr>
@@ -216,7 +216,7 @@ function ShowerstickAlternativePage() {
                 </tr>
                 <tr>
                   <td className="border border-border px-4 py-3 font-semibold">Availability</td>
-                  <td className="border border-border px-4 py-3">Handmade in small daily batches; frequently sells out</td>
+                  <td className="border border-border px-4 py-3">Handmade in small daily batches; in stock as of Aug 30, 2026, though past runs have sold out</td>
                   <td className="border border-border px-4 py-3">In stock</td>
                 </tr>
                 <tr className="bg-surface/50">
