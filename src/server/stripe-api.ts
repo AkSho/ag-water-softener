@@ -449,6 +449,7 @@ async function getCheckoutSession(request: Request) {
       amountTotal: session.amount_total,
       formattedTotal: formatMoney(session.amount_total, session.currency),
       currency: session.currency,
+      customerEmail: session.customer_details?.email ?? undefined,
       items,
       sparePurchased,
       bumpSource,
