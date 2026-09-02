@@ -1239,7 +1239,7 @@ function CostTable() {
             </table>
           </div>
           <p className="mt-3 text-[13px] italic text-muted-foreground">
-            Competitor prices as of August 19, 2026. Canopy shown at their subscription filter price.
+            Competitor prices as of September 1, 2026. Canopy shown at their subscription filter price.
           </p>
 
           <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
