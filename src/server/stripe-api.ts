@@ -603,7 +603,7 @@ async function handleStripeWebhook(request: Request) {
 
 // ─── OTO: one-click Spares Kit offer ─────────────────────────────────────────────
 
-const KIT_PAYMENT_LINK = "https://buy.stripe.com/fZu3cubcWh1XcRK9A81sQ0I";
+const KIT_PAYMENT_LINK = "https://buy.stripe.com/9B600iep88vr4le4fO1sQ0H";
 
 async function handleOtoAccept(request: Request) {
   try {

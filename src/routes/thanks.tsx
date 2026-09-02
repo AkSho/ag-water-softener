@@ -224,11 +224,11 @@ function ThanksPage() {
         setOtoFallbackUrl(data.url);
       } else {
         setOtoState("idle");
-        setOtoFallbackUrl("https://buy.stripe.com/fZu3cubcWh1XcRK9A81sQ0I");
+        setOtoFallbackUrl("https://buy.stripe.com/9B600iep88vr4le4fO1sQ0H");
       }
     } catch {
       setOtoState("idle");
-      setOtoFallbackUrl("https://buy.stripe.com/fZu3cubcWh1XcRK9A81sQ0I");
+      setOtoFallbackUrl("https://buy.stripe.com/9B600iep88vr4le4fO1sQ0H");
     }
   }
 
@@ -259,7 +259,7 @@ function ThanksPage() {
                     <img
                       src="/assets/spares_kit_image.png"
                       alt="The three parts of the AG Spares Kit"
-                      className="hidden sm:block w-20 h-20 flex-shrink-0 rounded border border-border/50 object-cover"
+                      className="w-20 h-20 flex-shrink-0 rounded border border-border/50 object-cover"
                     />
                     <div className="min-w-0">
                       <h2 className="font-display text-2xl leading-tight md:text-3xl">Add the Spares Kit to your order for $39?</h2>
