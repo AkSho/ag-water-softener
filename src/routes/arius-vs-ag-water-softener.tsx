@@ -158,7 +158,7 @@ function AriusVsAgPage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            Both systems soften water the same way, with ion-exchange resin that has to be recharged with salt. The difference is who does the work. With Arius you add salt, wait about 4 hours for the brine to form, turn the valve to REGEN, and run it for about 10 minutes, roughly every 2 weeks for two people. The AG recharges itself from its brine tank in about 30 minutes, every 3 to 5 weeks. You add salt and walk away.
+            Both systems soften water the same way, with ion-exchange resin that has to be recharged with salt. The difference is who does the work. With Arius you add salt, wait about 4 hours for the brine to form, turn the valve to REGEN, and run it for about 10 minutes, roughly every 2 weeks for two people. The AG recharges itself from its brine tank in about 30 minutes, every 3 to 5 weeks. You add salt and walk away. Over a year, that's roughly 26 recharge sessions for the Arius at their two-person cadence, and somewhere between 10 and 17 for the AG.
           </p>
           <p>
             Neither regeneration is difficult. The question is whether a 4-hour manual cycle every 2 weeks fits your routine, or whether automatic recharging every few weeks is the version you will actually keep doing. Softeners that stop getting recharged stop softening, and that pattern is more common than any product failure.
@@ -226,7 +226,7 @@ function AriusVsAgPage() {
             If you want filtration and softening in one unit and the Arius price fits your budget, it is a legitimate option. The ion-exchange chemistry is real, and the combined-unit design means one less device in your shower.
           </p>
           <p>
-            If you want a softener that is in stock, ships immediately, recharges automatically, and carries a 12-month warranty beyond the guarantee, that is the case for <a href="/" className="underline hover:opacity-70">the AG Water Softener</a>. It handles 2.1 gallons per minute at the shower arm, regenerates about 1,300 gallons of capacity per recharge, and threads onto any standard shower connection with no tools and no plumbing changes.
+            If you'd rather spend $100 less and recharge less often, that's the case for <a href="/" className="underline hover:opacity-70">the AG Water Softener</a>. It recharges every 3 to 5 weeks instead of every 2, in about 30 minutes, with a 12-month warranty beyond the guarantee. It handles 2.1 gallons per minute at the shower arm, regenerates about 1,300 gallons of capacity per recharge, and threads onto any standard shower connection with no tools and no plumbing changes.
           </p>
           <p>
             Either way, confirm your water is hard first. <a href="https://www.myapartmentwaterquality.com/" className="underline hover:opacity-70">Check your water free</a> with our lookup tool or test it yourself. If your water reads soft, neither product will change anything you notice. If it reads hard, the real question is which recharge routine you will stick with.
