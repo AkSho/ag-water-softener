@@ -44,7 +44,7 @@ export const Route = createFileRoute("/showerstick-alternative")({
           "@type": "Article",
           headline: "ShowerStick alternative: the side-by-side comparison",
           datePublished: "2026-07-28",
-          dateModified: "2026-08-30",
+          dateModified: "2026-09-01",
           author: { "@type": "Organization", name: "AG Water Softener" },
         }),
       },
@@ -86,7 +86,7 @@ function ShowerstickAlternativePage() {
           ShowerStick alternative: the side-by-side comparison
         </h1>
         <p className="text-sm text-muted-foreground">
-          Updated Aug 30, 2026
+          Updated Sep 1, 2026
         </p>
 
         <div
@@ -139,6 +139,15 @@ function ShowerstickAlternativePage() {
           </p>
           <p>
             <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> uses the same chemistry. The differences are in everything around the chemistry: how each unit lives in your shower, how it recharges, and the terms behind the purchase. Here is the comparison we'd want if we were the ones shopping.
+          </p>
+        </div>
+
+        <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
+          Why people look for a ShowerStick alternative
+        </h2>
+        <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
+          <p>
+            Almost always, it comes down to recharge frequency. The ShowerStick's smaller resin bed regenerates about once a week. The AG holds a bigger bed: about 1,300 gallons per recharge, which is three to five weeks of daily showers for most households. Same chemistry and the same salt, but a different amount of your time. The rest of the differences are on the table below.
           </p>
         </div>
 
