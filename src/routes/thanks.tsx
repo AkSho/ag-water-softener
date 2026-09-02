@@ -28,6 +28,11 @@ type OrderSummary = {
   items?: OrderItem[];
   sparePurchased?: boolean;
   bumpSource?: "drawer" | "stripe_crosssell" | null;
+  metadata?: {
+    requestedUnitQty?: string;
+    requestedIncludeSpare?: boolean;
+    source?: string;
+  };
 };
 
 export const Route = createFileRoute("/thanks")({
@@ -44,10 +49,14 @@ export const Route = createFileRoute("/thanks")({
   component: ThanksPage,
 });
 
+type OtoState = "idle" | "accepting" | "accepted" | "declined" | "hidden";
+
 function ThanksPage() {
   const { session_id } = Route.useSearch();
   const [summary, setSummary] = useState<OrderSummary | null>(null);
   const [isLoading, setIsLoading] = useState(Boolean(session_id));
+  const [otoState, setOtoState] = useState<OtoState>("hidden");
+  const [otoFallbackUrl, setOtoFallbackUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (!session_id) {
@@ -78,6 +87,18 @@ function ThanksPage() {
       ignore = true;
     };
   }, [session_id]);
+
+  // OTO eligibility: unit order from PDP, paid, no prior accept/decline
+  useEffect(() => {
+    if (!summary?.verified || !summary.id) return;
+    if (summary.metadata?.source !== "ag_pdp") return;
+
+    const dismissKey = `agOtoDismissed:${summary.id}`;
+    const acceptKey = `agOtoAccepted:${summary.id}`;
+    if (window.localStorage.getItem(dismissKey) || window.localStorage.getItem(acceptKey)) return;
+
+    setOtoState("idle");
+  }, [summary]);
 
   useEffect(() => {
     if (!summary?.verified || !summary.id) return;
@@ -185,7 +206,40 @@ function ThanksPage() {
     window.localStorage.setItem(purchaseKey, "1");
   }, [summary]);
 
+  async function handleOtoAccept() {
+    if (!summary?.id) return;
+    setOtoState("accepting");
+    try {
+      const res = await fetch("/api/oto-accept", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ session_id: summary.id }),
+      });
+      const data = (await res.json()) as { ok?: boolean; fallback?: boolean; url?: string; already?: boolean };
+      if (data.ok) {
+        setOtoState("accepted");
+        window.localStorage.setItem(`agOtoAccepted:${summary.id}`, "1");
+      } else if (data.fallback && data.url) {
+        setOtoState("idle");
+        setOtoFallbackUrl(data.url);
+      } else {
+        setOtoState("idle");
+        setOtoFallbackUrl("https://buy.stripe.com/fZu3cubcWh1XcRK9A81sQ0I");
+      }
+    } catch {
+      setOtoState("idle");
+      setOtoFallbackUrl("https://buy.stripe.com/fZu3cubcWh1XcRK9A81sQ0I");
+    }
+  }
+
+  function handleOtoDecline() {
+    if (!summary?.id) return;
+    setOtoState("declined");
+    window.localStorage.setItem(`agOtoDismissed:${summary.id}`, "1");
+  }
+
   const isVerified = summary?.verified === true;
+  const showOto = isVerified && (otoState === "idle" || otoState === "accepting" || otoState === "accepted");
 
   return (
     <div className="min-h-screen bg-background">
@@ -195,6 +249,53 @@ function ThanksPage() {
           {isLoading ? (
             <OrderPanel eyebrow="Confirming order" title="Pulling up your order..." />
           ) : isVerified ? (
+            <>
+            {showOto && (
+              <section className="mb-6 border border-border/70 bg-surface p-6 md:p-10">
+                {otoState === "accepted" ? (
+                  <p className="text-base font-medium text-foreground">Done. The Spares Kit ships with your softener.</p>
+                ) : (
+                  <div className="flex gap-5 items-start">
+                    <img
+                      src="/assets/spares_kit_image.png"
+                      alt="The three parts of the AG Spares Kit"
+                      className="hidden sm:block w-20 h-20 flex-shrink-0 rounded border border-border/50 object-cover"
+                    />
+                    <div className="min-w-0">
+                      <h2 className="font-display text-2xl leading-tight md:text-3xl">Add the Spares Kit to your order for $39?</h2>
+                      <p className="mt-3 text-sm leading-relaxed text-foreground/80">A second set of the parts that mount your softener and run its recharge. Accidents happen, and a spare set means no waiting on a replacement to ship. It packs into your current order and ships free. Bought later, it's $45 and ships on its own (so you save $6 today).</p>
+                      <div className="mt-4 flex gap-3">
+                        {otoFallbackUrl ? (
+                          <a
+                            href={otoFallbackUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center px-5 py-2.5 border-2 border-foreground bg-foreground text-background text-sm font-semibold hover:opacity-90"
+                          >
+                            Add for $39
+                          </a>
+                        ) : (
+                          <button
+                            onClick={handleOtoAccept}
+                            disabled={otoState === "accepting"}
+                            className="inline-flex items-center justify-center px-5 py-2.5 border-2 border-foreground bg-foreground text-background text-sm font-semibold hover:opacity-90 disabled:opacity-50"
+                          >
+                            {otoState === "accepting" ? "Processing…" : "Add for $39"}
+                          </button>
+                        )}
+                        <button
+                          onClick={handleOtoDecline}
+                          disabled={otoState === "accepting"}
+                          className="inline-flex items-center justify-center px-5 py-2.5 text-sm text-muted-foreground hover:text-foreground disabled:opacity-50"
+                        >
+                          No thanks
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </section>
+            )}
             <section className="border border-border/70 bg-surface p-6 md:p-10">
               <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-full bg-foreground text-background">
                 <Check className="h-5 w-5" />
@@ -232,6 +333,7 @@ function ThanksPage() {
                 </div>
               </div>
             </section>
+            </>
           ) : (
             <OrderPanel
               eyebrow="Order lookup"

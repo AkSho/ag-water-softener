@@ -349,12 +349,16 @@ async function createCheckoutSession(request: Request) {
     mode: "payment",
     line_items: lineItems,
     automatic_tax: { enabled: true },
+    customer_creation: "always",
     shipping_address_collection: { allowed_countries: ["US"] },
     shipping_options: [
       { shipping_rate: "shr_1U44sIAzOIlBktzoppQFhxkl" },
     ],
     phone_number_collection: { enabled: true },
-    payment_intent_data: { statement_descriptor_suffix: "AGSOFTENER" },
+    payment_intent_data: {
+      statement_descriptor_suffix: "AGSOFTENER",
+      setup_future_usage: "off_session",
+    },
     custom_text: {
       after_submit: {
         message:
@@ -597,6 +601,95 @@ async function handleStripeWebhook(request: Request) {
   return json({ received: true });
 }
 
+// ─── OTO: one-click Spares Kit offer ─────────────────────────────────────────────
+
+const KIT_PAYMENT_LINK = "https://buy.stripe.com/fZu3cubcWh1XcRK9A81sQ0I";
+
+async function handleOtoAccept(request: Request) {
+  try {
+    const body = (await request.json().catch(() => ({}))) as { session_id?: unknown };
+    const sessionId = typeof body.session_id === "string" ? body.session_id : "";
+
+    if (!sessionId) {
+      return json({ ok: false, fallback: true, url: KIT_PAYMENT_LINK }, { status: 200 });
+    }
+
+    const stripe = getStripe();
+
+    // 1. Retrieve session, verify paid
+    const session = await stripe.checkout.sessions.retrieve(sessionId, {
+      expand: ["payment_intent"],
+    });
+
+    if (session.payment_status !== "paid") {
+      return json({ ok: false, fallback: true, url: KIT_PAYMENT_LINK });
+    }
+
+    // 2. Idempotency: check for prior OTO charge on this session
+    const priorCharges = await stripe.paymentIntents.search({
+      query: `metadata["parent_session"]:"${sessionId}" metadata["source"]:"ag_oto_kit"`,
+      limit: 1,
+    });
+
+    if (priorCharges.data.length > 0) {
+      const prior = priorCharges.data[0];
+      if (prior.status === "succeeded") {
+        return json({ ok: true, already: true });
+      }
+    }
+
+    // 3. Get customer + payment method from session's PaymentIntent
+    const pi = session.payment_intent;
+    if (!pi || typeof pi === "string") {
+      return json({ ok: false, fallback: true, url: KIT_PAYMENT_LINK });
+    }
+
+    const customerId = typeof pi.customer === "string" ? pi.customer : pi.customer?.id;
+    const paymentMethodId = typeof pi.payment_method === "string" ? pi.payment_method : pi.payment_method?.id;
+
+    if (!customerId || !paymentMethodId) {
+      return json({ ok: false, fallback: true, url: KIT_PAYMENT_LINK });
+    }
+
+    // 4. Create + confirm PaymentIntent for $39
+    const otoPi = await stripe.paymentIntents.create({
+      amount: 3900,
+      currency: "usd",
+      customer: customerId,
+      payment_method: paymentMethodId,
+      off_session: true,
+      confirm: true,
+      statement_descriptor_suffix: "AGSOFTENER",
+      metadata: {
+        source: "ag_oto_kit",
+        parent_session: sessionId,
+      },
+    });
+
+    if (otoPi.status === "succeeded") {
+      return json({ ok: true });
+    }
+
+    // requires_action or requires_confirmation — send fallback
+    return json({ ok: false, fallback: true, url: KIT_PAYMENT_LINK });
+  } catch (err: unknown) {
+    // Card declined (authentication_required, card_declined, etc.)
+    if (
+      err instanceof Stripe.errors.StripeCardError ||
+      (err instanceof Stripe.errors.StripeInvalidRequestError &&
+        typeof err.message === "string" &&
+        err.message.includes("authentication"))
+    ) {
+      return json({ ok: false, fallback: true, url: KIT_PAYMENT_LINK });
+    }
+
+    console.error("OTO accept error", {
+      error: err instanceof Error ? err.message : String(err),
+    });
+    return json({ ok: false, fallback: true, url: KIT_PAYMENT_LINK });
+  }
+}
+
 // ─── Router ─────────────────────────────────────────────────────────────────────
 
 export async function handleStripeApi(request: Request) {
@@ -608,6 +701,10 @@ export async function handleStripeApi(request: Request) {
 
   if (url.pathname === "/api/checkout-session" && request.method === "GET") {
     return getCheckoutSession(request);
+  }
+
+  if (url.pathname === "/api/oto-accept" && request.method === "POST") {
+    return handleOtoAccept(request);
   }
 
   if (url.pathname === "/api/stripe/webhook" && request.method === "POST") {
