@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WaterSoftenerForApartmentRouteImport } from './routes/water-softener-for-apartment'
 import { Route as ThanksRouteImport } from './routes/thanks'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SparesKitRouteImport } from './routes/spares-kit'
 import { Route as SoftwatercareVsShowerstickVsAgRouteImport } from './routes/softwatercare-vs-showerstick-vs-ag'
 import { Route as ShowerstickAlternativeRouteImport } from './routes/showerstick-alternative'
@@ -20,6 +21,7 @@ import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as SetupRouteImport } from './routes/setup'
 import { Route as ReturnsRouteImport } from './routes/returns'
 import { Route as RedditShowerWaterSoftenerRouteImport } from './routes/reddit-shower-water-softener'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PreventLimescaleInShowerRouteImport } from './routes/prevent-limescale-in-shower'
 import { Route as PortableWaterSoftenerForShowerRouteImport } from './routes/portable-water-softener-for-shower'
 import { Route as JolieAlternativeForHardWaterRouteImport } from './routes/jolie-alternative-for-hard-water'
@@ -39,6 +41,11 @@ const WaterSoftenerForApartmentRoute =
 const ThanksRoute = ThanksRouteImport.update({
   id: '/thanks',
   path: '/thanks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SparesKitRoute = SparesKitRouteImport.update({
@@ -89,6 +96,11 @@ const RedditShowerWaterSoftenerRoute =
     path: '/reddit-shower-water-softener',
     getParentRoute: () => rootRouteImport,
   } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PreventLimescaleInShowerRoute =
   PreventLimescaleInShowerRouteImport.update({
     id: '/prevent-limescale-in-shower',
@@ -150,6 +162,7 @@ export interface FileRoutesByFullPath {
   '/jolie-alternative-for-hard-water': typeof JolieAlternativeForHardWaterRoute
   '/portable-water-softener-for-shower': typeof PortableWaterSoftenerForShowerRoute
   '/prevent-limescale-in-shower': typeof PreventLimescaleInShowerRoute
+  '/privacy': typeof PrivacyRoute
   '/reddit-shower-water-softener': typeof RedditShowerWaterSoftenerRoute
   '/returns': typeof ReturnsRoute
   '/setup': typeof SetupRoute
@@ -159,6 +172,7 @@ export interface FileRoutesByFullPath {
   '/showerstick-alternative': typeof ShowerstickAlternativeRoute
   '/softwatercare-vs-showerstick-vs-ag': typeof SoftwatercareVsShowerstickVsAgRoute
   '/spares-kit': typeof SparesKitRoute
+  '/terms': typeof TermsRoute
   '/thanks': typeof ThanksRoute
   '/water-softener-for-apartment': typeof WaterSoftenerForApartmentRoute
 }
@@ -172,6 +186,7 @@ export interface FileRoutesByTo {
   '/jolie-alternative-for-hard-water': typeof JolieAlternativeForHardWaterRoute
   '/portable-water-softener-for-shower': typeof PortableWaterSoftenerForShowerRoute
   '/prevent-limescale-in-shower': typeof PreventLimescaleInShowerRoute
+  '/privacy': typeof PrivacyRoute
   '/reddit-shower-water-softener': typeof RedditShowerWaterSoftenerRoute
   '/returns': typeof ReturnsRoute
   '/setup': typeof SetupRoute
@@ -181,6 +196,7 @@ export interface FileRoutesByTo {
   '/showerstick-alternative': typeof ShowerstickAlternativeRoute
   '/softwatercare-vs-showerstick-vs-ag': typeof SoftwatercareVsShowerstickVsAgRoute
   '/spares-kit': typeof SparesKitRoute
+  '/terms': typeof TermsRoute
   '/thanks': typeof ThanksRoute
   '/water-softener-for-apartment': typeof WaterSoftenerForApartmentRoute
 }
@@ -195,6 +211,7 @@ export interface FileRoutesById {
   '/jolie-alternative-for-hard-water': typeof JolieAlternativeForHardWaterRoute
   '/portable-water-softener-for-shower': typeof PortableWaterSoftenerForShowerRoute
   '/prevent-limescale-in-shower': typeof PreventLimescaleInShowerRoute
+  '/privacy': typeof PrivacyRoute
   '/reddit-shower-water-softener': typeof RedditShowerWaterSoftenerRoute
   '/returns': typeof ReturnsRoute
   '/setup': typeof SetupRoute
@@ -204,6 +221,7 @@ export interface FileRoutesById {
   '/showerstick-alternative': typeof ShowerstickAlternativeRoute
   '/softwatercare-vs-showerstick-vs-ag': typeof SoftwatercareVsShowerstickVsAgRoute
   '/spares-kit': typeof SparesKitRoute
+  '/terms': typeof TermsRoute
   '/thanks': typeof ThanksRoute
   '/water-softener-for-apartment': typeof WaterSoftenerForApartmentRoute
 }
@@ -219,6 +237,7 @@ export interface FileRouteTypes {
     | '/jolie-alternative-for-hard-water'
     | '/portable-water-softener-for-shower'
     | '/prevent-limescale-in-shower'
+    | '/privacy'
     | '/reddit-shower-water-softener'
     | '/returns'
     | '/setup'
@@ -228,6 +247,7 @@ export interface FileRouteTypes {
     | '/showerstick-alternative'
     | '/softwatercare-vs-showerstick-vs-ag'
     | '/spares-kit'
+    | '/terms'
     | '/thanks'
     | '/water-softener-for-apartment'
   fileRoutesByTo: FileRoutesByTo
@@ -241,6 +261,7 @@ export interface FileRouteTypes {
     | '/jolie-alternative-for-hard-water'
     | '/portable-water-softener-for-shower'
     | '/prevent-limescale-in-shower'
+    | '/privacy'
     | '/reddit-shower-water-softener'
     | '/returns'
     | '/setup'
@@ -250,6 +271,7 @@ export interface FileRouteTypes {
     | '/showerstick-alternative'
     | '/softwatercare-vs-showerstick-vs-ag'
     | '/spares-kit'
+    | '/terms'
     | '/thanks'
     | '/water-softener-for-apartment'
   id:
@@ -263,6 +285,7 @@ export interface FileRouteTypes {
     | '/jolie-alternative-for-hard-water'
     | '/portable-water-softener-for-shower'
     | '/prevent-limescale-in-shower'
+    | '/privacy'
     | '/reddit-shower-water-softener'
     | '/returns'
     | '/setup'
@@ -272,6 +295,7 @@ export interface FileRouteTypes {
     | '/showerstick-alternative'
     | '/softwatercare-vs-showerstick-vs-ag'
     | '/spares-kit'
+    | '/terms'
     | '/thanks'
     | '/water-softener-for-apartment'
   fileRoutesById: FileRoutesById
@@ -286,6 +310,7 @@ export interface RootRouteChildren {
   JolieAlternativeForHardWaterRoute: typeof JolieAlternativeForHardWaterRoute
   PortableWaterSoftenerForShowerRoute: typeof PortableWaterSoftenerForShowerRoute
   PreventLimescaleInShowerRoute: typeof PreventLimescaleInShowerRoute
+  PrivacyRoute: typeof PrivacyRoute
   RedditShowerWaterSoftenerRoute: typeof RedditShowerWaterSoftenerRoute
   ReturnsRoute: typeof ReturnsRoute
   SetupRoute: typeof SetupRoute
@@ -295,6 +320,7 @@ export interface RootRouteChildren {
   ShowerstickAlternativeRoute: typeof ShowerstickAlternativeRoute
   SoftwatercareVsShowerstickVsAgRoute: typeof SoftwatercareVsShowerstickVsAgRoute
   SparesKitRoute: typeof SparesKitRoute
+  TermsRoute: typeof TermsRoute
   ThanksRoute: typeof ThanksRoute
   WaterSoftenerForApartmentRoute: typeof WaterSoftenerForApartmentRoute
 }
@@ -313,6 +339,13 @@ declare module '@tanstack/react-router' {
       path: '/thanks'
       fullPath: '/thanks'
       preLoaderRoute: typeof ThanksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/spares-kit': {
@@ -376,6 +409,13 @@ declare module '@tanstack/react-router' {
       path: '/reddit-shower-water-softener'
       fullPath: '/reddit-shower-water-softener'
       preLoaderRoute: typeof RedditShowerWaterSoftenerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/prevent-limescale-in-shower': {
@@ -454,6 +494,7 @@ const rootRouteChildren: RootRouteChildren = {
   JolieAlternativeForHardWaterRoute: JolieAlternativeForHardWaterRoute,
   PortableWaterSoftenerForShowerRoute: PortableWaterSoftenerForShowerRoute,
   PreventLimescaleInShowerRoute: PreventLimescaleInShowerRoute,
+  PrivacyRoute: PrivacyRoute,
   RedditShowerWaterSoftenerRoute: RedditShowerWaterSoftenerRoute,
   ReturnsRoute: ReturnsRoute,
   SetupRoute: SetupRoute,
@@ -463,6 +504,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShowerstickAlternativeRoute: ShowerstickAlternativeRoute,
   SoftwatercareVsShowerstickVsAgRoute: SoftwatercareVsShowerstickVsAgRoute,
   SparesKitRoute: SparesKitRoute,
+  TermsRoute: TermsRoute,
   ThanksRoute: ThanksRoute,
   WaterSoftenerForApartmentRoute: WaterSoftenerForApartmentRoute,
 }

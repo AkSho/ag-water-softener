@@ -56,8 +56,8 @@ export function SiteFooter() {
             <div>© {new Date().getFullYear()} AG Water Softener — a GRN Labs product</div>
             <div className="flex gap-4">
               <a href="#">US / EN</a>
-              <a href="#">Terms + Conditions</a>
-              <a href="#">Privacy Policy</a>
+              <a href="/terms">Terms + Conditions</a>
+              <a href="/privacy">Privacy Policy</a>
             </div>
           </div>
         </div>

@@ -46,7 +46,7 @@ function ShippingPage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            Orders ship via DHL or UPS with tracking and typically arrive within 12 to 18 days of purchase. You'll receive a tracking number by email as soon as your order ships, so you can follow it the whole way.
+            Orders ship via FedEx or USPS with tracking and typically arrive within 12 to 18 days of purchase. You'll receive a tracking number by email as soon as your order ships, so you can follow it the whole way.
           </p>
           <p>
             We currently ship within the United States.
