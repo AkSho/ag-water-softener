@@ -23,6 +23,8 @@ type OrderSummary = {
   amountTotal?: number;
   currency?: string;
   customerEmail?: string;
+  shippingCountry?: string;
+  estimatedDeliveryDate?: string;
   items?: OrderItem[];
   sparePurchased?: boolean;
   bumpSource?: "drawer" | "stripe_crosssell" | null;
@@ -158,6 +160,27 @@ function ThanksPage() {
     };
     document.head.appendChild(uetScript);
     // --- end UET conversion tag ---
+
+    // --- Google Customer Reviews opt-in ---
+    if (summary.customerEmail && summary.shippingCountry && summary.estimatedDeliveryDate) {
+      (window as any).renderOptIn = function () {
+        (window as any).gapi.load("surveyoptin", function () {
+          (window as any).gapi.surveyoptin.render({
+            merchant_id: 5832203924,
+            order_id: summary.id,
+            email: summary.customerEmail,
+            delivery_country: summary.shippingCountry,
+            estimated_delivery_date: summary.estimatedDeliveryDate,
+          });
+        });
+      };
+      const gcrScript = document.createElement("script");
+      gcrScript.src = "https://apis.google.com/js/platform.js?onload=renderOptIn";
+      gcrScript.async = true;
+      gcrScript.defer = true;
+      document.head.appendChild(gcrScript);
+    }
+    // --- end Google Customer Reviews ---
 
     window.localStorage.setItem(purchaseKey, "1");
   }, [summary]);

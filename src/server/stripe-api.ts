@@ -442,6 +442,14 @@ async function getCheckoutSession(request: Request) {
         : "stripe_crosssell"
       : null;
 
+    // GCR estimated delivery: session creation + 15 days, YYYY-MM-DD
+    let estimatedDeliveryDate: string | undefined;
+    if (typeof session.created === "number") {
+      const d = new Date(session.created * 1000);
+      d.setDate(d.getDate() + 15);
+      estimatedDeliveryDate = d.toISOString().slice(0, 10);
+    }
+
     return json({
       verified: session.payment_status === "paid",
       id: session.id,
@@ -450,6 +458,8 @@ async function getCheckoutSession(request: Request) {
       formattedTotal: formatMoney(session.amount_total, session.currency),
       currency: session.currency,
       customerEmail: session.customer_details?.email ?? undefined,
+      shippingCountry: session.collected_information?.shipping_details?.address?.country ?? undefined,
+      estimatedDeliveryDate,
       items,
       sparePurchased,
       bumpSource,
