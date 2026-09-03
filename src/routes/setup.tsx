@@ -118,7 +118,7 @@ export const Route = createFileRoute("/setup")({
             "The AG Water Softener is a shower-arm water softener for renters. This video shows the complete install: wall mounting with the adhesive bracket, then the shower arm and hose connections.",
           thumbnailUrl:
             "https://i.ytimg.com/vi/hQ4HQuQDSV8/maxresdefault.jpg",
-          uploadDate: "2026-09-03",
+          uploadDate: "2026-09-03T16:30:00-04:00",
           duration: "PT47S",
           contentUrl:
             "https://www.youtube.com/watch?v=hQ4HQuQDSV8",
@@ -139,7 +139,7 @@ export const Route = createFileRoute("/setup")({
             "The AG Water Softener recharges at home using the regeneration attachment with the pump built in. Salt: use plain non-iodized salt, about 500 grams per recharge.",
           thumbnailUrl:
             "https://i.ytimg.com/vi/NAjgfH0UlBI/maxresdefault.jpg",
-          uploadDate: "2026-09-03",
+          uploadDate: "2026-09-03T16:30:00-04:00",
           duration: "PT33S",
           contentUrl:
             "https://www.youtube.com/watch?v=NAjgfH0UlBI",
