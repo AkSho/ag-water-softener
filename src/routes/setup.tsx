@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { YouTubeEmbed } from "@/components/YouTubeEmbed";
 
 export const Route = createFileRoute("/setup")({
   head: () => ({
@@ -107,6 +108,48 @@ export const Route = createFileRoute("/setup")({
           ],
         }),
       },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "VideoObject",
+          name: "How to install the AG Water Softener (renter-friendly, no drilling)",
+          description:
+            "The AG Water Softener is a shower-arm water softener for renters. This video shows the complete install: wall mounting with the adhesive bracket, then the shower arm and hose connections.",
+          thumbnailUrl:
+            "https://i.ytimg.com/vi/hQ4HQuQDSV8/maxresdefault.jpg",
+          uploadDate: "2026-09-03",
+          duration: "PT47S",
+          contentUrl:
+            "https://www.youtube.com/watch?v=hQ4HQuQDSV8",
+          embedUrl:
+            "https://www.youtube-nocookie.com/embed/hQ4HQuQDSV8",
+          transcript:
+            "Confirm the position, about 30 cm from the water outlet. Wipe the wall clean and keep it dry. Remove the backing film. Align and apply the hook support, hooks facing down. Press firmly from the center outward to remove all air bubbles. Make sure to screw the screws tight. Hang the wall water softener on the hooks. Use the included wrench to loosen and remove the shower head pipe. Then attach it to the outlet and tighten. Attach the included soft hose and secure it firmly. Connect the other end of the hose to the inlet and tighten.",
+          publisher: { "@id": "https://agsoftener.com/#organization" },
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "VideoObject",
+          name: "How to recharge the AG Water Softener with plain salt",
+          description:
+            "The AG Water Softener recharges at home using the regeneration attachment with the pump built in. Salt: use plain non-iodized salt, about 500 grams per recharge.",
+          thumbnailUrl:
+            "https://i.ytimg.com/vi/NAjgfH0UlBI/maxresdefault.jpg",
+          uploadDate: "2026-09-03",
+          duration: "PT33S",
+          contentUrl:
+            "https://www.youtube.com/watch?v=NAjgfH0UlBI",
+          embedUrl:
+            "https://www.youtube-nocookie.com/embed/NAjgfH0UlBI",
+          transcript:
+            "Remove the filter element, then attach the regeneration attachment and rotate to lock. The drain hose goes outside the tank. Place the pump at the bottom of the brine tank. Add 500 grams of table salt. Fill with water to about 80% full. Stir it. Plug in the pump and run the regeneration cycle.",
+          publisher: { "@id": "https://agsoftener.com/#organization" },
+        }),
+      },
     ],
   }),
   component: SetupPage,
@@ -159,6 +202,13 @@ function SetupPage() {
           </p>
         </div>
 
+        <div className="mt-8">
+          <YouTubeEmbed
+            videoId="hQ4HQuQDSV8"
+            title="How to install the AG Water Softener (renter-friendly, no drilling)"
+          />
+        </div>
+
         <ol className="mt-8 space-y-10">
           <li>
             <p className="text-[15px] leading-[1.7] text-foreground/90">
@@ -206,6 +256,13 @@ function SetupPage() {
             The filter recharges with plain table salt every 3 to 5 weeks. The cycle takes about 30
             minutes.
           </p>
+        </div>
+
+        <div className="mt-8">
+          <YouTubeEmbed
+            videoId="NAjgfH0UlBI"
+            title="How to recharge the AG Water Softener with plain salt"
+          />
         </div>
 
         <ol className="mt-8 space-y-10">
