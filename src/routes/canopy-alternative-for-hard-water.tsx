@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { PreferredSourceBlock } from "@/components/PreferredSourceBlock";
 
 const PAGE_FAQS = [
   {
@@ -137,6 +138,8 @@ function CanopyAlternativePage() {
             The Canopy filter is one of the best-known shower filters in the country. It is also a filter, and that is the whole issue if your problem is hard water. Canopy's site says its filter media have been shown to help reduce chlorine, magnesium, and calcium carbonate. On the chlorine job it delivers. Hardness is a different job. Calcium and magnesium are dissolved minerals, and carbon and KDF media do not remove them. Ion-exchange resin does.
           </p>
         </div>
+
+        <PreferredSourceBlock />
 
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
           What Canopy does well

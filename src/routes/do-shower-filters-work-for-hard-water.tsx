@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { PreferredSourceBlock } from "@/components/PreferredSourceBlock";
 
 const PAGE_FAQS = [
   {
@@ -133,6 +134,8 @@ function DoShowerFiltersWorkPage() {
             The one chemistry that removes dissolved calcium and magnesium is ion exchange, where water passes through resin beads that trade the hardness minerals for sodium. Whole-house softeners use it. So does <a href="/" className="underline hover:opacity-70">the AG Water Softener</a>, scaled down to fit a single shower.
           </p>
         </div>
+
+        <PreferredSourceBlock />
 
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
           Then why do filter reviews mention softer hair?

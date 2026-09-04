@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { PreferredSourceBlock } from "@/components/PreferredSourceBlock";
 
 const PAGE_FAQS = [
   {
@@ -201,6 +202,8 @@ function SoftwatercareVsShowerstickVsAgPage() {
             chemistry.
           </p>
         </div>
+
+        <PreferredSourceBlock />
 
         {/* Recharge section */}
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { PreferredSourceBlock } from "@/components/PreferredSourceBlock";
 
 export const Route = createFileRoute("/best-shower-water-softener")({
   head: () => ({
@@ -115,6 +116,8 @@ function BestShowerWaterSoftenerPage() {
             One thing about this category before the list. Most products sold as "shower water softeners" are filters wearing the name. Carbon and KDF reduce chlorine. So does vitamin C. That's worth something, but none of them touch the calcium and magnesium that make water hard. Only ion exchange resin does. <a href="https://waterfilterguru.com/best-shower-water-filter-reviews/" className="underline hover:opacity-70">Water Filter Guru's lab testing</a> this year found the same thing: not one shower filter they tested lowered hardness. So the list sticks to products with a real resin bed, and everything else gets covered at the end.
           </p>
         </div>
+
+        <PreferredSourceBlock />
 
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
           AG Water Softener, $249

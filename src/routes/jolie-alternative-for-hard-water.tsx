@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { PreferredSourceBlock } from "@/components/PreferredSourceBlock";
 
 const PAGE_FAQS = [
   {
@@ -160,6 +161,8 @@ function JolieAlternativePage() {
             A $10 hardness test strip is the referee: run one on your shower with the filter installed. If your water reads above about 120 ppm through the filter, then whatever the marketing means by "hard water," your hardness is arriving at your hair intact. That reading is the whole argument.
           </p>
         </div>
+
+        <PreferredSourceBlock />
 
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
           How this feels in practice

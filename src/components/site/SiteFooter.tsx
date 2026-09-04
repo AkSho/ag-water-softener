@@ -1,4 +1,5 @@
 import { useRouterState } from "@tanstack/react-router";
+import { PreferredSourceBlock } from "@/components/PreferredSourceBlock";
 
 export function SiteFooter() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -56,10 +57,7 @@ export function SiteFooter() {
       {pathname !== "/" && pathname !== "/thanks" && (
         <div className="border-t border-border/60">
           <div className="mx-auto max-w-[1400px] px-4 py-8 md:px-8">
-            <p className="text-sm text-muted-foreground">
-              More answers and resources like these in your Google results, marked as preferred.
-            </p>
-            <div className="mt-3" dangerouslySetInnerHTML={{ __html: '<div google-add-preferred-source-btn data-theme="light"></div>' }} />
+            <PreferredSourceBlock />
           </div>
         </div>
       )}

@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { YouTubeEmbed } from "@/components/YouTubeEmbed";
+import { PreferredSourceBlock } from "@/components/PreferredSourceBlock";
 
 export const Route = createFileRoute("/setup")({
   head: () => ({
@@ -192,6 +193,8 @@ function SetupPage() {
           <li>Hose</li>
           <li>Setup guide</li>
         </ul>
+
+        <PreferredSourceBlock />
 
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">Installation</h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">

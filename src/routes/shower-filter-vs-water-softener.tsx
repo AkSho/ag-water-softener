@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { PreferredSourceBlock } from "@/components/PreferredSourceBlock";
 
 const PAGE_FAQS = [
   {
@@ -133,6 +134,8 @@ function ShowerFilterVsSoftenerPage() {
             What no filter does is soften water. Calcium and magnesium are dissolved ions, not particles. They are thousands of times smaller than the pores in carbon or KDF media, so at two gallons per minute they flow straight through. Filter brands know this. Some say it plainly, and some bury it, but the chemistry is the same for all of them. The full chemistry is on our page about <a href="/do-shower-filters-work-for-hard-water" className="underline hover:opacity-70">why filter media can't remove hardness</a>. And if you're looking at a listing that says softener, <a href="/shower-head-water-softener" className="underline hover:opacity-70">the ten-second listing check</a> settles it. If you're comparing the products themselves, <a href="/best-shower-water-softener" className="underline hover:opacity-70">our ranking of shower water softeners</a> covers the field. And if scale on the glass is what brought you here, <a href="/prevent-limescale-in-shower" className="underline hover:opacity-70">our limescale prevention guide</a> starts there.
           </p>
         </div>
+
+        <PreferredSourceBlock />
 
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
           What a water softener actually does

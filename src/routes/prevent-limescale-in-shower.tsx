@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { PreferredSourceBlock } from "@/components/PreferredSourceBlock";
 
 export const Route = createFileRoute("/prevent-limescale-in-shower")({
   head: () => ({
@@ -86,6 +87,8 @@ function PreventLimescaleInShowerPage() {
             Hard water holds dissolved calcium and magnesium. You can't see them while the water is wet. When the water dries though, the minerals stay behind and bond to whatever they dried on. That's the white crust and spots on your glass door and the ring on the shower head. Anything above about 120 ppm of hardness will cause scale. In <a href="https://www.myapartmentwaterquality.com/hardest-water-cities" className="underline hover:opacity-70">The hardest water cities in America</a>, our verified 25-city study, readings run as high as 350 ppm. And the harder the water, the faster the crust builds. Scale is a water problem that shows up noticeably on your surfaces.
           </p>
         </div>
+
+        <PreferredSourceBlock />
 
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
           What cleaning does

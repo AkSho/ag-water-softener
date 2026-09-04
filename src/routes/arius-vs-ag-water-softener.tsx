@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { PreferredSourceBlock } from "@/components/PreferredSourceBlock";
 
 const PAGE_FAQS = [
   {
@@ -152,6 +153,8 @@ function AriusVsAgPage() {
             Arius builds filtration and softening into one unit. If you want both in a single system and the price works for you, it is a reasonable pick. The AG does one job, softening, and does it without a maintenance schedule.
           </p>
         </div>
+
+        <PreferredSourceBlock />
 
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
           The regeneration difference
