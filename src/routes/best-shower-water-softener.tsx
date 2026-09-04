@@ -117,8 +117,6 @@ function BestShowerWaterSoftenerPage() {
           </p>
         </div>
 
-        <PreferredSourceBlock />
-
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
           AG Water Softener, $249
         </h2>
@@ -130,6 +128,8 @@ function BestShowerWaterSoftenerPage() {
             Who it's not for: if you own your home and can open up the plumbing, a whole-house system softens every tap, and most of its higher price is installation. And no resin product is zero maintenance. The recharge is the cost of actually removing minerals.
           </p>
         </div>
+
+        <PreferredSourceBlock />
 
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
           ShowerStick by WaterSticks, $260
