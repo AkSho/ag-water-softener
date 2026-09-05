@@ -136,6 +136,19 @@ function resolveOrigin(_request: Request) {
   return "https://agsoftener.com";
 }
 
+function buildShippingOptions(): Array<{ shipping_rate: string }> {
+  const options: Array<{ shipping_rate: string }> = [
+    { shipping_rate: "shr_1U44sIAzOIlBktzoppQFhxkl" },
+  ];
+  const expressRate = process.env.STRIPE_SHIPPING_EXPRESS;
+  if (expressRate) {
+    options.push({ shipping_rate: expressRate });
+  } else {
+    console.warn("STRIPE_SHIPPING_EXPRESS not set; express shipping unavailable");
+  }
+  return options;
+}
+
 // ─── Part B: Meta CAPI Purchase (enriched) ─────────────────────────────────────
 
 async function sendMetaCapiPurchase({
@@ -233,7 +246,7 @@ async function sendMetaCapiPurchase({
 
 // ─── Part A: Confirmation email ─────────────────────────────────────────────────
 
-async function sendConfirmationEmail(session: Stripe.Checkout.Session, orderNumber?: string) {
+async function sendConfirmationEmail(session: Stripe.Checkout.Session, orderNumber?: string, shippingMethod?: string) {
   const email = session.customer_details?.email;
   if (!email) {
     console.warn("No email on checkout session; skipping confirmation", { sessionId: session.id });
@@ -247,7 +260,8 @@ async function sendConfirmationEmail(session: Stripe.Checkout.Session, orderNumb
   }
 
   const firstName = extractFirstName(session.customer_details?.name);
-  const promiseDate = formatPromiseDate(new Date());
+  const promiseDays = shippingMethod === "express" ? 7 : 18;
+  const promiseDate = formatPromiseDate(new Date(), promiseDays);
   const { subject, text } = buildConfirmationEmail({ firstName, promiseDate, orderNumber });
 
   try {
@@ -361,9 +375,7 @@ async function createCheckoutSession(request: Request) {
     automatic_tax: { enabled: true },
     customer_creation: "always",
     shipping_address_collection: { allowed_countries: ["US"] },
-    shipping_options: [
-      { shipping_rate: "shr_1U44sIAzOIlBktzoppQFhxkl" },
-    ],
+    shipping_options: buildShippingOptions(),
     phone_number_collection: { enabled: true },
     payment_intent_data: {
       statement_descriptor_suffix: "AGSOFTENER",
@@ -570,6 +582,13 @@ async function handleStripeWebhook(request: Request) {
       console.warn("OrderNumber fallback fired: using session ID suffix", { sessionId: session.id });
     }
 
+    // Determine shipping method from chosen rate
+    const expressRate = process.env.STRIPE_SHIPPING_EXPRESS;
+    const chosenRate = typeof session.shipping_cost?.shipping_rate === "string"
+      ? session.shipping_cost.shipping_rate
+      : session.shipping_cost?.shipping_rate?.id;
+    const shippingMethod = (expressRate && chosenRate === expressRate) ? "express" : "standard";
+
     // Derive ItemType from session metadata
     const isAgPdp = session.metadata?.source === "ag_pdp";
     const bumpTaken = session.metadata?.requested_include_spare === "true";
@@ -603,7 +622,7 @@ async function handleStripeWebhook(request: Request) {
 
     const orderTs = new Date().toISOString();
     const [emailResult, capiResult, ordersResult] = await Promise.allSettled([
-      sendConfirmationEmail(session, orderNumber),
+      sendConfirmationEmail(session, orderNumber, shippingMethod),
       sendMetaCapiPurchase({ session, request, lineItems }),
       upsertOrder({
         stripeSessionId: session.id,
@@ -617,6 +636,7 @@ async function handleStripeWebhook(request: Request) {
         orderNumber,
         itemType,
         repeatCustomer,
+        shippingMethod,
         shipName: shipping?.name || "",
         address1: shippingAddr?.line1 || "",
         address2: shippingAddr?.line2 || "",
@@ -654,6 +674,7 @@ async function handleStripeWebhook(request: Request) {
         UnitQty: itemType === "kit" ? 0 : (Number(session.metadata?.requested_unit_qty) || 1),
         BumpTaken: bumpTaken,
         OTOAccepted: false,
+        ShippingMethod: shippingMethod,
         ShipName: shipping?.name || "",
         Name: session.customer_details?.name || "",
         Address1: shippingAddr?.line1 || "",

@@ -91,9 +91,9 @@ AG Water Softener | GRN Labs`,
   };
 }
 
-export function formatPromiseDate(orderDate: Date): string {
+export function formatPromiseDate(orderDate: Date, days: number = 18): string {
   const promise = new Date(orderDate);
-  promise.setDate(promise.getDate() + 18);
+  promise.setDate(promise.getDate() + days);
   return promise.toLocaleDateString("en-US", { month: "long", day: "numeric" });
 }
 

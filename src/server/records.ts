@@ -113,9 +113,9 @@ function daysBetween(isoA: string, isoB: string): number | null {
   }
 }
 
-function promiseDate(orderTs: string): string {
+function promiseDate(orderTs: string, shippingMethod?: string): string {
   const d = new Date(orderTs);
-  d.setDate(d.getDate() + 18);
+  d.setDate(d.getDate() + (shippingMethod === "express" ? 7 : 18));
   return d.toISOString().split("T")[0];
 }
 
@@ -170,6 +170,7 @@ export interface UpsertOrderInput {
   msclkid: string;
   itemType: string;
   repeatCustomer: boolean;
+  shippingMethod: string;
 }
 
 export interface UpsertResult {
@@ -292,6 +293,7 @@ export async function upsertOrder(
     OrderNumber: input.orderNumber,
     ItemType: input.itemType,
     RepeatCustomer: input.repeatCustomer,
+    ShippingMethod: input.shippingMethod || "standard",
     OTOAccepted: false,
     OTOAmount: 0,
     Refunded: false,
@@ -313,7 +315,7 @@ export async function upsertOrder(
     Verdict: verdict,
     DaysToPurchase: dtp,
     ToolTouch: toolTouch,
-    PromisedBy: promiseDate(input.orderTs),
+    PromisedBy: promiseDate(input.orderTs, input.shippingMethod),
     Status: "paid",
   };
 
@@ -409,20 +411,26 @@ interface TrackingValidation {
 }
 
 export function validateTracking(tracking: string): TrackingValidation {
-  const digits = tracking.replace(/\s/g, "");
-  if (!/^\d+$/.test(digits)) return { valid: false, error: "non-numeric" };
+  const cleaned = tracking.replace(/\s/g, "");
+
+  // DHL: 10 pure digits, or JD + 18 digits (11-char JD-prefixed form is JD + 9 digits)
+  const jdMatch = cleaned.match(/^JD(\d{9,18})$/i);
+  if (jdMatch) return { valid: true, carrier: "DHL" };
+  if (/^\d{10}$/.test(cleaned)) return { valid: true, carrier: "DHL" };
+
+  if (!/^\d+$/.test(cleaned)) return { valid: false, error: "non-numeric" };
 
   // USPS: 20-22 digits starting with 9 (check before FedEx to avoid overlap)
-  if (digits.length >= 20 && digits.length <= 22 && digits.startsWith("9")) {
+  if (cleaned.length >= 20 && cleaned.length <= 22 && cleaned.startsWith("9")) {
     return { valid: true, carrier: "USPS" };
   }
 
   // FedEx: 12, 15, 20, or 22 digits
-  if ([12, 15, 20, 22].includes(digits.length)) {
+  if ([12, 15, 20, 22].includes(cleaned.length)) {
     return { valid: true, carrier: "FedEx" };
   }
 
-  return { valid: false, error: `invalid format: ${digits.length} digits` };
+  return { valid: false, error: `invalid format: ${cleaned.length} digits` };
 }
 
 // ─── Supplier intake ─────────────────────────────────────────────────────────
@@ -439,9 +447,14 @@ export function buildIntakeBlock(fields: Record<string, unknown>): string {
   if (oto) productLine += " + Spares Kit (OTO)";
   else if (bump) productLine += " + Spare Cartridge (bump)";
 
+  const method = (fields.ShippingMethod as string || "standard").toUpperCase();
+  let shippingLine = `Shipping: ${method}`;
+  if (method === "EXPRESS" && bump) shippingLine = "Shipping: EXPRESS (with spare filter)";
+
   const lines = [
     `Order ${sid.slice(-8)} · ${date}`,
     productLine,
+    shippingLine,
     fields.ShipName || fields.Name || "",
     fields.Address1 || "",
     fields.Address2 || "",
