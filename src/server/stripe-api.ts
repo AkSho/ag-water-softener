@@ -7,8 +7,13 @@ import {
   formatPromiseDate,
   extractFirstName,
 } from "./email";
-import { hasRecentRecovery, logRecoverySend } from "./recovery-log";
-import { writeOrderRow } from "./orders-log";
+import {
+  upsertOrder,
+  markRefunded,
+  updateOto,
+  hasRecentRecovery,
+  logRecoverySend,
+} from "./records";
 
 let stripeClient: Stripe | undefined;
 const processedSessions = new Set<string>();
@@ -223,7 +228,7 @@ async function sendMetaCapiPurchase({
 
 // ─── Part A: Confirmation email ─────────────────────────────────────────────────
 
-async function sendConfirmationEmail(session: Stripe.Checkout.Session) {
+async function sendConfirmationEmail(session: Stripe.Checkout.Session, orderNumber?: string) {
   const email = session.customer_details?.email;
   if (!email) {
     console.warn("No email on checkout session; skipping confirmation", { sessionId: session.id });
@@ -238,7 +243,7 @@ async function sendConfirmationEmail(session: Stripe.Checkout.Session) {
 
   const firstName = extractFirstName(session.customer_details?.name);
   const promiseDate = formatPromiseDate(new Date());
-  const { subject, text } = buildConfirmationEmail({ firstName, promiseDate });
+  const { subject, text } = buildConfirmationEmail({ firstName, promiseDate, orderNumber });
 
   try {
     await sendEmail({ to: email, subject, text });
@@ -502,13 +507,16 @@ async function handleStripeWebhook(request: Request) {
 
   // ─── checkout.session.completed ───
   if (stripeEvent.type === "checkout.session.completed") {
-    const session = stripeEvent.data.object as Stripe.Checkout.Session;
+    const eventSession = stripeEvent.data.object as Stripe.Checkout.Session;
 
-    const isRetry = processedSessions.has(session.id);
+    const isRetry = processedSessions.has(eventSession.id);
     if (isRetry) {
-      console.warn("Webhook retry: session already processed in this runtime", { sessionId: session.id });
+      console.warn("Webhook retry: session already processed in this runtime", { sessionId: eventSession.id });
     }
-    processedSessions.add(session.id);
+    processedSessions.add(eventSession.id);
+
+    // Re-retrieve session to get shipping details reliably
+    const session = await stripe.checkout.sessions.retrieve(eventSession.id);
 
     const sparePrice = requiredEnv("STRIPE_PRICE_SPARE");
     const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
@@ -528,26 +536,97 @@ async function handleStripeWebhook(request: Request) {
 
     await syncToEsp(payload);
 
-    // Part A + B + D: await all before returning so the runtime stays alive
+    // Extract shipping address
+    const shipping = session.collected_information?.shipping_details;
+    const shippingAddr = shipping?.address;
+
+    // Extract PaymentIntent ID and order number from charge
+    const piId = typeof session.payment_intent === "string"
+      ? session.payment_intent
+      : session.payment_intent?.id || "";
+
+    let orderNumber = session.id.slice(-8);
+    let orderNumberFallback = true;
+    if (piId) {
+      try {
+        const pi = await stripe.paymentIntents.retrieve(piId, {
+          expand: ["latest_charge"],
+        });
+        const charge = pi.latest_charge;
+        if (charge && typeof charge !== "string" && charge.receipt_number) {
+          orderNumber = charge.receipt_number;
+          orderNumberFallback = false;
+        }
+      } catch {
+        // Keep fallback
+      }
+    }
+    if (orderNumberFallback) {
+      console.warn("OrderNumber fallback fired: using session ID suffix", { sessionId: session.id });
+    }
+
+    // Derive ItemType from session metadata
+    const isAgPdp = session.metadata?.source === "ag_pdp";
+    const bumpTaken = session.metadata?.requested_include_spare === "true";
+    let itemType: string;
+    if (!isAgPdp) {
+      itemType = "kit";
+    } else if (bumpTaken) {
+      itemType = "unit+bump";
+    } else {
+      itemType = "unit";
+    }
+
+    // Check for repeat customer (earlier paid session for same email)
+    let repeatCustomer = false;
+    const customerEmail = session.customer_details?.email?.toLowerCase().trim();
+    if (customerEmail) {
+      try {
+        const priorSessions = await stripe.checkout.sessions.list({
+          customer_details: { email: customerEmail },
+          status: "complete",
+          limit: 2,
+          created: { lt: session.created },
+        } as Stripe.Checkout.SessionListParams);
+        repeatCustomer = priorSessions.data.some(
+          (s) => s.payment_status === "paid" && s.id !== session.id,
+        );
+      } catch {
+        // Skip on error
+      }
+    }
+
     const orderTs = new Date().toISOString();
     const [emailResult, capiResult, ordersResult] = await Promise.allSettled([
-      sendConfirmationEmail(session),
+      sendConfirmationEmail(session, orderNumber),
       sendMetaCapiPurchase({ session, request, lineItems }),
-      writeOrderRow({
+      upsertOrder({
+        stripeSessionId: session.id,
+        paymentIntentId: piId,
         email: session.customer_details?.email || "",
         name: session.customer_details?.name || "",
-        amount: typeof session.amount_total === "number" ? session.amount_total / 100 : 0,
-        stripeSessionId: session.id,
-        eventId: stripeEvent.id,
         orderTs,
+        amount: typeof session.amount_total === "number" ? session.amount_total / 100 : 0,
+        unitQty: itemType === "kit" ? 0 : (Number(session.metadata?.requested_unit_qty) || 1),
+        bumpTaken,
+        orderNumber,
+        itemType,
+        repeatCustomer,
+        shipName: shipping?.name || "",
+        address1: shippingAddr?.line1 || "",
+        address2: shippingAddr?.line2 || "",
+        city: shippingAddr?.city || "",
+        state: shippingAddr?.state || "",
+        zip: shippingAddr?.postal_code || "",
+        phone: session.customer_details?.phone || "",
         ftSrc: session.metadata?.ft_src || "",
         ftRef: session.metadata?.ft_ref || "",
         ftLp: session.metadata?.ft_lp || "",
         ftMlp: session.metadata?.ft_mlp || "",
         ftTs: session.metadata?.ft_ts || "",
         ftUtm: session.metadata?.ft_utm || "",
-        ftGclid: session.metadata?.ft_gclid || "",
-        ftMsclkid: session.metadata?.ft_msclkid || "",
+        gclid: session.metadata?.ft_gclid || "",
+        msclkid: session.metadata?.ft_msclkid || "",
       }),
     ]);
 
@@ -556,9 +635,9 @@ async function handleStripeWebhook(request: Request) {
       email: emailResult.status === "fulfilled" ? "sent" : `failed: ${(emailResult as PromiseRejectedResult).reason}`,
       capi: capiResult.status === "fulfilled" ? "sent" : `failed: ${(capiResult as PromiseRejectedResult).reason}`,
       orders_row: ordersResult.status === "fulfilled"
-        ? (ordersResult.value as { ok: boolean; id?: string; error?: string; attempt?: number }).ok
-          ? `written: ${(ordersResult.value as { id?: string }).id} (attempt ${(ordersResult.value as { attempt?: number }).attempt})`
-          : `failed: ${(ordersResult.value as { error?: string }).error} (attempt ${(ordersResult.value as { attempt?: number }).attempt})`
+        ? ordersResult.value.ok
+          ? `written: ${ordersResult.value.id} (created: ${ordersResult.value.created})`
+          : `failed: ${ordersResult.value.error}`
         : `exception: ${(ordersResult as PromiseRejectedResult).reason}`,
     });
 
@@ -578,6 +657,38 @@ async function handleStripeWebhook(request: Request) {
         amountTotal: item.amount_total,
       })),
     });
+
+    return json({ received: true });
+  }
+
+  // ─── charge.refunded ───
+  if (stripeEvent.type === "charge.refunded") {
+    const charge = stripeEvent.data.object as Stripe.Charge;
+    const piId = typeof charge.payment_intent === "string"
+      ? charge.payment_intent
+      : charge.payment_intent?.id;
+
+    if (piId) {
+      // Find the checkout session that created this PaymentIntent
+      const sessions = await stripe.checkout.sessions.list({
+        payment_intent: piId,
+        limit: 1,
+      });
+      const refundedSession = sessions.data[0];
+      if (refundedSession) {
+        const refundResult = await markRefunded(
+          refundedSession.id,
+          new Date().toISOString(),
+        );
+        console.info("Refund processed", {
+          sessionId: refundedSession.id,
+          paymentIntentId: piId,
+          result: refundResult.ok ? "updated" : refundResult.error,
+        });
+      } else {
+        console.warn("charge.refunded: no checkout session found for PI", { piId });
+      }
+    }
 
     return json({ received: true });
   }
@@ -667,6 +778,13 @@ async function handleOtoAccept(request: Request) {
     });
 
     if (otoPi.status === "succeeded") {
+      // Update Airtable order with OTO acceptance
+      updateOto(sessionId, otoPi.amount / 100).catch((err) => {
+        console.error("OTO Airtable update failed", {
+          sessionId,
+          error: err instanceof Error ? err.message : String(err),
+        });
+      });
       return json({ ok: true });
     }
 

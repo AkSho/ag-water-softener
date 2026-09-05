@@ -47,24 +47,25 @@ export async function sendEmail({
 export function buildConfirmationEmail({
   firstName,
   promiseDate,
+  orderNumber,
 }: {
   firstName: string;
   promiseDate: string;
+  orderNumber?: string;
 }) {
   const name = firstName || "there";
+  const orderLine = orderNumber ? `\nOrder ${orderNumber}\n` : "";
   return {
     subject: "Your AG Water Softener Order",
     text: `Hi ${name},
-
-Thanks for your order. Everything is confirmed and in production now. Your softener ships with express shipping and full tracking, and you should have it by ${promiseDate}, likely a few days sooner.
-
-I'll email the tracking number as soon as your order is on the way.
+${orderLine}
+Thanks for your order. It's confirmed, and you should have it by ${promiseDate}. I'll email the tracking number as soon as it ships.
 
 Any questions, just reply to this email.
 
 Ana
-
-AG Water Softener | GRN Labs`,
+AG Water Softener
+support@agsoftener.com`,
   };
 }
 
@@ -92,7 +93,7 @@ AG Water Softener | GRN Labs`,
 
 export function formatPromiseDate(orderDate: Date): string {
   const promise = new Date(orderDate);
-  promise.setDate(promise.getDate() + 21);
+  promise.setDate(promise.getDate() + 18);
   return promise.toLocaleDateString("en-US", { month: "long", day: "numeric" });
 }
 
