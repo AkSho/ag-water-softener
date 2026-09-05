@@ -455,18 +455,38 @@ export function buildIntakeBlock(fields: Record<string, unknown>): string {
 export async function generateIntake(
   recordId: string,
   fields: Record<string, unknown>,
+  sendFn?: (params: { to: string; subject: string; text: string }) => Promise<void>,
 ): Promise<UpsertResult> {
   const config = getConfig();
   const intake = buildIntakeBlock(fields);
 
   const supplierEmail = process.env.SUPPLIER_EMAIL;
-  if (supplierEmail) {
-    // Email path (behind config flag) — Phase 2 placeholder
-    console.info("Supplier email would send to", supplierEmail);
+  if (supplierEmail && sendFn) {
+    await sendFn({
+      to: supplierEmail,
+      subject: `New order ${(fields.StripeSessionId as string || "").slice(-8)}`,
+      text: intake,
+    });
+    return patchRecord(config, ORDERS_TABLE, recordId, {
+      IntakeBlock: intake,
+      SentToSupplier: true,
+      SentToSupplierTS: new Date().toISOString(),
+      Status: "sent-to-supplier",
+    });
   }
 
   return patchRecord(config, ORDERS_TABLE, recordId, {
     IntakeBlock: intake,
+    Status: "intake-ready",
+  });
+}
+
+export async function markSentToSupplier(
+  recordId: string,
+): Promise<UpsertResult> {
+  const config = getConfig();
+  return patchRecord(config, ORDERS_TABLE, recordId, {
+    SentToSupplier: true,
     SentToSupplierTS: new Date().toISOString(),
     Status: "sent-to-supplier",
   });
@@ -547,9 +567,13 @@ export async function markCheckIn(
   const email = fields.Email as string;
   if (!email) return { ok: false, error: "no_email" };
 
+  const deliveredDate = fields.DeliveredDate as string;
+  if (!deliveredDate) {
+    return { ok: false, error: "missing_delivered_date" };
+  }
+
   const firstName = extractName(fields.Name as string);
   const carrier = (fields.Carrier as string) || "FedEx";
-  const deliveredDate = new Date().toISOString().slice(0, 10);
 
   const emailContent = buildFn({ firstName, carrier, deliveredDate });
 
@@ -597,7 +621,7 @@ export async function processFulfillment(
     // 1. Tracking entered but not yet validated
     const tracking = (f.Tracking as string) || "";
     const status = (f.Status as string) || "";
-    if (tracking && (status === "paid" || status === "sent-to-supplier")) {
+    if (tracking && (status === "paid" || status === "intake-ready" || status === "sent-to-supplier")) {
       const validation = validateTracking(tracking);
       if (validation.valid) {
         if (!dryRun) {
@@ -610,6 +634,17 @@ export async function processFulfillment(
       } else {
         actions.push({ recordId: row.id, email, action: "tracking_invalid", error: validation.error });
       }
+    }
+
+    // 1b. SentToSupplier ticked but not yet timestamped
+    if (f.SentToSupplier && !f.SentToSupplierTS) {
+      if (!dryRun) {
+        await patchRecord(config, ORDERS_TABLE, row.id, {
+          SentToSupplierTS: new Date().toISOString(),
+          Status: "sent-to-supplier",
+        });
+      }
+      actions.push({ recordId: row.id, email, action: "sent_to_supplier" });
     }
 
     // 2. Notify ticked, shipping confirmation not yet sent
@@ -639,9 +674,13 @@ export async function processFulfillment(
 
     // 3. NotifyCheckIn ticked, delivered, check-in not yet sent
     if (f.NotifyCheckIn && f.Delivered && !f.CheckInTS) {
+      const deliveredDate = f.DeliveredDate as string;
+      if (!deliveredDate) {
+        actions.push({ recordId: row.id, email, action: "checkin_blocked", error: "DeliveredDate is empty" });
+        continue;
+      }
       const firstName = extractName(f.Name as string);
       const carrier = (f.Carrier as string) || "FedEx";
-      const deliveredDate = new Date().toISOString().slice(0, 10);
       const preview = buildCheckIn({ firstName, carrier, deliveredDate });
 
       if (!dryRun) {

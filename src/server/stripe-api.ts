@@ -834,9 +834,21 @@ async function handleOtoAccept(request: Request) {
   }
 }
 
+// ─── Fulfillment auth ─────────────────────────────────────────────────────────
+
+function checkFulfillAuth(request: Request): Response | null {
+  const key = process.env.FULFILL_API_KEY;
+  if (!key) return json({ error: "FULFILL_API_KEY not configured" }, { status: 500 });
+  const provided = request.headers.get("X-AG-Fulfill-Key");
+  if (provided !== key) return json({ error: "Unauthorized" }, { status: 401 });
+  return null;
+}
+
 // ─── Fulfillment endpoint ─────────────────────────────────────────────────────
 
 async function handleFulfill(request: Request) {
+  const authError = checkFulfillAuth(request);
+  if (authError) return authError;
   const url = new URL(request.url);
   const dryRun = url.searchParams.get("dry-run") === "true";
 
@@ -865,6 +877,9 @@ async function handleFulfill(request: Request) {
 // ─── Tracking validation endpoint ────────────────────────────────────────────
 
 async function handleValidateTracking(request: Request) {
+  const authError = checkFulfillAuth(request);
+  if (authError) return authError;
+
   const body = (await request.json().catch(() => ({}))) as { tracking?: unknown };
   const tracking = typeof body.tracking === "string" ? body.tracking : "";
 
