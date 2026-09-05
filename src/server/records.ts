@@ -396,22 +396,271 @@ export async function updateOto(
   return patchRecord(config, ORDERS_TABLE, existing.id, {
     OTOAccepted: true,
     OTOAmount: amount,
+    ItemType: "unit+kit",
   });
 }
 
-// ─── Phase 2 stubs ───────────────────────────────────────────────────────────
+// ─── Tracking validation ─────────────────────────────────────────────────────
 
-export async function setTracking(
-  _stripeSessionId: string,
-  _tracking: string,
-): Promise<UpsertResult> {
-  throw new Error("Phase 2: not yet implemented");
+interface TrackingValidation {
+  valid: boolean;
+  carrier?: string;
+  error?: string;
 }
 
-export async function markNotified(
-  _stripeSessionId: string,
+export function validateTracking(tracking: string): TrackingValidation {
+  const digits = tracking.replace(/\s/g, "");
+  if (!/^\d+$/.test(digits)) return { valid: false, error: "non-numeric" };
+
+  // USPS: 20-22 digits starting with 9 (check before FedEx to avoid overlap)
+  if (digits.length >= 20 && digits.length <= 22 && digits.startsWith("9")) {
+    return { valid: true, carrier: "USPS" };
+  }
+
+  // FedEx: 12, 15, 20, or 22 digits
+  if ([12, 15, 20, 22].includes(digits.length)) {
+    return { valid: true, carrier: "FedEx" };
+  }
+
+  return { valid: false, error: `invalid format: ${digits.length} digits` };
+}
+
+// ─── Supplier intake ─────────────────────────────────────────────────────────
+
+export function buildIntakeBlock(fields: Record<string, unknown>): string {
+  const sid = (fields.StripeSessionId as string) || "";
+  const orderTs = fields.OrderTS as string || "";
+  const date = orderTs ? new Date(orderTs).toISOString().slice(0, 10) : "";
+  const qty = fields.UnitQty as number || 1;
+  const bump = fields.BumpTaken as boolean;
+  const oto = fields.OTOAccepted as boolean;
+
+  let productLine = `${qty} x AG Water Softener`;
+  if (oto) productLine += " + Spares Kit (OTO)";
+  else if (bump) productLine += " + Spare Cartridge (bump)";
+
+  const lines = [
+    `Order ${sid.slice(-8)} · ${date}`,
+    productLine,
+    fields.ShipName || fields.Name || "",
+    fields.Address1 || "",
+    fields.Address2 || "",
+    `${fields.City || ""}, ${fields.State || ""} ${fields.Zip || ""}`.trim(),
+    fields.Phone || "",
+  ];
+
+  return lines.filter((l) => l && (l as string).trim()).join("\n");
+}
+
+export async function generateIntake(
+  recordId: string,
+  fields: Record<string, unknown>,
 ): Promise<UpsertResult> {
-  throw new Error("Phase 2: not yet implemented");
+  const config = getConfig();
+  const intake = buildIntakeBlock(fields);
+
+  const supplierEmail = process.env.SUPPLIER_EMAIL;
+  if (supplierEmail) {
+    // Email path (behind config flag) — Phase 2 placeholder
+    console.info("Supplier email would send to", supplierEmail);
+  }
+
+  return patchRecord(config, ORDERS_TABLE, recordId, {
+    IntakeBlock: intake,
+    SentToSupplierTS: new Date().toISOString(),
+    Status: "sent-to-supplier",
+  });
+}
+
+// ─── Fulfillment: setTracking ────────────────────────────────────────────────
+
+export async function setTracking(
+  recordId: string,
+  tracking: string,
+): Promise<UpsertResult & { carrier?: string; validationError?: string }> {
+  const validation = validateTracking(tracking);
+  if (!validation.valid) {
+    return { ok: false, error: "invalid_tracking", validationError: validation.error };
+  }
+
+  const config = getConfig();
+  return {
+    ...(await patchRecord(config, ORDERS_TABLE, recordId, {
+      Tracking: tracking.replace(/\s/g, ""),
+      Carrier: validation.carrier,
+      Status: "ready-to-notify",
+    })),
+    carrier: validation.carrier,
+  };
+}
+
+// ─── Fulfillment: markNotified (shipping confirmation) ───────────────────────
+
+export async function markNotified(
+  recordId: string,
+  fields: Record<string, unknown>,
+  sendFn: (params: { to: string; subject: string; text: string }) => Promise<void>,
+  buildFn: (params: { firstName: string; carrier: string; tracking: string; promisedBy: string }) => { subject: string; text: string },
+): Promise<UpsertResult & { emailPreview?: { subject: string; text: string } }> {
+  // Idempotency: if already sent, do nothing
+  if (fields.ConfirmationSentTS) {
+    return { ok: true, id: recordId, error: "already_sent" };
+  }
+
+  const email = fields.Email as string;
+  if (!email) return { ok: false, error: "no_email" };
+
+  const firstName = extractName(fields.Name as string);
+  const carrier = (fields.Carrier as string) || "FedEx";
+  const tracking = (fields.Tracking as string) || "";
+  const promisedBy = (fields.PromisedBy as string) || "";
+
+  const emailContent = buildFn({ firstName, carrier, tracking, promisedBy });
+
+  await sendFn({ to: email, ...emailContent });
+
+  const config = getConfig();
+  const now = new Date().toISOString();
+  return {
+    ...(await patchRecord(config, ORDERS_TABLE, recordId, {
+      ConfirmationSentTS: now,
+      ShippedTS: now,
+      Status: "shipped",
+    })),
+    emailPreview: emailContent,
+  };
+}
+
+// ─── Fulfillment: markCheckIn (delivered check-in) ───────────────────────────
+
+export async function markCheckIn(
+  recordId: string,
+  fields: Record<string, unknown>,
+  sendFn: (params: { to: string; subject: string; text: string }) => Promise<void>,
+  buildFn: (params: { firstName: string; carrier: string; deliveredDate: string }) => { subject: string; text: string },
+): Promise<UpsertResult & { emailPreview?: { subject: string; text: string } }> {
+  // Idempotency: if already sent, do nothing
+  if (fields.CheckInTS) {
+    return { ok: true, id: recordId, error: "already_sent" };
+  }
+
+  const email = fields.Email as string;
+  if (!email) return { ok: false, error: "no_email" };
+
+  const firstName = extractName(fields.Name as string);
+  const carrier = (fields.Carrier as string) || "FedEx";
+  const deliveredDate = new Date().toISOString().slice(0, 10);
+
+  const emailContent = buildFn({ firstName, carrier, deliveredDate });
+
+  await sendFn({ to: email, ...emailContent });
+
+  const config = getConfig();
+  return {
+    ...(await patchRecord(config, ORDERS_TABLE, recordId, {
+      CheckInTS: new Date().toISOString(),
+    })),
+    emailPreview: emailContent,
+  };
+}
+
+function extractName(name: string | null | undefined): string {
+  if (!name) return "";
+  return name.trim().split(/\s+/)[0] || "";
+}
+
+// ─── Fulfillment: process pending ────────────────────────────────────────────
+
+export interface FulfillmentAction {
+  recordId: string;
+  email: string;
+  action: string;
+  result?: string;
+  preview?: { subject: string; text: string };
+  error?: string;
+}
+
+export async function processFulfillment(
+  sendFn: (params: { to: string; subject: string; text: string }) => Promise<void>,
+  buildShipping: (params: { firstName: string; carrier: string; tracking: string; promisedBy: string }) => { subject: string; text: string },
+  buildCheckIn: (params: { firstName: string; carrier: string; deliveredDate: string }) => { subject: string; text: string },
+  dryRun: boolean = false,
+): Promise<FulfillmentAction[]> {
+  const config = getConfig();
+  const allOrders = await listAllOrders();
+  const actions: FulfillmentAction[] = [];
+
+  for (const row of allOrders) {
+    const f = row.fields;
+    const email = (f.Email as string) || "";
+
+    // 1. Tracking entered but not yet validated
+    const tracking = (f.Tracking as string) || "";
+    const status = (f.Status as string) || "";
+    if (tracking && (status === "paid" || status === "sent-to-supplier")) {
+      const validation = validateTracking(tracking);
+      if (validation.valid) {
+        if (!dryRun) {
+          await patchRecord(config, ORDERS_TABLE, row.id, {
+            Carrier: validation.carrier,
+            Status: "ready-to-notify",
+          });
+        }
+        actions.push({ recordId: row.id, email, action: "tracking_validated", result: `${validation.carrier}: ${tracking}` });
+      } else {
+        actions.push({ recordId: row.id, email, action: "tracking_invalid", error: validation.error });
+      }
+    }
+
+    // 2. Notify ticked, shipping confirmation not yet sent
+    if (f.Notify && !f.ConfirmationSentTS) {
+      const firstName = extractName(f.Name as string);
+      const carrier = (f.Carrier as string) || "FedEx";
+      const promisedBy = (f.PromisedBy as string) || "";
+      const preview = buildShipping({ firstName, carrier, tracking, promisedBy });
+
+      if (!dryRun) {
+        try {
+          await sendFn({ to: email, ...preview });
+          const now = new Date().toISOString();
+          await patchRecord(config, ORDERS_TABLE, row.id, {
+            ConfirmationSentTS: now,
+            ShippedTS: now,
+            Status: "shipped",
+          });
+          actions.push({ recordId: row.id, email, action: "shipping_sent", preview });
+        } catch (err) {
+          actions.push({ recordId: row.id, email, action: "shipping_failed", error: err instanceof Error ? err.message : String(err) });
+        }
+      } else {
+        actions.push({ recordId: row.id, email, action: "shipping_pending", preview });
+      }
+    }
+
+    // 3. NotifyCheckIn ticked, delivered, check-in not yet sent
+    if (f.NotifyCheckIn && f.Delivered && !f.CheckInTS) {
+      const firstName = extractName(f.Name as string);
+      const carrier = (f.Carrier as string) || "FedEx";
+      const deliveredDate = new Date().toISOString().slice(0, 10);
+      const preview = buildCheckIn({ firstName, carrier, deliveredDate });
+
+      if (!dryRun) {
+        try {
+          await sendFn({ to: email, ...preview });
+          await patchRecord(config, ORDERS_TABLE, row.id, {
+            CheckInTS: new Date().toISOString(),
+          });
+          actions.push({ recordId: row.id, email, action: "checkin_sent", preview });
+        } catch (err) {
+          actions.push({ recordId: row.id, email, action: "checkin_failed", error: err instanceof Error ? err.message : String(err) });
+        }
+      } else {
+        actions.push({ recordId: row.id, email, action: "checkin_pending", preview });
+      }
+    }
+  }
+
+  return actions;
 }
 
 // ─── Phase 3 stubs ───────────────────────────────────────────────────────────

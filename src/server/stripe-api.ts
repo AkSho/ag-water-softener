@@ -4,6 +4,8 @@ import {
   sendEmail,
   buildConfirmationEmail,
   buildRecoveryEmail,
+  buildShippingEmail,
+  buildCheckInEmail,
   formatPromiseDate,
   extractFirstName,
 } from "./email";
@@ -11,6 +13,9 @@ import {
   upsertOrder,
   markRefunded,
   updateOto,
+  generateIntake,
+  processFulfillment,
+  validateTracking,
   hasRecentRecovery,
   logRecoverySend,
 } from "./records";
@@ -641,6 +646,27 @@ async function handleStripeWebhook(request: Request) {
         : `exception: ${(ordersResult as PromiseRejectedResult).reason}`,
     });
 
+    // Generate supplier intake for unit orders (not kit-only)
+    if (ordersResult.status === "fulfilled" && ordersResult.value.ok && ordersResult.value.created && itemType !== "kit") {
+      generateIntake(ordersResult.value.id!, {
+        StripeSessionId: session.id,
+        OrderTS: orderTs,
+        UnitQty: itemType === "kit" ? 0 : (Number(session.metadata?.requested_unit_qty) || 1),
+        BumpTaken: bumpTaken,
+        OTOAccepted: false,
+        ShipName: shipping?.name || "",
+        Name: session.customer_details?.name || "",
+        Address1: shippingAddr?.line1 || "",
+        Address2: shippingAddr?.line2 || "",
+        City: shippingAddr?.city || "",
+        State: shippingAddr?.state || "",
+        Zip: shippingAddr?.postal_code || "",
+        Phone: session.customer_details?.phone || "",
+      }).catch((err) => {
+        console.error("Supplier intake failed", { sessionId: session.id, error: err instanceof Error ? err.message : String(err) });
+      });
+    }
+
     console.info("Stripe checkout completed", {
       eventId: stripeEvent.id,
       sessionId: session.id,
@@ -808,6 +834,48 @@ async function handleOtoAccept(request: Request) {
   }
 }
 
+// ─── Fulfillment endpoint ─────────────────────────────────────────────────────
+
+async function handleFulfill(request: Request) {
+  const url = new URL(request.url);
+  const dryRun = url.searchParams.get("dry-run") === "true";
+
+  const actions = await processFulfillment(
+    sendEmail,
+    buildShippingEmail,
+    buildCheckInEmail,
+    dryRun,
+  );
+
+  return json({
+    mode: dryRun ? "dry-run" : "live",
+    actions,
+    summary: {
+      total: actions.length,
+      tracking_validated: actions.filter((a) => a.action === "tracking_validated").length,
+      tracking_invalid: actions.filter((a) => a.action === "tracking_invalid").length,
+      shipping_sent: actions.filter((a) => a.action === "shipping_sent").length,
+      shipping_pending: actions.filter((a) => a.action === "shipping_pending").length,
+      checkin_sent: actions.filter((a) => a.action === "checkin_sent").length,
+      checkin_pending: actions.filter((a) => a.action === "checkin_pending").length,
+    },
+  });
+}
+
+// ─── Tracking validation endpoint ────────────────────────────────────────────
+
+async function handleValidateTracking(request: Request) {
+  const body = (await request.json().catch(() => ({}))) as { tracking?: unknown };
+  const tracking = typeof body.tracking === "string" ? body.tracking : "";
+
+  if (!tracking) {
+    return json({ valid: false, error: "missing tracking number" }, { status: 400 });
+  }
+
+  const result = validateTracking(tracking);
+  return json(result);
+}
+
 // ─── Router ─────────────────────────────────────────────────────────────────────
 
 export async function handleStripeApi(request: Request) {
@@ -827,6 +895,14 @@ export async function handleStripeApi(request: Request) {
 
   if (url.pathname === "/api/stripe/webhook" && request.method === "POST") {
     return handleStripeWebhook(request);
+  }
+
+  if (url.pathname === "/api/fulfill" && request.method === "POST") {
+    return handleFulfill(request);
+  }
+
+  if (url.pathname === "/api/validate-tracking" && request.method === "POST") {
+    return handleValidateTracking(request);
   }
 
   return undefined;

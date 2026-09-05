@@ -101,3 +101,69 @@ export function extractFirstName(fullName: string | null | undefined): string {
   if (!fullName) return "";
   return fullName.trim().split(/\s+/)[0] || "";
 }
+
+export function formatLongDate(dateStr: string): string {
+  // For date-only strings (YYYY-MM-DD), parse as local to avoid timezone shift
+  const match = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  const d = match
+    ? new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]))
+    : new Date(dateStr);
+  if (isNaN(d.getTime())) return dateStr;
+  return d.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+export function buildShippingEmail({
+  firstName,
+  carrier,
+  tracking,
+  promisedBy,
+}: {
+  firstName: string;
+  carrier: string;
+  tracking: string;
+  promisedBy: string;
+}) {
+  const name = firstName || "there";
+  const promisedByFormatted = formatLongDate(promisedBy);
+  return {
+    subject: "Tracking for your AG Water Softener order",
+    text: `Hi ${name},
+
+Your order is on its way.
+
+${carrier} tracking: ${tracking}
+
+The tracking page updates each time ${carrier} scans the package, so it may show only the label at first. Your order is expected by ${promisedByFormatted}.
+
+Ana
+AG Water Softener
+support@agsoftener.com`,
+  };
+}
+
+export function buildCheckInEmail({
+  firstName,
+  carrier,
+  deliveredDate,
+}: {
+  firstName: string;
+  carrier: string;
+  deliveredDate: string;
+}) {
+  const name = firstName || "there";
+  const deliveredFormatted = formatLongDate(deliveredDate);
+  return {
+    subject: `${carrier} shows your AG Water Softener delivered`,
+    text: `Hi ${name},
+
+${carrier} shows your order delivered on ${deliveredFormatted}. The setup guide is at agsoftener.com/setup, and the two short videos there walk through install and recharge.
+
+Ana
+AG Water Softener
+support@agsoftener.com`,
+  };
+}
