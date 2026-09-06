@@ -83,9 +83,7 @@ You left an AG Water Softener in checkout. It's in stock and ships free with tra
 
 If something held you back, reply and ask. I read every email.
 
-Ana
-
-AG Water Softener | GRN Labs`,
+Ana`,
   };
 }
 
