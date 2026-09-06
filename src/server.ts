@@ -59,8 +59,7 @@ export default {
       const url = new URL(request.url);
       if (url.pathname.startsWith("/api/")) {
         const message = error instanceof Error ? error.message : String(error);
-        const stack = error instanceof Error ? error.stack : undefined;
-        return new Response(JSON.stringify({ error: message, stack }), {
+        return new Response(JSON.stringify({ error: message }), {
           status: 500,
           headers: { "content-type": "application/json" },
         });
