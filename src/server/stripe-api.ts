@@ -260,7 +260,7 @@ async function sendConfirmationEmail(session: Stripe.Checkout.Session, orderNumb
   }
 
   const firstName = extractFirstName(session.customer_details?.name);
-  const promiseDays = shippingMethod === "express" ? 7 : 18;
+  const promiseDays = shippingMethod === "express" ? 10 : 18;
   const promiseDate = formatPromiseDate(new Date(), promiseDays);
   const { subject, text } = buildConfirmationEmail({ firstName, promiseDate, orderNumber });
 

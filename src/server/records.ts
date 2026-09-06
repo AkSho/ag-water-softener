@@ -115,7 +115,7 @@ function daysBetween(isoA: string, isoB: string): number | null {
 
 function promiseDate(orderTs: string, shippingMethod?: string): string {
   const d = new Date(orderTs);
-  d.setDate(d.getDate() + (shippingMethod === "express" ? 7 : 18));
+  d.setDate(d.getDate() + (shippingMethod === "express" ? 10 : 18));
   return d.toISOString().split("T")[0];
 }
 

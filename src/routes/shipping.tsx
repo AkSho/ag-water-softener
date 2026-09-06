@@ -9,10 +9,10 @@ export const Route = createFileRoute("/shipping")({
       {
         name: "description",
         content:
-          "Free shipping on every AG Water Softener order. Typical delivery is 12 to 18 days, with tracking emailed to you.",
+          "Free standard shipping on every AG Water Softener order, 12 to 18 days. Express in 4 to 7 business days for $19. Tracking emailed when it ships.",
       },
       { property: "og:title", content: "Shipping | AG Water Softener" },
-      { property: "og:description", content: "Free shipping on every AG Water Softener order. Typical delivery is 12 to 18 days, with tracking emailed to you." },
+      { property: "og:description", content: "Free standard shipping on every AG Water Softener order, 12 to 18 days. Express in 4 to 7 business days for $19. Tracking emailed when it ships." },
       { property: "og:url", content: "https://agsoftener.com/shipping" },
       { property: "og:type", content: "article" },
       { property: "og:image", content: "https://agsoftener.com/assets/hero.png" },
@@ -37,7 +37,7 @@ function ShippingPage() {
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            Shipping is free on every order. No minimums, no codes.
+            Standard shipping is free on every order. No minimums, no codes. Express shipping is available at checkout for $19.
           </p>
         </div>
 
@@ -46,7 +46,7 @@ function ShippingPage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            Orders ship via FedEx or USPS with tracking and typically arrive within 12 to 18 days of purchase. You'll receive a tracking number by email as soon as your order ships, so you can follow it the whole way.
+            Standard orders ship via FedEx or USPS with tracking and typically arrive within 12 to 18 days of purchase. Express orders ship by tracked courier and typically arrive within 4 to 7 business days. Either way, you'll receive a tracking number by email as soon as your order ships.
           </p>
           <p>
             We currently ship within the United States.
@@ -58,7 +58,7 @@ function ShippingPage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            We're a small company and we ship directly from our production facility rather than marking the product up to cover US warehousing. The trade is a longer transit time for a lower price and free shipping. Your 60-day money-back guarantee doesn't start until the day your order is delivered, so the transit time never eats into your trial window.
+            We're a small company and we ship directly from our production facility rather than marking the product up to cover US warehousing. The trade is a longer transit time for a lower price and free standard shipping. Express is the same route on a faster courier. Your 60-day money-back guarantee doesn't start until the day your order is delivered, so the transit time never eats into your trial window.
           </p>
         </div>
 
@@ -67,7 +67,7 @@ function ShippingPage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            If your tracking stalls or your order hasn't arrived within 18 days, email <a href="mailto:support@agsoftener.com" className="underline hover:opacity-70">support@agsoftener.com</a> with your order number and we'll chase it down. If a package is lost in transit, we send a replacement or refund you in full, your choice.
+            If your tracking stalls, or your order hasn't arrived within 18 days (standard) or 7 business days (express), email <a href="mailto:support@agsoftener.com" className="underline hover:opacity-70">support@agsoftener.com</a> with your order number and we'll chase it down. If a package is lost in transit, we send a replacement or refund you in full, your choice.
           </p>
         </div>
       </article>

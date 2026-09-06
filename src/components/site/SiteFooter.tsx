@@ -4,7 +4,7 @@ import { PreferredSourceBlock } from "@/components/PreferredSourceBlock";
 export function SiteFooter() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const shop: { label: string; href: string }[] = [
-    { label: "The AG Water Softener", href: "#" },
+    { label: "The AG Water Softener", href: "/" },
     { label: "AG Spares Kit", href: "/spares-kit" },
   ];
   const support: { label: string; href: string }[] = [
