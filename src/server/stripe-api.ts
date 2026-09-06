@@ -584,9 +584,11 @@ async function handleStripeWebhook(request: Request) {
 
     // Determine shipping method from chosen rate
     const expressRate = process.env.STRIPE_SHIPPING_EXPRESS;
-    const chosenRate = typeof session.shipping_cost?.shipping_rate === "string"
-      ? session.shipping_cost.shipping_rate
-      : session.shipping_cost?.shipping_rate?.id;
+    const chosenRate = typeof session.shipping_rate === "string"
+      ? session.shipping_rate
+      : typeof session.shipping_rate === "object" && session.shipping_rate
+        ? session.shipping_rate.id
+        : undefined;
     const shippingMethod = (expressRate && chosenRate === expressRate) ? "express" : "standard";
 
     // Derive ItemType from session metadata
@@ -622,7 +624,7 @@ async function handleStripeWebhook(request: Request) {
 
     const orderTs = new Date().toISOString();
     const [emailResult, capiResult, ordersResult] = await Promise.allSettled([
-      sendConfirmationEmail(session, orderNumber, shippingMethod),
+      sendConfirmationEmail(session, orderNumberFallback ? undefined : orderNumber, shippingMethod),
       sendMetaCapiPurchase({ session, request, lineItems }),
       upsertOrder({
         stripeSessionId: session.id,

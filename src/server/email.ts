@@ -63,9 +63,7 @@ Thanks for your order. It's confirmed, and you should have it by ${promiseDate}.
 
 Any questions, just reply to this email.
 
-Ana
-AG Water Softener
-support@agsoftener.com`,
+Ana`,
   };
 }
 
@@ -139,9 +137,7 @@ ${carrier} tracking: ${tracking}
 
 The tracking page updates each time ${carrier} scans the package, so it may show only the label at first. Your order is expected by ${promisedByFormatted}.
 
-Ana
-AG Water Softener
-support@agsoftener.com`,
+Ana`,
   };
 }
 
@@ -162,8 +158,6 @@ export function buildCheckInEmail({
 
 ${carrier} shows your order delivered on ${deliveredFormatted}. The setup guide is at agsoftener.com/setup, and the two short videos there walk through install and recharge.
 
-Ana
-AG Water Softener
-support@agsoftener.com`,
+Ana`,
   };
 }
