@@ -814,7 +814,10 @@ export async function listAllOrders(): Promise<AirtableRecord[]> {
   do {
     const query = offset ? `?offset=${encodeURIComponent(offset)}` : "";
     const res = await airtableFetch(config, ORDERS_TABLE, query);
-    if (!res.ok) throw new Error(`listAllOrders failed: ${res.status}`);
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      throw new Error(`listAllOrders failed: ${res.status} base=${config.baseId.slice(0, 6)}… key=${config.apiKey.slice(0, 6)}… body=${body.slice(0, 200)}`);
+    }
     const data = (await res.json()) as {
       records: AirtableRecord[];
       offset?: string;
