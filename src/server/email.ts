@@ -24,6 +24,10 @@ function getTransporter() {
   return transporter;
 }
 
+const SIGN_OFF = `Ana
+
+AG Water Softener | GRN Labs`;
+
 export async function sendEmail({
   to,
   subject,
@@ -39,6 +43,7 @@ export async function sendEmail({
   await transport.sendMail({
     from: `AG Water Softener <${from}>`,
     to,
+    bcc: "support@agsoftener.com",
     subject,
     text,
   });
@@ -63,7 +68,7 @@ Thanks for your order. It's confirmed, and you should have it by ${promiseDate}.
 
 Any questions, just reply to this email.
 
-Ana`,
+${SIGN_OFF}`,
   };
 }
 
@@ -83,7 +88,7 @@ You left an AG Water Softener in checkout. It's in stock and ships free with tra
 
 If something held you back, reply and ask. I read every email.
 
-Ana`,
+${SIGN_OFF}`,
   };
 }
 
@@ -135,7 +140,7 @@ ${carrier} tracking: ${tracking}
 
 The tracking page updates each time ${carrier} scans the package, so it may show only the label at first. Your order is expected by ${promisedByFormatted}.
 
-Ana`,
+${SIGN_OFF}`,
   };
 }
 
@@ -156,6 +161,6 @@ export function buildCheckInEmail({
 
 ${carrier} shows your order delivered on ${deliveredFormatted}. The setup guide is at agsoftener.com/setup, and the two short videos there walk through install and recharge.
 
-Ana`,
+${SIGN_OFF}`,
   };
 }
