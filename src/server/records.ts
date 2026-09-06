@@ -2,9 +2,9 @@
 // Single Airtable access module. All reads and writes go through here.
 // This is the only file that changes when the store moves to Postgres.
 
-const ORDERS_TABLE = "Orders";
-const SUBMISSIONS_TABLE = "Submissions";
-const RECOVERY_TABLE = "Recovery";
+const ORDERS_TABLE = "tblQt2grL7iJ2ysNh";
+const SUBMISSIONS_TABLE = "tbl3ScW6QPW7Mnl4b";
+const RECOVERY_TABLE = "tblryjyqduMkiT0l5";
 
 // ─── Config ──────────────────────────────────────────────────────────────────
 
