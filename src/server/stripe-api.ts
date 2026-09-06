@@ -875,26 +875,32 @@ async function handleFulfill(request: Request) {
   const url = new URL(request.url);
   const dryRun = url.searchParams.get("dry-run") === "true";
 
-  const actions = await processFulfillment(
-    sendEmail,
-    buildShippingEmail,
-    buildCheckInEmail,
-    dryRun,
-  );
+  try {
+    const actions = await processFulfillment(
+      sendEmail,
+      buildShippingEmail,
+      buildCheckInEmail,
+      dryRun,
+    );
 
-  return json({
-    mode: dryRun ? "dry-run" : "live",
-    actions,
-    summary: {
-      total: actions.length,
-      tracking_validated: actions.filter((a) => a.action === "tracking_validated").length,
-      tracking_invalid: actions.filter((a) => a.action === "tracking_invalid").length,
-      shipping_sent: actions.filter((a) => a.action === "shipping_sent").length,
-      shipping_pending: actions.filter((a) => a.action === "shipping_pending").length,
-      checkin_sent: actions.filter((a) => a.action === "checkin_sent").length,
-      checkin_pending: actions.filter((a) => a.action === "checkin_pending").length,
-    },
-  });
+    return json({
+      mode: dryRun ? "dry-run" : "live",
+      actions,
+      summary: {
+        total: actions.length,
+        tracking_validated: actions.filter((a) => a.action === "tracking_validated").length,
+        tracking_invalid: actions.filter((a) => a.action === "tracking_invalid").length,
+        shipping_sent: actions.filter((a) => a.action === "shipping_sent").length,
+        shipping_pending: actions.filter((a) => a.action === "shipping_pending").length,
+        checkin_sent: actions.filter((a) => a.action === "checkin_sent").length,
+        checkin_pending: actions.filter((a) => a.action === "checkin_pending").length,
+      },
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(JSON.stringify({ event: "fulfill_error", message }));
+    return json({ error: message }, { status: 500 });
+  }
 }
 
 // ─── Tracking validation endpoint ────────────────────────────────────────────

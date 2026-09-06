@@ -56,6 +56,15 @@ export default {
       return await normalizeCatastrophicSsrResponse(response);
     } catch (error) {
       console.error(error);
+      const url = new URL(request.url);
+      if (url.pathname.startsWith("/api/")) {
+        const message = error instanceof Error ? error.message : String(error);
+        const stack = error instanceof Error ? error.stack : undefined;
+        return new Response(JSON.stringify({ error: message, stack }), {
+          status: 500,
+          headers: { "content-type": "application/json" },
+        });
+      }
       return new Response(renderErrorPage(), {
         status: 500,
         headers: { "content-type": "text/html; charset=utf-8" },
