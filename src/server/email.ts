@@ -164,3 +164,121 @@ ${carrier} shows your order delivered on ${deliveredFormatted}. The setup guide 
 ${SIGN_OFF}`,
   };
 }
+
+// ─── Daily digest (internal, no sign-off) ─────────────────────────────────
+
+import type { DigestData } from "./records";
+
+function fmtDollars(n: number): string {
+  return "$" + Math.round(n).toLocaleString("en-US");
+}
+
+function digestMetricLine(label: string, value: number, avg: number | null, dollar = false): string {
+  const p = dollar ? "$" : "";
+  const valStr = dollar ? fmtDollars(value) : String(value);
+  const avgStr = avg !== null ? (dollar ? fmtDollars(avg) : avg.toFixed(1)) : "—";
+  let color: string;
+  if (avg === null) color = "new";
+  else if (avg === 0 && value === 0) color = "green";
+  else if (avg === 0) color = "blue";
+  else if (value / avg > 1.2) color = "blue";
+  else if (value / avg < 0.8) color = "red";
+  else color = "green";
+  return `${label}: ${valStr} (${avgStr}) ${color}`;
+}
+
+export function buildDigestEmail(data: DigestData, errors: Record<string, string>): { subject: string; text: string } {
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const now = new Date();
+  const dayName = days[now.getDay()];
+  const mon = months[now.getMonth()];
+  const day = now.getDate();
+
+  const subject = `AG daily · ${dayName} ${mon} ${day}`;
+  const sections: string[] = [];
+
+  // 1. Revenue
+  if (errors.revenue) {
+    sections.push(`── Revenue ──\nerror: ${errors.revenue}`);
+  } else {
+    const y = data.yesterday;
+    const t = data.trailing7;
+    const hasHistory = t.orders > 0 || t.gross > 0;
+    const a = (key: keyof DigestData["trailing7"]): number | null =>
+      hasHistory ? (t[key] as number) : null;
+
+    const lines = [
+      "── Revenue (yesterday, ET) ──",
+      digestMetricLine("Orders", y.orders, a("orders")),
+      digestMetricLine("Gross revenue", y.gross, a("gross"), true),
+      digestMetricLine("Refunds", y.refunds, a("refunds")),
+      digestMetricLine("Bump takes", y.bumps, a("bumps")),
+      digestMetricLine("OTO accepts", y.otos, a("otos")),
+      digestMetricLine("Express orders", y.express, a("express")),
+      digestMetricLine("Repeat customers", y.repeats, a("repeats")),
+      "",
+      `Month to date: ${data.mtdOrders} orders, ${fmtDollars(data.mtdGross)} gross`,
+    ];
+    sections.push(lines.join("\n"));
+  }
+
+  // 2. Attribution
+  if (errors.attribution) {
+    sections.push(`── Attribution ──\nerror: ${errors.attribution}`);
+  } else {
+    const vLines = Object.entries(data.verdicts)
+      .sort(([, a], [, b]) => b - a)
+      .map(([v, count]) => `${v}: ${count}`);
+    sections.push(
+      "── Attribution (yesterday) ──\n" +
+      (vLines.length > 0 ? vLines.join("\n") : "none"),
+    );
+  }
+
+  // 3. Fulfillment health
+  if (errors.fulfillment) {
+    sections.push(`── Fulfillment health ──\nerror: ${errors.fulfillment}`);
+  } else {
+    const f = data.fulfillment;
+    const fLines: string[] = [];
+    if (f.intakeStale > 0) fLines.push(`intake-ready older than 24h: ${f.intakeStale}`);
+    if (f.supplierNoTracking > 0) fLines.push(`sent-to-supplier older than 10 days with no tracking: ${f.supplierNoTracking}`);
+    if (f.pastPromised.length > 0) {
+      fLines.push(`past PromisedBy and not delivered: ${f.pastPromised.length}`);
+      for (const p of f.pastPromised) fLines.push(`  ${p.orderNumber} ${p.daysLate}d late`);
+    }
+    if (f.readyNoNotify > 0) fLines.push(`ready-to-notify awaiting a Notify tick: ${f.readyNoNotify}`);
+    if (f.deliveredNoCheckIn > 0) fLines.push(`Delivered set but NotifyCheckIn not ticked: ${f.deliveredNoCheckIn}`);
+    sections.push(
+      "── Fulfillment health ──\n" +
+      (fLines.length > 0 ? fLines.join("\n") : "all clear"),
+    );
+  }
+
+  // 4. Data health
+  if (errors.dataHealth) {
+    sections.push(`── Data health ──\nerror: ${errors.dataHealth}`);
+  } else {
+    const d = data.dataHealth;
+    const dLines: string[] = [];
+    if (d.verdictMismatches > 0) dLines.push(`Verdict direct with non-empty referrer or UTM: ${d.verdictMismatches}`);
+    if (d.orphanOtos > 0) dLines.push(`OTO PaymentIntents with no matching order row: ${d.orphanOtos}`);
+    if (d.missingRows.length > 0) {
+      dLines.push(`Orders in Stripe with no Airtable row: ${d.missingRows.length}`);
+      for (const sid of d.missingRows) dLines.push(`  ${sid}`);
+    }
+    if (!d.revenueMatch) {
+      dLines.push(`Revenue mismatch: Airtable ${fmtDollars(d.airtableRevenue)} vs Stripe ${fmtDollars(d.stripeRevenue)} red`);
+    }
+    sections.push(
+      "── Data health ──\n" +
+      (dLines.length > 0 ? dLines.join("\n") : "all clear"),
+    );
+  }
+
+  // 5. Paid
+  sections.push("── Paid ──\nSpend source not connected");
+
+  return { subject, text: sections.join("\n\n") };
+}

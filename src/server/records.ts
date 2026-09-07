@@ -723,9 +723,259 @@ export async function writeSpend(
   throw new Error("Phase 3: not yet implemented");
 }
 
-export async function getDailyMetrics(): Promise<Record<string, unknown>> {
-  throw new Error("Phase 3: not yet implemented");
+// ─── Daily digest metrics ───────────────────────────────────────────────────
+
+function etDateBounds(daysAgo: number): { start: string; end: string } {
+  // ET = UTC-4 during DST, UTC-5 during EST
+  const now = new Date();
+  const etOffset = isDST(now) ? -4 : -5;
+  const etNow = new Date(now.getTime() + etOffset * 3600_000);
+  const day = new Date(Date.UTC(etNow.getUTCFullYear(), etNow.getUTCMonth(), etNow.getUTCDate()));
+  day.setUTCDate(day.getUTCDate() - daysAgo);
+  const start = new Date(day.getTime() - etOffset * 3600_000);
+  const end = new Date(start.getTime() + 86400_000);
+  return { start: start.toISOString(), end: end.toISOString() };
 }
+
+function isDST(d: Date): boolean {
+  const jan = new Date(d.getFullYear(), 0, 1).getTimezoneOffset();
+  const jul = new Date(d.getFullYear(), 6, 1).getTimezoneOffset();
+  const max = Math.max(jan, jul);
+  return d.getTimezoneOffset() < max;
+}
+
+function etToday(): Date {
+  const now = new Date();
+  const etOffset = isDST(now) ? -4 : -5;
+  const etNow = new Date(now.getTime() + etOffset * 3600_000);
+  return new Date(Date.UTC(etNow.getUTCFullYear(), etNow.getUTCMonth(), etNow.getUTCDate()));
+}
+
+interface DayMetrics {
+  orders: number;
+  gross: number;
+  refunds: number;
+  bumps: number;
+  otos: number;
+  express: number;
+  repeats: number;
+}
+
+function emptyDay(): DayMetrics {
+  return { orders: 0, gross: 0, refunds: 0, bumps: 0, otos: 0, express: 0, repeats: 0 };
+}
+
+function colorWord(value: number, avg: number | null): string {
+  if (avg === null) return "new";
+  if (avg === 0 && value === 0) return "green";
+  if (avg === 0) return "blue";
+  const ratio = value / avg;
+  if (ratio > 1.2) return "blue";
+  if (ratio < 0.8) return "red";
+  return "green";
+}
+
+function metricLine(label: string, value: number | string, avg: number | null, prefix = ""): string {
+  const avgStr = avg !== null ? avg.toFixed(1) : "—";
+  const color = colorWord(typeof value === "number" ? value : 0, avg);
+  return `${label}: ${prefix}${value} (${prefix}${avgStr}) ${color}`;
+}
+
+export interface DigestData {
+  yesterday: DayMetrics;
+  trailing7: DayMetrics;
+  mtdOrders: number;
+  mtdGross: number;
+  verdicts: Record<string, number>;
+  fulfillment: {
+    intakeStale: number;
+    supplierNoTracking: number;
+    pastPromised: Array<{ orderNumber: string; daysLate: number }>;
+    readyNoNotify: number;
+    deliveredNoCheckIn: number;
+  };
+  dataHealth: {
+    verdictMismatches: number;
+    orphanOtos: number;
+    missingRows: string[];
+    revenueMatch: boolean;
+    airtableRevenue: number;
+    stripeRevenue: number;
+  };
+}
+
+export async function getDailyMetrics(
+  stripeSessions?: Array<{ id: string; amount_total: number; payment_status: string; created: number }>,
+): Promise<DigestData> {
+  const allOrders = await listAllOrders();
+  const today = etToday();
+  const nowMs = Date.now();
+
+  // Build per-day buckets for trailing 8 days (yesterday + 7 prior)
+  const dayBuckets = new Map<string, DayMetrics>();
+  for (let i = 1; i <= 8; i++) {
+    const d = new Date(today);
+    d.setUTCDate(d.getUTCDate() - i);
+    dayBuckets.set(d.toISOString().slice(0, 10), emptyDay());
+  }
+
+  const yesterdayKey = (() => {
+    const d = new Date(today);
+    d.setUTCDate(d.getUTCDate() - 1);
+    return d.toISOString().slice(0, 10);
+  })();
+
+  const monthStart = today.toISOString().slice(0, 7); // YYYY-MM
+  let mtdOrders = 0;
+  let mtdGross = 0;
+
+  const verdicts: Record<string, number> = {};
+  const fulfillment = {
+    intakeStale: 0,
+    supplierNoTracking: 0,
+    pastPromised: [] as Array<{ orderNumber: string; daysLate: number }>,
+    readyNoNotify: 0,
+    deliveredNoCheckIn: 0,
+  };
+  const dataHealth = {
+    verdictMismatches: 0,
+    orphanOtos: 0,
+    missingRows: [] as string[],
+    revenueMatch: true,
+    airtableRevenue: 0,
+    stripeRevenue: 0,
+  };
+
+  for (const row of allOrders) {
+    const f = row.fields;
+    const orderTs = f.OrderTS as string || "";
+    const status = (f.Status as string) || "";
+    const amount = (f.Amount as number) || 0;
+    const refunded = f.Refunded as boolean || false;
+    const dayKey = orderTs.slice(0, 10);
+
+    // Per-day metrics
+    const bucket = dayBuckets.get(dayKey);
+    if (bucket) {
+      bucket.orders++;
+      bucket.gross += amount;
+      if (refunded) bucket.refunds++;
+      if (f.BumpTaken) bucket.bumps++;
+      if (f.OTOAccepted) bucket.otos++;
+      if ((f.ShippingMethod as string) === "express") bucket.express++;
+      if (f.RepeatCustomer) bucket.repeats++;
+    }
+
+    // MTD
+    if (dayKey >= monthStart + "-01" && dayKey <= today.toISOString().slice(0, 10)) {
+      mtdOrders++;
+      mtdGross += amount;
+    }
+
+    // Yesterday verdicts
+    if (dayKey === yesterdayKey) {
+      const v = (f.Verdict as string) || "unknown";
+      verdicts[v] = (verdicts[v] || 0) + 1;
+    }
+
+    // Yesterday Airtable revenue for cross-check
+    if (dayKey === yesterdayKey) {
+      dataHealth.airtableRevenue += amount;
+    }
+
+    // Fulfillment health (current state)
+    if (status === "intake-ready") {
+      const age = (nowMs - new Date(orderTs).getTime()) / 3600_000;
+      if (age > 24) fulfillment.intakeStale++;
+    }
+    if (status === "sent-to-supplier" && !(f.Tracking as string)) {
+      const sentTs = f.SentToSupplierTS as string;
+      if (sentTs) {
+        const age = (nowMs - new Date(sentTs).getTime()) / (86400_000);
+        if (age > 10) fulfillment.supplierNoTracking++;
+      }
+    }
+    if (f.PromisedBy && !f.Delivered && !refunded && status !== "cancelled") {
+      const promised = new Date(f.PromisedBy as string).getTime();
+      if (nowMs > promised) {
+        const daysLate = Math.ceil((nowMs - promised) / 86400_000);
+        fulfillment.pastPromised.push({
+          orderNumber: (f.OrderNumber as string) || row.id.slice(-6),
+          daysLate,
+        });
+      }
+    }
+    if (status === "ready-to-notify" && !f.Notify) {
+      fulfillment.readyNoNotify++;
+    }
+    if (f.Delivered && !f.NotifyCheckIn && !f.CheckInTS) {
+      fulfillment.deliveredNoCheckIn++;
+    }
+
+    // Data health: verdict direct with referrer/UTM
+    if ((f.Verdict as string) === "direct") {
+      const ref = (f.FT_Referrer as string) || "";
+      const utm = (f.FT_UTM as string) || "";
+      if (ref || (utm && utm !== "{}")) dataHealth.verdictMismatches++;
+    }
+  }
+
+  // Stripe sessions watchdog
+  if (stripeSessions) {
+    const airtableSids = new Set(allOrders.map((r) => r.fields.StripeSessionId as string));
+    for (const s of stripeSessions) {
+      if (s.payment_status === "paid" && !airtableSids.has(s.id)) {
+        dataHealth.missingRows.push(s.id);
+      }
+      if (s.payment_status === "paid") {
+        dataHealth.stripeRevenue += (s.amount_total || 0) / 100;
+      }
+    }
+    dataHealth.revenueMatch =
+      Math.abs(dataHealth.airtableRevenue - dataHealth.stripeRevenue) < 1;
+  }
+
+  // Compute trailing 7-day average (days -2 through -8, i.e. the 7 days before yesterday)
+  const trailing: DayMetrics = emptyDay();
+  let trailingDays = 0;
+  for (let i = 2; i <= 8; i++) {
+    const d = new Date(today);
+    d.setUTCDate(d.getUTCDate() - i);
+    const key = d.toISOString().slice(0, 10);
+    const b = dayBuckets.get(key);
+    if (b && b.orders > 0) trailingDays++;
+    if (b) {
+      trailing.orders += b.orders;
+      trailing.gross += b.gross;
+      trailing.refunds += b.refunds;
+      trailing.bumps += b.bumps;
+      trailing.otos += b.otos;
+      trailing.express += b.express;
+      trailing.repeats += b.repeats;
+    }
+  }
+
+  const avg = (v: number): number | null => trailingDays > 0 ? v / 7 : null;
+
+  return {
+    yesterday: dayBuckets.get(yesterdayKey) || emptyDay(),
+    trailing7: {
+      orders: avg(trailing.orders) ?? 0,
+      gross: avg(trailing.gross) ?? 0,
+      refunds: avg(trailing.refunds) ?? 0,
+      bumps: avg(trailing.bumps) ?? 0,
+      otos: avg(trailing.otos) ?? 0,
+      express: avg(trailing.express) ?? 0,
+      repeats: avg(trailing.repeats) ?? 0,
+    },
+    mtdOrders,
+    mtdGross,
+    verdicts,
+    fulfillment,
+    dataHealth,
+  };
+}
+
 
 // ─── Recovery ────────────────────────────────────────────────────────────────
 

@@ -1,0 +1,25 @@
+name: Daily digest
+
+on:
+  schedule:
+    # 12:00 UTC = 8:00 AM ET during DST (Mar–Nov)
+    # During EST (Nov–Mar) this fires at 7:00 AM ET; acceptable.
+    - cron: "0 12 * * *"
+  workflow_dispatch:
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send daily digest
+        run: |
+          response=$(curl -s -w "\n%{http_code}" -X POST \
+            https://agsoftener.com/api/digest \
+            -H "X-AG-Fulfill-Key: ${{ secrets.FULFILL_API_KEY }}")
+          http_code=$(echo "$response" | tail -1)
+          body=$(echo "$response" | sed '$d')
+          echo "$body" | python3 -m json.tool 2>/dev/null || echo "$body"
+          if [ "$http_code" -ne 200 ]; then
+            echo "::error::Digest endpoint returned $http_code"
+            exit 1
+          fi

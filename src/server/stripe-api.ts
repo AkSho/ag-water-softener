@@ -6,6 +6,7 @@ import {
   buildRecoveryEmail,
   buildShippingEmail,
   buildCheckInEmail,
+  buildDigestEmail,
   formatPromiseDate,
   extractFirstName,
 } from "./email";
@@ -18,6 +19,7 @@ import {
   validateTracking,
   hasRecentRecovery,
   logRecoverySend,
+  getDailyMetrics,
 } from "./records";
 
 let stripeClient: Stripe | undefined;
@@ -920,6 +922,87 @@ async function handleValidateTracking(request: Request) {
   return json(result);
 }
 
+// ─── Daily digest endpoint ─────────────────────────────────────────────────────
+
+async function handleDigest(request: Request) {
+  const authError = checkFulfillAuth(request);
+  if (authError) return authError;
+
+  const errors: Record<string, string> = {};
+  let data: Awaited<ReturnType<typeof getDailyMetrics>> | undefined;
+
+  // Stripe sessions for yesterday (watchdog + revenue cross-check)
+  let stripeSessions: Array<{ id: string; amount_total: number; payment_status: string; created: number }> = [];
+  try {
+    const stripe = getStripe();
+    // Yesterday 00:00 ET → UTC
+    const now = new Date();
+    const etOffset = now.getTimezoneOffset(); // not reliable on server; use manual calc
+    const etHourOffset = -4; // DST; adjust to -5 for EST in winter
+    const etNow = new Date(now.getTime() + etHourOffset * 3600_000);
+    const yesterdayStart = new Date(Date.UTC(etNow.getUTCFullYear(), etNow.getUTCMonth(), etNow.getUTCDate() - 1));
+    const yesterdayStartUtc = new Date(yesterdayStart.getTime() - etHourOffset * 3600_000);
+    const yesterdayEndUtc = new Date(yesterdayStartUtc.getTime() + 86400_000);
+
+    const sessions: Array<{ id: string; amount_total: number; payment_status: string; created: number }> = [];
+    let hasMore = true;
+    let startingAfter: string | undefined;
+    while (hasMore) {
+      const params: Stripe.Checkout.SessionListParams = {
+        created: {
+          gte: Math.floor(yesterdayStartUtc.getTime() / 1000),
+          lt: Math.floor(yesterdayEndUtc.getTime() / 1000),
+        },
+        limit: 100,
+      };
+      if (startingAfter) params.starting_after = startingAfter;
+      const page = await stripe.checkout.sessions.list(params);
+      for (const s of page.data) {
+        sessions.push({ id: s.id, amount_total: s.amount_total || 0, payment_status: s.payment_status, created: s.created });
+      }
+      hasMore = page.has_more;
+      if (page.data.length > 0) startingAfter = page.data[page.data.length - 1].id;
+    }
+    stripeSessions = sessions;
+  } catch (err) {
+    errors.dataHealth = `Stripe session fetch failed: ${err instanceof Error ? err.message : String(err)}`;
+  }
+
+  // Airtable metrics
+  try {
+    data = await getDailyMetrics(stripeSessions);
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    errors.revenue = msg;
+    errors.attribution = msg;
+    errors.fulfillment = msg;
+    if (!errors.dataHealth) errors.dataHealth = msg;
+  }
+
+  if (!data) {
+    // Construct minimal data so email still sends
+    data = {
+      yesterday: { orders: 0, gross: 0, refunds: 0, bumps: 0, otos: 0, express: 0, repeats: 0 },
+      trailing7: { orders: 0, gross: 0, refunds: 0, bumps: 0, otos: 0, express: 0, repeats: 0 },
+      mtdOrders: 0, mtdGross: 0,
+      verdicts: {},
+      fulfillment: { intakeStale: 0, supplierNoTracking: 0, pastPromised: [], readyNoNotify: 0, deliveredNoCheckIn: 0 },
+      dataHealth: { verdictMismatches: 0, orphanOtos: 0, missingRows: [], revenueMatch: true, airtableRevenue: 0, stripeRevenue: 0 },
+    };
+  }
+
+  const { subject, text } = buildDigestEmail(data, errors);
+
+  try {
+    await sendEmail({ to: "akin.shoyoye@gmail.com", subject, text });
+  } catch (err) {
+    console.error("Digest email send failed", err);
+    return json({ error: `email_send_failed: ${err instanceof Error ? err.message : String(err)}` }, { status: 500 });
+  }
+
+  return json({ ok: true, subject, preview: text.slice(0, 500) });
+}
+
 // ─── Router ─────────────────────────────────────────────────────────────────────
 
 export async function handleStripeApi(request: Request) {
@@ -947,6 +1030,10 @@ export async function handleStripeApi(request: Request) {
 
   if (url.pathname === "/api/validate-tracking" && request.method === "POST") {
     return handleValidateTracking(request);
+  }
+
+  if (url.pathname === "/api/digest" && request.method === "POST") {
+    return handleDigest(request);
   }
 
   return undefined;
