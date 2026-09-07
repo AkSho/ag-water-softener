@@ -168,21 +168,21 @@ ${SIGN_OFF}`,
 // ─── Daily digest (internal, no sign-off) ─────────────────────────────────
 
 import type { DigestData } from "./records";
+// colorWord/metricLine are self-contained in this file (digestMetricLine)
 
 function fmtDollars(n: number): string {
   return "$" + Math.round(n).toLocaleString("en-US");
 }
 
-function digestMetricLine(label: string, value: number, avg: number | null, dollar = false): string {
-  const p = dollar ? "$" : "";
+function digestMetricLine(label: string, value: number, avg: number | null, dollar = false, invertColor = false): string {
   const valStr = dollar ? fmtDollars(value) : String(value);
   const avgStr = avg !== null ? (dollar ? fmtDollars(avg) : avg.toFixed(1)) : "—";
   let color: string;
   if (avg === null) color = "new";
   else if (avg === 0 && value === 0) color = "green";
-  else if (avg === 0) color = "blue";
-  else if (value / avg > 1.2) color = "blue";
-  else if (value / avg < 0.8) color = "red";
+  else if (avg === 0) color = invertColor ? "red" : "blue";
+  else if (value / avg > 1.2) color = invertColor ? "red" : "blue";
+  else if (value / avg < 0.8) color = invertColor ? "green" : "red";
   else color = "green";
   return `${label}: ${valStr} (${avgStr}) ${color}`;
 }
@@ -212,7 +212,7 @@ export function buildDigestEmail(data: DigestData, errors: Record<string, string
       "── Revenue (yesterday, ET) ──",
       digestMetricLine("Orders", y.orders, a("orders")),
       digestMetricLine("Gross revenue", y.gross, a("gross"), true),
-      digestMetricLine("Refunds", y.refunds, a("refunds")),
+      digestMetricLine("Refunds", y.refunds, a("refunds"), false, true),
       digestMetricLine("Bump takes", y.bumps, a("bumps")),
       digestMetricLine("OTO accepts", y.otos, a("otos")),
       digestMetricLine("Express orders", y.express, a("express")),

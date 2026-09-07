@@ -725,30 +725,46 @@ export async function writeSpend(
 
 // ─── Daily digest metrics ───────────────────────────────────────────────────
 
-function etDateBounds(daysAgo: number): { start: string; end: string } {
-  // ET = UTC-4 during DST, UTC-5 during EST
+// ET offset: -4 during DST (Mar–Nov), -5 during EST
+function etOffsetHours(): number {
+  // US Eastern: DST is second Sunday of March to first Sunday of November
   const now = new Date();
-  const etOffset = isDST(now) ? -4 : -5;
-  const etNow = new Date(now.getTime() + etOffset * 3600_000);
-  const day = new Date(Date.UTC(etNow.getUTCFullYear(), etNow.getUTCMonth(), etNow.getUTCDate()));
-  day.setUTCDate(day.getUTCDate() - daysAgo);
-  const start = new Date(day.getTime() - etOffset * 3600_000);
-  const end = new Date(start.getTime() + 86400_000);
-  return { start: start.toISOString(), end: end.toISOString() };
+  const year = now.getUTCFullYear();
+  // Second Sunday of March
+  const mar1 = new Date(Date.UTC(year, 2, 1));
+  const marSun2 = new Date(Date.UTC(year, 2, 14 - mar1.getUTCDay()));
+  const dstStart = new Date(marSun2.getTime() + 7 * 3600_000); // 2 AM ET = 7 AM UTC
+  // First Sunday of November
+  const nov1 = new Date(Date.UTC(year, 10, 1));
+  const novSun1 = new Date(Date.UTC(year, 10, 1 + (7 - nov1.getUTCDay()) % 7));
+  const dstEnd = new Date(novSun1.getTime() + 6 * 3600_000); // 2 AM ET (still DST) = 6 AM UTC
+  return now >= dstStart && now < dstEnd ? -4 : -5;
 }
 
-function isDST(d: Date): boolean {
-  const jan = new Date(d.getFullYear(), 0, 1).getTimezoneOffset();
-  const jul = new Date(d.getFullYear(), 6, 1).getTimezoneOffset();
-  const max = Math.max(jan, jul);
-  return d.getTimezoneOffset() < max;
+/** Convert a UTC ISO timestamp to its ET date key (YYYY-MM-DD) */
+export function utcToEtDateKey(isoTs: string): string {
+  const ms = new Date(isoTs).getTime();
+  if (isNaN(ms)) return "";
+  const etMs = ms + etOffsetHours() * 3600_000;
+  return new Date(etMs).toISOString().slice(0, 10);
 }
 
+/** ET midnight today as a UTC Date */
 function etToday(): Date {
+  const offset = etOffsetHours();
   const now = new Date();
-  const etOffset = isDST(now) ? -4 : -5;
-  const etNow = new Date(now.getTime() + etOffset * 3600_000);
-  return new Date(Date.UTC(etNow.getUTCFullYear(), etNow.getUTCMonth(), etNow.getUTCDate()));
+  const etMs = now.getTime() + offset * 3600_000;
+  const etDate = new Date(etMs);
+  const midnight = new Date(Date.UTC(etDate.getUTCFullYear(), etDate.getUTCMonth(), etDate.getUTCDate()));
+  return new Date(midnight.getTime() - offset * 3600_000); // back to UTC
+}
+
+/** Yesterday's ET day as { start, end } in UTC ISO strings */
+export function etYesterdayBounds(): { start: string; end: string } {
+  const todayUtc = etToday();
+  const end = todayUtc.toISOString();
+  const start = new Date(todayUtc.getTime() - 86400_000).toISOString();
+  return { start, end };
 }
 
 interface DayMetrics {
@@ -765,21 +781,6 @@ function emptyDay(): DayMetrics {
   return { orders: 0, gross: 0, refunds: 0, bumps: 0, otos: 0, express: 0, repeats: 0 };
 }
 
-function colorWord(value: number, avg: number | null): string {
-  if (avg === null) return "new";
-  if (avg === 0 && value === 0) return "green";
-  if (avg === 0) return "blue";
-  const ratio = value / avg;
-  if (ratio > 1.2) return "blue";
-  if (ratio < 0.8) return "red";
-  return "green";
-}
-
-function metricLine(label: string, value: number | string, avg: number | null, prefix = ""): string {
-  const avgStr = avg !== null ? avg.toFixed(1) : "—";
-  const color = colorWord(typeof value === "number" ? value : 0, avg);
-  return `${label}: ${prefix}${value} (${prefix}${avgStr}) ${color}`;
-}
 
 export interface DigestData {
   yesterday: DayMetrics;
@@ -806,26 +807,23 @@ export interface DigestData {
 
 export async function getDailyMetrics(
   stripeSessions?: Array<{ id: string; amount_total: number; payment_status: string; created: number }>,
+  orphanOtoCount?: number,
 ): Promise<DigestData> {
   const allOrders = await listAllOrders();
-  const today = etToday();
+  const todayUtc = etToday();
+  const todayEtKey = utcToEtDateKey(todayUtc.toISOString());
   const nowMs = Date.now();
 
-  // Build per-day buckets for trailing 8 days (yesterday + 7 prior)
+  // Build per-day ET buckets for trailing 8 days (yesterday + 7 prior)
   const dayBuckets = new Map<string, DayMetrics>();
   for (let i = 1; i <= 8; i++) {
-    const d = new Date(today);
-    d.setUTCDate(d.getUTCDate() - i);
-    dayBuckets.set(d.toISOString().slice(0, 10), emptyDay());
+    const d = new Date(todayUtc.getTime() - i * 86400_000);
+    dayBuckets.set(utcToEtDateKey(d.toISOString()), emptyDay());
   }
 
-  const yesterdayKey = (() => {
-    const d = new Date(today);
-    d.setUTCDate(d.getUTCDate() - 1);
-    return d.toISOString().slice(0, 10);
-  })();
+  const yesterdayKey = utcToEtDateKey(new Date(todayUtc.getTime() - 86400_000).toISOString());
 
-  const monthStart = today.toISOString().slice(0, 7); // YYYY-MM
+  const monthStart = todayEtKey.slice(0, 7); // YYYY-MM
   let mtdOrders = 0;
   let mtdGross = 0;
 
@@ -852,7 +850,7 @@ export async function getDailyMetrics(
     const status = (f.Status as string) || "";
     const amount = (f.Amount as number) || 0;
     const refunded = f.Refunded as boolean || false;
-    const dayKey = orderTs.slice(0, 10);
+    const dayKey = utcToEtDateKey(orderTs);
 
     // Per-day metrics
     const bucket = dayBuckets.get(dayKey);
@@ -867,7 +865,7 @@ export async function getDailyMetrics(
     }
 
     // MTD
-    if (dayKey >= monthStart + "-01" && dayKey <= today.toISOString().slice(0, 10)) {
+    if (dayKey >= monthStart + "-01" && dayKey <= todayEtKey) {
       mtdOrders++;
       mtdGross += amount;
     }
@@ -933,15 +931,23 @@ export async function getDailyMetrics(
     }
     dataHealth.revenueMatch =
       Math.abs(dataHealth.airtableRevenue - dataHealth.stripeRevenue) < 1;
+
+    // OTO orphans: subtract orders that have OTOAccepted from the Stripe count
+    if (orphanOtoCount !== undefined) {
+      const yesterdayOtoAccepted = allOrders.filter(r => {
+        const dk = utcToEtDateKey(r.fields.OrderTS as string || "");
+        return dk === yesterdayKey && r.fields.OTOAccepted;
+      }).length;
+      dataHealth.orphanOtos = Math.max(0, orphanOtoCount - yesterdayOtoAccepted);
+    }
   }
 
   // Compute trailing 7-day average (days -2 through -8, i.e. the 7 days before yesterday)
   const trailing: DayMetrics = emptyDay();
   let trailingDays = 0;
   for (let i = 2; i <= 8; i++) {
-    const d = new Date(today);
-    d.setUTCDate(d.getUTCDate() - i);
-    const key = d.toISOString().slice(0, 10);
+    const d = new Date(todayUtc.getTime() - i * 86400_000);
+    const key = utcToEtDateKey(d.toISOString());
     const b = dayBuckets.get(key);
     if (b && b.orders > 0) trailingDays++;
     if (b) {

@@ -20,6 +20,7 @@ import {
   hasRecentRecovery,
   logRecoverySend,
   getDailyMetrics,
+  etYesterdayBounds,
 } from "./records";
 
 let stripeClient: Stripe | undefined;
@@ -933,26 +934,19 @@ async function handleDigest(request: Request) {
 
   // Stripe sessions for yesterday (watchdog + revenue cross-check)
   let stripeSessions: Array<{ id: string; amount_total: number; payment_status: string; created: number }> = [];
+  let orphanOtos = 0;
   try {
     const stripe = getStripe();
-    // Yesterday 00:00 ET → UTC
-    const now = new Date();
-    const etOffset = now.getTimezoneOffset(); // not reliable on server; use manual calc
-    const etHourOffset = -4; // DST; adjust to -5 for EST in winter
-    const etNow = new Date(now.getTime() + etHourOffset * 3600_000);
-    const yesterdayStart = new Date(Date.UTC(etNow.getUTCFullYear(), etNow.getUTCMonth(), etNow.getUTCDate() - 1));
-    const yesterdayStartUtc = new Date(yesterdayStart.getTime() - etHourOffset * 3600_000);
-    const yesterdayEndUtc = new Date(yesterdayStartUtc.getTime() + 86400_000);
+    const { start, end } = etYesterdayBounds();
+    const gte = Math.floor(new Date(start).getTime() / 1000);
+    const lt = Math.floor(new Date(end).getTime() / 1000);
 
     const sessions: Array<{ id: string; amount_total: number; payment_status: string; created: number }> = [];
     let hasMore = true;
     let startingAfter: string | undefined;
     while (hasMore) {
       const params: Stripe.Checkout.SessionListParams = {
-        created: {
-          gte: Math.floor(yesterdayStartUtc.getTime() / 1000),
-          lt: Math.floor(yesterdayEndUtc.getTime() / 1000),
-        },
+        created: { gte, lt },
         limit: 100,
       };
       if (startingAfter) params.starting_after = startingAfter;
@@ -964,13 +958,26 @@ async function handleDigest(request: Request) {
       if (page.data.length > 0) startingAfter = page.data[page.data.length - 1].id;
     }
     stripeSessions = sessions;
+
+    // OTO orphan check: PaymentIntents with metadata.source=ag_oto_kit created yesterday
+    const otoSearch = await stripe.paymentIntents.search({
+      query: `metadata["source"]:"ag_oto_kit" AND created>=${gte} AND created<${lt}`,
+      limit: 100,
+    });
+    if (otoSearch.data.length > 0) {
+      // Each OTO PI should have metadata.parent_session matching an order row
+      // The order row check happens in getDailyMetrics; here we just count orphans
+      orphanOtos = otoSearch.data.filter(pi => pi.status === "succeeded").length;
+      // Subtract those that DO have a matching order with OTOAccepted=true
+      // (done in getDailyMetrics via the passed count)
+    }
   } catch (err) {
-    errors.dataHealth = `Stripe session fetch failed: ${err instanceof Error ? err.message : String(err)}`;
+    errors.dataHealth = `Stripe fetch failed: ${err instanceof Error ? err.message : String(err)}`;
   }
 
   // Airtable metrics
   try {
-    data = await getDailyMetrics(stripeSessions);
+    data = await getDailyMetrics(stripeSessions, orphanOtos);
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     errors.revenue = msg;
