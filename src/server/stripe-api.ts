@@ -539,8 +539,10 @@ async function handleStripeWebhook(request: Request) {
     }
     processedSessions.add(eventSession.id);
 
-    // Re-retrieve session to get shipping details reliably
-    const session = await stripe.checkout.sessions.retrieve(eventSession.id);
+    // Re-retrieve session with expanded PI + charge for receipt_number
+    const session = await stripe.checkout.sessions.retrieve(eventSession.id, {
+      expand: ["payment_intent.latest_charge"],
+    });
 
     const sparePrice = requiredEnv("STRIPE_PRICE_SPARE");
     const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
@@ -564,26 +566,29 @@ async function handleStripeWebhook(request: Request) {
     const shipping = session.collected_information?.shipping_details;
     const shippingAddr = shipping?.address;
 
-    // Extract PaymentIntent ID and order number from charge
-    const piId = typeof session.payment_intent === "string"
+    // Extract PaymentIntent ID and order number from expanded charge
+    const piExpanded = typeof session.payment_intent === "object" && session.payment_intent
       ? session.payment_intent
-      : session.payment_intent?.id || "";
+      : null;
+    const piId = piExpanded?.id
+      || (typeof session.payment_intent === "string" ? session.payment_intent : "");
 
     let orderNumber = session.id.slice(-8);
     let orderNumberFallback = true;
-    if (piId) {
-      try {
-        const pi = await stripe.paymentIntents.retrieve(piId, {
-          expand: ["latest_charge"],
+    if (piExpanded) {
+      const charge = piExpanded.latest_charge;
+      if (charge && typeof charge !== "string" && charge.receipt_number) {
+        orderNumber = charge.receipt_number;
+        orderNumberFallback = false;
+      } else {
+        console.warn("Expanded PI has no receipt_number", {
+          sessionId: session.id,
+          chargeType: typeof charge,
+          chargeId: charge && typeof charge !== "string" ? charge.id : String(charge),
         });
-        const charge = pi.latest_charge;
-        if (charge && typeof charge !== "string" && charge.receipt_number) {
-          orderNumber = charge.receipt_number;
-          orderNumberFallback = false;
-        }
-      } catch {
-        // Keep fallback
       }
+    } else {
+      console.warn("PI not expanded on session retrieve", { sessionId: session.id, piId });
     }
     if (orderNumberFallback) {
       console.warn("OrderNumber fallback fired: using session ID suffix", { sessionId: session.id });
@@ -591,12 +596,18 @@ async function handleStripeWebhook(request: Request) {
 
     // Determine shipping method from chosen rate
     const expressRate = process.env.STRIPE_SHIPPING_EXPRESS;
-    const chosenRate = typeof session.shipping_rate === "string"
-      ? session.shipping_rate
-      : typeof session.shipping_rate === "object" && session.shipping_rate
-        ? session.shipping_rate.id
-        : undefined;
-    const shippingMethod = (expressRate && chosenRate === expressRate) ? "express" : "standard";
+    const chosenRate = session.shipping_cost?.shipping_rate
+      ? (typeof session.shipping_cost.shipping_rate === "string"
+          ? session.shipping_cost.shipping_rate
+          : session.shipping_cost.shipping_rate.id)
+      : undefined;
+    let shippingMethod = (expressRate && chosenRate === expressRate) ? "express" : "standard";
+    // Fallback: if rate ID unavailable, infer from amount difference
+    if (shippingMethod === "standard" && session.amount_total != null && session.amount_subtotal != null) {
+      if (session.amount_total - session.amount_subtotal === 1900) {
+        shippingMethod = "express";
+      }
+    }
 
     // Derive ItemType from session metadata
     const isAgPdp = session.metadata?.source === "ag_pdp";
