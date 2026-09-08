@@ -227,12 +227,22 @@ export function buildDigestEmail(data: DigestData, errors: Record<string, string
   if (errors.attribution) {
     sections.push(`── Attribution ──\nerror: ${errors.attribution}`);
   } else {
+    const selfByOrder = data.selfReports || {};
     const vLines = Object.entries(data.verdicts)
       .sort(([, a], [, b]) => b - a)
       .map(([v, count]) => `${v}: ${count}`);
+    // Append self-report annotations for yesterday's orders that have one
+    const selfLines: string[] = [];
+    for (const [orderNum, sr] of Object.entries(selfByOrder)) {
+      const agree = sr.verdict.toLowerCase().includes(sr.source.toLowerCase().split(" ")[0]);
+      const tag = agree ? "" : " check";
+      selfLines.push(`  ${orderNum}: ${sr.verdict} (self: ${sr.source})${tag}`);
+    }
+    const combined = vLines.length > 0 ? vLines.join("\n") : "none";
     sections.push(
       "── Attribution (yesterday) ──\n" +
-      (vLines.length > 0 ? vLines.join("\n") : "none"),
+      combined +
+      (selfLines.length > 0 ? "\n" + selfLines.join("\n") : ""),
     );
   }
 

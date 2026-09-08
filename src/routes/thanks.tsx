@@ -50,6 +50,23 @@ export const Route = createFileRoute("/thanks")({
 });
 
 type OtoState = "idle" | "accepting" | "accepted" | "declined" | "hidden";
+type SurveyStep = "q1" | "q2" | "done" | "hidden";
+
+const Q1_OPTIONS = [
+  "Google",
+  "ChatGPT or another AI",
+  "Instagram or Facebook",
+  "TikTok",
+  "A friend",
+  "Somewhere else",
+] as const;
+
+const Q2_OPTIONS = [
+  "Today",
+  "This week",
+  "This month",
+  "Longer ago",
+] as const;
 
 function ThanksPage() {
   const { session_id } = Route.useSearch();
@@ -57,6 +74,8 @@ function ThanksPage() {
   const [isLoading, setIsLoading] = useState(Boolean(session_id));
   const [otoState, setOtoState] = useState<OtoState>("hidden");
   const [otoFallbackUrl, setOtoFallbackUrl] = useState<string | null>(null);
+  const [surveyStep, setSurveyStep] = useState<SurveyStep>("hidden");
+  const [surveySource, setSurveySource] = useState<string | null>(null);
 
   useEffect(() => {
     if (!session_id) {
@@ -206,6 +225,52 @@ function ThanksPage() {
     window.localStorage.setItem(purchaseKey, "1");
   }, [summary]);
 
+  // Show survey after OTO resolves (or if OTO is hidden/not eligible)
+  useEffect(() => {
+    if (!summary?.verified || !summary.id) return;
+    if (otoState === "idle" || otoState === "accepting") return;
+
+    const surveyKey = `agSurveyDone:${summary.id}`;
+    if (window.localStorage.getItem(surveyKey)) return;
+
+    setSurveyStep("q1");
+  }, [summary, otoState]);
+
+  function submitSurvey(source: string, recency?: string) {
+    if (!summary?.id) return;
+    window.localStorage.setItem(`agSurveyDone:${summary.id}`, "1");
+    fetch("/api/survey", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        session_id: summary.id,
+        source,
+        recency: recency || undefined,
+      }),
+    }).catch(() => { /* fail silently */ });
+  }
+
+  function handleQ1(choice: string) {
+    setSurveySource(choice);
+    submitSurvey(choice);
+    setSurveyStep("q2");
+  }
+
+  function handleQ2(choice: string) {
+    if (surveySource) submitSurvey(surveySource, choice);
+    setSurveyStep("done");
+  }
+
+  // If user leaves after Q1 without answering Q2, mark done
+  useEffect(() => {
+    if (surveyStep !== "q2") return;
+    const handleLeave = () => {
+      if (summary?.id) window.localStorage.setItem(`agSurveyDone:${summary.id}`, "1");
+    };
+    window.addEventListener("pagehide", handleLeave);
+    return () => window.removeEventListener("pagehide", handleLeave);
+  }, [surveyStep, summary?.id]);
+
   async function handleOtoAccept() {
     if (!summary?.id) return;
     setOtoState("accepting");
@@ -340,6 +405,46 @@ function ThanksPage() {
               title="We couldn't verify this order."
               body="If your checkout completed, check your email receipt or refresh this page in a moment."
             />
+          )}
+
+          {isVerified && surveyStep !== "hidden" && (
+            <section className="mt-6 border border-border/70 bg-surface p-6 md:p-10">
+              {surveyStep === "q1" && (
+                <div>
+                  <p className="text-base font-medium text-foreground">Where did you first hear about us?</p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {Q1_OPTIONS.map((opt) => (
+                      <button
+                        key={opt}
+                        onClick={() => handleQ1(opt)}
+                        className="rounded-full border border-border px-4 py-2.5 text-sm text-foreground hover:bg-foreground/5 active:bg-foreground/10"
+                      >
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {surveyStep === "q2" && (
+                <div>
+                  <p className="text-base font-medium text-foreground">How long ago?</p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {Q2_OPTIONS.map((opt) => (
+                      <button
+                        key={opt}
+                        onClick={() => handleQ2(opt)}
+                        className="rounded-full border border-border px-4 py-2.5 text-sm text-foreground hover:bg-foreground/5 active:bg-foreground/10"
+                      >
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {surveyStep === "done" && (
+                <p className="text-sm text-muted-foreground">Thanks you!</p>
+              )}
+            </section>
           )}
 
           <div className="mt-8 text-center">

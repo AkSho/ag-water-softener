@@ -21,6 +21,7 @@ import {
   logRecoverySend,
   getDailyMetrics,
   etYesterdayBounds,
+  upsertSurvey,
 } from "./records";
 import { runPnl } from "./pnl";
 
@@ -997,6 +998,7 @@ async function handleDigest(request: Request) {
       trailing7: { orders: 0, gross: 0, refunds: 0, bumps: 0, otos: 0, express: 0, repeats: 0 },
       mtdOrders: 0, mtdGross: 0,
       verdicts: {},
+      selfReports: {},
       fulfillment: { intakeStale: 0, supplierNoTracking: 0, pastPromised: [], readyNoNotify: 0, deliveredNoCheckIn: 0 },
       dataHealth: { verdictMismatches: 0, orphanOtos: 0, missingRows: [], revenueMatch: true, airtableRevenue: 0, stripeRevenue: 0 },
     };
@@ -1041,6 +1043,73 @@ async function handlePnl(request: Request) {
   }
 }
 
+// ─── Survey ──────────────────────────────────────────────────────────────────
+
+const VALID_SOURCES = new Set([
+  "Google",
+  "ChatGPT or another AI",
+  "Instagram or Facebook",
+  "TikTok",
+  "A friend",
+  "Somewhere else",
+]);
+const VALID_RECENCY = new Set(["Today", "This week", "This month", "Longer ago"]);
+
+async function handleSurvey(request: Request) {
+  try {
+    const body = (await request.json()) as {
+      session_id?: string;
+      source?: string;
+      recency?: string;
+    };
+
+    const sessionId = typeof body.session_id === "string" ? body.session_id.trim() : "";
+    const source = typeof body.source === "string" ? body.source.trim() : "";
+    const recency = typeof body.recency === "string" ? body.recency.trim() : "";
+
+    if (!sessionId || !source) {
+      return json({ ok: false }, { status: 400 });
+    }
+
+    if (!VALID_SOURCES.has(source)) {
+      return json({ ok: false }, { status: 400 });
+    }
+
+    if (recency && !VALID_RECENCY.has(recency)) {
+      return json({ ok: false }, { status: 400 });
+    }
+
+    // Validate the session exists and is paid
+    const stripe = getStripe();
+    let session: Stripe.Checkout.Session;
+    try {
+      session = await stripe.checkout.sessions.retrieve(sessionId);
+    } catch {
+      return json({ ok: false }, { status: 404 });
+    }
+
+    if (session.payment_status !== "paid") {
+      return json({ ok: false }, { status: 403 });
+    }
+
+    const email = session.customer_details?.email || "";
+    const orderNumber = sessionId.slice(-8);
+
+    const result = await upsertSurvey({
+      stripeSessionId: sessionId,
+      orderNumber,
+      email,
+      source,
+      recency: recency || undefined,
+    });
+
+    return json({ ok: result.ok });
+  } catch (err) {
+    console.error("Survey error", err instanceof Error ? err.message : String(err));
+    return json({ ok: false }, { status: 500 });
+  }
+}
+
 // ─── Router ─────────────────────────────────────────────────────────────────────
 
 export async function handleStripeApi(request: Request) {
@@ -1076,6 +1145,10 @@ export async function handleStripeApi(request: Request) {
 
   if (url.pathname === "/api/pnl" && request.method === "POST") {
     return handlePnl(request);
+  }
+
+  if (url.pathname === "/api/survey" && request.method === "POST") {
+    return handleSurvey(request);
   }
 
   return undefined;

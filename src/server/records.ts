@@ -5,6 +5,7 @@
 const ORDERS_TABLE = "tblQt2grL7iJ2ysNh";
 const SUBMISSIONS_TABLE = "tbl3ScW6QPW7Mnl4b";
 const RECOVERY_TABLE = "tblryjyqduMkiT0l5";
+const SURVEY_TABLE = "tbl6cWi6HfGWSFLl2";
 
 // ─── Config ──────────────────────────────────────────────────────────────────
 
@@ -814,6 +815,7 @@ export interface DigestData {
   mtdOrders: number;
   mtdGross: number;
   verdicts: Record<string, number>;
+  selfReports: Record<string, { verdict: string; source: string }>;
   fulfillment: {
     intakeStale: number;
     supplierNoTracking: number;
@@ -854,6 +856,7 @@ export async function getDailyMetrics(
   let mtdGross = 0;
 
   const verdicts: Record<string, number> = {};
+  const selfReports: Record<string, { verdict: string; source: string }> = {};
   const fulfillment = {
     intakeStale: 0,
     supplierNoTracking: 0,
@@ -896,10 +899,15 @@ export async function getDailyMetrics(
       mtdGross += amount;
     }
 
-    // Yesterday verdicts
+    // Yesterday verdicts + self-reports
     if (dayKey === yesterdayKey) {
       const v = (f.Verdict as string) || "unknown";
       verdicts[v] = (verdicts[v] || 0) + 1;
+      const selfSource = (f.SelfReportSource as string) || "";
+      if (selfSource) {
+        const orderNum = (f.OrderNumber as string) || row.id.slice(-6);
+        selfReports[orderNum] = { verdict: v, source: selfSource };
+      }
     }
 
     // Yesterday Airtable revenue for cross-check
@@ -1003,6 +1011,7 @@ export async function getDailyMetrics(
     mtdOrders,
     mtdGross,
     verdicts,
+    selfReports,
     fulfillment,
     dataHealth,
   };
@@ -1084,6 +1093,70 @@ export async function logRecoverySend(record: {
   } catch (err) {
     console.error("Airtable recovery log error", err);
   }
+}
+
+// ─── Survey ─────────────────────────────────────────────────────────────────
+
+export interface SurveyInput {
+  stripeSessionId: string;
+  orderNumber: string;
+  email: string;
+  source: string;
+  recency?: string;
+}
+
+export interface SurveyResult {
+  ok: boolean;
+  id?: string;
+  error?: string;
+  created?: boolean;
+}
+
+async function findSurveyBySessionId(
+  config: AirtableConfig,
+  sessionId: string,
+): Promise<AirtableRecord | null> {
+  const formula = encodeURIComponent(`{StripeSessionId}='${sessionId}'`);
+  const res = await airtableFetch(
+    config,
+    SURVEY_TABLE,
+    `?filterByFormula=${formula}&maxRecords=1`,
+  );
+  if (!res.ok) return null;
+  const data = (await res.json()) as { records: AirtableRecord[] };
+  return data.records[0] || null;
+}
+
+export async function upsertSurvey(input: SurveyInput): Promise<SurveyResult> {
+  const config = configOrNull();
+  if (!config) return { ok: false, error: "airtable_not_configured" };
+
+  const now = new Date().toISOString();
+  const fields: Record<string, unknown> = {
+    StripeSessionId: input.stripeSessionId,
+    OrderNumber: input.orderNumber,
+    Email: input.email,
+    Source: input.source,
+    Recency: input.recency || "",
+    AnsweredAt: now,
+  };
+
+  const existing = await findSurveyBySessionId(config, input.stripeSessionId);
+
+  // Also write self-report fields onto the Orders row
+  const orderRow = await findOrderBySessionId(config, input.stripeSessionId);
+  if (orderRow) {
+    await patchRecord(config, ORDERS_TABLE, orderRow.id, {
+      SelfReportSource: input.source,
+      SelfReportRecency: input.recency || "",
+    });
+  }
+
+  if (existing) {
+    return patchRecord(config, SURVEY_TABLE, existing.id, fields);
+  }
+
+  return createRecord(config, SURVEY_TABLE, fields);
 }
 
 // ─── Backfill helpers ────────────────────────────────────────────────────────
