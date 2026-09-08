@@ -209,7 +209,6 @@ export async function getStripeMonthData(month: string): Promise<MonthStripeData
   let charges = 0;
   let refunds = 0;
   let fees = 0;
-  const chargeSources = new Set<string>();
   const refundDetails: BalanceTxnDetail[] = [];
   const allTxnTypes: Record<string, number> = {};
 
@@ -230,8 +229,7 @@ export async function getStripeMonthData(month: string): Promise<MonthStripeData
       if (txn.type === "charge" || txn.type === "payment") {
         charges += txn.amount; // in cents
         fees += txn.fee; // in cents
-        const src = typeof txn.source === "string" ? txn.source : txn.source?.id;
-        if (src) chargeSources.add(src);
+        // Revenue math only — count derived from paid checkout sessions below
       } else if (txn.type === "refund" || txn.type === "payment_refund") {
         refunds += Math.abs(txn.amount); // refunds are negative
         fees += txn.fee; // fee adjustment (usually negative, reducing fees)
@@ -252,10 +250,9 @@ export async function getStripeMonthData(month: string): Promise<MonthStripeData
     if (page.data.length > 0) startingAfter = page.data[page.data.length - 1].id;
   }
 
-  // Shipping revenue: read from checkout sessions for this month
-  // We get this from Airtable orders + session data, but for now compute
-  // from the sessions via shipping_cost
+  // Shipping revenue + paid session count from checkout sessions
   let shippingRevenue = 0;
+  let paidSessionCount = 0;
   hasMore = true;
   startingAfter = undefined;
   while (hasMore) {
@@ -268,6 +265,7 @@ export async function getStripeMonthData(month: string): Promise<MonthStripeData
 
     for (const s of page.data) {
       if (s.payment_status !== "paid") continue;
+      paidSessionCount++;
       const shipCost = s.shipping_cost?.amount_total;
       if (shipCost && shipCost > 0) {
         shippingRevenue += shipCost; // in cents
@@ -306,7 +304,7 @@ export async function getStripeMonthData(month: string): Promise<MonthStripeData
     fees: Math.abs(fees) / 100,
     shippingRevenue: shippingRevenue / 100,
     payouts: payouts / 100,
-    chargeCount: chargeSources.size,
+    chargeCount: paidSessionCount,
     refundDetails,
     allTxnTypes,
   };
