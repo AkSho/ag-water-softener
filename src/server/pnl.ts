@@ -1289,3 +1289,55 @@ export async function writeBomTabs(): Promise<{ tabsCreated: string[]; inputsUpd
 
   return { tabsCreated: needed, inputsUpdated: true };
 }
+
+export async function verifyBomTabs(): Promise<{
+  tabOrder: string[];
+  landedStandardFormulas: unknown[];
+  landedStandardValues: unknown[];
+  errors: string[];
+}> {
+  const token = await getAccessToken();
+  const spreadsheetId = getSheetId();
+  const tabs = await listTabs(token, spreadsheetId);
+  const tabOrder = tabs.map((t) => t.properties.title);
+
+  // Read Landed scenarios row 4 (standard) — formulas
+  const formulaData = (await sheetsGet(
+    token,
+    spreadsheetId,
+    `/values/${encodeURIComponent("'Landed scenarios'!A4:L4")}?valueRenderOption=FORMULA`,
+  )) as { values?: unknown[][] };
+  const landedStandardFormulas = formulaData.values?.[0] || [];
+
+  // Read Landed scenarios row 4 (standard) — evaluated values
+  const valueData = await readRange(token, spreadsheetId, "'Landed scenarios'!A4:L4");
+  const landedStandardValues = valueData[0] || [];
+
+  // Scan all BOM tabs for #REF! or #N/A
+  const bomTabNames = ["BOM", "Shipping tiers", "Landed scenarios", "Add-on economics", "BOM sources"];
+  const errors: string[] = [];
+  for (const name of bomTabNames) {
+    const rows = await readRange(token, spreadsheetId, `'${name}'!A1:Z50`);
+    for (let r = 0; r < rows.length; r++) {
+      for (let c = 0; c < (rows[r]?.length || 0); c++) {
+        const v = String(rows[r][c] || "");
+        if (v.includes("#REF!") || v.includes("#N/A") || v.includes("#ERROR!") || v.includes("#VALUE!")) {
+          errors.push(`${name}!${String.fromCharCode(65 + c)}${r + 1}: ${v}`);
+        }
+      }
+    }
+  }
+
+  // Also scan Inputs rows 19-28
+  const inputsRows = await readRange(token, spreadsheetId, "'Inputs'!A19:C28");
+  for (let r = 0; r < inputsRows.length; r++) {
+    for (let c = 0; c < (inputsRows[r]?.length || 0); c++) {
+      const v = String(inputsRows[r][c] || "");
+      if (v.includes("#REF!") || v.includes("#N/A") || v.includes("#ERROR!") || v.includes("#VALUE!")) {
+        errors.push(`Inputs!${String.fromCharCode(65 + c)}${r + 19}: ${v}`);
+      }
+    }
+  }
+
+  return { tabOrder, landedStandardFormulas, landedStandardValues, errors };
+}

@@ -22,7 +22,7 @@ import {
   getDailyMetrics,
   etYesterdayBounds,
 } from "./records";
-import { runPnl, writeBomTabs } from "./pnl";
+import { runPnl, writeBomTabs, verifyBomTabs } from "./pnl";
 
 let stripeClient: Stripe | undefined;
 const processedSessions = new Set<string>();
@@ -1027,6 +1027,16 @@ async function handlePnl(request: Request) {
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       console.error(JSON.stringify({ event: "pnl_bom_write_error", message }));
+      return json({ error: message }, { status: 500 });
+    }
+  }
+
+  if (action === "verify-bom") {
+    try {
+      const result = await verifyBomTabs();
+      return json({ ok: true, ...result });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
       return json({ error: message }, { status: 500 });
     }
   }
