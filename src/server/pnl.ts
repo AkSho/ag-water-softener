@@ -1296,7 +1296,8 @@ export async function verifyBomTabs(): Promise<{
   landedStandardValues: unknown[];
   errors: string[];
 }> {
-  const token = await getAccessToken();
+  const sa = getServiceAccountKey();
+  const token = await getAccessToken(sa);
   const spreadsheetId = getSheetId();
   const tabs = await listTabs(token, spreadsheetId);
   const tabOrder = tabs.map((t) => t.properties.title);
