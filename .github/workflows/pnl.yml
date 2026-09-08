@@ -9,6 +9,9 @@ on:
       month:
         description: "Month to generate (YYYY-MM). Defaults to prior month."
         required: false
+      action:
+        description: "Optional action (e.g. write-suppliers). Overrides month."
+        required: false
 
 jobs:
   pnl:
@@ -16,12 +19,14 @@ jobs:
     steps:
       - name: Generate P&L
         run: |
-          MONTH_PARAM=""
-          if [ -n "${{ github.event.inputs.month }}" ]; then
-            MONTH_PARAM="?month=${{ github.event.inputs.month }}"
+          PARAMS=""
+          if [ -n "${{ github.event.inputs.action }}" ]; then
+            PARAMS="?action=${{ github.event.inputs.action }}"
+          elif [ -n "${{ github.event.inputs.month }}" ]; then
+            PARAMS="?month=${{ github.event.inputs.month }}"
           fi
           response=$(curl -s -w "\n%{http_code}" -X POST \
-            "https://agsoftener.com/api/pnl${MONTH_PARAM}" \
+            "https://agsoftener.com/api/pnl${PARAMS}" \
             -H "X-AG-Fulfill-Key: ${{ secrets.FULFILL_API_KEY }}")
           http_code=$(echo "$response" | tail -1)
           body=$(echo "$response" | sed '$d')
