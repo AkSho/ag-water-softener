@@ -17,7 +17,11 @@ interface ServiceAccountKey {
 function getServiceAccountKey(): ServiceAccountKey {
   const raw = process.env.GOOGLE_SA_KEY;
   if (!raw) throw new Error("Missing GOOGLE_SA_KEY");
-  return JSON.parse(raw) as ServiceAccountKey;
+  const parsed = JSON.parse(raw) as ServiceAccountKey;
+  // Ensure PEM newlines are real newlines regardless of how the env var was stored.
+  // Some deployment methods double-escape \n into \\n in the JSON string.
+  parsed.private_key = parsed.private_key.replace(/\\n/g, "\n");
+  return parsed;
 }
 
 function getSheetId(): string {
@@ -489,12 +493,12 @@ function buildMonthTab(
   // Column A = dates, B = amounts, D = shipping method
   const SI_AMOUNT = "'Supplier Invoices'!B:B";
   const SI_DATE = "'Supplier Invoices'!A:A";
-  const supplierMonthFormula = `=SUMPRODUCT((TEXT(${SI_DATE},"YYYY-MM")="${month}")*(${SI_AMOUNT}))`;
+  const supplierMonthFormula = `=IFERROR(SUMPRODUCT((TEXT(${SI_DATE},"YYYY-MM")="${month}")*(${SI_AMOUNT})),0)`;
 
   // Ad spend: SUMPRODUCT for this month
   const AD_MONTH = "'Ad Spend'!B:B";
   const AD_AMOUNT = "'Ad Spend'!C:C";
-  const adMonthFormula = `=SUMPRODUCT((${AD_MONTH}="${month}")*(${AD_AMOUNT}))`;
+  const adMonthFormula = `=IFERROR(SUMPRODUCT((${AD_MONTH}="${month}")*(${AD_AMOUNT})),0)`;
 
   // Row references within the sheet (1-indexed for Sheets)
   const R = (n: number) => n + 1;
