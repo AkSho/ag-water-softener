@@ -209,7 +209,7 @@ export async function getStripeMonthData(month: string): Promise<MonthStripeData
   let charges = 0;
   let refunds = 0;
   let fees = 0;
-  let chargeCount = 0;
+  const chargeSources = new Set<string>();
   const refundDetails: BalanceTxnDetail[] = [];
   const allTxnTypes: Record<string, number> = {};
 
@@ -230,7 +230,8 @@ export async function getStripeMonthData(month: string): Promise<MonthStripeData
       if (txn.type === "charge" || txn.type === "payment") {
         charges += txn.amount; // in cents
         fees += txn.fee; // in cents
-        chargeCount++;
+        const src = typeof txn.source === "string" ? txn.source : txn.source?.id;
+        if (src) chargeSources.add(src);
       } else if (txn.type === "refund" || txn.type === "payment_refund") {
         refunds += Math.abs(txn.amount); // refunds are negative
         fees += txn.fee; // fee adjustment (usually negative, reducing fees)
@@ -305,7 +306,7 @@ export async function getStripeMonthData(month: string): Promise<MonthStripeData
     fees: Math.abs(fees) / 100,
     shippingRevenue: shippingRevenue / 100,
     payouts: payouts / 100,
-    chargeCount,
+    chargeCount: chargeSources.size,
     refundDetails,
     allTxnTypes,
   };
