@@ -40,6 +40,7 @@ type CheckoutBody = {
   ft_utm?: unknown;
   ft_gclid?: unknown;
   ft_msclkid?: unknown;
+  ft_fbclid?: unknown;
 };
 
 type EspPurchasePayload = {
@@ -408,6 +409,7 @@ async function createCheckoutSession(request: Request) {
       ft_utm: ftString(body.ft_utm),
       ft_gclid: ftString(body.ft_gclid),
       ft_msclkid: ftString(body.ft_msclkid),
+      ft_fbclid: ftString(body.ft_fbclid),
     },
   };
 
@@ -658,6 +660,7 @@ async function handleStripeWebhook(request: Request) {
         ftUtm: session.metadata?.ft_utm || "",
         gclid: session.metadata?.ft_gclid || "",
         msclkid: session.metadata?.ft_msclkid || "",
+        fbclid: session.metadata?.ft_fbclid || "",
       }),
     ]);
 

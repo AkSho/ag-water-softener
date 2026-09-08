@@ -15,6 +15,7 @@ import Stripe from "stripe";
 interface VerdictInput {
   gclid: string;
   msclkid: string;
+  fbclid: string;
   ftRef: string;
   ftUtm: string;
   ftLp: string;
@@ -24,7 +25,27 @@ function deriveVerdict(input: VerdictInput): string {
   if (input.gclid) return "google-paid";
   if (input.msclkid) return "microsoft-paid";
 
+  // Meta paid: fbclid present, or UTM signals paid Meta traffic
+  if (input.fbclid) return "meta-paid";
+  {
+    let utmSource = "";
+    let utmMedium = "";
+    try {
+      const parsed = JSON.parse(input.ftUtm || "{}");
+      utmSource = (parsed.utm_source || "").toLowerCase();
+      utmMedium = (parsed.utm_medium || "").toLowerCase();
+    } catch { /* not valid JSON */ }
+    const metaSources = new Set(["fb", "ig", "meta", "facebook", "instagram"]);
+    const paidMediums = new Set(["paid", "cpc", "paid_social"]);
+    if (metaSources.has(utmSource) && paidMediums.has(utmMedium)) return "meta-paid";
+  }
+
+  // Meta organic: referrer from Facebook/Instagram without click ID or paid UTM
   const refLower = (input.ftRef || "").toLowerCase();
+  if (refLower.includes("facebook") || refLower.includes("instagram"))
+    return "meta-organic";
+
+  // AI sources
   const utmLower = (input.ftUtm || "").toLowerCase();
   const refOrUtm = refLower + " " + utmLower;
 
@@ -39,9 +60,6 @@ function deriveVerdict(input: VerdictInput): string {
 
   const lpLower = (input.ftLp || "").toLowerCase();
   if (lpLower.includes("srsltid")) return "google-merchant";
-
-  if (refLower.includes("facebook") || refLower.includes("instagram"))
-    return "meta";
 
   return "direct";
 }
@@ -344,11 +362,12 @@ async function main() {
     const ftUtm = session.metadata?.ft_utm || "";
     const gclid = session.metadata?.ft_gclid || "";
     const msclkid = session.metadata?.ft_msclkid || "";
+    const fbclid = session.metadata?.ft_fbclid || "";
 
     const toolTouchSub = email ? await checkToolTouchSubmissions(atConfig, email) : false;
     let toolTouch = deriveToolTouch(ftRef, ftLp) || toolTouchSub;
 
-    let newVerdict = deriveVerdict({ gclid, msclkid, ftRef, ftUtm, ftLp });
+    let newVerdict = deriveVerdict({ gclid, msclkid, fbclid, ftRef, ftUtm, ftLp });
     const legacyVerdict = deriveVerdictLegacy(ftSrc, toolTouch);
     const dtp = ftTs ? daysBetween(ftTs, orderTs) : null;
 
@@ -412,6 +431,7 @@ async function main() {
       FT_UTM: ftUtm,
       FT_Gclid: gclid,
       FT_Msclkid: msclkid,
+      FT_Fbclid: fbclid,
       Verdict: newVerdict,
       VerdictLegacy: legacyVerdict,
       DaysToPurchase: dtp,
@@ -451,9 +471,11 @@ async function main() {
       const mergedLp = fields.FT_LandingPage as string || "";
       const mergedGclid = fields.FT_Gclid as string || "";
       const mergedMsclkid = fields.FT_Msclkid as string || "";
+      const mergedFbclid = fields.FT_Fbclid as string || "";
       const mergedVerdict = deriveVerdict({
         gclid: mergedGclid,
         msclkid: mergedMsclkid,
+        fbclid: mergedFbclid,
         ftRef: mergedRef,
         ftUtm: mergedUtm,
         ftLp: mergedLp,

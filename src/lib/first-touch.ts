@@ -55,6 +55,8 @@ export function initFirstTouch(): void {
   if (gclid) data.gclid = gclid;
   const msclkid = params.get("msclkid");
   if (msclkid) data.msclkid = msclkid;
+  const fbclid = params.get("fbclid");
+  if (fbclid) data.fbclid = fbclid;
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }

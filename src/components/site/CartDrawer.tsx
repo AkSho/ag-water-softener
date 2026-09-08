@@ -55,6 +55,7 @@ export function CartDrawer() {
           // Click IDs: bare in ag_ft, prefixed ft_ in Stripe metadata
           ft_gclid: ft.gclid || "",
           ft_msclkid: ft.msclkid || "",
+          ft_fbclid: ft.fbclid || "",
         }),
       });
       const payload = (await response.json().catch(() => null)) as { url?: string } | null;

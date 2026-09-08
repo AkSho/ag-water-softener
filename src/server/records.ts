@@ -65,6 +65,7 @@ async function withRetry<T>(
 export interface VerdictInput {
   gclid: string;
   msclkid: string;
+  fbclid: string;
   ftRef: string;
   ftUtm: string;
   ftLp: string;
@@ -74,7 +75,27 @@ export function deriveVerdict(input: VerdictInput): string {
   if (input.gclid) return "google-paid";
   if (input.msclkid) return "microsoft-paid";
 
+  // Meta paid: fbclid present, or UTM signals paid Meta traffic
+  if (input.fbclid) return "meta-paid";
+  {
+    let utmSource = "";
+    let utmMedium = "";
+    try {
+      const parsed = JSON.parse(input.ftUtm || "{}");
+      utmSource = (parsed.utm_source || "").toLowerCase();
+      utmMedium = (parsed.utm_medium || "").toLowerCase();
+    } catch { /* not valid JSON */ }
+    const metaSources = new Set(["fb", "ig", "meta", "facebook", "instagram"]);
+    const paidMediums = new Set(["paid", "cpc", "paid_social"]);
+    if (metaSources.has(utmSource) && paidMediums.has(utmMedium)) return "meta-paid";
+  }
+
+  // Meta organic: referrer from Facebook/Instagram without click ID or paid UTM
   const refLower = (input.ftRef || "").toLowerCase();
+  if (refLower.includes("facebook") || refLower.includes("instagram"))
+    return "meta-organic";
+
+  // AI sources
   const utmLower = (input.ftUtm || "").toLowerCase();
   const refOrUtm = refLower + " " + utmLower;
 
@@ -89,9 +110,6 @@ export function deriveVerdict(input: VerdictInput): string {
 
   const lpLower = (input.ftLp || "").toLowerCase();
   if (lpLower.includes("srsltid")) return "google-merchant";
-
-  if (refLower.includes("facebook") || refLower.includes("instagram"))
-    return "meta";
 
   return "direct";
 }
@@ -168,6 +186,7 @@ export interface UpsertOrderInput {
   ftUtm: string;
   gclid: string;
   msclkid: string;
+  fbclid: string;
   itemType: string;
   repeatCustomer: boolean;
   shippingMethod: string;
@@ -272,6 +291,7 @@ export async function upsertOrder(
   const verdict = deriveVerdict({
     gclid: input.gclid,
     msclkid: input.msclkid,
+    fbclid: input.fbclid,
     ftRef: input.ftRef,
     ftUtm: input.ftUtm,
     ftLp: input.ftLp,
@@ -312,6 +332,7 @@ export async function upsertOrder(
     FT_UTM: input.ftUtm || "",
     FT_Gclid: input.gclid || "",
     FT_Msclkid: input.msclkid || "",
+    FT_Fbclid: input.fbclid || "",
     Verdict: verdict,
     DaysToPurchase: dtp,
     ToolTouch: toolTouch,
@@ -346,9 +367,11 @@ export async function upsertOrder(
     const mergedLp = (updateFields.FT_LandingPage as string) ?? (existing.fields.FT_LandingPage as string) ?? "";
     const mergedGclid = (updateFields.FT_Gclid as string) ?? (existing.fields.FT_Gclid as string) ?? "";
     const mergedMsclkid = (updateFields.FT_Msclkid as string) ?? (existing.fields.FT_Msclkid as string) ?? "";
+    const mergedFbclid = (updateFields.FT_Fbclid as string) ?? (existing.fields.FT_Fbclid as string) ?? "";
     const mergedVerdict = deriveVerdict({
       gclid: mergedGclid,
       msclkid: mergedMsclkid,
+      fbclid: mergedFbclid,
       ftRef: mergedRef,
       ftUtm: mergedUtm,
       ftLp: mergedLp,
