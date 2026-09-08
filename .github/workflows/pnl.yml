@@ -6,6 +6,9 @@ on:
     - cron: "0 12 1 * *"
   workflow_dispatch:
     inputs:
+      action:
+        description: "Action to run (e.g. write-bom). Leave blank for normal P&L."
+        required: false
       month:
         description: "Month to generate (YYYY-MM). Defaults to prior month."
         required: false
@@ -17,7 +20,9 @@ jobs:
       - name: Generate P&L
         run: |
           PARAMS=""
-          if [ -n "${{ github.event.inputs.month }}" ]; then
+          if [ -n "${{ github.event.inputs.action }}" ]; then
+            PARAMS="?action=${{ github.event.inputs.action }}"
+          elif [ -n "${{ github.event.inputs.month }}" ]; then
             PARAMS="?month=${{ github.event.inputs.month }}"
           fi
           response=$(curl -s -w "\n%{http_code}" -X POST \
