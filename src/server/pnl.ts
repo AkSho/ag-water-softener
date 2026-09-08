@@ -169,6 +169,15 @@ async function readRange(
 
 // ─── Stripe balance transaction reader ──────────────────────────────────────
 
+interface BalanceTxnDetail {
+  id: string;
+  type: string;
+  amount: number; // dollars
+  fee: number; // dollars
+  created: string; // ISO
+  description: string;
+}
+
 interface MonthStripeData {
   charges: number; // gross charge amount in dollars
   refunds: number; // refund amount in dollars (positive)
@@ -176,6 +185,8 @@ interface MonthStripeData {
   shippingRevenue: number; // express shipping charges in dollars
   payouts: number; // payout amount in dollars (positive)
   chargeCount: number;
+  refundDetails: BalanceTxnDetail[];
+  allTxnTypes: Record<string, number>;
 }
 
 function getStripe(): Stripe {
@@ -199,6 +210,8 @@ export async function getStripeMonthData(month: string): Promise<MonthStripeData
   let refunds = 0;
   let fees = 0;
   let chargeCount = 0;
+  const refundDetails: BalanceTxnDetail[] = [];
+  const allTxnTypes: Record<string, number> = {};
 
   // Balance transactions for charges, refunds, fees
   let hasMore = true;
@@ -212,13 +225,23 @@ export async function getStripeMonthData(month: string): Promise<MonthStripeData
     const page = await stripe.balanceTransactions.list(params);
 
     for (const txn of page.data) {
+      allTxnTypes[txn.type] = (allTxnTypes[txn.type] || 0) + 1;
+
       if (txn.type === "charge" || txn.type === "payment") {
         charges += txn.amount; // in cents
         fees += txn.fee; // in cents
         chargeCount++;
-      } else if (txn.type === "refund") {
+      } else if (txn.type === "refund" || txn.type === "payment_refund") {
         refunds += Math.abs(txn.amount); // refunds are negative
         fees += txn.fee; // fee adjustment (usually negative, reducing fees)
+        refundDetails.push({
+          id: txn.id,
+          type: txn.type,
+          amount: Math.abs(txn.amount) / 100,
+          fee: txn.fee / 100,
+          created: new Date(txn.created * 1000).toISOString(),
+          description: txn.description || "",
+        });
       } else if (txn.type === "adjustment" || txn.type === "stripe_fee") {
         fees += txn.fee;
       }
@@ -283,6 +306,8 @@ export async function getStripeMonthData(month: string): Promise<MonthStripeData
     shippingRevenue: shippingRevenue / 100,
     payouts: payouts / 100,
     chargeCount,
+    refundDetails,
+    allTxnTypes,
   };
 }
 
@@ -303,9 +328,10 @@ interface MonthOrderData {
   kitStandaloneRevenue: number;
 }
 
-export async function getAirtableMonthData(month: string): Promise<MonthOrderData> {
-  const allOrders = await listAllOrders();
-
+function aggregateMonthOrders(
+  month: string,
+  allOrders: Array<{ fields: Record<string, unknown> }>,
+): MonthOrderData {
   const result: MonthOrderData = {
     unitsSold: 0,
     unitsShippedStandard: 0,
@@ -780,6 +806,65 @@ async function writeSummaryTab(
   await clearAndWrite(token, spreadsheetId, "Summary!A1:K" + (rows.length + 5), rows);
 }
 
+// ─── Reconciliation ─────────────────────────────────────────────────────────
+
+interface UnmatchedSession {
+  sessionId: string;
+  amount: number;
+  email: string;
+  livemode: boolean;
+  created: string;
+}
+
+async function reconcileSessions(
+  month: string,
+  allOrders: Array<{ fields: Record<string, unknown> }>,
+): Promise<UnmatchedSession[]> {
+  const stripe = getStripe();
+  const [year, mon] = month.split("-").map(Number);
+  const gte = Math.floor(new Date(Date.UTC(year, mon - 1, 1)).getTime() / 1000);
+  const lt = Math.floor(new Date(Date.UTC(year, mon, 1)).getTime() / 1000);
+
+  const airtableSids = new Set(
+    allOrders
+      .filter((r) => {
+        const ts = (r.fields.OrderTS as string) || "";
+        return ts.slice(0, 7) === month;
+      })
+      .map((r) => r.fields.StripeSessionId as string),
+  );
+
+  const unmatched: UnmatchedSession[] = [];
+  let hasMore = true;
+  let startingAfter: string | undefined;
+  while (hasMore) {
+    const params: Stripe.Checkout.SessionListParams = {
+      created: { gte, lt },
+      limit: 100,
+    };
+    if (startingAfter) params.starting_after = startingAfter;
+    const page = await stripe.checkout.sessions.list(params);
+
+    for (const s of page.data) {
+      if (s.payment_status !== "paid") continue;
+      if (!airtableSids.has(s.id)) {
+        unmatched.push({
+          sessionId: s.id,
+          amount: (s.amount_total || 0) / 100,
+          email: s.customer_details?.email || "",
+          livemode: s.livemode,
+          created: new Date(s.created * 1000).toISOString(),
+        });
+      }
+    }
+
+    hasMore = page.has_more;
+    if (page.data.length > 0) startingAfter = page.data[page.data.length - 1].id;
+  }
+
+  return unmatched;
+}
+
 // ─── Main runner ────────────────────────────────────────────────────────────
 
 export interface PnlResult {
@@ -788,6 +873,7 @@ export interface PnlResult {
   stripeData: MonthStripeData;
   orderData: MonthOrderData;
   summaryMonths: string[];
+  unmatchedSessions: UnmatchedSession[];
 }
 
 export async function runPnl(month: string): Promise<PnlResult> {
@@ -827,11 +913,15 @@ export async function runPnl(month: string): Promise<PnlResult> {
     }
   }
 
-  // Fetch data
+  // Fetch data — get full order list once for both aggregation and reconciliation
+  const allOrders = await listAllOrders();
   const [stripeData, orderData] = await Promise.all([
     getStripeMonthData(month),
-    getAirtableMonthData(month),
+    Promise.resolve(aggregateMonthOrders(month, allOrders)),
   ]);
+
+  // Reconcile Stripe sessions vs Airtable orders
+  const unmatchedSessions = await reconcileSessions(month, allOrders);
 
   // Create tab if needed
   let tabCreated = false;
@@ -859,5 +949,6 @@ export async function runPnl(month: string): Promise<PnlResult> {
     stripeData,
     orderData,
     summaryMonths: monthTabs.sort(),
+    unmatchedSessions,
   };
 }
