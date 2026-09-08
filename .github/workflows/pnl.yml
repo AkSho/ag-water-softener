@@ -9,9 +9,6 @@ on:
       month:
         description: "Month to generate (YYYY-MM). Defaults to prior month."
         required: false
-      action:
-        description: "Optional action (e.g. write-suppliers). Overrides month."
-        required: false
 
 jobs:
   pnl:
@@ -20,9 +17,7 @@ jobs:
       - name: Generate P&L
         run: |
           PARAMS=""
-          if [ -n "${{ github.event.inputs.action }}" ]; then
-            PARAMS="?action=${{ github.event.inputs.action }}"
-          elif [ -n "${{ github.event.inputs.month }}" ]; then
+          if [ -n "${{ github.event.inputs.month }}" ]; then
             PARAMS="?month=${{ github.event.inputs.month }}"
           fi
           response=$(curl -s -w "\n%{http_code}" -X POST \
