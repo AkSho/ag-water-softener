@@ -442,7 +442,7 @@ function ThanksPage() {
                 </div>
               )}
               {surveyStep === "done" && (
-                <p className="text-sm text-muted-foreground">Thanks you!</p>
+                <p className="text-sm text-muted-foreground">Thank you!</p>
               )}
             </section>
           )}
