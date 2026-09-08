@@ -418,6 +418,9 @@ export function validateTracking(tracking: string): TrackingValidation {
   if (jdMatch) return { valid: true, carrier: "DHL" };
   if (/^\d{10}$/.test(cleaned)) return { valid: true, carrier: "DHL" };
 
+  // UPS: 1Z followed by 16 alphanumeric characters (18 total, case-insensitive)
+  if (/^1Z[A-Z0-9]{16}$/i.test(cleaned)) return { valid: true, carrier: "UPS" };
+
   if (!/^\d+$/.test(cleaned)) return { valid: false, error: "non-numeric" };
 
   // USPS: 20-22 digits starting with 9 (check before FedEx to avoid overlap)

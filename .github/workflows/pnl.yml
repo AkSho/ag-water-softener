@@ -1,0 +1,32 @@
+name: Monthly P&L
+
+on:
+  schedule:
+    # 1st of each month at 12:00 UTC
+    - cron: "0 12 1 * *"
+  workflow_dispatch:
+    inputs:
+      month:
+        description: "Month to generate (YYYY-MM). Defaults to prior month."
+        required: false
+
+jobs:
+  pnl:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate P&L
+        run: |
+          MONTH_PARAM=""
+          if [ -n "${{ github.event.inputs.month }}" ]; then
+            MONTH_PARAM="?month=${{ github.event.inputs.month }}"
+          fi
+          response=$(curl -s -w "\n%{http_code}" -X POST \
+            "https://agsoftener.com/api/pnl${MONTH_PARAM}" \
+            -H "X-AG-Fulfill-Key: ${{ secrets.FULFILL_API_KEY }}")
+          http_code=$(echo "$response" | tail -1)
+          body=$(echo "$response" | sed '$d')
+          echo "$body" | python3 -m json.tool 2>/dev/null || echo "$body"
+          if [ "$http_code" -ne 200 ]; then
+            echo "::error::P&L endpoint returned $http_code"
+            exit 1
+          fi

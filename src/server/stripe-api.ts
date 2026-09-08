@@ -22,6 +22,7 @@ import {
   getDailyMetrics,
   etYesterdayBounds,
 } from "./records";
+import { runPnl } from "./pnl";
 
 let stripeClient: Stripe | undefined;
 const processedSessions = new Set<string>();
@@ -1010,6 +1011,33 @@ async function handleDigest(request: Request) {
   return json({ ok: true, subject, preview: text.slice(0, 500) });
 }
 
+// ─── P&L endpoint ────────────────────────────────────────────────────────────────
+
+async function handlePnl(request: Request) {
+  const authError = checkFulfillAuth(request);
+  if (authError) return authError;
+
+  const url = new URL(request.url);
+  let month = url.searchParams.get("month");
+
+  // Default to prior month
+  if (!month) {
+    const now = new Date();
+    const prior = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 1, 1));
+    month = prior.toISOString().slice(0, 7);
+  }
+
+  try {
+    const result = await runPnl(month);
+    return json({ ok: true, ...result });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    const isClosed = message.includes("is closed");
+    console.error(JSON.stringify({ event: "pnl_error", month, message }));
+    return json({ error: message }, { status: isClosed ? 409 : 500 });
+  }
+}
+
 // ─── Router ─────────────────────────────────────────────────────────────────────
 
 export async function handleStripeApi(request: Request) {
@@ -1041,6 +1069,10 @@ export async function handleStripeApi(request: Request) {
 
   if (url.pathname === "/api/digest" && request.method === "POST") {
     return handleDigest(request);
+  }
+
+  if (url.pathname === "/api/pnl" && request.method === "POST") {
+    return handlePnl(request);
   }
 
   return undefined;

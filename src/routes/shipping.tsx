@@ -46,7 +46,7 @@ function ShippingPage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            Standard orders ship via FedEx or USPS with tracking and typically arrive within 12 to 18 days of purchase. Express orders ship by tracked courier and typically arrive within 4 to 7 business days. Either way, you'll receive a tracking number by email as soon as your order ships.
+            Standard orders ship via FedEx or USPS with tracking and typically arrive within 12 to 18 days of purchase. Express orders ship via UPS with tracking and typically arrive within 4 to 7 business days. Either way, you'll receive a tracking number by email as soon as your order ships.
           </p>
           <p>
             We currently ship within the United States.
