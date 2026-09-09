@@ -442,6 +442,9 @@ export function validateTracking(tracking: string): TrackingValidation {
   if (jdMatch) return { valid: true, carrier: "DHL" };
   if (/^\d{10}$/.test(cleaned)) return { valid: true, carrier: "DHL" };
 
+  // Yun Express: YT followed by 16 digits, case-insensitive
+  if (/^YT\d{16}$/i.test(cleaned)) return { valid: true, carrier: "Yun Express" };
+
   // UPS: 1Z followed by 16 alphanumeric characters (18 total, case-insensitive)
   if (/^1Z[A-Z0-9]{16}$/i.test(cleaned)) return { valid: true, carrier: "UPS" };
 

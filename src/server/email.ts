@@ -130,6 +130,23 @@ export function buildShippingEmail({
 }) {
   const name = firstName || "there";
   const promisedByFormatted = formatLongDate(promisedBy);
+
+  if (carrier === "Yun Express") {
+    return {
+      subject: "Tracking for your AG Water Softener order",
+      text: `Hi ${name},
+
+Your order is on its way.
+
+Tracking number: ${tracking}
+Track it here: https://t.17track.net/en#nums=${tracking}
+
+The tracking page updates each time the package is scanned, so it may show only the label at first. Your order is expected by ${promisedByFormatted}.
+
+${SIGN_OFF}`,
+    };
+  }
+
   return {
     subject: "Tracking for your AG Water Softener order",
     text: `Hi ${name},
@@ -155,6 +172,18 @@ export function buildCheckInEmail({
 }) {
   const name = firstName || "there";
   const deliveredFormatted = formatLongDate(deliveredDate);
+
+  if (carrier === "Yun Express") {
+    return {
+      subject: "Tracking shows your AG Water Softener delivered",
+      text: `Hi ${name},
+
+Tracking shows your order delivered on ${deliveredFormatted}. The setup guide is at agsoftener.com/setup, and the two short videos there walk through install and recharge.
+
+${SIGN_OFF}`,
+    };
+  }
+
   return {
     subject: `${carrier} shows your AG Water Softener delivered`,
     text: `Hi ${name},
