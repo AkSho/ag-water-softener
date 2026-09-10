@@ -56,14 +56,15 @@ export function buildConfirmationEmail({
 }: {
   firstName: string;
   promiseDate: string;
-  orderNumber?: string;
+  orderNumber: string;
 }) {
   const name = firstName || "there";
-  const orderLine = orderNumber ? `\nOrder ${orderNumber}\n` : "";
   return {
     subject: "Your AG Water Softener Order",
     text: `Hi ${name},
-${orderLine}
+
+Order ${orderNumber}
+
 Thanks for your order. It's confirmed, and you should have it by ${promiseDate}. I'll email the tracking number as soon as it ships.
 
 Any questions, just reply to this email.

@@ -160,6 +160,43 @@ async function checkToolTouchSubmissions(
   }
 }
 
+// ─── Order number generation ─────────────────────────────────────────────────
+
+const ORDER_ALPHABET = "23456789ABCDEFGHJKMNPQRSTUVWXYZ";
+
+function generateOrderNumber(): string {
+  let code = "";
+  for (let i = 0; i < 6; i++) {
+    code += ORDER_ALPHABET[Math.floor(Math.random() * ORDER_ALPHABET.length)];
+  }
+  return `AG-${code}`;
+}
+
+async function isOrderNumberUnique(
+  config: AirtableConfig,
+  orderNumber: string,
+): Promise<boolean> {
+  const formula = encodeURIComponent(`{OrderNumber}='${orderNumber}'`);
+  const res = await airtableFetch(
+    config,
+    ORDERS_TABLE,
+    `?filterByFormula=${formula}&maxRecords=1`,
+  );
+  if (!res.ok) return false;
+  const data = (await res.json()) as { records: unknown[] };
+  return data.records.length === 0;
+}
+
+async function generateUniqueOrderNumber(
+  config: AirtableConfig,
+): Promise<string> {
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const num = generateOrderNumber();
+    if (await isOrderNumberUnique(config, num)) return num;
+  }
+  throw new Error("Failed to generate unique order number after 5 attempts");
+}
+
 // ─── Orders: types ───────────────────────────────────────────────────────────
 
 export interface UpsertOrderInput {
@@ -171,7 +208,6 @@ export interface UpsertOrderInput {
   amount: number;
   unitQty: number;
   bumpTaken: boolean;
-  orderNumber: string;
   shipName: string;
   address1: string;
   address2: string;
@@ -198,10 +234,12 @@ export interface UpsertResult {
   id?: string;
   error?: string;
   created?: boolean;
+  orderNumber?: string;
 }
 
 // Fields that should never be overwritten if already set
 const PRESERVE_ON_UPDATE = new Set([
+  "OrderNumber",
   "Tracking",
   "Carrier",
   "ShippedTS",
@@ -311,7 +349,6 @@ export async function upsertOrder(
     Amount: input.amount,
     UnitQty: input.unitQty,
     BumpTaken: input.bumpTaken,
-    OrderNumber: input.orderNumber,
     ItemType: input.itemType,
     RepeatCustomer: input.repeatCustomer,
     ShippingMethod: input.shippingMethod || "standard",
@@ -380,16 +417,22 @@ export async function upsertOrder(
     updateFields.Verdict = mergedVerdict;
     updateFields.ToolTouch = deriveToolTouch(mergedRef, mergedLp) || toolTouchSubmissions;
 
-    return withRetry(
+    const result = await withRetry(
       () => patchRecord(config, ORDERS_TABLE, existing.id, updateFields),
       "upsert_order_update",
     );
+    return { ...result, orderNumber: (existing.fields.OrderNumber as string) || "" };
   }
 
-  return withRetry(
+  // Create path: generate unique AG- order number
+  const orderNumber = await generateUniqueOrderNumber(config);
+  fields.OrderNumber = orderNumber;
+
+  const result = await withRetry(
     () => createRecord(config, ORDERS_TABLE, fields),
     "upsert_order_create",
   );
+  return { ...result, orderNumber };
 }
 
 // ─── Orders: refund ──────────────────────────────────────────────────────────
@@ -466,7 +509,7 @@ export function validateTracking(tracking: string): TrackingValidation {
 // ─── Supplier intake ─────────────────────────────────────────────────────────
 
 export function buildIntakeBlock(fields: Record<string, unknown>): string {
-  const sid = (fields.StripeSessionId as string) || "";
+  const orderNumber = (fields.OrderNumber as string) || (fields.StripeSessionId as string || "").slice(-8);
   const orderTs = fields.OrderTS as string || "";
   const date = orderTs ? new Date(orderTs).toISOString().slice(0, 10) : "";
   const qty = fields.UnitQty as number || 1;
@@ -482,7 +525,7 @@ export function buildIntakeBlock(fields: Record<string, unknown>): string {
   if (method === "EXPRESS" && bump) shippingLine = "Shipping: EXPRESS (with spare filter)";
 
   const lines = [
-    `Order ${sid.slice(-8)} · ${date}`,
+    `Order ${orderNumber} · ${date}`,
     productLine,
     shippingLine,
     fields.ShipName || fields.Name || "",
@@ -507,7 +550,7 @@ export async function generateIntake(
   if (supplierEmail && sendFn) {
     await sendFn({
       to: supplierEmail,
-      subject: `New order ${(fields.StripeSessionId as string || "").slice(-8)}`,
+      subject: `New order ${(fields.OrderNumber as string) || (fields.StripeSessionId as string || "").slice(-8)}`,
       text: intake,
     });
     return patchRecord(config, ORDERS_TABLE, recordId, {
@@ -1134,10 +1177,14 @@ export async function upsertSurvey(input: SurveyInput): Promise<SurveyResult> {
   const config = configOrNull();
   if (!config) return { ok: false, error: "airtable_not_configured" };
 
+  // Look up the AG- order number from the Orders row
+  const orderRow = await findOrderBySessionId(config, input.stripeSessionId);
+  const resolvedOrderNumber = (orderRow?.fields?.OrderNumber as string) || input.orderNumber;
+
   const now = new Date().toISOString();
   const fields: Record<string, unknown> = {
     StripeSessionId: input.stripeSessionId,
-    OrderNumber: input.orderNumber,
+    OrderNumber: resolvedOrderNumber,
     Email: input.email,
     Source: input.source,
     Recency: input.recency || "",
@@ -1147,7 +1194,6 @@ export async function upsertSurvey(input: SurveyInput): Promise<SurveyResult> {
   const existing = await findSurveyBySessionId(config, input.stripeSessionId);
 
   // Also write self-report fields onto the Orders row
-  const orderRow = await findOrderBySessionId(config, input.stripeSessionId);
   if (orderRow) {
     await patchRecord(config, ORDERS_TABLE, orderRow.id, {
       SelfReportSource: input.source,
@@ -1195,4 +1241,4 @@ export async function updateOrderFields(
   return patchRecord(config, ORDERS_TABLE, recordId, fields);
 }
 
-export { deriveVerdict as _deriveVerdict, promiseDate as _promiseDate, daysBetween as _daysBetween };
+export { deriveVerdict as _deriveVerdict, promiseDate as _promiseDate, daysBetween as _daysBetween, generateOrderNumber as _generateOrderNumber };

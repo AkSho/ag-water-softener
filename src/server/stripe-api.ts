@@ -22,6 +22,8 @@ import {
   getDailyMetrics,
   etYesterdayBounds,
   upsertSurvey,
+  listAllOrders,
+  updateOrderFields,
 } from "./records";
 import { runPnl } from "./pnl";
 
@@ -252,7 +254,7 @@ async function sendMetaCapiPurchase({
 
 // ─── Part A: Confirmation email ─────────────────────────────────────────────────
 
-async function sendConfirmationEmail(session: Stripe.Checkout.Session, orderNumber?: string, shippingMethod?: string) {
+async function sendConfirmationEmail(session: Stripe.Checkout.Session, orderNumber: string, shippingMethod?: string) {
   const email = session.customer_details?.email;
   if (!email) {
     console.warn("No email on checkout session; skipping confirmation", { sessionId: session.id });
@@ -539,9 +541,9 @@ async function handleStripeWebhook(request: Request) {
     }
     processedSessions.add(eventSession.id);
 
-    // Re-retrieve session with expanded PI + charge for receipt_number
+    // Re-retrieve session with expanded PI for piId
     const session = await stripe.checkout.sessions.retrieve(eventSession.id, {
-      expand: ["payment_intent.latest_charge"],
+      expand: ["payment_intent"],
     });
 
     const sparePrice = requiredEnv("STRIPE_PRICE_SPARE");
@@ -566,33 +568,12 @@ async function handleStripeWebhook(request: Request) {
     const shipping = session.collected_information?.shipping_details;
     const shippingAddr = shipping?.address;
 
-    // Extract PaymentIntent ID and order number from expanded charge
+    // Extract PaymentIntent ID
     const piExpanded = typeof session.payment_intent === "object" && session.payment_intent
       ? session.payment_intent
       : null;
     const piId = piExpanded?.id
       || (typeof session.payment_intent === "string" ? session.payment_intent : "");
-
-    let orderNumber = session.id.slice(-8);
-    let orderNumberFallback = true;
-    if (piExpanded) {
-      const charge = piExpanded.latest_charge;
-      if (charge && typeof charge !== "string" && charge.receipt_number) {
-        orderNumber = charge.receipt_number;
-        orderNumberFallback = false;
-      } else {
-        console.warn("Expanded PI has no receipt_number", {
-          sessionId: session.id,
-          chargeType: typeof charge,
-          chargeId: charge && typeof charge !== "string" ? charge.id : String(charge),
-        });
-      }
-    } else {
-      console.warn("PI not expanded on session retrieve", { sessionId: session.id, piId });
-    }
-    if (orderNumberFallback) {
-      console.warn("OrderNumber fallback fired: using session ID suffix", { sessionId: session.id });
-    }
 
     // Determine shipping method from chosen rate
     const expressRate = process.env.STRIPE_SHIPPING_EXPRESS;
@@ -641,10 +622,11 @@ async function handleStripeWebhook(request: Request) {
     }
 
     const orderTs = new Date().toISOString();
-    const [emailResult, capiResult, ordersResult] = await Promise.allSettled([
-      sendConfirmationEmail(session, orderNumberFallback ? undefined : orderNumber, shippingMethod),
-      sendMetaCapiPurchase({ session, request, lineItems }),
-      upsertOrder({
+
+    // 1. upsertOrder first — generates the AG- order number on create path
+    let ordersResult: PromiseSettledResult<Awaited<ReturnType<typeof upsertOrder>>>;
+    try {
+      const val = await upsertOrder({
         stripeSessionId: session.id,
         paymentIntentId: piId,
         email: session.customer_details?.email || "",
@@ -653,7 +635,6 @@ async function handleStripeWebhook(request: Request) {
         amount: typeof session.amount_total === "number" ? session.amount_total / 100 : 0,
         unitQty: itemType === "kit" ? 0 : (Number(session.metadata?.requested_unit_qty) || 1),
         bumpTaken,
-        orderNumber,
         itemType,
         repeatCustomer,
         shippingMethod,
@@ -673,11 +654,38 @@ async function handleStripeWebhook(request: Request) {
         gclid: session.metadata?.ft_gclid || "",
         msclkid: session.metadata?.ft_msclkid || "",
         fbclid: session.metadata?.ft_fbclid || "",
-      }),
+      });
+      ordersResult = { status: "fulfilled", value: val };
+    } catch (reason) {
+      ordersResult = { status: "rejected", reason };
+    }
+
+    const orderNumber = ordersResult.status === "fulfilled"
+      ? ordersResult.value.orderNumber || session.id.slice(-8)
+      : session.id.slice(-8);
+
+    // 2. Email, CAPI, and Stripe metadata write in parallel
+    const [emailResult, capiResult] = await Promise.allSettled([
+      sendConfirmationEmail(session, orderNumber, shippingMethod),
+      sendMetaCapiPurchase({ session, request, lineItems }),
     ]);
+
+    // 3. Write order_number to Stripe PaymentIntent metadata (best-effort)
+    if (piId && orderNumber.startsWith("AG-")) {
+      stripe.paymentIntents.update(piId, {
+        metadata: { order_number: orderNumber },
+      }).catch((err) => {
+        console.warn("Could not write order_number to PI metadata", {
+          piId,
+          orderNumber,
+          error: err instanceof Error ? err.message : String(err),
+        });
+      });
+    }
 
     console.info("Webhook post-tasks settled", {
       sessionId: session.id,
+      orderNumber,
       email: emailResult.status === "fulfilled" ? "sent" : `failed: ${(emailResult as PromiseRejectedResult).reason}`,
       capi: capiResult.status === "fulfilled" ? "sent" : `failed: ${(capiResult as PromiseRejectedResult).reason}`,
       orders_row: ordersResult.status === "fulfilled"
@@ -691,6 +699,7 @@ async function handleStripeWebhook(request: Request) {
     if (ordersResult.status === "fulfilled" && ordersResult.value.ok && ordersResult.value.created && itemType !== "kit") {
       generateIntake(ordersResult.value.id!, {
         StripeSessionId: session.id,
+        OrderNumber: orderNumber,
         OrderTS: orderTs,
         UnitQty: itemType === "kit" ? 0 : (Number(session.metadata?.requested_unit_qty) || 1),
         BumpTaken: bumpTaken,
@@ -886,6 +895,57 @@ function checkFulfillAuth(request: Request): Response | null {
   return null;
 }
 
+// ─── StripeReceipt + PI metadata backfill (best-effort, runs on fulfill cron) ─
+
+async function fillStripeReceipts(): Promise<{ receiptsFilled: number; piMetadataWritten: number }> {
+  let receiptsFilled = 0;
+  let piMetadataWritten = 0;
+  try {
+    const allOrders = await listAllOrders();
+    const stripe = getStripe();
+    for (const row of allOrders) {
+      const f = row.fields;
+      const piId = f.PaymentIntentId as string;
+      if (!piId) continue;
+      const orderNumber = (f.OrderNumber as string) || "";
+
+      // Skip rows that need nothing
+      const needReceipt = !f.StripeReceipt;
+      const needPiMetadata = orderNumber.startsWith("AG-");
+
+      if (!needReceipt && !needPiMetadata) continue;
+
+      try {
+        const pi = await stripe.paymentIntents.retrieve(piId, {
+          expand: needReceipt ? ["latest_charge"] : [],
+        });
+
+        // Fill StripeReceipt if missing
+        if (needReceipt) {
+          const charge = pi.latest_charge;
+          if (charge && typeof charge !== "string" && charge.receipt_number) {
+            await updateOrderFields(row.id, { StripeReceipt: charge.receipt_number });
+            receiptsFilled++;
+          }
+        }
+
+        // Write order_number to PI metadata if not already present
+        if (needPiMetadata && pi.metadata?.order_number !== orderNumber) {
+          await stripe.paymentIntents.update(piId, {
+            metadata: { ...pi.metadata, order_number: orderNumber },
+          });
+          piMetadataWritten++;
+        }
+      } catch {
+        // Skip individual failures
+      }
+    }
+  } catch (err) {
+    console.warn("fillStripeReceipts error", err instanceof Error ? err.message : String(err));
+  }
+  return { receiptsFilled, piMetadataWritten };
+}
+
 // ─── Fulfillment endpoint ─────────────────────────────────────────────────────
 
 async function handleFulfill(request: Request) {
@@ -902,9 +962,16 @@ async function handleFulfill(request: Request) {
       dryRun,
     );
 
+    // Best-effort fill of StripeReceipt + PI metadata for rows that need it
+    const backfill = dryRun
+      ? { receiptsFilled: 0, piMetadataWritten: 0 }
+      : await fillStripeReceipts().catch(() => ({ receiptsFilled: 0, piMetadataWritten: 0 }));
+
     return json({
       mode: dryRun ? "dry-run" : "live",
       actions,
+      receiptsFilled: backfill.receiptsFilled,
+      piMetadataWritten: backfill.piMetadataWritten,
       summary: {
         total: actions.length,
         tracking_validated: actions.filter((a) => a.action === "tracking_validated").length,
