@@ -36,7 +36,7 @@ const FAQS = [
   { q: "Does the salt make my shower water salty?", a: "You'll never smell or feel it. Ion exchange swaps hardness minerals for a small amount of sodium, the same trade every whole-house softener makes, and the water remains ordinary soft water. The salt you pour into the tank is used to rinse the resin during regeneration, then drains away." },
   { q: "What are the ongoing costs?", a: "Plain softener salt from the grocery store and one $45 replacement canister about once a year. The salt runs a few dollars a bag, and there's no cartridge subscription." },
   { q: "Will it fit my shower?", a: "The AG Water Softener works with standard shower setups and most showerheads, mounts on the pipe or stands on the floor, and includes every hose and connector needed for both options. If your setup turns out to be the rare exception, the 60-day guarantee applies from day one." },
-  { q: "Can I use a shower filter with a water softener?", a: "Yes. The AG softens; any standard $25 shower filter removes chlorine. Together they run about $274, less than bundled filter-and-softener systems like the Arius at $296.87. The softening half is the part a filter can't do." },
+  { q: "Can I use a shower filter with a water softener?", a: "Yes. The AG softens; any standard $25 shower filter removes chlorine. Together they run about $274, less than bundled filter-and-softener systems like the Arius at $349.76 (their checkout price as of September 11, 2026). The softening half is the part a filter can't do." },
   { q: "Does a water softener lower the TDS reading?", a: "No, and this surprises a lot of folks. A TDS meter measures the total of everything dissolved in the water. A water softener works by ion exchange. The canister swaps out the calcium and magnesium that make water hard and releases sodium in their place. The total dissolved amount stays about the same and sometimes reads slightly higher, so a TDS meter shows little or no change on fully softened water. The meter reads the same whether the unit is working or still in the box. Hardness test strips measure the hard minerals themselves. That\u2019s the tool that shows the before and after." },
 ];
 
@@ -394,7 +394,7 @@ function ProductHero() {
             Love your water or send it back. The guarantee starts the day it arrives.
           </p>
           <p className="mt-1 text-xs italic text-muted-foreground">
-            Ships free with tracking, typically arriving in 12 to 18 days.
+            Ships free with tracking, typically arriving in 12 to 18 days. Faster shipping available at checkout.
           </p>
 
           {/* Trust badges rotator */}
