@@ -745,7 +745,7 @@ export async function processFulfillment(
     // 2. Notify ticked, shipping confirmation not yet sent
     if (f.Notify && !f.ConfirmationSentTS) {
       const firstName = extractName(f.Name as string);
-      const carrier = (f.Carrier as string) || "FedEx";
+      const carrier = (f.Carrier as string) || "Yun Express";
       const promisedBy = (f.PromisedBy as string) || "";
       const preview = buildShipping({ firstName, carrier, tracking, promisedBy });
 
@@ -775,7 +775,7 @@ export async function processFulfillment(
         continue;
       }
       const firstName = extractName(f.Name as string);
-      const carrier = (f.Carrier as string) || "FedEx";
+      const carrier = (f.Carrier as string) || "Yun Express";
       const preview = buildCheckIn({ firstName, carrier, deliveredDate });
 
       if (!dryRun) {

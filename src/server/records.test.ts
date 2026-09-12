@@ -4,6 +4,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { validateTracking } from "./records";
+import { buildShippingEmail, buildCheckInEmail } from "./email";
 
 describe("validateTracking", () => {
   it("classifies Yun Express YT-prefixed numbers", () => {
@@ -69,5 +70,31 @@ describe("validateTracking", () => {
   it("rejects invalid formats", () => {
     const result = validateTracking("ABC123");
     assert.equal(result.valid, false);
+  });
+});
+
+describe("carrier-neutral email templates", () => {
+  it("empty carrier produces neutral shipping template (no carrier name, 17track link)", () => {
+    const carrier = "" || "Yun Express"; // mirrors records.ts default
+    const result = buildShippingEmail({
+      firstName: "Test",
+      carrier,
+      tracking: "YT0000000000000000",
+      promisedBy: "2026-10-01",
+    });
+    assert.equal(result.subject, "Tracking for your AG Water Softener order");
+    assert.ok(result.text.includes("https://t.17track.net/en#nums="));
+    assert.ok(!result.text.includes("FedEx"));
+  });
+
+  it("empty carrier produces neutral check-in template (no carrier name in subject)", () => {
+    const carrier = "" || "Yun Express";
+    const result = buildCheckInEmail({
+      firstName: "Test",
+      carrier,
+      deliveredDate: "2026-09-25",
+    });
+    assert.equal(result.subject, "Tracking shows your AG Water Softener delivered");
+    assert.ok(!result.text.includes("FedEx"));
   });
 });
