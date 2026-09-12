@@ -26,6 +26,7 @@ import {
   updateOrderFields,
 } from "./records";
 import { runPnl } from "./pnl";
+import { runBatch, setupReadmeTab } from "./batch";
 
 let stripeClient: Stripe | undefined;
 const processedSessions = new Set<string>();
@@ -955,6 +956,15 @@ async function handleFulfill(request: Request) {
   const dryRun = url.searchParams.get("dry-run") === "true";
 
   try {
+    // Batch step: generate batch tab + read tracking back from supplier sheet
+    let batchResult: Awaited<ReturnType<typeof runBatch>> | null = null;
+    try {
+      await setupReadmeTab().catch(() => {});
+      batchResult = await runBatch(dryRun);
+    } catch (err) {
+      console.warn("Batch step error (non-fatal):", err instanceof Error ? err.message : String(err));
+    }
+
     const actions = await processFulfillment(
       sendEmail,
       buildShippingEmail,
@@ -970,6 +980,12 @@ async function handleFulfill(request: Request) {
     return json({
       mode: dryRun ? "dry-run" : "live",
       actions,
+      batch: batchResult ? {
+        batchDate: batchResult.batchDate,
+        ordersWritten: batchResult.ordersWritten,
+        trackingRead: batchResult.trackingRead,
+        actions: batchResult.actions,
+      } : null,
       receiptsFilled: backfill.receiptsFilled,
       piMetadataWritten: backfill.piMetadataWritten,
       summary: {
@@ -1077,7 +1093,7 @@ async function handleDigest(request: Request) {
       mtdOrders: 0, mtdGross: 0,
       verdicts: {},
       selfReports: {},
-      fulfillment: { intakeStale: 0, supplierNoTracking: 0, pastPromised: [], readyNoNotify: 0, deliveredNoCheckIn: 0 },
+      fulfillment: { intakeStale: 0, supplierNoTracking: 0, batchedAwaitingTracking: [], pastPromised: [], readyNoNotify: 0, deliveredNoCheckIn: 0 },
       dataHealth: { verdictMismatches: 0, orphanOtos: 0, missingRows: [], revenueMatch: true, airtableRevenue: 0, stripeRevenue: 0 },
     };
   }
@@ -1118,6 +1134,30 @@ async function handlePnl(request: Request) {
     const isClosed = message.includes("is closed");
     console.error(JSON.stringify({ event: "pnl_error", month, message }));
     return json({ error: message }, { status: isClosed ? 409 : 500 });
+  }
+}
+
+// ─── Batch endpoint ──────────────────────────────────────────────────────────
+
+async function handleBatch(request: Request) {
+  const authError = checkFulfillAuth(request);
+  if (authError) return authError;
+
+  const url = new URL(request.url);
+  const dryRun = url.searchParams.get("dry-run") === "true";
+
+  try {
+    // Ensure README tab exists on first call
+    await setupReadmeTab().catch((err) =>
+      console.warn("README tab setup error:", err instanceof Error ? err.message : String(err)),
+    );
+
+    const result = await runBatch(dryRun);
+    return json({ ok: true, mode: dryRun ? "dry-run" : "live", ...result });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(JSON.stringify({ event: "batch_error", message }));
+    return json({ error: message }, { status: 500 });
   }
 }
 
@@ -1219,6 +1259,10 @@ export async function handleStripeApi(request: Request) {
 
   if (url.pathname === "/api/digest" && request.method === "POST") {
     return handleDigest(request);
+  }
+
+  if (url.pathname === "/api/batch" && request.method === "POST") {
+    return handleBatch(request);
   }
 
   if (url.pathname === "/api/pnl" && request.method === "POST") {

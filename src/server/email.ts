@@ -284,6 +284,10 @@ export function buildDigestEmail(data: DigestData, errors: Record<string, string
     const fLines: string[] = [];
     if (f.intakeStale > 0) fLines.push(`intake-ready older than 24h: ${f.intakeStale}`);
     if (f.supplierNoTracking > 0) fLines.push(`sent-to-supplier older than 10 days with no tracking: ${f.supplierNoTracking}`);
+    if (f.batchedAwaitingTracking && f.batchedAwaitingTracking.length > 0) {
+      const maxDays = Math.max(...f.batchedAwaitingTracking.map((b: { days: number }) => b.days));
+      fLines.push(`batched, awaiting supplier tracking (${maxDays} days): ${f.batchedAwaitingTracking.length}`);
+    }
     if (f.pastPromised.length > 0) {
       fLines.push(`past PromisedBy and not delivered: ${f.pastPromised.length}`);
       for (const p of f.pastPromised) fLines.push(`  ${p.orderNumber} ${p.daysLate}d late`);

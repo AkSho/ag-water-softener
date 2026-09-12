@@ -546,6 +546,8 @@ export async function generateIntake(
   const config = getConfig();
   const intake = buildIntakeBlock(fields);
 
+  // Always land on intake-ready. The batch step advances to sent-to-supplier.
+  // SUPPLIER_EMAIL path kept for manual/legacy use.
   const supplierEmail = process.env.SUPPLIER_EMAIL;
   if (supplierEmail && sendFn) {
     await sendFn({
@@ -556,7 +558,7 @@ export async function generateIntake(
     return patchRecord(config, ORDERS_TABLE, recordId, {
       IntakeBlock: intake,
       SentToSupplier: true,
-      SentToSupplierTS: new Date().toISOString(),
+      SentToSupplierTS: true,
       Status: "sent-to-supplier",
     });
   }
@@ -573,7 +575,7 @@ export async function markSentToSupplier(
   const config = getConfig();
   return patchRecord(config, ORDERS_TABLE, recordId, {
     SentToSupplier: true,
-    SentToSupplierTS: new Date().toISOString(),
+    SentToSupplierTS: true,
     Status: "sent-to-supplier",
   });
 }
@@ -722,11 +724,11 @@ export async function processFulfillment(
       }
     }
 
-    // 1b. SentToSupplier ticked but not yet timestamped
+    // 1b. SentToSupplier ticked but SentToSupplierTS not ticked (both checkboxes)
     if (f.SentToSupplier && !f.SentToSupplierTS) {
       if (!dryRun) {
         await patchRecord(config, ORDERS_TABLE, row.id, {
-          SentToSupplierTS: new Date().toISOString(),
+          SentToSupplierTS: true,
           Status: "sent-to-supplier",
         });
       }
@@ -865,6 +867,7 @@ export interface DigestData {
   fulfillment: {
     intakeStale: number;
     supplierNoTracking: number;
+    batchedAwaitingTracking: Array<{ orderNumber: string; days: number }>;
     pastPromised: Array<{ orderNumber: string; daysLate: number }>;
     readyNoNotify: number;
     deliveredNoCheckIn: number;
@@ -906,6 +909,7 @@ export async function getDailyMetrics(
   const fulfillment = {
     intakeStale: 0,
     supplierNoTracking: 0,
+    batchedAwaitingTracking: [] as Array<{ orderNumber: string; days: number }>,
     pastPromised: [] as Array<{ orderNumber: string; daysLate: number }>,
     readyNoNotify: 0,
     deliveredNoCheckIn: 0,
@@ -971,6 +975,18 @@ export async function getDailyMetrics(
       if (sentTs) {
         const age = (nowMs - new Date(sentTs).getTime()) / (86400_000);
         if (age > 10) fulfillment.supplierNoTracking++;
+      }
+    }
+    // Batched orders awaiting supplier tracking
+    const batchDate = f.BatchDate as string;
+    if (batchDate && !(f.Tracking as string) && status !== "cancelled") {
+      const batchMs = new Date(batchDate).getTime();
+      if (!isNaN(batchMs)) {
+        const days = Math.floor((nowMs - batchMs) / 86400_000);
+        fulfillment.batchedAwaitingTracking.push({
+          orderNumber: (f.OrderNumber as string) || row.id.slice(-6),
+          days,
+        });
       }
     }
     if (f.PromisedBy && !f.Delivered && !refunded && status !== "cancelled") {
