@@ -247,6 +247,7 @@ const PRESERVE_ON_UPDATE = new Set([
   "CheckInTS",
   "ConfirmationSentTS",
   "SentToSupplierTS",
+  "SentToSupplierAt",
   "Notify",
   "OTOAccepted",
   "OTOAmount",
@@ -559,6 +560,7 @@ export async function generateIntake(
       IntakeBlock: intake,
       SentToSupplier: true,
       SentToSupplierTS: true,
+      SentToSupplierAt: new Date().toISOString(),
       Status: "sent-to-supplier",
     });
   }
@@ -576,6 +578,7 @@ export async function markSentToSupplier(
   return patchRecord(config, ORDERS_TABLE, recordId, {
     SentToSupplier: true,
     SentToSupplierTS: true,
+    SentToSupplierAt: new Date().toISOString(),
     Status: "sent-to-supplier",
   });
 }
@@ -729,6 +732,7 @@ export async function processFulfillment(
       if (!dryRun) {
         await patchRecord(config, ORDERS_TABLE, row.id, {
           SentToSupplierTS: true,
+          SentToSupplierAt: new Date().toISOString(),
           Status: "sent-to-supplier",
         });
       }
@@ -971,9 +975,9 @@ export async function getDailyMetrics(
       if (age > 24) fulfillment.intakeStale++;
     }
     if (status === "sent-to-supplier" && !(f.Tracking as string)) {
-      const sentTs = f.SentToSupplierTS as string;
-      if (sentTs) {
-        const age = (nowMs - new Date(sentTs).getTime()) / (86400_000);
+      const sentAt = f.SentToSupplierAt as string;
+      if (sentAt) {
+        const age = (nowMs - new Date(sentAt).getTime()) / (86400_000);
         if (age > 10) fulfillment.supplierNoTracking++;
       }
     }

@@ -112,8 +112,8 @@ function buildOrderRow(
     (f.Address2 as string) || "",
     (f.City as string) || "",
     (f.State as string) || "",
-    (f.Zip as string) || "",
-    (f.Phone as string) || "",
+    "'" + ((f.Zip as string) || ""),
+    "'" + ((f.Phone as string) || ""),
     (f.Email as string) || "",
     item,
     spareCartridge,
@@ -243,12 +243,14 @@ export async function runBatch(
         await appendRows(token, sheetId, `'${batchDate}'!A1`, dataRows);
       }
 
-      // Update Airtable: set BatchDate, Status, SentToSupplierTS (checkbox)
+      // Update Airtable: set BatchDate, Status, SentToSupplierTS + SentToSupplierAt
+      const now = new Date().toISOString();
       for (const order of eligible) {
         await updateOrderFields(order.id, {
           BatchDate: batchDate,
           Status: "sent-to-supplier",
           SentToSupplierTS: true,
+          SentToSupplierAt: now,
         });
         actions.push({
           action: "batched",
