@@ -721,6 +721,9 @@ export async function processFulfillment(
             Status: "ready-to-notify",
           });
         }
+        // Update in-memory fields so step 2 uses the validated carrier
+        f.Carrier = validation.carrier;
+        f.Status = "ready-to-notify";
         actions.push({ recordId: row.id, email, action: "tracking_validated", result: `${validation.carrier}: ${tracking}` });
       } else {
         actions.push({ recordId: row.id, email, action: "tracking_invalid", error: validation.error });
