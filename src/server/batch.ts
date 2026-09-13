@@ -105,7 +105,7 @@ function buildOrderRow(
     }
   }
 
-  const shipping = shippingMethod === "express" ? "Express" : "Standard";
+  const shipping = (shippingMethod === "express" || itemType === "cartridge") ? "Express" : "Standard";
 
   return [
     rowNum,
@@ -148,7 +148,7 @@ function buildSummaryLine(batchDate: string, orders: OrderRow[]): string {
 
     if (f.BumpTaken || f.OTOAccepted) totalSpare++;
 
-    if (shippingMethod === "express") totalExpress++;
+    if (shippingMethod === "express" || itemType === "cartridge") totalExpress++;
     else totalStandard++;
   }
 

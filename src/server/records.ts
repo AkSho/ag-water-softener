@@ -132,9 +132,15 @@ function daysBetween(isoA: string, isoB: string): number | null {
   }
 }
 
-function promiseDate(orderTs: string, shippingMethod?: string): string {
+function promiseDays(shippingMethod?: string, itemType?: string): number {
+  if (itemType === "cartridge") return 10;
+  if (itemType === "kit") return 15;
+  return shippingMethod === "express" ? 10 : 18;
+}
+
+function promiseDate(orderTs: string, shippingMethod?: string, itemType?: string): string {
   const d = new Date(orderTs);
-  d.setDate(d.getDate() + (shippingMethod === "express" ? 10 : 18));
+  d.setDate(d.getDate() + promiseDays(shippingMethod, itemType));
   return d.toISOString().split("T")[0];
 }
 
@@ -375,7 +381,7 @@ export async function upsertOrder(
     Verdict: verdict,
     DaysToPurchase: dtp,
     ToolTouch: toolTouch,
-    PromisedBy: promiseDate(input.orderTs, input.shippingMethod),
+    PromisedBy: promiseDate(input.orderTs, input.shippingMethod, input.itemType),
     Status: "paid",
   };
 
@@ -513,13 +519,21 @@ export function buildIntakeBlock(fields: Record<string, unknown>): string {
   const orderNumber = (fields.OrderNumber as string) || (fields.StripeSessionId as string || "").slice(-8);
   const orderTs = fields.OrderTS as string || "";
   const date = orderTs ? new Date(orderTs).toISOString().slice(0, 10) : "";
+  const itemType = (fields.ItemType as string) || "";
   const qty = fields.UnitQty as number || 1;
   const bump = fields.BumpTaken as boolean;
   const oto = fields.OTOAccepted as boolean;
 
-  let productLine = `${qty} x AG Water Softener`;
-  if (oto) productLine += " + Spares Kit (OTO)";
-  else if (bump) productLine += " + Spare Cartridge (bump)";
+  let productLine: string;
+  if (itemType === "cartridge") {
+    productLine = "1 x Spare Cartridge";
+  } else if (itemType === "kit") {
+    productLine = "1 x Spares Kit";
+  } else {
+    productLine = `${qty} x AG Water Softener`;
+    if (oto) productLine += " + Spares Kit (OTO)";
+    else if (bump) productLine += " + Spare Cartridge (bump)";
+  }
 
   const method = (fields.ShippingMethod as string || "standard").toUpperCase();
   let shippingLine = `Shipping: ${method}`;
@@ -1264,4 +1278,4 @@ export async function updateOrderFields(
   return patchRecord(config, ORDERS_TABLE, recordId, fields);
 }
 
-export { deriveVerdict as _deriveVerdict, promiseDate as _promiseDate, daysBetween as _daysBetween, generateOrderNumber as _generateOrderNumber };
+export { deriveVerdict as _deriveVerdict, promiseDate as _promiseDate, promiseDays, daysBetween as _daysBetween, generateOrderNumber as _generateOrderNumber };

@@ -3,6 +3,8 @@ import { createHash } from "crypto";
 import {
   sendEmail,
   buildConfirmationEmail,
+  buildCartridgeConfirmationEmail,
+  buildKitConfirmationEmail,
   buildRecoveryEmail,
   buildShippingEmail,
   buildCheckInEmail,
@@ -24,6 +26,7 @@ import {
   upsertSurvey,
   listAllOrders,
   updateOrderFields,
+  promiseDays,
 } from "./records";
 import { runPnl } from "./pnl";
 import { runBatch, setupReadmeTab } from "./batch";
@@ -255,7 +258,7 @@ async function sendMetaCapiPurchase({
 
 // ─── Part A: Confirmation email ─────────────────────────────────────────────────
 
-async function sendConfirmationEmail(session: Stripe.Checkout.Session, orderNumber: string, shippingMethod?: string) {
+async function sendConfirmationEmail(session: Stripe.Checkout.Session, orderNumber: string, shippingMethod?: string, itemType?: string) {
   const email = session.customer_details?.email;
   if (!email) {
     console.warn("No email on checkout session; skipping confirmation", { sessionId: session.id });
@@ -269,9 +272,18 @@ async function sendConfirmationEmail(session: Stripe.Checkout.Session, orderNumb
   }
 
   const firstName = extractFirstName(session.customer_details?.name);
-  const promiseDays = shippingMethod === "express" ? 10 : 18;
-  const promiseDate = formatPromiseDate(new Date(), promiseDays);
-  const { subject, text } = buildConfirmationEmail({ firstName, promiseDate, orderNumber });
+  const days = promiseDays(shippingMethod, itemType);
+  const promiseDate = formatPromiseDate(new Date(), days);
+
+  let subject: string;
+  let text: string;
+  if (itemType === "cartridge") {
+    ({ subject, text } = buildCartridgeConfirmationEmail({ firstName, promiseDate, orderNumber }));
+  } else if (itemType === "kit") {
+    ({ subject, text } = buildKitConfirmationEmail({ firstName, promiseDate, orderNumber }));
+  } else {
+    ({ subject, text } = buildConfirmationEmail({ firstName, promiseDate, orderNumber }));
+  }
 
   try {
     await sendEmail({ to: email, subject, text });
@@ -672,7 +684,7 @@ async function handleStripeWebhook(request: Request) {
 
     // 2. Email, CAPI, and Stripe metadata write in parallel
     const [emailResult, capiResult] = await Promise.allSettled([
-      sendConfirmationEmail(session, orderNumber, shippingMethod),
+      sendConfirmationEmail(session, orderNumber, shippingMethod, itemType),
       sendMetaCapiPurchase({ session, request, lineItems }),
     ]);
 
@@ -701,12 +713,13 @@ async function handleStripeWebhook(request: Request) {
         : `exception: ${(ordersResult as PromiseRejectedResult).reason}`,
     });
 
-    // Generate supplier intake for unit orders (not kit-only or cartridge-only)
-    if (ordersResult.status === "fulfilled" && ordersResult.value.ok && ordersResult.value.created && itemType !== "kit" && itemType !== "cartridge") {
+    // Generate supplier intake (advances to intake-ready for batch pipeline)
+    if (ordersResult.status === "fulfilled" && ordersResult.value.ok && ordersResult.value.created) {
       generateIntake(ordersResult.value.id!, {
         StripeSessionId: session.id,
         OrderNumber: orderNumber,
         OrderTS: orderTs,
+        ItemType: itemType,
         UnitQty: (itemType === "kit" || itemType === "cartridge") ? 0 : (Number(session.metadata?.requested_unit_qty) || 1),
         BumpTaken: bumpTaken,
         OTOAccepted: false,

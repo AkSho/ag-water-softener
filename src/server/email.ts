@@ -73,6 +73,54 @@ ${SIGN_OFF}`,
   };
 }
 
+export function buildCartridgeConfirmationEmail({
+  firstName,
+  promiseDate,
+  orderNumber,
+}: {
+  firstName: string;
+  promiseDate: string;
+  orderNumber: string;
+}) {
+  const name = firstName || "there";
+  return {
+    subject: "Your AG Spare Cartridge Order",
+    text: `Hi ${name},
+
+Order ${orderNumber}
+
+Thanks for your order. Your spare cartridge is confirmed, and you should have it by ${promiseDate}. I'll email the tracking number as soon as it ships.
+
+Any questions, just reply to this email.
+
+${SIGN_OFF}`,
+  };
+}
+
+export function buildKitConfirmationEmail({
+  firstName,
+  promiseDate,
+  orderNumber,
+}: {
+  firstName: string;
+  promiseDate: string;
+  orderNumber: string;
+}) {
+  const name = firstName || "there";
+  return {
+    subject: "Your AG Spares Kit Order",
+    text: `Hi ${name},
+
+Order ${orderNumber}
+
+Thanks for your order. Your Spares Kit is confirmed, and you should have it by ${promiseDate}. I'll email the tracking number as soon as it ships.
+
+Any questions, just reply to this email.
+
+${SIGN_OFF}`,
+  };
+}
+
 export function buildRecoveryEmail({
   firstName,
   checkoutOrPdpLink,
