@@ -1,5 +1,5 @@
 // src/server/batch.ts
-// Supplier batch sheet: generates batch tabs, reads tracking back.
+// Supplier batch sheet: single Orders tab, appends new rows, reads tracking back.
 
 import {
   getServiceAccountKey,
@@ -38,9 +38,10 @@ export interface BatchResult {
   tabPreview?: unknown[][];
 }
 
-// ─── Batch header (exact order per brief) ────────────────────────────────────
+// ─── Header (exact column order per brief) ────────────────────────────────────
 
 const HEADER = [
+  "Batched (ET)",
   "#",
   "Order no.",
   "Customer name",
@@ -58,8 +59,31 @@ const HEADER = [
   "Notes",
 ];
 
-const FULL_PARTS_LIST =
-  "(softener unit, brine tank, regeneration attachment with pump, hoses, mount adapter, wrench, teflon tape, English manual)";
+// Column indices (0-based) in the Orders tab
+const COL_BATCHED = 0;
+const COL_NUM = 1;
+const COL_ORDER_NO = 2;
+const COL_TRACKING = 14;
+
+// ─── ET timestamp ────────────────────────────────────────────────────────────
+
+function etTimestamp(): string {
+  // US Eastern: -4 during DST (Mar–Nov), -5 during EST
+  const now = new Date();
+  const year = now.getUTCFullYear();
+  const mar1 = new Date(Date.UTC(year, 2, 1));
+  const marSun2 = new Date(Date.UTC(year, 2, 14 - mar1.getUTCDay()));
+  const dstStart = new Date(marSun2.getTime() + 7 * 3600_000);
+  const nov1 = new Date(Date.UTC(year, 10, 1));
+  const novSun1 = new Date(Date.UTC(year, 10, 1 + (7 - nov1.getUTCDay()) % 7));
+  const dstEnd = new Date(novSun1.getTime() + 6 * 3600_000);
+  const offset = now >= dstStart && now < dstEnd ? -4 : -5;
+
+  const etMs = now.getTime() + offset * 3600_000;
+  const et = new Date(etMs);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${et.getUTCFullYear()}-${pad(et.getUTCMonth() + 1)}-${pad(et.getUTCDate())} ${pad(et.getUTCHours())}:${pad(et.getUTCMinutes())}`;
+}
 
 // ─── Build order rows ────────────────────────────────────────────────────────
 
@@ -71,7 +95,7 @@ interface OrderRow {
 function buildOrderRow(
   order: OrderRow,
   rowNum: number,
-  isFirstRow: boolean,
+  batchedET: string,
 ): unknown[] {
   const f = order.fields;
   const unitQty = (f.UnitQty as number) || 1;
@@ -93,7 +117,6 @@ function buildOrderRow(
   } else {
     const prefix = unitQty > 1 ? `${unitQty}x ` : "";
     item = `${prefix}H1-230KM complete set`;
-    if (isFirstRow) item += ` ${FULL_PARTS_LIST}`;
 
     if (otoAccepted) {
       spareCartridge = "Yes";
@@ -108,6 +131,7 @@ function buildOrderRow(
   const shipping = (shippingMethod === "express" || itemType === "cartridge") ? "Express" : "Standard";
 
   return [
+    batchedET,
     rowNum,
     (f.OrderNumber as string) || "",
     (f.ShipName as string) || (f.Name as string) || "",
@@ -126,40 +150,7 @@ function buildOrderRow(
   ];
 }
 
-// ─── Summary line ────────────────────────────────────────────────────────────
-
-function buildSummaryLine(batchDate: string, orders: OrderRow[]): string {
-  let totalUnits = 0;
-  let totalSpare = 0;
-  let totalExpress = 0;
-  let totalStandard = 0;
-
-  for (const o of orders) {
-    const f = o.fields;
-    const itemType = (f.ItemType as string) || "";
-    const unitQty = (f.UnitQty as number) || 1;
-    const shippingMethod = ((f.ShippingMethod as string) || "standard").toLowerCase();
-
-    if (itemType === "kit" || itemType === "cartridge") {
-      // Kit-only and cartridge-only orders don't count as units
-    } else {
-      totalUnits += unitQty;
-    }
-
-    if (f.BumpTaken || f.OTOAccepted) totalSpare++;
-
-    if (shippingMethod === "express" || itemType === "cartridge") totalExpress++;
-    else totalStandard++;
-  }
-
-  return (
-    `Batch date: ${batchDate} | ${orders.length} orders | ${totalUnits} units | ` +
-    `${totalSpare} spare cartridges | ${totalExpress} express | ${totalStandard} standard\n` +
-    `All units ship under our brand, AG Water Softener. Please add the tracking number in the last column.`
-  );
-}
-
-// ─── Batch generation (Task 2) ───────────────────────────────────────────────
+// ─── Batch generation ─────────────────────────────────────────────────────────
 
 export async function runBatch(
   dryRun: boolean = false,
@@ -170,11 +161,13 @@ export async function runBatch(
   const allOrders = await listAllOrders();
 
   const actions: BatchAction[] = [];
-
-  // Today's date in ET
   const batchDate = utcToEtDateKey(new Date().toISOString());
+  const batchedET = etTimestamp();
 
-  // Gather orders: Status = intake-ready AND no BatchDate
+  // Ensure Orders tab exists with frozen header
+  await ensureOrdersTab(token, sheetId);
+
+  // Gather eligible orders: Status = intake-ready AND no BatchDate
   const eligible = allOrders.filter((o) => {
     const status = (o.fields.Status as string) || "";
     const hasBatchDate = !!(o.fields.BatchDate as string);
@@ -185,68 +178,34 @@ export async function runBatch(
   let tabPreview: unknown[][] | undefined;
 
   if (eligible.length > 0) {
-    // Check if today's tab already exists
-    const tabs = await listTabs(token, sheetId);
-    const tabExists = tabs.some((t) => t.properties.title === batchDate);
-
-    let startRowNum = 1;
-
-    if (tabExists) {
-      // Read existing rows to determine next row number
-      const existing = await readRange(token, sheetId, `'${batchDate}'!A:A`);
-      // Find the highest # value (skip summary line and header)
-      for (const row of existing) {
-        const val = Number(row[0]);
-        if (!isNaN(val) && val >= startRowNum) startRowNum = val + 1;
-      }
+    // Read existing rows to find next # value
+    const existing = await readRange(token, sheetId, "'Orders'!B:B");
+    let maxNum = 0;
+    for (const row of existing) {
+      const val = Number(row[0]);
+      if (!isNaN(val) && val > maxNum) maxNum = val;
     }
-
-    const isFirstTab = !tabExists;
-    const isFirstRowOfTab = startRowNum === 1;
 
     // Build rows
     const dataRows: unknown[][] = [];
     for (let i = 0; i < eligible.length; i++) {
       dataRows.push(
-        buildOrderRow(eligible[i], startRowNum + i, isFirstRowOfTab && i === 0),
+        buildOrderRow(eligible[i], maxNum + 1 + i, batchedET),
       );
     }
 
-    // Build summary
-    const summaryText = buildSummaryLine(batchDate, eligible);
-
     if (dryRun) {
-      tabPreview = [
-        [summaryText],
-        [],
-        HEADER,
-        ...dataRows,
-      ];
-
+      tabPreview = [HEADER, ...dataRows];
       for (const order of eligible) {
         actions.push({
           action: "would_batch",
           orderNumber: (order.fields.OrderNumber as string) || "",
-          detail: `Status: intake-ready, would write to tab ${batchDate}`,
+          detail: `Status: intake-ready, would append to Orders tab as #${maxNum + 1 + eligible.indexOf(order)}`,
         });
       }
     } else {
-      if (!tabExists) {
-        await addTab(token, sheetId, batchDate);
-        // Write summary + header + data
-        const allRows: unknown[][] = [
-          [summaryText],
-          [], // blank row
-          HEADER,
-          ...dataRows,
-        ];
-        await clearAndWrite(token, sheetId, `'${batchDate}'!A1`, allRows);
-      } else {
-        // Append data rows to existing tab
-        await appendRows(token, sheetId, `'${batchDate}'!A1`, dataRows);
-      }
+      await appendRows(token, sheetId, "'Orders'!A1", dataRows);
 
-      // Update Airtable: set BatchDate, Status, SentToSupplierTS + SentToSupplierAt
       const now = new Date().toISOString();
       for (const order of eligible) {
         await updateOrderFields(order.id, {
@@ -258,23 +217,18 @@ export async function runBatch(
         actions.push({
           action: "batched",
           orderNumber: (order.fields.OrderNumber as string) || "",
-          detail: `Written to tab ${batchDate}, Status → sent-to-supplier`,
+          detail: `Appended to Orders tab, Status → sent-to-supplier`,
         });
       }
 
       ordersWritten = eligible.length;
-      tabPreview = [
-        [summaryText],
-        [],
-        HEADER,
-        ...dataRows,
-      ];
+      tabPreview = [HEADER, ...dataRows];
     }
   } else {
     actions.push({ action: "no_eligible_orders", detail: "No orders with Status=intake-ready and no BatchDate" });
   }
 
-  // ─── Tracking read-back (Task 3) ─────────────────────────────────────────
+  // ─── Tracking read-back ─────────────────────────────────────────────────────
 
   const trackingRead = await readBackTracking(token, sheetId, allOrders, dryRun, actions);
 
@@ -287,6 +241,44 @@ export async function runBatch(
   };
 }
 
+// ─── Ensure Orders tab exists ─────────────────────────────────────────────────
+
+async function ensureOrdersTab(
+  token: string,
+  sheetId: string,
+): Promise<void> {
+  const tabs = await listTabs(token, sheetId);
+  if (tabs.some((t) => t.properties.title === "Orders")) return;
+
+  await addTab(token, sheetId, "Orders");
+  await clearAndWrite(token, sheetId, "'Orders'!A1", [HEADER]);
+
+  // Freeze row 1
+  const updatedTabs = await listTabs(token, sheetId);
+  const ordersTab = updatedTabs.find((t) => t.properties.title === "Orders");
+  if (ordersTab) {
+    const SHEETS_BASE = "https://sheets.googleapis.com/v4/spreadsheets";
+    await fetch(`${SHEETS_BASE}/${sheetId}:batchUpdate`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        requests: [{
+          updateSheetProperties: {
+            properties: {
+              sheetId: ordersTab.properties.sheetId,
+              gridProperties: { frozenRowCount: 1 },
+            },
+            fields: "gridProperties.frozenRowCount",
+          },
+        }],
+      }),
+    });
+  }
+}
+
 // ─── Tracking read-back ──────────────────────────────────────────────────────
 
 async function readBackTracking(
@@ -296,8 +288,6 @@ async function readBackTracking(
   dryRun: boolean,
   actions: BatchAction[],
 ): Promise<number> {
-  const tabs = await listTabs(token, sheetId);
-
   // Build a map of OrderNumber → { id, tracking } for quick lookup
   const orderMap = new Map<string, { id: string; tracking: string }>();
   for (const o of allOrders) {
@@ -310,70 +300,71 @@ async function readBackTracking(
     }
   }
 
-  // Only read tabs from the last 30 days
+  // 30-day cutoff by Batched (ET) column
   const now = new Date();
   const cutoff = new Date(now.getTime() - 30 * 86400_000);
   const cutoffStr = cutoff.toISOString().slice(0, 10);
 
+  const rows = await readRange(token, sheetId, "'Orders'!A:P");
   let trackingRead = 0;
 
-  for (const tab of tabs) {
-    const title = tab.properties.title;
-    // Only process date-named tabs (YYYY-MM-DD)
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(title)) continue;
-    if (title < cutoffStr) continue;
+  for (const row of rows) {
+    // Skip header
+    const orderNo = String(row[COL_ORDER_NO] || "").trim();
+    if (!orderNo || !orderNo.startsWith("AG-")) continue;
 
-    const rows = await readRange(token, sheetId, `'${title}'!A:O`);
+    // 30-day window: compare Batched (ET) date portion against cutoff
+    const batchedStr = String(row[COL_BATCHED] || "").trim();
+    const batchedDate = batchedStr.slice(0, 10); // YYYY-MM-DD portion
+    if (batchedDate < cutoffStr) continue;
 
-    for (const row of rows) {
-      // Find the Order no. column (index 1 in data rows, but we need to skip summary/header)
-      const orderNo = String(row[1] || "").trim();
-      if (!orderNo || !orderNo.startsWith("AG-")) continue;
+    const sheetTracking = String(row[COL_TRACKING] || "").trim();
+    if (!sheetTracking) continue;
 
-      const sheetTracking = String(row[13] || "").trim(); // Column N = index 13
-      if (!sheetTracking) continue;
+    const existing = orderMap.get(orderNo);
+    if (!existing) continue;
 
-      const existing = orderMap.get(orderNo);
-      if (!existing) continue;
+    // Never overwrite a non-empty Airtable Tracking
+    if (existing.tracking) continue;
 
-      // Never overwrite a non-empty Airtable Tracking
-      if (existing.tracking) continue;
-
-      if (dryRun) {
-        actions.push({
-          action: "would_read_tracking",
-          orderNumber: orderNo,
-          detail: `Tab ${title}: tracking "${sheetTracking}" → Airtable`,
-        });
-      } else {
-        await updateOrderFields(existing.id, {
-          Tracking: sheetTracking.replace(/\s/g, ""),
-        });
-        actions.push({
-          action: "tracking_read",
-          orderNumber: orderNo,
-          detail: `Tab ${title}: tracking "${sheetTracking}" written to Airtable`,
-        });
-      }
-      trackingRead++;
+    if (dryRun) {
+      actions.push({
+        action: "would_read_tracking",
+        orderNumber: orderNo,
+        detail: `Orders tab: tracking "${sheetTracking}" → Airtable`,
+      });
+    } else {
+      await updateOrderFields(existing.id, {
+        Tracking: sheetTracking.replace(/\s/g, ""),
+      });
+      actions.push({
+        action: "tracking_read",
+        orderNumber: orderNo,
+        detail: `Orders tab: tracking "${sheetTracking}" written to Airtable`,
+      });
     }
+    trackingRead++;
   }
 
   return trackingRead;
 }
 
-// ─── README tab (Task 5) ─────────────────────────────────────────────────────
+// ─── README tab ───────────────────────────────────────────────────────────────
 
-const README_TEXT = [
+const README_ROWS: unknown[][] = [
   ["AG Supplier Orders"],
   [""],
-  ["This sheet is the batch order list for AG Water Softener."],
+  ["One tab: Orders. New orders appear at the bottom with a timestamp."],
   [""],
-  ["Each tab is one day's batch, named by date (YYYY-MM-DD)."],
+  ["Fill only the Tracking (supplier) column with the tracking number for each order."],
   [""],
-  ["The supplier fills only the Tracking (supplier) column with the tracking number for each order."],
+  ["Cutoff: 3:00 PM Beijing time. Orders placed after the cutoff go into the next batch."],
   [""],
-  ["Cutoff: 3:00 PM Beijing time. Orders placed after the cutoff go into the next day's batch."],
+  ["Parts list: softener unit, brine tank, regeneration attachment with pump, hoses, mount adapter, wrench, teflon tape, English manual."],
+  [""],
+  ["Live counts:"],
+  ["Total orders", "=COUNTA(Orders!C:C)-1"],
+  ["Awaiting tracking", '=COUNTBLANK(OFFSET(Orders!O2,0,0,COUNTA(Orders!C:C)-1,1))'],
 ];
 
 export async function ensureReadmeTab(
@@ -384,10 +375,9 @@ export async function ensureReadmeTab(
   const hasReadme = tabs.some((t) => t.properties.title === "README");
   if (!hasReadme) {
     await addTab(token, sheetId, "README");
-    await clearAndWrite(token, sheetId, "'README'!A1", README_TEXT);
-    return true;
   }
-  return false;
+  await clearAndWrite(token, sheetId, "'README'!A1", README_ROWS);
+  return !hasReadme;
 }
 
 export async function setupReadmeTab(): Promise<{ created: boolean }> {
