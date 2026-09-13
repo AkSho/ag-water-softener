@@ -155,14 +155,18 @@ function SpareCartridgePage() {
             {PAGE_FAQS.map((f) => (
               <div key={f.q}>
                 <h3 className="font-semibold text-foreground">{f.q}</h3>
-                <p className="mt-2">{f.a}</p>
+                <p className="mt-2">
+                  {f.q === "How do I recharge the spare?"
+                    ? <>The same way as the one in the unit, with the brine tank and plain non-iodized salt, about 30 minutes. The recharge video at <a href="/setup" className="underline hover:opacity-70">agsoftener.com/setup</a> shows it.</>
+                    : f.a}
+                </p>
               </div>
             ))}
           </div>
         </div>
 
         <p className="mt-10 text-sm text-foreground/70">
-          Questions before you buy: support@agsoftener.com.
+          If you have any other questions, reach out to us: support@agsoftener.com.
         </p>
 
         <div className="mt-14 border-t border-border/60 pt-10">

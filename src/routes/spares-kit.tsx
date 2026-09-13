@@ -9,7 +9,7 @@ const PAGE_FAQS = [
   },
   {
     q: "Is this the same as the spare cartridge?",
-    a: "No. The cartridge is the filter inside the canister, sold separately. This kit is the mounting and recharge hardware around it.",
+    a: "No. The cartridge is the resin canister itself, sold separately. This kit is the mounting and recharge hardware around it.",
   },
 ];
 

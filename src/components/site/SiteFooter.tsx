@@ -6,6 +6,7 @@ export function SiteFooter() {
   const shop: { label: string; href: string }[] = [
     { label: "The AG Water Softener", href: "/" },
     { label: "AG Spares Kit", href: "/spares-kit" },
+    { label: "Spare Cartridge", href: "/spare-cartridge" },
   ];
   const support: { label: string; href: string }[] = [
     { label: "Setup guide", href: "/setup" },
