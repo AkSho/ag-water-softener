@@ -594,8 +594,13 @@ async function handleStripeWebhook(request: Request) {
     // Derive ItemType from session metadata
     const isAgPdp = session.metadata?.source === "ag_pdp";
     const bumpTaken = session.metadata?.requested_include_spare === "true";
+    const cartridgePrice = process.env.STRIPE_PRICE_SPARE_CARTRIDGE || "";
+    const isCartridge = !isAgPdp && cartridgePrice &&
+      lineItems.data.some((item) => item.price?.id === cartridgePrice);
     let itemType: string;
-    if (!isAgPdp) {
+    if (isCartridge) {
+      itemType = "cartridge";
+    } else if (!isAgPdp) {
       itemType = "kit";
     } else if (bumpTaken) {
       itemType = "unit+bump";
@@ -634,7 +639,7 @@ async function handleStripeWebhook(request: Request) {
         name: session.customer_details?.name || "",
         orderTs,
         amount: typeof session.amount_total === "number" ? session.amount_total / 100 : 0,
-        unitQty: itemType === "kit" ? 0 : (Number(session.metadata?.requested_unit_qty) || 1),
+        unitQty: (itemType === "kit" || itemType === "cartridge") ? 0 : (Number(session.metadata?.requested_unit_qty) || 1),
         bumpTaken,
         itemType,
         repeatCustomer,
@@ -696,13 +701,13 @@ async function handleStripeWebhook(request: Request) {
         : `exception: ${(ordersResult as PromiseRejectedResult).reason}`,
     });
 
-    // Generate supplier intake for unit orders (not kit-only)
-    if (ordersResult.status === "fulfilled" && ordersResult.value.ok && ordersResult.value.created && itemType !== "kit") {
+    // Generate supplier intake for unit orders (not kit-only or cartridge-only)
+    if (ordersResult.status === "fulfilled" && ordersResult.value.ok && ordersResult.value.created && itemType !== "kit" && itemType !== "cartridge") {
       generateIntake(ordersResult.value.id!, {
         StripeSessionId: session.id,
         OrderNumber: orderNumber,
         OrderTS: orderTs,
-        UnitQty: itemType === "kit" ? 0 : (Number(session.metadata?.requested_unit_qty) || 1),
+        UnitQty: (itemType === "kit" || itemType === "cartridge") ? 0 : (Number(session.metadata?.requested_unit_qty) || 1),
         BumpTaken: bumpTaken,
         OTOAccepted: false,
         ShippingMethod: shippingMethod,

@@ -13,6 +13,7 @@ import { Route as WaterSoftenerForApartmentRouteImport } from './routes/water-so
 import { Route as ThanksRouteImport } from './routes/thanks'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SparesKitRouteImport } from './routes/spares-kit'
+import { Route as SpareCartridgeRouteImport } from './routes/spare-cartridge'
 import { Route as SoftwatercareVsShowerstickVsAgRouteImport } from './routes/softwatercare-vs-showerstick-vs-ag'
 import { Route as ShowerstickAlternativeRouteImport } from './routes/showerstick-alternative'
 import { Route as ShowerHeadWaterSoftenerRouteImport } from './routes/shower-head-water-softener'
@@ -51,6 +52,11 @@ const TermsRoute = TermsRouteImport.update({
 const SparesKitRoute = SparesKitRouteImport.update({
   id: '/spares-kit',
   path: '/spares-kit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SpareCartridgeRoute = SpareCartridgeRouteImport.update({
+  id: '/spare-cartridge',
+  path: '/spare-cartridge',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SoftwatercareVsShowerstickVsAgRoute =
@@ -171,6 +177,7 @@ export interface FileRoutesByFullPath {
   '/shower-head-water-softener': typeof ShowerHeadWaterSoftenerRoute
   '/showerstick-alternative': typeof ShowerstickAlternativeRoute
   '/softwatercare-vs-showerstick-vs-ag': typeof SoftwatercareVsShowerstickVsAgRoute
+  '/spare-cartridge': typeof SpareCartridgeRoute
   '/spares-kit': typeof SparesKitRoute
   '/terms': typeof TermsRoute
   '/thanks': typeof ThanksRoute
@@ -195,6 +202,7 @@ export interface FileRoutesByTo {
   '/shower-head-water-softener': typeof ShowerHeadWaterSoftenerRoute
   '/showerstick-alternative': typeof ShowerstickAlternativeRoute
   '/softwatercare-vs-showerstick-vs-ag': typeof SoftwatercareVsShowerstickVsAgRoute
+  '/spare-cartridge': typeof SpareCartridgeRoute
   '/spares-kit': typeof SparesKitRoute
   '/terms': typeof TermsRoute
   '/thanks': typeof ThanksRoute
@@ -220,6 +228,7 @@ export interface FileRoutesById {
   '/shower-head-water-softener': typeof ShowerHeadWaterSoftenerRoute
   '/showerstick-alternative': typeof ShowerstickAlternativeRoute
   '/softwatercare-vs-showerstick-vs-ag': typeof SoftwatercareVsShowerstickVsAgRoute
+  '/spare-cartridge': typeof SpareCartridgeRoute
   '/spares-kit': typeof SparesKitRoute
   '/terms': typeof TermsRoute
   '/thanks': typeof ThanksRoute
@@ -246,6 +255,7 @@ export interface FileRouteTypes {
     | '/shower-head-water-softener'
     | '/showerstick-alternative'
     | '/softwatercare-vs-showerstick-vs-ag'
+    | '/spare-cartridge'
     | '/spares-kit'
     | '/terms'
     | '/thanks'
@@ -270,6 +280,7 @@ export interface FileRouteTypes {
     | '/shower-head-water-softener'
     | '/showerstick-alternative'
     | '/softwatercare-vs-showerstick-vs-ag'
+    | '/spare-cartridge'
     | '/spares-kit'
     | '/terms'
     | '/thanks'
@@ -294,6 +305,7 @@ export interface FileRouteTypes {
     | '/shower-head-water-softener'
     | '/showerstick-alternative'
     | '/softwatercare-vs-showerstick-vs-ag'
+    | '/spare-cartridge'
     | '/spares-kit'
     | '/terms'
     | '/thanks'
@@ -319,6 +331,7 @@ export interface RootRouteChildren {
   ShowerHeadWaterSoftenerRoute: typeof ShowerHeadWaterSoftenerRoute
   ShowerstickAlternativeRoute: typeof ShowerstickAlternativeRoute
   SoftwatercareVsShowerstickVsAgRoute: typeof SoftwatercareVsShowerstickVsAgRoute
+  SpareCartridgeRoute: typeof SpareCartridgeRoute
   SparesKitRoute: typeof SparesKitRoute
   TermsRoute: typeof TermsRoute
   ThanksRoute: typeof ThanksRoute
@@ -353,6 +366,13 @@ declare module '@tanstack/react-router' {
       path: '/spares-kit'
       fullPath: '/spares-kit'
       preLoaderRoute: typeof SparesKitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/spare-cartridge': {
+      id: '/spare-cartridge'
+      path: '/spare-cartridge'
+      fullPath: '/spare-cartridge'
+      preLoaderRoute: typeof SpareCartridgeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/softwatercare-vs-showerstick-vs-ag': {
@@ -503,6 +523,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShowerHeadWaterSoftenerRoute: ShowerHeadWaterSoftenerRoute,
   ShowerstickAlternativeRoute: ShowerstickAlternativeRoute,
   SoftwatercareVsShowerstickVsAgRoute: SoftwatercareVsShowerstickVsAgRoute,
+  SpareCartridgeRoute: SpareCartridgeRoute,
   SparesKitRoute: SparesKitRoute,
   TermsRoute: TermsRoute,
   ThanksRoute: ThanksRoute,

@@ -75,7 +75,8 @@ describe("validateTracking", () => {
 
 describe("carrier-neutral email templates", () => {
   it("empty carrier produces neutral shipping template (no carrier name, 17track link)", () => {
-    const carrier = "" || "Yun Express"; // mirrors records.ts default
+    const emptyCarrier = "";
+    const carrier = emptyCarrier || "Yun Express"; // mirrors records.ts default
     const result = buildShippingEmail({
       firstName: "Test",
       carrier,

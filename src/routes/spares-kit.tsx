@@ -170,7 +170,11 @@ function SparesKitPage() {
           <div className="mt-6 space-y-8 text-[15px] leading-[1.7] text-foreground/90">
             {PAGE_FAQS.map((f) => (
               <div key={f.q}>
-                <h3 className="font-semibold text-foreground">{f.q}</h3>
+                <h3 className="font-semibold text-foreground">
+                  {f.q === "Is this the same as the spare cartridge?"
+                    ? <>Is this the same as the <a href="/spare-cartridge" className="underline hover:opacity-70">spare cartridge</a>?</>
+                    : f.q}
+                </h3>
                 <p className="mt-2">{f.a}</p>
               </div>
             ))}

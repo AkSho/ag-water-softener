@@ -87,6 +87,9 @@ function buildOrderRow(
   if (itemType === "kit") {
     item = "Spares Kit";
     spareCartridge = "No";
+  } else if (itemType === "cartridge") {
+    item = "Spare cartridge";
+    spareCartridge = "No";
   } else {
     const prefix = unitQty > 1 ? `${unitQty}x ` : "";
     item = `${prefix}H1-230KM complete set`;
@@ -137,8 +140,8 @@ function buildSummaryLine(batchDate: string, orders: OrderRow[]): string {
     const unitQty = (f.UnitQty as number) || 1;
     const shippingMethod = ((f.ShippingMethod as string) || "standard").toLowerCase();
 
-    if (itemType === "kit") {
-      // Kit-only orders don't count as units
+    if (itemType === "kit" || itemType === "cartridge") {
+      // Kit-only and cartridge-only orders don't count as units
     } else {
       totalUnits += unitQty;
     }
