@@ -30,6 +30,7 @@ import {
 } from "./records";
 import { runPnl } from "./pnl";
 import { runBatch, setupReadmeTab } from "./batch";
+import { runGadsExport } from "./gads-export";
 
 let stripeClient: Stripe | undefined;
 const processedSessions = new Set<string>();
@@ -995,6 +996,14 @@ async function handleFulfill(request: Request) {
       ? { receiptsFilled: 0, piMetadataWritten: 0 }
       : await fillStripeReceipts().catch(() => ({ receiptsFilled: 0, piMetadataWritten: 0 }));
 
+    // Google Ads conversion export — failure-isolated, never breaks other steps
+    let gadsExport: Awaited<ReturnType<typeof runGadsExport>> | null = null;
+    try {
+      gadsExport = await runGadsExport(dryRun);
+    } catch (err) {
+      console.warn("Google Ads export error (non-fatal):", err instanceof Error ? err.message : String(err));
+    }
+
     return json({
       mode: dryRun ? "dry-run" : "live",
       actions,
@@ -1003,6 +1012,12 @@ async function handleFulfill(request: Request) {
         ordersWritten: batchResult.ordersWritten,
         trackingRead: batchResult.trackingRead,
         actions: batchResult.actions,
+      } : null,
+      gadsExport: gadsExport ? {
+        exported: gadsExport.exported,
+        skipped: gadsExport.skipped,
+        alreadyExported: gadsExport.alreadyExported,
+        errors: gadsExport.errors,
       } : null,
       receiptsFilled: backfill.receiptsFilled,
       piMetadataWritten: backfill.piMetadataWritten,
