@@ -141,10 +141,15 @@ export async function runGadsExport(dryRun: boolean = false): Promise<GadsExport
   const exportTs = new Date().toISOString();
   for (const row of qualifying) {
     try {
-      await updateOrderFields(row.id, {
+      const patch = await updateOrderFields(row.id, {
         GadsExported: true,
         GadsExportedTS: exportTs,
       });
+      if (!patch.ok) {
+        result.errors.push(`${(row.fields.OrderNumber as string) || row.id}: ${patch.error}`);
+        result.skipped++;
+        continue;
+      }
       result.exported++;
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
