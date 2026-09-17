@@ -49,7 +49,7 @@ export const Route = createFileRoute("/shower-filter-vs-water-softener")({
           "@type": "Article",
           headline: "Shower filter vs water softener: which one fixes your water",
           datePublished: "2026-07-28",
-          dateModified: "2026-08-27",
+          dateModified: "2026-09-17",
           author: { "@type": "Organization", name: "AG Water Softener" },
         }),
       },
@@ -101,7 +101,7 @@ function ShowerFilterVsSoftenerPage() {
           Shower filter vs water softener: which one fixes your water
         </h1>
         <p className="text-sm text-muted-foreground">
-          Updated Aug 27, 2026
+          Updated Sep 17, 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
@@ -208,6 +208,9 @@ function ShowerFilterVsSoftenerPage() {
           </p>
           <p>
             The trade: AG does not remove chlorine. If your water is both hard and heavily chlorinated, soften first, because hardness causes the buildup, then add a basic filter if the chlorine still bothers you.
+          </p>
+          <p>
+            If you rent or own a condo, the <a href="/water-softener-for-apartment" className="underline hover:opacity-70">water softener for an apartment</a> guide covers every option that fits.
           </p>
         </div>
 

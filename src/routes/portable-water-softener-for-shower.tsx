@@ -21,13 +21,13 @@ const PAGE_FAQS = [
 export const Route = createFileRoute("/portable-water-softener-for-shower")({
   head: () => ({
     meta: [
-      { title: "Portable Water Softener for Showers: Affordable at $249" },
+      { title: "Portable water softener for the shower: the real options" },
       {
         name: "description",
         content:
           "A portable water softener for the shower comes in two forms: 30-pound RV tanks and shower-arm units. Here is what each takes and costs.",
       },
-      { property: "og:title", content: "Portable Water Softener for Showers: Affordable at $249" },
+      { property: "og:title", content: "Portable water softener for the shower: the real options" },
       { property: "og:description", content: "A portable water softener for the shower comes in two forms: 30-pound RV tanks and shower-arm units. Here is what each takes and costs." },
       { property: "og:url", content: "https://agsoftener.com/portable-water-softener-for-shower" },
       { property: "og:type", content: "article" },
@@ -45,7 +45,7 @@ export const Route = createFileRoute("/portable-water-softener-for-shower")({
           "@type": "Article",
           headline: "Portable water softener for your shower: the real options",
           datePublished: "2026-07-28",
-          dateModified: "2026-08-20",
+          dateModified: "2026-09-17",
           author: { "@type": "Organization", name: "AG Water Softener" },
         }),
       },
@@ -87,7 +87,7 @@ function PortableWaterSoftenerPage() {
           Portable water softener for your shower: the real options
         </h1>
         <p className="text-sm text-muted-foreground">
-          Updated Aug 20, 2026
+          Updated Sep 17, 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
@@ -150,6 +150,12 @@ function PortableWaterSoftenerPage() {
           </p>
           <p>
             The trade-off in the other direction: an RV tank holds more resin, so it goes longer between recharges. AG trades some capacity for actually belonging in a bathroom. For one or two people showering daily, the recharge cadence stays a light routine.
+          </p>
+          <p>
+            The <a href="/water-softener-for-apartment" className="underline hover:opacity-70">water softener for an apartment</a> page handles the rest of the renter decision.
+          </p>
+          <p>
+            The <a href="/best-shower-water-softener" className="underline hover:opacity-70">shower softener ranking</a> puts these options side by side.
           </p>
         </div>
 

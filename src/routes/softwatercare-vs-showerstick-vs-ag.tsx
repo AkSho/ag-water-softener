@@ -16,6 +16,10 @@ const PAGE_FAQS = [
     q: "Which one should a renter pick?",
     a: "All three install without plumbing changes, so none requires landlord permission. Pick the ShowerStick if a 5-minute weekly chore suits you better than a longer monthly one, and a handheld head is fine. SoftWaterCare makes sense if you want filter and softener in one box and don\u2019t mind the recharge project. The AG is for people who want the shortest recharge and the longest guarantee, and who are fine adding a cheap filter for chlorine. We make the AG, so weigh this paragraph accordingly.",
   },
+  {
+    q: "Does SoftWaterCare work?",
+    a: "Yes. SoftWaterCare pairs a carbon filter with an ion-exchange softener cartridge, the same resin chemistry the AG Water Softener and the ShowerStick use. It softens water. As of September 2026 their published specs do not state how many gallons one recharge treats. That number decides how often you refill salt. Ask for it before you buy. For the AG it is about 1,300 gallons per recharge.",
+  },
 ];
 
 export const Route = createFileRoute("/softwatercare-vs-showerstick-vs-ag")({
@@ -66,7 +70,7 @@ export const Route = createFileRoute("/softwatercare-vs-showerstick-vs-ag")({
           headline:
             "SoftWaterCare vs ShowerStick vs AG: three shower softeners compared",
           datePublished: "2026-08-18",
-          dateModified: "2026-08-18",
+          dateModified: "2026-09-17",
           author: {
             "@type": "Organization",
             name: "AG Water Softener",
@@ -121,7 +125,7 @@ function SoftwatercareVsShowerstickVsAgPage() {
           SoftWaterCare vs ShowerStick vs AG: three shower softeners compared
         </h1>
         <p className="text-sm text-muted-foreground">
-          Updated Aug 18, 2026
+          Updated Sep 17, 2026
         </p>
         <p className="mt-3 text-[13px] italic text-muted-foreground">
           Checked against live product pages on August 18, 2026. If anything
@@ -490,6 +494,9 @@ function SoftwatercareVsShowerstickVsAgPage() {
           <p>
             Whichever way you lean, confirm your water is actually hard first.
             All three products are wasted on soft water.
+          </p>
+          <p>
+            For the step before this comparison, the <a href="/water-softener-for-apartment" className="underline hover:opacity-70">water softener for an apartment</a> page lays out the options.
           </p>
         </div>
 

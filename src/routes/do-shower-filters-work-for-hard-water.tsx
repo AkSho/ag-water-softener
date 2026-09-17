@@ -23,14 +23,14 @@ export const Route = createFileRoute(
 )({
   head: () => ({
     meta: [
-      { title: "Do Shower Filters Work for Hard Water? No, and What Works Instead" },
+      { title: "Do shower filters work for hard water? No, here's what does" },
       {
         name: "description",
         content:
-          "Shower filters remove chlorine, not hardness. Calcium and magnesium pass straight through carbon and KDF. Here is what removes them instead.",
+          "Shower filters remove chlorine. Dissolved calcium and magnesium pass through carbon and KDF untouched. Ion exchange removes them, sized for a shower arm.",
       },
-      { property: "og:title", content: "Do Shower Filters Work for Hard Water? No, and What Works Instead" },
-      { property: "og:description", content: "Shower filters remove chlorine, not hardness. Calcium and magnesium pass straight through carbon and KDF. Here is what removes them instead." },
+      { property: "og:title", content: "Do shower filters work for hard water? No, here's what does" },
+      { property: "og:description", content: "Shower filters remove chlorine. Dissolved calcium and magnesium pass through carbon and KDF untouched. Ion exchange removes them, sized for a shower arm." },
       { property: "og:url", content: "https://agsoftener.com/do-shower-filters-work-for-hard-water" },
       { property: "og:type", content: "article" },
       { property: "og:image", content: "https://agsoftener.com/assets/hero.png" },
@@ -50,7 +50,7 @@ export const Route = createFileRoute(
           "@type": "Article",
           headline: "Do shower filters work for hard water?",
           datePublished: "2026-07-28",
-          dateModified: "2026-08-26",
+          dateModified: "2026-09-17",
           author: { "@type": "Organization", name: "AG Water Softener" },
         }),
       },
@@ -102,7 +102,7 @@ function DoShowerFiltersWorkPage() {
           Do shower filters work for hard water?
         </h1>
         <p className="text-sm text-muted-foreground">
-          Updated Aug 26, 2026
+          Updated Sep 17, 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
@@ -173,7 +173,10 @@ function DoShowerFiltersWorkPage() {
             A shower water softener closes that gap. <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> is an ion-exchange unit that mounts on the shower arm, installs in about ten minutes without tools, and regenerates with plain non-iodized salt. A $10 test strip puts the proof on your counter. $249, 60-day money-back guarantee, and it leaves the building's plumbing untouched when you move out.
           </p>
           <p>
-            For a side-by-side of what each device removes, read the <a href="/shower-filter-vs-water-softener" className="underline hover:opacity-70">full filter vs softener comparison</a>.
+            The <a href="/water-softener-for-apartment" className="underline hover:opacity-70">apartment water softener guide</a> walks through what a renter can install.
+          </p>
+          <p>
+            For a side-by-side of what each device removes, read the <a href="/shower-filter-vs-water-softener" className="underline hover:opacity-70">full filter vs softener comparison</a>. A <a href="/best-shower-water-softener" className="underline hover:opacity-70">ranked list of shower water softeners</a> shows how the rest of the field stacks up.
           </p>
         </div>
 

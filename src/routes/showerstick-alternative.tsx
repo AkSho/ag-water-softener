@@ -45,7 +45,7 @@ export const Route = createFileRoute("/showerstick-alternative")({
           "@type": "Article",
           headline: "ShowerStick alternative: the side-by-side comparison",
           datePublished: "2026-07-28",
-          dateModified: "2026-09-01",
+          dateModified: "2026-09-17",
           author: { "@type": "Organization", name: "AG Water Softener" },
         }),
       },
@@ -87,7 +87,7 @@ function ShowerstickAlternativePage() {
           ShowerStick alternative: the side-by-side comparison
         </h1>
         <p className="text-sm text-muted-foreground">
-          Updated Sep 1, 2026
+          Updated Sep 17, 2026
         </p>
 
         <div
@@ -262,6 +262,9 @@ function ShowerstickAlternativePage() {
           </p>
           <p>
             Either way, confirm your water is actually hard first: <a href="https://www.myapartmentwaterquality.com/" className="underline hover:opacity-70">check it free with our lookup tool</a> or run a strip. Both products are wasted on soft water.
+          </p>
+          <p>
+            Renters weighing more than these two can start at the <a href="/water-softener-for-apartment" className="underline hover:opacity-70">apartment water softener guide</a>.
           </p>
         </div>
 

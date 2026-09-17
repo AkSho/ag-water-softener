@@ -21,7 +21,7 @@ const PAGE_FAQS = [
 export const Route = createFileRoute("/water-softener-for-apartment")({
   head: () => ({
     meta: [
-      { title: "Affordable Hard Water Softener for Apartments ($249)" },
+      { title: "Hard water softener for apartments: what actually works" },
       {
         name: "description",
         content:
@@ -29,7 +29,7 @@ export const Route = createFileRoute("/water-softener-for-apartment")({
       },
       {
         property: "og:title",
-        content: "Affordable Hard Water Softener for Apartments ($249)",
+        content: "Hard water softener for apartments: what actually works",
       },
       {
         property: "og:description",
