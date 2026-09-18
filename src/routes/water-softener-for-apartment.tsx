@@ -62,7 +62,7 @@ export const Route = createFileRoute("/water-softener-for-apartment")({
           headline:
             "Water softener for an apartment: what actually works",
           datePublished: "2026-07-28",
-          dateModified: "2026-08-25",
+          dateModified: "2026-09-17",
           author: {
             "@type": "Organization",
             name: "AG Water Softener",
@@ -117,7 +117,7 @@ function WaterSoftenerForApartmentPage() {
           Water softener for an apartment: what actually works
         </h1>
         <p className="text-sm text-muted-foreground">
-          Updated Aug 25, 2026
+          Updated Sep 17, 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
@@ -325,7 +325,7 @@ function WaterSoftenerForApartmentPage() {
               two years without touching the problem this page is about.
             </p>
             <p className="text-[13px] italic text-muted-foreground">
-              Figures checked against retailer listings: Jolie pricing August 19,
+              Figures checked against retailer listings: Jolie pricing September 17,
               2026. If they change their prices, tell us and we'll update the
               table.
             </p>
