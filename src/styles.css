@@ -116,7 +116,7 @@
     font-weight: 400;
     letter-spacing: 0em;
   }
-
+  button:not(:disabled) { cursor: pointer; }
 }
 
 /* Marquee for announcement bar rotation is CSS-based fade */
