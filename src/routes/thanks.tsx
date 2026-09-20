@@ -117,6 +117,13 @@ function ThanksPage() {
     if (window.localStorage.getItem(dismissKey) || window.localStorage.getItem(acceptKey)) return;
 
     setOtoState("idle");
+
+    // Beacon: OTO card shown
+    fetch("/api/oto-beacon", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ session_id: summary.id, event: "shown" }),
+    }).catch(() => { /* fail silently */ });
   }, [summary]);
 
   useEffect(() => {
@@ -301,6 +308,13 @@ function ThanksPage() {
     if (!summary?.id) return;
     setOtoState("declined");
     window.localStorage.setItem(`agOtoDismissed:${summary.id}`, "1");
+
+    // Beacon: OTO declined
+    fetch("/api/oto-beacon", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ session_id: summary.id, event: "declined" }),
+    }).catch(() => { /* fail silently */ });
   }
 
   const isVerified = summary?.verified === true;

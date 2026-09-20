@@ -26,6 +26,7 @@ import {
   upsertSurvey,
   listAllOrders,
   updateOrderFields,
+  patchOrderBySession,
   promiseDays,
 } from "./records";
 import { runPnl } from "./pnl";
@@ -443,12 +444,13 @@ async function createCheckoutSession(request: Request) {
       throw error;
     }
 
-    console.warn(
-      "Stripe optional spare cross-sell skipped because the spare Price needs tax behavior configured.",
-      error,
+    console.error(
+      "Cross-sell dropped: optional_items removed due to tax behavior conflict",
+      { unitQty, error: error instanceof Error ? error.message : String(error) },
     );
     const { optional_items: _optionalItems, ...fallbackParams } = params;
     session = await stripe.checkout.sessions.create(fallbackParams);
+    console.error("Cross-sell dropped: session created without cross-sell", { sessionId: session.id });
   }
 
   return json({ url: session.url });
@@ -621,6 +623,12 @@ async function handleStripeWebhook(request: Request) {
       itemType = "unit";
     }
 
+    // Determine bump source for observability
+    let bumpSource = "";
+    if (sparePurchased) {
+      bumpSource = bumpTaken ? "drawer" : "stripe_crosssell";
+    }
+
     // Check for repeat customer (earlier paid session for same email)
     let repeatCustomer = false;
     const customerEmail = session.customer_details?.email?.toLowerCase().trim();
@@ -673,6 +681,7 @@ async function handleStripeWebhook(request: Request) {
         gclid: session.metadata?.ft_gclid || "",
         msclkid: session.metadata?.ft_msclkid || "",
         fbclid: session.metadata?.ft_fbclid || "",
+        bumpSource,
       });
       ordersResult = { status: "fulfilled", value: val };
     } catch (reason) {
@@ -1194,6 +1203,52 @@ async function handleBatch(request: Request) {
   }
 }
 
+// ─── OTO beacon ──────────────────────────────────────────────────────────────
+
+async function handleOtoBeacon(request: Request) {
+  try {
+    const body = (await request.json()) as {
+      session_id?: string;
+      event?: string;
+    };
+
+    const sessionId = typeof body.session_id === "string" ? body.session_id.trim() : "";
+    const event = typeof body.event === "string" ? body.event.trim() : "";
+
+    if (!sessionId || !event) {
+      return json({ ok: false }, { status: 400 });
+    }
+
+    if (event !== "shown" && event !== "declined") {
+      return json({ ok: false }, { status: 400 });
+    }
+
+    // Validate the session exists and is paid (matches /api/survey gate)
+    const stripe = getStripe();
+    let session: Stripe.Checkout.Session;
+    try {
+      session = await stripe.checkout.sessions.retrieve(sessionId);
+    } catch {
+      return json({ ok: false }, { status: 404 });
+    }
+
+    if (session.payment_status !== "paid") {
+      return json({ ok: false }, { status: 403 });
+    }
+
+    const fields: Record<string, unknown> =
+      event === "shown"
+        ? { OTOShown: true }
+        : { OTODeclinedTS: new Date().toISOString() };
+
+    const result = await patchOrderBySession(sessionId, fields);
+    return json({ ok: result.ok });
+  } catch (err) {
+    console.error("OTO beacon error", err instanceof Error ? err.message : String(err));
+    return json({ ok: false }, { status: 500 });
+  }
+}
+
 // ─── Survey ──────────────────────────────────────────────────────────────────
 
 const VALID_SOURCES = new Set([
@@ -1304,6 +1359,10 @@ export async function handleStripeApi(request: Request) {
 
   if (url.pathname === "/api/survey" && request.method === "POST") {
     return handleSurvey(request);
+  }
+
+  if (url.pathname === "/api/oto-beacon" && request.method === "POST") {
+    return handleOtoBeacon(request);
   }
 
   return undefined;

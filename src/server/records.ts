@@ -233,6 +233,7 @@ export interface UpsertOrderInput {
   itemType: string;
   repeatCustomer: boolean;
   shippingMethod: string;
+  bumpSource: string;
 }
 
 export interface UpsertResult {
@@ -356,6 +357,7 @@ export async function upsertOrder(
     Amount: input.amount,
     UnitQty: input.unitQty,
     BumpTaken: input.bumpTaken,
+    BumpSource: input.bumpSource || "",
     ItemType: input.itemType,
     RepeatCustomer: input.repeatCustomer,
     ShippingMethod: input.shippingMethod || "standard",
@@ -474,6 +476,18 @@ export async function updateOto(
     OTOAmount: amount,
     ItemType: "unit+kit",
   });
+}
+
+// ─── Orders: patch by session ID ────────────────────────────────────────────
+
+export async function patchOrderBySession(
+  stripeSessionId: string,
+  fields: Record<string, unknown>,
+): Promise<UpsertResult> {
+  const config = getConfig();
+  const existing = await findOrderBySessionId(config, stripeSessionId);
+  if (!existing) return { ok: false, error: "order_not_found" };
+  return patchRecord(config, ORDERS_TABLE, existing.id, fields);
 }
 
 // ─── Tracking validation ─────────────────────────────────────────────────────
