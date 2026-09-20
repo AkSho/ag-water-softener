@@ -125,14 +125,6 @@ function isSpareLineItem(item: Stripe.LineItem, sparePriceId: string) {
   return item.price?.id === sparePriceId;
 }
 
-function isOptionalItemTaxBehaviorError(error: unknown) {
-  return (
-    error instanceof Stripe.errors.StripeInvalidRequestError &&
-    error.param === "optional_items[0][price]" &&
-    typeof error.message === "string" &&
-    error.message.includes("automatic tax")
-  );
-}
 
 async function syncToEsp(payload: EspPurchasePayload) {
   console.info("ESP sync placeholder", {
@@ -390,9 +382,7 @@ async function createCheckoutSession(request: Request) {
     lineItems.push({ price: sparePrice, quantity: 1 });
   }
 
-  const params: Stripe.Checkout.SessionCreateParams & {
-    optional_items?: Array<{ price: string; quantity: number }>;
-  } = {
+  const params: Stripe.Checkout.SessionCreateParams = {
     mode: "payment",
     line_items: lineItems,
     automatic_tax: { enabled: true },
@@ -431,27 +421,7 @@ async function createCheckoutSession(request: Request) {
     },
   };
 
-  if (!includeSpare) {
-    params.optional_items = [{ price: sparePrice, quantity: 1 }];
-  }
-
-  let session: Stripe.Checkout.Session;
-
-  try {
-    session = await stripe.checkout.sessions.create(params);
-  } catch (error) {
-    if (!params.optional_items || !isOptionalItemTaxBehaviorError(error)) {
-      throw error;
-    }
-
-    console.error(
-      "Cross-sell dropped: optional_items removed due to tax behavior conflict",
-      { unitQty, error: error instanceof Error ? error.message : String(error) },
-    );
-    const { optional_items: _optionalItems, ...fallbackParams } = params;
-    session = await stripe.checkout.sessions.create(fallbackParams);
-    console.error("Cross-sell dropped: session created without cross-sell", { sessionId: session.id });
-  }
+  const session = await stripe.checkout.sessions.create(params);
 
   return json({ url: session.url });
 }
