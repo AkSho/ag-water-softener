@@ -463,11 +463,28 @@ async function getCheckoutSession(request: Request) {
         : "stripe_crosssell"
       : null;
 
-    // GCR estimated delivery: session creation + 15 days, YYYY-MM-DD
+    // Derive shipping method + item type for accurate delivery estimate
+    const expressRate = process.env.STRIPE_SHIPPING_EXPRESS;
+    const chosenRate = session.shipping_cost?.shipping_rate
+      ? (typeof session.shipping_cost.shipping_rate === "string"
+          ? session.shipping_cost.shipping_rate
+          : session.shipping_cost.shipping_rate.id)
+      : undefined;
+    let gcrShipping = (expressRate && chosenRate === expressRate) ? "express" : "standard";
+    if (gcrShipping === "standard" && session.amount_total != null && session.amount_subtotal != null) {
+      if (session.amount_total - session.amount_subtotal === 1900) gcrShipping = "express";
+    }
+    const isAgPdp = session.metadata?.source === "ag_pdp";
+    const cartridgePrice = process.env.STRIPE_PRICE_SPARE_CARTRIDGE || "";
+    const isCartridge = !isAgPdp && cartridgePrice &&
+      lineItems.data.some((item) => item.price?.id === cartridgePrice);
+    const gcrItemType = isCartridge ? "cartridge" : !isAgPdp ? "kit" : "unit";
+
+    // GCR estimated delivery: session creation + promiseDays, YYYY-MM-DD
     let estimatedDeliveryDate: string | undefined;
     if (typeof session.created === "number") {
       const d = new Date(session.created * 1000);
-      d.setDate(d.getDate() + 15);
+      d.setDate(d.getDate() + promiseDays(gcrShipping, gcrItemType));
       estimatedDeliveryDate = d.toISOString().slice(0, 10);
     }
 
