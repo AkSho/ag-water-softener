@@ -824,7 +824,11 @@ export async function processFulfillment(
     }
 
     // 4. Review-ask: PromisedBy + 10 days elapsed, shipped, not refunded/cancelled, not already sent
+    //    Launch floor: only orders batched on or after 2026-09-21; historical orders are a separate E2 decision.
     if (status === "shipped" && !f.Refunded && !f.ReviewAskSentTS) {
+      const batchDate = (f.BatchDate as string) || "";
+      if (!batchDate || batchDate < "2026-09-21") continue;
+
       const promisedByStr = (f.PromisedBy as string) || "";
       if (promisedByStr) {
         const promisedBy = new Date(promisedByStr);
@@ -859,9 +863,12 @@ export async function processFulfillment(
               const reviewLink = `https://agsoftener.com/review?token=${tokenResult.token}`;
               const preview = buildReviewAsk({ firstName, reviewLink });
               await sendFn({ to: email, ...preview });
-              await patchRecord(config, ORDERS_TABLE, row.id, {
+              const stampResult = await patchRecord(config, ORDERS_TABLE, row.id, {
                 ReviewAskSentTS: new Date().toISOString(),
               });
+              if (!stampResult.ok) {
+                console.error("Review-ask stamp failed after send", { orderNumber, error: stampResult.error });
+              }
               actions.push({ recordId: row.id, email, action: "review_ask_sent", preview });
             } catch (err) {
               actions.push({ recordId: row.id, email, action: "review_ask_failed", error: err instanceof Error ? err.message : String(err) });
@@ -942,7 +949,7 @@ export async function submitReview(
   }
 
   return patchRecord(config, REVIEWS_TABLE, validated.recordId, {
-    Number: input.rating,
+    Rating: input.rating,
     Body: input.body,
     City: input.city || "",
     HardnessBefore: input.hardnessBefore ?? null,
@@ -982,7 +989,7 @@ export async function listApprovedReviews(): Promise<ApprovedReview[]> {
     return {
       name: displayName,
       city: (f.City as string) || "",
-      rating: (f.Number as number) || 5,
+      rating: (f.Rating as number) || 5,
       body: (f.Body as string) || "",
       hardnessBefore: (f.HardnessBefore as number) ?? null,
       hardnessAfter: (f.HardnessAfter as number) ?? null,
