@@ -212,7 +212,6 @@ ${SIGN_OFF}`,
 
 export function buildCheckInEmail({
   firstName,
-  carrier,
   deliveredDate,
 }: {
   firstName: string;
@@ -222,22 +221,36 @@ export function buildCheckInEmail({
   const name = firstName || "there";
   const deliveredFormatted = formatLongDate(deliveredDate);
 
-  if (carrier === "Yun Express") {
-    return {
-      subject: "Tracking shows your AG Water Softener delivered",
-      text: `Hi ${name},
-
-Tracking shows your order delivered on ${deliveredFormatted}. The setup guide is at agsoftener.com/setup, and the two short videos there walk through install and recharge.
-
-${SIGN_OFF}`,
-    };
-  }
-
   return {
-    subject: `${carrier} shows your AG Water Softener delivered`,
+    subject: "Your AG Water Softener arrived",
     text: `Hi ${name},
 
-${carrier} shows your order delivered on ${deliveredFormatted}. The setup guide is at agsoftener.com/setup, and the two short videos there walk through install and recharge.
+Tracking shows your softener landed on ${deliveredFormatted}. Setup takes about ten minutes and you can find the guide plus two short videos (install and recharge) at agsoftener.com/setup.
+
+${SIGN_OFF}`,
+  };
+}
+
+export function buildReviewAskEmail({
+  firstName,
+  reviewLink,
+}: {
+  firstName: string;
+  reviewLink: string;
+}) {
+  const name = firstName || "there";
+
+  return {
+    subject: "How's the water?",
+    text: `Hi ${name},
+
+Your AG Water Softener should have had some time to settle in by now. If you have a minute, I'd really like to hear how it's going:
+
+${reviewLink}
+
+It takes about two minutes and helps other renters figure out whether this is worth trying.
+
+If it hasn't arrived yet, just reply to this email and I'll look into it right away.
 
 ${SIGN_OFF}`,
   };

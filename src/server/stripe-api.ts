@@ -8,6 +8,7 @@ import {
   buildRecoveryEmail,
   buildShippingEmail,
   buildCheckInEmail,
+  buildReviewAskEmail,
   buildDigestEmail,
   formatPromiseDate,
   extractFirstName,
@@ -28,6 +29,9 @@ import {
   updateOrderFields,
   patchOrderBySession,
   promiseDays,
+  validateReviewToken,
+  submitReview,
+  listApprovedReviews,
 } from "./records";
 import { runPnl } from "./pnl";
 import { runBatch, setupReadmeTab } from "./batch";
@@ -984,6 +988,7 @@ async function handleFulfill(request: Request) {
       sendEmail,
       buildShippingEmail,
       buildCheckInEmail,
+      buildReviewAskEmail,
       dryRun,
     );
 
@@ -1303,6 +1308,62 @@ async function handleSurvey(request: Request) {
   }
 }
 
+// ─── Review endpoints ────────────────────────────────────────────────────────
+
+async function handleReviewTokenValidation(request: Request) {
+  const url = new URL(request.url);
+  const token = url.searchParams.get("token") || "";
+  if (!token) return json({ valid: false }, { status: 400 });
+
+  const result = await validateReviewToken(token);
+  return json({ valid: result.valid, name: result.name || "" });
+}
+
+async function handleReviewSubmission(request: Request) {
+  try {
+    const body = (await request.json()) as {
+      token?: string;
+      rating?: number;
+      body?: string;
+      city?: string;
+      hardnessBefore?: number;
+      hardnessAfter?: number;
+    };
+
+    const token = typeof body.token === "string" ? body.token.trim() : "";
+    const rating = typeof body.rating === "number" ? body.rating : 0;
+    const reviewBody = typeof body.body === "string" ? body.body.trim() : "";
+
+    if (!token || !rating || rating < 1 || rating > 5 || !reviewBody) {
+      return json({ ok: false }, { status: 400 });
+    }
+
+    const result = await submitReview({
+      token,
+      rating,
+      body: reviewBody,
+      city: typeof body.city === "string" ? body.city.trim() : undefined,
+      hardnessBefore: typeof body.hardnessBefore === "number" ? body.hardnessBefore : undefined,
+      hardnessAfter: typeof body.hardnessAfter === "number" ? body.hardnessAfter : undefined,
+    });
+
+    return json({ ok: result.ok });
+  } catch (err) {
+    console.error("Review submission error", err instanceof Error ? err.message : String(err));
+    return json({ ok: false }, { status: 500 });
+  }
+}
+
+async function handleListReviews() {
+  try {
+    const reviews = await listApprovedReviews();
+    return json({ reviews });
+  } catch (err) {
+    console.error("List reviews error", err instanceof Error ? err.message : String(err));
+    return json({ reviews: [] });
+  }
+}
+
 // ─── Router ─────────────────────────────────────────────────────────────────────
 
 export async function handleStripeApi(request: Request) {
@@ -1350,6 +1411,18 @@ export async function handleStripeApi(request: Request) {
 
   if (url.pathname === "/api/oto-beacon" && request.method === "POST") {
     return handleOtoBeacon(request);
+  }
+
+  if (url.pathname === "/api/review-token" && request.method === "GET") {
+    return handleReviewTokenValidation(request);
+  }
+
+  if (url.pathname === "/api/review" && request.method === "POST") {
+    return handleReviewSubmission(request);
+  }
+
+  if (url.pathname === "/api/reviews" && request.method === "GET") {
+    return handleListReviews();
   }
 
   return undefined;

@@ -944,52 +944,82 @@ function Dot({ filled, strong = false }: { filled: boolean; strong?: boolean }) 
   return <span aria-label="No" className="inline-block h-3 w-3 rounded-full border border-foreground/40" />;
 }
 
-/* ─────────────────────────────── SECTION 7 — PROOF WALL ─────────────────────────────── */
+/* ─────────────────────────────── SECTION 7 — CUSTOMER REVIEWS ─────────────────────────────── */
 
-const PROOF_REVIEWS = [
-  { name: "Melissa J.", title: "It finally felt soft again", body: "No matter how much conditioner I used, my hair felt like dry hay — like it just sucked up moisture and spit it out. A couple weeks with soft water and it finally felt soft again. I don't have to hide it in a bun every day just to deal with it." },
-  { name: "Jess C.", title: "Waves are waving again", body: "I'm a 2B and hard water minerals used to make my waves limp and frizz out by day two. Now my waves clump beautifully, hold shape all week, and my scalp doesn't feel coated. Wash day is so much easier because there's no mineral buildup to fight through." },
-  { name: "Jack M.", title: "My beard says otherwise", body: "I figured this was just another gadget, but my beard says otherwise. It used to feel like sandpaper after every shower, and now it's actually soft. Even my barber noticed. My girlfriend keeps touching it too, so I guess that's a win." },
-  { name: "Jasmine", title: "My hair finally feels clean", body: "No matter what shampoo I used, my hair always felt coated and dull. Now it actually feels clean and light again. My curls bounce back instead of falling flat." },
-  { name: "Verified customer", title: "Hydrated instead of stripped", body: "My hair feels significantly softer and less frizzy. My skin feels hydrated and moisturized instead of tight." },
-];
+type ReviewData = {
+  name: string;
+  city: string;
+  rating: number;
+  body: string;
+  hardnessBefore: number | null;
+  hardnessAfter: number | null;
+  submittedAt: string;
+};
 
 function ProofWall() {
+  const [reviews, setReviews] = useState<ReviewData[]>([]);
   const [expanded, setExpanded] = useState(false);
   const MOBILE_CAP = 2;
+
+  useEffect(() => {
+    fetch("/api/reviews")
+      .then((r) => r.json())
+      .then((d: { reviews: ReviewData[] }) => setReviews(d.reviews || []))
+      .catch(() => {});
+  }, []);
+
+  if (reviews.length === 0) return null;
+
+  const avg = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
+  const showAggregate = reviews.length >= 5;
+
   return (
     <section id="proof" className="border-t border-border/60 bg-surface/40">
       <div className="mx-auto max-w-[1400px] px-5 py-12 md:px-8 md:py-16 lg:py-24">
         <div className="mx-auto max-w-[900px]">
           <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            Early customer & tester reviews
+            Customer reviews
           </div>
           <h2 className="mt-4 font-display text-3xl leading-[1.05] md:text-4xl lg:text-[46px]">
             What people notice, in their own words
           </h2>
+          {showAggregate && (
+            <p className="mt-3 text-sm text-muted-foreground">
+              {avg.toFixed(1)} out of 5 based on {reviews.length} reviews
+            </p>
+          )}
         </div>
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3">
-          {PROOF_REVIEWS.map((r, i) => {
+          {reviews.map((r, i) => {
             const hideOnMobile = !expanded && i >= MOBILE_CAP;
             return (
               <article
-                key={r.title + r.name}
+                key={r.submittedAt + r.name}
                 className={`flex flex-col border border-border/60 bg-background p-6 ${
                   hideOnMobile ? "hidden sm:flex" : ""
                 }`}
               >
-                <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  {r.name}
+                <div className="flex items-center gap-2">
+                  <span className="text-sm tracking-wide" aria-label={`${r.rating} out of 5 stars`}>
+                    {Array.from({ length: 5 }, (_, j) => j < r.rating ? "\u2605" : "\u2606").join("")}
+                  </span>
                 </div>
-                <h3 className="mt-3 font-display text-xl italic leading-[1.2]">"{r.title}"</h3>
-                <p className="mt-4 text-[14px] leading-[1.65] text-foreground/85">{r.body}</p>
+                <div className="mt-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  {r.name}{r.city ? ` \u00b7 ${r.city}` : ""}
+                </div>
+                <p className="mt-3 text-[14px] leading-[1.65] text-foreground/85">{r.body}</p>
+                {r.hardnessBefore != null && r.hardnessAfter != null && (
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    Water hardness: {r.hardnessBefore} → {r.hardnessAfter} ppm
+                  </p>
+                )}
               </article>
             );
           })}
         </div>
 
-        {PROOF_REVIEWS.length > MOBILE_CAP && !expanded && (
+        {reviews.length > MOBILE_CAP && !expanded && (
           <div className="mt-6 flex justify-center sm:hidden">
             <button
               type="button"
@@ -1014,6 +1044,39 @@ function ProofWall() {
           </p>
         </div>
       </div>
+
+      {/* Review + AggregateRating schema (dynamic, approved reviews only) */}
+      {showAggregate && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Product",
+              "name": "AG Water Softener",
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": avg.toFixed(1),
+                "reviewCount": reviews.length,
+                "bestRating": "5",
+                "worstRating": "1",
+              },
+              "review": reviews.map((r) => ({
+                "@type": "Review",
+                "author": { "@type": "Person", "name": r.name },
+                "datePublished": r.submittedAt ? r.submittedAt.slice(0, 10) : undefined,
+                "reviewRating": {
+                  "@type": "Rating",
+                  "ratingValue": String(r.rating),
+                  "bestRating": "5",
+                  "worstRating": "1",
+                },
+                "reviewBody": r.body,
+              })),
+            }),
+          }}
+        />
+      )}
     </section>
   );
 }

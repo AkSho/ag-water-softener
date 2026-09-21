@@ -6,6 +6,7 @@ const ORDERS_TABLE = "tblQt2grL7iJ2ysNh";
 const SUBMISSIONS_TABLE = "tbl3ScW6QPW7Mnl4b";
 const RECOVERY_TABLE = "tblryjyqduMkiT0l5";
 const SURVEY_TABLE = "tbl6cWi6HfGWSFLl2";
+const REVIEWS_TABLE = "tblTwgPuy0D18LGMv";
 
 // ─── Config ──────────────────────────────────────────────────────────────────
 
@@ -727,6 +728,7 @@ export async function processFulfillment(
   sendFn: (params: { to: string; subject: string; text: string }) => Promise<void>,
   buildShipping: (params: { firstName: string; carrier: string; tracking: string; promisedBy: string }) => { subject: string; text: string },
   buildCheckIn: (params: { firstName: string; carrier: string; deliveredDate: string }) => { subject: string; text: string },
+  buildReviewAsk: (params: { firstName: string; reviewLink: string }) => { subject: string; text: string },
   dryRun: boolean = false,
 ): Promise<FulfillmentAction[]> {
   const config = getConfig();
@@ -820,9 +822,173 @@ export async function processFulfillment(
         actions.push({ recordId: row.id, email, action: "checkin_pending", preview });
       }
     }
+
+    // 4. Review-ask: PromisedBy + 10 days elapsed, shipped, not refunded/cancelled, not already sent
+    if (status === "shipped" && !f.Refunded && !f.ReviewAskSentTS) {
+      const promisedByStr = (f.PromisedBy as string) || "";
+      if (promisedByStr) {
+        const promisedBy = new Date(promisedByStr);
+        const askDate = new Date(promisedBy.getTime() + 10 * 86400_000);
+        const now = new Date();
+        if (now >= askDate) {
+          // Respect manual Delivered/DeliveredDate: if populated, use DeliveredDate + 10 instead
+          const deliveredDate = f.DeliveredDate as string;
+          if (deliveredDate) {
+            const altAskDate = new Date(new Date(deliveredDate).getTime() + 10 * 86400_000);
+            if (now < altAskDate) continue;
+          }
+
+          // 5-day CheckInTS guard: don't email if check-in was sent within last 5 days
+          const checkInTs = f.CheckInTS as string;
+          if (checkInTs) {
+            const checkInDate = new Date(checkInTs);
+            if (now.getTime() - checkInDate.getTime() < 5 * 86400_000) continue;
+          }
+
+          const firstName = extractName(f.Name as string);
+          const orderNumber = (f.OrderNumber as string) || "";
+          const sessionId = (f.StripeSessionId as string) || "";
+
+          if (!dryRun) {
+            try {
+              const tokenResult = await createReviewToken(sessionId, orderNumber, email, (f.Name as string) || "");
+              if (!tokenResult.ok || !tokenResult.token) {
+                actions.push({ recordId: row.id, email, action: "review_ask_token_failed", error: tokenResult.error });
+                continue;
+              }
+              const reviewLink = `https://agsoftener.com/review?token=${tokenResult.token}`;
+              const preview = buildReviewAsk({ firstName, reviewLink });
+              await sendFn({ to: email, ...preview });
+              await patchRecord(config, ORDERS_TABLE, row.id, {
+                ReviewAskSentTS: new Date().toISOString(),
+              });
+              actions.push({ recordId: row.id, email, action: "review_ask_sent", preview });
+            } catch (err) {
+              actions.push({ recordId: row.id, email, action: "review_ask_failed", error: err instanceof Error ? err.message : String(err) });
+            }
+          } else {
+            actions.push({ recordId: row.id, email, action: "review_ask_pending" });
+          }
+        }
+      }
+    }
   }
 
   return actions;
+}
+
+// ─── Reviews ─────────────────────────────────────────────────────────────
+
+export async function createReviewToken(
+  stripeSessionId: string,
+  orderNumber: string,
+  email: string,
+  name: string,
+): Promise<{ ok: boolean; token?: string; error?: string }> {
+  const config = getConfig();
+  const { randomBytes } = await import("crypto");
+  const token = randomBytes(16).toString("hex");
+
+  const result = await createRecord(config, REVIEWS_TABLE, {
+    StripeSessionId: stripeSessionId,
+    OrderNumber: orderNumber,
+    Email: email,
+    Name: name,
+    Token: token,
+    TokenUsed: false,
+  });
+
+  return result.ok ? { ok: true, token } : { ok: false, error: result.error };
+}
+
+export async function validateReviewToken(
+  token: string,
+): Promise<{ valid: boolean; recordId?: string; name?: string; orderNumber?: string }> {
+  const config = getConfig();
+  const formula = encodeURIComponent(`AND({Token}='${token}',NOT({TokenUsed}))`);
+  const res = await airtableFetch(
+    config,
+    REVIEWS_TABLE,
+    `?filterByFormula=${formula}&maxRecords=1`,
+  );
+  if (!res.ok) return { valid: false };
+  const data = (await res.json()) as { records: AirtableRecord[] };
+  const rec = data.records[0];
+  if (!rec) return { valid: false };
+  return {
+    valid: true,
+    recordId: rec.id,
+    name: (rec.fields.Name as string) || "",
+    orderNumber: (rec.fields.OrderNumber as string) || "",
+  };
+}
+
+export interface ReviewSubmission {
+  token: string;
+  rating: number;
+  body: string;
+  city?: string;
+  hardnessBefore?: number;
+  hardnessAfter?: number;
+}
+
+export async function submitReview(
+  input: ReviewSubmission,
+): Promise<UpsertResult> {
+  const config = getConfig();
+  const validated = await validateReviewToken(input.token);
+  if (!validated.valid || !validated.recordId) {
+    return { ok: false, error: "invalid_or_used_token" };
+  }
+
+  return patchRecord(config, REVIEWS_TABLE, validated.recordId, {
+    Number: input.rating,
+    Body: input.body,
+    City: input.city || "",
+    HardnessBefore: input.hardnessBefore ?? null,
+    HardnessAfter: input.hardnessAfter ?? null,
+    SubmittedAt: new Date().toISOString(),
+    TokenUsed: true,
+  });
+}
+
+export interface ApprovedReview {
+  name: string;
+  city: string;
+  rating: number;
+  body: string;
+  hardnessBefore: number | null;
+  hardnessAfter: number | null;
+  submittedAt: string;
+}
+
+export async function listApprovedReviews(): Promise<ApprovedReview[]> {
+  const config = getConfig();
+  const formula = encodeURIComponent("AND({Approved}=TRUE(),{TokenUsed}=TRUE())");
+  const res = await airtableFetch(
+    config,
+    REVIEWS_TABLE,
+    `?filterByFormula=${formula}&sort%5B0%5D%5Bfield%5D=SubmittedAt&sort%5B0%5D%5Bdirection%5D=desc`,
+  );
+  if (!res.ok) return [];
+  const data = (await res.json()) as { records: AirtableRecord[] };
+  return data.records.map((r) => {
+    const f = r.fields;
+    const fullName = (f.Name as string) || "";
+    const parts = fullName.trim().split(/\s+/);
+    const displayName = parts.length >= 2
+      ? `${parts[0]} ${parts[parts.length - 1][0]}.`
+      : parts[0] || "Customer";
+    return {
+      name: displayName,
+      city: (f.City as string) || "",
+      rating: (f.Number as number) || 5,
+      body: (f.Body as string) || "",
+      hardnessBefore: (f.HardnessBefore as number) ?? null,
+      hardnessAfter: (f.HardnessAfter as number) ?? null,
+      submittedAt: (f.SubmittedAt as string) || "",
+    };
+  });
 }
 
 // ─── Phase 3 stubs ───────────────────────────────────────────────────────────

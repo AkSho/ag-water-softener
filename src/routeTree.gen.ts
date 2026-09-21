@@ -20,6 +20,7 @@ import { Route as ShowerHeadWaterSoftenerRouteImport } from './routes/shower-hea
 import { Route as ShowerFilterVsWaterSoftenerRouteImport } from './routes/shower-filter-vs-water-softener'
 import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as SetupRouteImport } from './routes/setup'
+import { Route as ReviewRouteImport } from './routes/review'
 import { Route as ReturnsRouteImport } from './routes/returns'
 import { Route as RedditShowerWaterSoftenerRouteImport } from './routes/reddit-shower-water-softener'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -89,6 +90,11 @@ const ShippingRoute = ShippingRouteImport.update({
 const SetupRoute = SetupRouteImport.update({
   id: '/setup',
   path: '/setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReviewRoute = ReviewRouteImport.update({
+  id: '/review',
+  path: '/review',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReturnsRoute = ReturnsRouteImport.update({
@@ -171,6 +177,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/reddit-shower-water-softener': typeof RedditShowerWaterSoftenerRoute
   '/returns': typeof ReturnsRoute
+  '/review': typeof ReviewRoute
   '/setup': typeof SetupRoute
   '/shipping': typeof ShippingRoute
   '/shower-filter-vs-water-softener': typeof ShowerFilterVsWaterSoftenerRoute
@@ -196,6 +203,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/reddit-shower-water-softener': typeof RedditShowerWaterSoftenerRoute
   '/returns': typeof ReturnsRoute
+  '/review': typeof ReviewRoute
   '/setup': typeof SetupRoute
   '/shipping': typeof ShippingRoute
   '/shower-filter-vs-water-softener': typeof ShowerFilterVsWaterSoftenerRoute
@@ -222,6 +230,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/reddit-shower-water-softener': typeof RedditShowerWaterSoftenerRoute
   '/returns': typeof ReturnsRoute
+  '/review': typeof ReviewRoute
   '/setup': typeof SetupRoute
   '/shipping': typeof ShippingRoute
   '/shower-filter-vs-water-softener': typeof ShowerFilterVsWaterSoftenerRoute
@@ -249,6 +258,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/reddit-shower-water-softener'
     | '/returns'
+    | '/review'
     | '/setup'
     | '/shipping'
     | '/shower-filter-vs-water-softener'
@@ -274,6 +284,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/reddit-shower-water-softener'
     | '/returns'
+    | '/review'
     | '/setup'
     | '/shipping'
     | '/shower-filter-vs-water-softener'
@@ -299,6 +310,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/reddit-shower-water-softener'
     | '/returns'
+    | '/review'
     | '/setup'
     | '/shipping'
     | '/shower-filter-vs-water-softener'
@@ -325,6 +337,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   RedditShowerWaterSoftenerRoute: typeof RedditShowerWaterSoftenerRoute
   ReturnsRoute: typeof ReturnsRoute
+  ReviewRoute: typeof ReviewRoute
   SetupRoute: typeof SetupRoute
   ShippingRoute: typeof ShippingRoute
   ShowerFilterVsWaterSoftenerRoute: typeof ShowerFilterVsWaterSoftenerRoute
@@ -415,6 +428,13 @@ declare module '@tanstack/react-router' {
       path: '/setup'
       fullPath: '/setup'
       preLoaderRoute: typeof SetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/review': {
+      id: '/review'
+      path: '/review'
+      fullPath: '/review'
+      preLoaderRoute: typeof ReviewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/returns': {
@@ -517,6 +537,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   RedditShowerWaterSoftenerRoute: RedditShowerWaterSoftenerRoute,
   ReturnsRoute: ReturnsRoute,
+  ReviewRoute: ReviewRoute,
   SetupRoute: SetupRoute,
   ShippingRoute: ShippingRoute,
   ShowerFilterVsWaterSoftenerRoute: ShowerFilterVsWaterSoftenerRoute,
