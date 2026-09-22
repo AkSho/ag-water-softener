@@ -32,7 +32,6 @@ import {
   validateReviewToken,
   submitReview,
   listApprovedReviews,
-  createReviewToken,
 } from "./records";
 import { runPnl } from "./pnl";
 import { runBatch, setupReadmeTab } from "./batch";
@@ -1365,86 +1364,6 @@ async function handleListReviews() {
   }
 }
 
-// ─── E2 Batch 1 (one-time, remove after verified) ───────────────────────────
-
-const E2_BATCH_1 = [
-  "AG-WPQC4Z", "AG-57KSZH", "AG-5Z4NW3", "AG-P33EST", "AG-2A4DET",
-  "AG-HY2DMV", "AG-MVPMTS", "AG-E5PUQ5", "AG-YRSVCM", "AG-RFCPFD",
-] as const;
-
-async function handleE2Batch1(request: Request) {
-  const authError = checkFulfillAuth(request);
-  if (authError) return authError;
-
-  const allOrders = await listAllOrders();
-  const log: Array<{ order: string; action: string; detail?: string }> = [];
-
-  for (const orderNumber of E2_BATCH_1) {
-    const row = allOrders.find((r) => r.fields.OrderNumber === orderNumber);
-    if (!row) {
-      log.push({ order: orderNumber, action: "SKIP", detail: "not found" });
-      continue;
-    }
-
-    const f = row.fields;
-    if (f.ReviewAskSentTS) {
-      log.push({ order: orderNumber, action: "SKIP", detail: `already sent: ${f.ReviewAskSentTS}` });
-      continue;
-    }
-    if (f.Delivered !== "Yes" || f.Refunded || f.Status === "cancelled") {
-      log.push({ order: orderNumber, action: "SKIP", detail: `guard: Delivered=${f.Delivered} Refunded=${f.Refunded} Status=${f.Status}` });
-      continue;
-    }
-    const email = f.Email as string;
-    if (!email) {
-      log.push({ order: orderNumber, action: "SKIP", detail: "no email" });
-      continue;
-    }
-
-    // 5-day CheckInTS guard
-    const checkInTs = f.CheckInTS as string;
-    if (checkInTs && Date.now() - new Date(checkInTs).getTime() < 5 * 86400_000) {
-      log.push({ order: orderNumber, action: "SKIP", detail: `CheckInTS too recent: ${checkInTs}` });
-      continue;
-    }
-
-    // Create token
-    const sessionId = (f.StripeSessionId as string) || "";
-    const name = (f.Name as string) || "";
-    const tokenResult = await createReviewToken(sessionId, orderNumber, email, name);
-    if (!tokenResult.ok || !tokenResult.token) {
-      log.push({ order: orderNumber, action: "FAIL", detail: `token: ${tokenResult.error}` });
-      continue;
-    }
-
-    // Build + send
-    const firstName = extractFirstName(name);
-    const reviewLink = `https://agsoftener.com/review?token=${tokenResult.token}`;
-    const emailContent = buildReviewAskEmail({ firstName, reviewLink });
-
-    try {
-      await sendEmail({ to: email, ...emailContent });
-    } catch (err) {
-      log.push({ order: orderNumber, action: "FAIL", detail: `send: ${err instanceof Error ? err.message : String(err)}` });
-      continue;
-    }
-
-    // Stamp
-    try {
-      await updateOrderFields(row.id, { ReviewAskSentTS: new Date().toISOString() });
-      log.push({ order: orderNumber, action: "SENT", detail: "email sent + stamped" });
-    } catch (err) {
-      log.push({ order: orderNumber, action: "SENT_UNSTAMPED", detail: `email sent but stamp failed: ${err instanceof Error ? err.message : String(err)}` });
-    }
-  }
-
-  const sent = log.filter((l) => l.action === "SENT" || l.action === "SENT_UNSTAMPED").length;
-  const skipped = log.filter((l) => l.action === "SKIP").length;
-  const failed = log.filter((l) => l.action === "FAIL").length;
-
-  return json({ batch: "E2-batch1", sent, skipped, failed, log });
-}
-
 // ─── Router ─────────────────────────────────────────────────────────────────────
 
 export async function handleStripeApi(request: Request) {
@@ -1504,10 +1423,6 @@ export async function handleStripeApi(request: Request) {
 
   if (url.pathname === "/api/reviews" && request.method === "GET") {
     return handleListReviews();
-  }
-
-  if (url.pathname === "/api/e2-batch1" && request.method === "POST") {
-    return handleE2Batch1(request);
   }
 
   return undefined;
