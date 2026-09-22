@@ -823,60 +823,53 @@ export async function processFulfillment(
       }
     }
 
-    // 4. Review-ask: PromisedBy + 10 days elapsed, shipped, not refunded/cancelled, not already sent
-    //    Launch floor: only orders batched on or after 2026-09-21; historical orders are a separate E2 decision.
+    // 4. Review-ask: DeliveredDate + 10 days elapsed, shipped, not refunded/cancelled, not already sent
+    //    Launch floor: only orders batched on or after 2026-09-21; historical orders handled by E2 batch.
+    //    Orders without DeliveredDate are never asked (by design — undated orders surface in digest).
     if (status === "shipped" && !f.Refunded && !f.ReviewAskSentTS) {
       const batchDate = (f.BatchDate as string) || "";
       if (!batchDate || batchDate < "2026-09-21") continue;
 
-      const promisedByStr = (f.PromisedBy as string) || "";
-      if (promisedByStr) {
-        const promisedBy = new Date(promisedByStr);
-        const askDate = new Date(promisedBy.getTime() + 10 * 86400_000);
-        const now = new Date();
-        if (now >= askDate) {
-          // Respect manual Delivered/DeliveredDate: if populated, use DeliveredDate + 10 instead
-          const deliveredDate = f.DeliveredDate as string;
-          if (deliveredDate) {
-            const altAskDate = new Date(new Date(deliveredDate).getTime() + 10 * 86400_000);
-            if (now < altAskDate) continue;
-          }
+      const deliveredDate = f.DeliveredDate as string;
+      if (!deliveredDate) continue;
 
-          // 5-day CheckInTS guard: don't email if check-in was sent within last 5 days
-          const checkInTs = f.CheckInTS as string;
-          if (checkInTs) {
-            const checkInDate = new Date(checkInTs);
-            if (now.getTime() - checkInDate.getTime() < 5 * 86400_000) continue;
-          }
+      const now = new Date();
+      const askDate = new Date(new Date(deliveredDate).getTime() + 10 * 86400_000);
+      if (now < askDate) continue;
 
-          const firstName = extractName(f.Name as string);
-          const orderNumber = (f.OrderNumber as string) || "";
-          const sessionId = (f.StripeSessionId as string) || "";
+      // 5-day CheckInTS guard: don't email if check-in was sent within last 5 days
+      const checkInTs = f.CheckInTS as string;
+      if (checkInTs) {
+        const checkInDate = new Date(checkInTs);
+        if (now.getTime() - checkInDate.getTime() < 5 * 86400_000) continue;
+      }
 
-          if (!dryRun) {
-            try {
-              const tokenResult = await createReviewToken(sessionId, orderNumber, email, (f.Name as string) || "");
-              if (!tokenResult.ok || !tokenResult.token) {
-                actions.push({ recordId: row.id, email, action: "review_ask_token_failed", error: tokenResult.error });
-                continue;
-              }
-              const reviewLink = `https://agsoftener.com/review?token=${tokenResult.token}`;
-              const preview = buildReviewAsk({ firstName, reviewLink });
-              await sendFn({ to: email, ...preview });
-              const stampResult = await patchRecord(config, ORDERS_TABLE, row.id, {
-                ReviewAskSentTS: new Date().toISOString(),
-              });
-              if (!stampResult.ok) {
-                console.error("Review-ask stamp failed after send", { orderNumber, error: stampResult.error });
-              }
-              actions.push({ recordId: row.id, email, action: "review_ask_sent", preview });
-            } catch (err) {
-              actions.push({ recordId: row.id, email, action: "review_ask_failed", error: err instanceof Error ? err.message : String(err) });
-            }
-          } else {
-            actions.push({ recordId: row.id, email, action: "review_ask_pending" });
+      const firstName = extractName(f.Name as string);
+      const orderNumber = (f.OrderNumber as string) || "";
+      const sessionId = (f.StripeSessionId as string) || "";
+
+      if (!dryRun) {
+        try {
+          const tokenResult = await createReviewToken(sessionId, orderNumber, email, (f.Name as string) || "");
+          if (!tokenResult.ok || !tokenResult.token) {
+            actions.push({ recordId: row.id, email, action: "review_ask_token_failed", error: tokenResult.error });
+            continue;
           }
+          const reviewLink = `https://agsoftener.com/review?token=${tokenResult.token}`;
+          const preview = buildReviewAsk({ firstName, reviewLink });
+          await sendFn({ to: email, ...preview });
+          const stampResult = await patchRecord(config, ORDERS_TABLE, row.id, {
+            ReviewAskSentTS: new Date().toISOString(),
+          });
+          if (!stampResult.ok) {
+            console.error("Review-ask stamp failed after send", { orderNumber, error: stampResult.error });
+          }
+          actions.push({ recordId: row.id, email, action: "review_ask_sent", preview });
+        } catch (err) {
+          actions.push({ recordId: row.id, email, action: "review_ask_failed", error: err instanceof Error ? err.message : String(err) });
         }
+      } else {
+        actions.push({ recordId: row.id, email, action: "review_ask_pending" });
       }
     }
   }
@@ -1077,6 +1070,7 @@ export interface DigestData {
     pastPromised: Array<{ orderNumber: string; daysLate: number }>;
     readyNoNotify: number;
     deliveredNoCheckIn: number;
+    shippedNoDeliveryDate: Array<{ orderNumber: string; daysSinceShipped: number }>;
   };
   dataHealth: {
     verdictMismatches: number;
@@ -1119,6 +1113,7 @@ export async function getDailyMetrics(
     pastPromised: [] as Array<{ orderNumber: string; daysLate: number }>,
     readyNoNotify: 0,
     deliveredNoCheckIn: 0,
+    shippedNoDeliveryDate: [] as Array<{ orderNumber: string; daysSinceShipped: number }>,
   };
   const dataHealth = {
     verdictMismatches: 0,
@@ -1210,6 +1205,19 @@ export async function getDailyMetrics(
     }
     if (f.Delivered && !f.NotifyCheckIn && !f.CheckInTS) {
       fulfillment.deliveredNoCheckIn++;
+    }
+    // Lapse alarm: shipped, not delivered, no DeliveredDate, no ReviewAskSentTS, past promise window
+    if (status === "shipped" && !refunded && !f.DeliveredDate && !f.ReviewAskSentTS) {
+      const shippedTs = f.ShippedTS as string;
+      if (shippedTs) {
+        const daysSinceShipped = Math.floor((nowMs - new Date(shippedTs).getTime()) / 86400_000);
+        if (daysSinceShipped >= 18) {
+          fulfillment.shippedNoDeliveryDate.push({
+            orderNumber: (f.OrderNumber as string) || row.id.slice(-6),
+            daysSinceShipped,
+          });
+        }
+      }
     }
 
     // Data health: verdict direct with referrer/UTM

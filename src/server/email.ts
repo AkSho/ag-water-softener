@@ -250,8 +250,6 @@ ${reviewLink}
 
 It takes about two minutes and helps other renters figure out whether this is worth trying.
 
-If it hasn't arrived yet, just reply to this email and I'll look into it right away.
-
 ${SIGN_OFF}`,
   };
 }
@@ -355,6 +353,10 @@ export function buildDigestEmail(data: DigestData, errors: Record<string, string
     }
     if (f.readyNoNotify > 0) fLines.push(`ready-to-notify awaiting a Notify tick: ${f.readyNoNotify}`);
     if (f.deliveredNoCheckIn > 0) fLines.push(`Delivered set but NotifyCheckIn not ticked: ${f.deliveredNoCheckIn}`);
+    if (f.shippedNoDeliveryDate && f.shippedNoDeliveryDate.length > 0) {
+      fLines.push(`shipped 18+ days, no DeliveredDate (review-ask blocked): ${f.shippedNoDeliveryDate.length}`);
+      for (const s of f.shippedNoDeliveryDate) fLines.push(`  ${s.orderNumber} ${s.daysSinceShipped}d since shipped`);
+    }
     sections.push(
       "── Fulfillment health ──\n" +
       (fLines.length > 0 ? fLines.join("\n") : "all clear"),
