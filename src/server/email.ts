@@ -210,6 +210,26 @@ ${SIGN_OFF}`,
   };
 }
 
+export function buildExpressUpgradeEmail({
+  firstName,
+  orderNumber,
+  expectedDate,
+}: {
+  firstName: string;
+  orderNumber: string;
+  expectedDate: string;
+}) {
+  const name = firstName || "there";
+  return {
+    subject: "Your order is now on express shipping",
+    text: `Hi ${name},
+
+Your express upgrade is confirmed. Your order ${orderNumber} should now reach you by ${expectedDate}. I'll email the tracking number as soon as it ships.
+
+${SIGN_OFF}`,
+  };
+}
+
 export function buildCheckInEmail({
   firstName,
   deliveredDate,
@@ -371,6 +391,7 @@ export function buildDigestEmail(data: DigestData, errors: Record<string, string
     const dLines: string[] = [];
     if (d.verdictMismatches > 0) dLines.push(`Verdict direct with non-empty referrer or UTM: ${d.verdictMismatches}`);
     if (d.orphanOtos > 0) dLines.push(`OTO PaymentIntents with no matching order row: ${d.orphanOtos}`);
+    if (d.orphanUpgrades > 0) dLines.push(`Express upgrade payments with no matching order: ${d.orphanUpgrades}`);
     if (d.missingRows.length > 0) {
       dLines.push(`Orders in Stripe with no Airtable row: ${d.missingRows.length}`);
       for (const sid of d.missingRows) dLines.push(`  ${sid}`);

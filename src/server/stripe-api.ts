@@ -9,6 +9,7 @@ import {
   buildShippingEmail,
   buildCheckInEmail,
   buildReviewAskEmail,
+  buildExpressUpgradeEmail,
   buildDigestEmail,
   formatPromiseDate,
   extractFirstName,
@@ -32,9 +33,10 @@ import {
   validateReviewToken,
   submitReview,
   listApprovedReviews,
+  findOrderByOrderNumber,
 } from "./records";
 import { runPnl } from "./pnl";
-import { runBatch, setupReadmeTab } from "./batch";
+import { runBatch, setupReadmeTab, updateSheetShipping } from "./batch";
 import { runGadsExport } from "./gads-export";
 
 let stripeClient: Stripe | undefined;
@@ -517,6 +519,105 @@ async function getCheckoutSession(request: Request) {
   }
 }
 
+// ─── Express upgrade handler ─────────────────────────────────────────────────
+
+const AG_ORDER_PATTERN = /^AG-[23456789ABCDEFGHJKMNPQRSTUVWXYZ]{6}$/;
+
+async function handleExpressUpgrade(
+  session: Stripe.Checkout.Session,
+  stripeEvent: Stripe.Event,
+): Promise<void> {
+  // Extract order number from custom_fields (label = "Order number")
+  const customField = session.custom_fields?.find(
+    (f) => f.label?.custom?.toLowerCase() === "order number",
+  );
+  const rawOrderNumber = (customField?.text?.value || "").trim().toUpperCase();
+
+  if (!rawOrderNumber || !AG_ORDER_PATTERN.test(rawOrderNumber)) {
+    console.error("Express upgrade: invalid or missing order number", {
+      sessionId: session.id,
+      eventId: stripeEvent.id,
+      rawValue: rawOrderNumber || "(empty)",
+      email: session.customer_details?.email,
+    });
+    return;
+  }
+
+  // Find the existing order
+  const orderRow = await findOrderByOrderNumber(rawOrderNumber);
+  if (!orderRow) {
+    console.error("Express upgrade: no matching order row", {
+      sessionId: session.id,
+      orderNumber: rawOrderNumber,
+      email: session.customer_details?.email,
+    });
+    return;
+  }
+
+  const f = orderRow.fields;
+  const orderTs = (f.OrderTS as string) || "";
+  const existingNotes = (f.Notes as string) || "";
+  const today = new Date().toISOString().split("T")[0];
+
+  // Recompute PromisedBy: +10 days from original OrderTS
+  const newPromisedBy = orderTs
+    ? (() => {
+        const d = new Date(orderTs);
+        d.setDate(d.getDate() + 10);
+        return d.toISOString().split("T")[0];
+      })()
+    : "";
+
+  // Append to Notes
+  const upgradeNote = `Express upgrade paid ${today}`;
+  const newNotes = existingNotes ? `${existingNotes}; ${upgradeNote}` : upgradeNote;
+
+  // Patch the order
+  await updateOrderFields(orderRow.id, {
+    ShippingMethod: "express",
+    PromisedBy: newPromisedBy,
+    Notes: newNotes,
+  });
+
+  // Update supplier sheet (best-effort)
+  updateSheetShipping(rawOrderNumber).catch((err) => {
+    console.warn("Express upgrade: sheet update failed", {
+      orderNumber: rawOrderNumber,
+      error: err instanceof Error ? err.message : String(err),
+    });
+  });
+
+  // Send confirmation email
+  const firstName = extractFirstName((f.Name as string) || session.customer_details?.name || "");
+  const expectedDate = newPromisedBy
+    ? formatPromiseDate(new Date(orderTs), 10)
+    : "";
+  const email = (f.Email as string) || session.customer_details?.email || "";
+
+  if (email) {
+    const emailContent = buildExpressUpgradeEmail({
+      firstName,
+      orderNumber: rawOrderNumber,
+      expectedDate,
+    });
+    try {
+      await sendEmail({ to: email, ...emailContent });
+    } catch (err) {
+      console.error("Express upgrade: email send failed", {
+        orderNumber: rawOrderNumber,
+        error: err instanceof Error ? err.message : String(err),
+      });
+    }
+  }
+
+  console.info("Express upgrade processed", {
+    sessionId: session.id,
+    orderNumber: rawOrderNumber,
+    newPromisedBy,
+    sheetUpdate: "attempted",
+  });
+}
+
 // ─── Webhook handler ────────────────────────────────────────────────────────────
 
 async function handleStripeWebhook(request: Request) {
@@ -558,6 +659,14 @@ async function handleStripeWebhook(request: Request) {
       limit: 20,
       expand: ["data.price.product"],
     });
+
+    // ─── Express upgrade check (before order creation) ───
+    const expressUpgradePrice = process.env.STRIPE_PRICE_EXPRESS_UPGRADE || "";
+    if (expressUpgradePrice && lineItems.data.some((item) => item.price?.id === expressUpgradePrice)) {
+      await handleExpressUpgrade(session, stripeEvent);
+      return json({ received: true });
+    }
+
     const sparePurchased = lineItems.data.some((item) => isSpareLineItem(item, sparePrice));
     const payload: EspPurchasePayload = {
       email: session.customer_details?.email,
@@ -597,21 +706,50 @@ async function handleStripeWebhook(request: Request) {
       }
     }
 
-    // Derive ItemType from session metadata
+    // Derive ItemType from session metadata + known price IDs
     const isAgPdp = session.metadata?.source === "ag_pdp";
     const bumpTaken = session.metadata?.requested_include_spare === "true";
+    const unitPrice = requiredEnv("STRIPE_PRICE_UNIT");
     const cartridgePrice = process.env.STRIPE_PRICE_SPARE_CARTRIDGE || "";
+    const kitPrice = process.env.STRIPE_PRICE_KIT || "";
     const isCartridge = !isAgPdp && cartridgePrice &&
       lineItems.data.some((item) => item.price?.id === cartridgePrice);
+    const isKit = !isAgPdp && !isCartridge && kitPrice &&
+      lineItems.data.some((item) => item.price?.id === kitPrice);
+
+    // ItemType guard: unknown price IDs are logged and skipped
+    const knownPrices = new Set(
+      [unitPrice, sparePrice, cartridgePrice, kitPrice].filter(Boolean),
+    );
+    const unknownItems = lineItems.data.filter(
+      (item) => item.price?.id && !knownPrices.has(item.price.id),
+    );
+    if (!isAgPdp && !isCartridge && !isKit && unknownItems.length > 0) {
+      console.warn("Unknown price IDs in checkout session — skipping order creation", {
+        sessionId: session.id,
+        unknownPriceIds: unknownItems.map((item) => item.price?.id),
+        email: session.customer_details?.email,
+      });
+      return json({ received: true, skipped: "unknown_price" });
+    }
+
     let itemType: string;
     if (isCartridge) {
       itemType = "cartridge";
-    } else if (!isAgPdp) {
+    } else if (isKit) {
       itemType = "kit";
-    } else if (bumpTaken) {
+    } else if (isAgPdp && bumpTaken) {
       itemType = "unit+bump";
-    } else {
+    } else if (isAgPdp) {
       itemType = "unit";
+    } else {
+      // Non-PDP session with no matching known price — should not reach here
+      // due to the guard above, but log defensively
+      console.warn("Unclassifiable session — no known price match", {
+        sessionId: session.id,
+        priceIds: lineItems.data.map((item) => item.price?.id),
+      });
+      return json({ received: true, skipped: "unclassifiable" });
     }
 
     // Determine bump source for observability

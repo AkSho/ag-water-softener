@@ -286,6 +286,21 @@ async function findOrderBySessionId(
   return data.records[0] || null;
 }
 
+export async function findOrderByOrderNumber(
+  orderNumber: string,
+): Promise<AirtableRecord | null> {
+  const config = getConfig();
+  const formula = encodeURIComponent(`{OrderNumber}='${orderNumber}'`);
+  const res = await airtableFetch(
+    config,
+    ORDERS_TABLE,
+    `?filterByFormula=${formula}&maxRecords=1`,
+  );
+  if (!res.ok) return null;
+  const data = (await res.json()) as { records: AirtableRecord[] };
+  return data.records[0] || null;
+}
+
 async function createRecord(
   config: AirtableConfig,
   table: string,
@@ -1075,6 +1090,7 @@ export interface DigestData {
   dataHealth: {
     verdictMismatches: number;
     orphanOtos: number;
+    orphanUpgrades: number;
     missingRows: string[];
     revenueMatch: boolean;
     airtableRevenue: number;
@@ -1118,6 +1134,7 @@ export async function getDailyMetrics(
   const dataHealth = {
     verdictMismatches: 0,
     orphanOtos: 0,
+    orphanUpgrades: 0,
     missingRows: [] as string[],
     revenueMatch: true,
     airtableRevenue: 0,

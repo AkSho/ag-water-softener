@@ -387,3 +387,55 @@ export async function setupReadmeTab(): Promise<{ created: boolean }> {
   const created = await ensureReadmeTab(token, sheetId);
   return { created };
 }
+
+// ─── Express upgrade: update Shipping cell on supplier sheet ─────────────────
+
+export async function updateSheetShipping(
+  orderNumber: string,
+): Promise<{ updated: boolean; error?: string }> {
+  try {
+    const sa = getServiceAccountKey();
+    const sheetId = getSupplierSheetId();
+    const token = await getAccessToken(sa);
+
+    // Read Order no. column (C) to find the row
+    const rows = await readRange(token, sheetId, "'Orders'!C:C");
+    let rowIndex = -1;
+    for (let i = 0; i < rows.length; i++) {
+      if (String(rows[i][0] || "").trim() === orderNumber) {
+        rowIndex = i;
+        break;
+      }
+    }
+
+    if (rowIndex < 0) {
+      return { updated: false, error: "order_not_on_sheet" };
+    }
+
+    // Row index is 0-based from readRange; sheet rows are 1-indexed
+    const sheetRow = rowIndex + 1;
+    const range = `'Orders'!N${sheetRow}`;
+    const SHEETS_BASE = "https://sheets.googleapis.com/v4/spreadsheets";
+
+    const res = await fetch(
+      `${SHEETS_BASE}/${sheetId}/values/${encodeURIComponent(range)}?valueInputOption=USER_ENTERED`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ range, values: [["Express"]] }),
+      },
+    );
+
+    if (!res.ok) {
+      const detail = await res.text();
+      return { updated: false, error: `sheets_put_failed: ${res.status} ${detail.slice(0, 200)}` };
+    }
+
+    return { updated: true };
+  } catch (err) {
+    return { updated: false, error: err instanceof Error ? err.message : String(err) };
+  }
+}
