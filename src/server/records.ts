@@ -983,9 +983,7 @@ export async function listApprovedReviews(): Promise<ApprovedReview[]> {
     const f = r.fields;
     const fullName = (f.Name as string) || "";
     const parts = fullName.trim().split(/\s+/);
-    const displayName = parts.length >= 2
-      ? `${parts[0]} ${parts[parts.length - 1][0]}.`
-      : parts[0] || "Customer";
+    const displayName = parts[0] || "Customer";
     return {
       name: displayName,
       city: (f.City as string) || "",

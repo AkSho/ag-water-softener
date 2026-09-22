@@ -151,6 +151,8 @@ const PRICE = 249;
 const PRODUCT_TITLE = "The AG Water Softener";
 
 function ProductPage() {
+  const [reviewCount, setReviewCount] = useState(0);
+
   useEffect(() => {
     fbPixel("track", "ViewContent", {
       content_name: "AG Water Softener",
@@ -166,13 +168,13 @@ function ProductPage() {
       <AnnouncementBar />
       <SiteHeader />
       <ProductHero />
-      <TabBar />
+      <TabBar reviewCount={reviewCount} />
       <VacationMoment />
       <WhyNothingWorked />
       <WhatSoftWaterChanges />
       <ForgottenFix />
       <MeetTheSoftener />
-      <ProofWall />
+      <ProofWall onReviewsLoaded={setReviewCount} />
 
       <InstallAndMaintenance />
       <ProductDetails />
@@ -437,13 +439,16 @@ const TABS = [
   { label: "The Fix", href: "#the-fix" },
   { label: "Reviews", href: "#proof" },
   { label: "FAQ", href: "#faq" },
-] as const;
+];
 
-function TabBar() {
-  const [active, setActive] = useState<string>(TABS[0].href);
+function TabBar({ reviewCount }: { reviewCount: number }) {
+  const visibleTabs = reviewCount >= 1
+    ? TABS
+    : TABS.filter((t) => t.href !== "#proof");
+  const [active, setActive] = useState<string>(visibleTabs[0].href);
 
   useEffect(() => {
-    const ids = TABS.map((t) => t.href.slice(1));
+    const ids = visibleTabs.map((t) => t.href.slice(1));
     const targets = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => !!el);
@@ -458,7 +463,7 @@ function TabBar() {
     );
     targets.forEach((t) => io.observe(t));
     return () => io.disconnect();
-  }, []);
+  }, [visibleTabs]);
 
   return (
     <div className="sticky top-14 z-30 border-y border-border/60 bg-surface/95 backdrop-blur md:top-16">
@@ -472,7 +477,7 @@ function TabBar() {
         }}
       >
         <nav className="flex min-w-max gap-8 py-3 text-sm md:py-4">
-          {TABS.map((t) => (
+          {visibleTabs.map((t) => (
             <a
               key={t.href}
               href={t.href}
@@ -956,7 +961,7 @@ type ReviewData = {
   submittedAt: string;
 };
 
-function ProofWall() {
+function ProofWall({ onReviewsLoaded }: { onReviewsLoaded?: (count: number) => void }) {
   const [reviews, setReviews] = useState<ReviewData[]>([]);
   const [expanded, setExpanded] = useState(false);
   const MOBILE_CAP = 2;
@@ -964,7 +969,11 @@ function ProofWall() {
   useEffect(() => {
     fetch("/api/reviews")
       .then((r) => r.json())
-      .then((d: { reviews: ReviewData[] }) => setReviews(d.reviews || []))
+      .then((d: { reviews: ReviewData[] }) => {
+        const list = d.reviews || [];
+        setReviews(list);
+        onReviewsLoaded?.(list.length);
+      })
       .catch(() => {});
   }, []);
 

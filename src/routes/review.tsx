@@ -153,7 +153,7 @@ function ReviewPage() {
 
                 <div>
                   <label htmlFor="review-city" className="block text-sm font-medium text-foreground">
-                    Your city
+                    Your city (optional)
                   </label>
                   <input
                     id="review-city"
@@ -168,7 +168,7 @@ function ReviewPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="hardness-before" className="block text-sm font-medium text-foreground">
-                      Water hardness before (ppm)
+                      Water hardness before (ppm) — optional
                     </label>
                     <input
                       id="hardness-before"
@@ -182,7 +182,7 @@ function ReviewPage() {
                   </div>
                   <div>
                     <label htmlFor="hardness-after" className="block text-sm font-medium text-foreground">
-                      Water hardness after (ppm)
+                      Water hardness after (ppm) — optional
                     </label>
                     <input
                       id="hardness-after"
@@ -195,6 +195,10 @@ function ReviewPage() {
                     />
                   </div>
                 </div>
+
+                <p className="text-xs text-muted-foreground">
+                  If you've tested with a strip, we'd love the numbers. If not, skip this.
+                </p>
 
                 <button
                   type="submit"
