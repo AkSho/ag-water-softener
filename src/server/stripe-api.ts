@@ -34,7 +34,6 @@ import {
   submitReview,
   listApprovedReviews,
   findOrderByOrderNumber,
-  createReviewToken,
 } from "./records";
 import { runPnl } from "./pnl";
 import { runBatch, setupReadmeTab, updateSheetShipping } from "./batch";
@@ -1503,100 +1502,6 @@ async function handleListReviews() {
   }
 }
 
-// ─── E2 batch-2: one-shot, criteria-driven review-ask send ──────────────────
-
-async function handleE2Batch2(request: Request) {
-  const authError = checkFulfillAuth(request);
-  if (authError) return authError;
-
-  const CUTOFF_DATE = "2026-09-13"; // DeliveredDate ≤ this (10+ days ago from Sep 23)
-
-  try {
-    const allOrders = await listAllOrders();
-    const eligible: Array<{
-      id: string;
-      orderNumber: string;
-      sessionId: string;
-      email: string;
-      name: string;
-      deliveredDate: string;
-    }> = [];
-
-    for (const row of allOrders) {
-      const f = row.fields;
-      if (f.Status !== "delivered") continue;
-      const deliveredDate = f.DeliveredDate as string;
-      if (!deliveredDate) continue;
-      if (deliveredDate > CUTOFF_DATE) continue;
-      if (f.Refunded) continue;
-      if (f.ReviewAskSentTS) continue;
-      const email = (f.Email as string) || "";
-      if (!email) continue;
-
-      eligible.push({
-        id: row.id,
-        orderNumber: (f.OrderNumber as string) || "",
-        sessionId: (f.StripeSessionId as string) || "",
-        email,
-        name: (f.Name as string) || "",
-        deliveredDate,
-      });
-    }
-
-    eligible.sort((a, b) => a.deliveredDate.localeCompare(b.deliveredDate));
-
-    const results: Array<{ orderNumber: string; status: string; error?: string }> = [];
-
-    for (const order of eligible) {
-      // Idempotency: re-check ReviewAskSentTS before sending
-      const fresh = await findOrderByOrderNumber(order.orderNumber);
-      if (fresh?.fields.ReviewAskSentTS) {
-        results.push({ orderNumber: order.orderNumber, status: "skipped_already_sent" });
-        continue;
-      }
-
-      try {
-        const tokenResult = await createReviewToken(
-          order.sessionId,
-          order.orderNumber,
-          order.email,
-          order.name,
-        );
-        if (!tokenResult.ok || !tokenResult.token) {
-          results.push({ orderNumber: order.orderNumber, status: "token_failed", error: tokenResult.error });
-          continue;
-        }
-
-        const reviewLink = `https://agsoftener.com/review?token=${tokenResult.token}`;
-        const firstName = extractFirstName(order.name);
-        const emailContent = buildReviewAskEmail({ firstName, reviewLink });
-        await sendEmail({ to: order.email, ...emailContent });
-
-        await updateOrderFields(order.id, {
-          ReviewAskSentTS: new Date().toISOString(),
-        });
-
-        results.push({ orderNumber: order.orderNumber, status: "sent" });
-      } catch (err) {
-        results.push({
-          orderNumber: order.orderNumber,
-          status: "failed",
-          error: err instanceof Error ? err.message : String(err),
-        });
-      }
-    }
-
-    const sent = results.filter((r) => r.status === "sent").length;
-    const skipped = results.filter((r) => r.status === "skipped_already_sent").length;
-    const failed = results.filter((r) => r.status === "failed" || r.status === "token_failed").length;
-
-    return json({ eligible: eligible.length, sent, skipped, failed, results });
-  } catch (err) {
-    console.error("E2 batch-2 error", err instanceof Error ? err.message : String(err));
-    return json({ error: "internal_error" }, { status: 500 });
-  }
-}
-
 // ─── Router ─────────────────────────────────────────────────────────────────────
 
 export async function handleStripeApi(request: Request) {
@@ -1656,10 +1561,6 @@ export async function handleStripeApi(request: Request) {
 
   if (url.pathname === "/api/reviews" && request.method === "GET") {
     return handleListReviews();
-  }
-
-  if (url.pathname === "/api/e2-batch2" && request.method === "POST") {
-    return handleE2Batch2(request);
   }
 
   return undefined;
