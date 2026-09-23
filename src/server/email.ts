@@ -268,7 +268,11 @@ Your AG Water Softener should have had some time to settle in by now. If you hav
 
 ${reviewLink}
 
-It takes about two minutes and helps other renters figure out whether this is worth trying.
+It takes about a minute and helps others figure out whether this is worth trying.
+
+And if there's anything I can help with, just let me know.
+
+Thank you!
 
 ${SIGN_OFF}`,
   };
