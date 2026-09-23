@@ -36,6 +36,7 @@ import {
   findOrderByOrderNumber,
 } from "./records";
 import { runPnl } from "./pnl";
+import { getServiceAccountKey, getAccessToken, readRange } from "./sheets";
 import { runBatch, setupReadmeTab, updateSheetShipping } from "./batch";
 import { runGadsExport } from "./gads-export";
 
@@ -1143,6 +1144,25 @@ async function handleFulfill(request: Request) {
       console.warn("Google Ads export error (non-fatal):", err instanceof Error ? err.message : String(err));
     }
 
+    // P&L sheet sync — failure-isolated, current month only
+    let pnlSync: { month: string; orderCount: number; kitCount: number; error?: string } | null = null;
+    if (!dryRun) {
+      try {
+        const now = new Date();
+        const currentMonth = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
+        const result = await runPnl(currentMonth);
+        pnlSync = {
+          month: result.month,
+          orderCount: result.orderData.orderCount + result.orderData.kitStandaloneCount,
+          kitCount: result.orderData.kitStandaloneCount,
+        };
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        console.warn("P&L sync error (non-fatal):", msg);
+        pnlSync = { month: "", orderCount: 0, kitCount: 0, error: msg };
+      }
+    }
+
     return json({
       mode: dryRun ? "dry-run" : "live",
       actions,
@@ -1158,6 +1178,7 @@ async function handleFulfill(request: Request) {
         alreadyExported: gadsExport.alreadyExported,
         errors: gadsExport.errors,
       } : null,
+      pnlSync,
       receiptsFilled: backfill.receiptsFilled,
       piMetadataWritten: backfill.piMetadataWritten,
       summary: {
@@ -1257,6 +1278,27 @@ async function handleDigest(request: Request) {
     errors.attribution = msg;
     errors.fulfillment = msg;
     if (!errors.dataHealth) errors.dataHealth = msg;
+  }
+
+  // P&L sheet health check: verify current month tab exists and unit count matches
+  try {
+    const now = new Date();
+    const currentMonth = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
+    const pnlSheetId = process.env.PNL_SHEET_ID;
+    if (pnlSheetId) {
+      const sa = getServiceAccountKey();
+      const token = await getAccessToken(sa);
+      // Read D5 (unit sales notes: "X units, Y bumps") and D8 (kit notes: "X kits")
+      const cells = await readRange(token, pnlSheetId, `'${currentMonth}'!D5:D8`);
+      const unitNote = (cells?.[0]?.[0] as string) || "";
+      const kitNote = (cells?.[3]?.[0] as string) || "";
+      const sheetUnits = parseInt(unitNote.match(/(\d+)\s+units/)?.[1] || "0", 10);
+      const sheetKits = parseInt(kitNote.match(/(\d+)\s+kits/)?.[1] || "0", 10);
+      errors.pnlSync = `P&L synced: ${sheetUnits} units, ${sheetKits} kits on ${currentMonth} tab`;
+    }
+  } catch (err) {
+    // Tab missing or sheet unreadable — flag it
+    errors.pnlSync = `P&L health check failed: ${err instanceof Error ? err.message : String(err)}`;
   }
 
   if (!data) {

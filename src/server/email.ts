@@ -403,6 +403,7 @@ export function buildDigestEmail(data: DigestData, errors: Record<string, string
     if (!d.revenueMatch) {
       dLines.push(`Revenue mismatch: Airtable ${fmtDollars(d.airtableRevenue)} vs Stripe ${fmtDollars(d.stripeRevenue)} red`);
     }
+    if (errors.pnlSync) dLines.push(errors.pnlSync);
     sections.push(
       "── Data health ──\n" +
       (dLines.length > 0 ? dLines.join("\n") : "all clear"),
