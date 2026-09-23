@@ -1168,6 +1168,8 @@ async function handleFulfill(request: Request) {
         shipping_pending: actions.filter((a) => a.action === "shipping_pending").length,
         checkin_sent: actions.filter((a) => a.action === "checkin_sent").length,
         checkin_pending: actions.filter((a) => a.action === "checkin_pending").length,
+        review_ask_sent: actions.filter((a) => a.action === "review_ask_sent").length,
+        review_ask_pending: actions.filter((a) => a.action === "review_ask_pending").length,
       },
     });
   } catch (err) {
