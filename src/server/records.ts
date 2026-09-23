@@ -839,12 +839,8 @@ export async function processFulfillment(
     }
 
     // 4. Review-ask: DeliveredDate + 10 days elapsed, delivered, not refunded/cancelled, not already sent
-    //    Launch floor: only orders batched on or after 2026-09-21; historical orders handled by E2 batch.
     //    Orders without DeliveredDate are never asked (by design — undated orders surface in digest).
     if (status === "delivered" && !f.Refunded && !f.ReviewAskSentTS) {
-      const batchDate = (f.BatchDate as string) || "";
-      if (!batchDate || batchDate < "2026-09-21") continue;
-
       const deliveredDate = f.DeliveredDate as string;
       if (!deliveredDate) continue;
 
