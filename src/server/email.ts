@@ -121,6 +121,30 @@ ${SIGN_OFF}`,
   };
 }
 
+export function buildAdapterConfirmationEmail({
+  firstName,
+  promiseDate,
+  orderNumber,
+}: {
+  firstName: string;
+  promiseDate: string;
+  orderNumber: string;
+}) {
+  const name = firstName || "there";
+  return {
+    subject: "Your AG Mount Adapter Order",
+    text: `Hi ${name},
+
+Order ${orderNumber}
+
+Thanks for your order. Your mount adapter is confirmed, and you should have it by ${promiseDate}. I'll email the tracking number as soon as it ships.
+
+Any questions, just reply to this email.
+
+${SIGN_OFF}`,
+  };
+}
+
 export function buildRecoveryEmail({
   firstName,
   checkoutOrPdpLink,

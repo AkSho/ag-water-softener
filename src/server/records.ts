@@ -135,6 +135,7 @@ function daysBetween(isoA: string, isoB: string): number | null {
 
 function promiseDays(shippingMethod?: string, itemType?: string): number {
   if (itemType === "cartridge") return 10;
+  if (itemType === "adapter") return 10;
   if (itemType === "kit") return 15;
   return shippingMethod === "express" ? 10 : 18;
 }

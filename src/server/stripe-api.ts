@@ -5,6 +5,7 @@ import {
   buildConfirmationEmail,
   buildCartridgeConfirmationEmail,
   buildKitConfirmationEmail,
+  buildAdapterConfirmationEmail,
   buildRecoveryEmail,
   buildShippingEmail,
   buildCheckInEmail,
@@ -280,6 +281,8 @@ async function sendConfirmationEmail(session: Stripe.Checkout.Session, orderNumb
   let text: string;
   if (itemType === "cartridge") {
     ({ subject, text } = buildCartridgeConfirmationEmail({ firstName, promiseDate, orderNumber }));
+  } else if (itemType === "adapter") {
+    ({ subject, text } = buildAdapterConfirmationEmail({ firstName, promiseDate, orderNumber }));
   } else if (itemType === "kit") {
     ({ subject, text } = buildKitConfirmationEmail({ firstName, promiseDate, orderNumber }));
   } else {
@@ -483,9 +486,12 @@ async function getCheckoutSession(request: Request) {
     }
     const isAgPdp = session.metadata?.source === "ag_pdp";
     const cartridgePrice = process.env.STRIPE_PRICE_SPARE_CARTRIDGE || "";
+    const adapterPriceGcr = process.env.STRIPE_PRICE_MOUNT_ADAPTER || "";
     const isCartridge = !isAgPdp && cartridgePrice &&
       lineItems.data.some((item) => item.price?.id === cartridgePrice);
-    const gcrItemType = isCartridge ? "cartridge" : !isAgPdp ? "kit" : "unit";
+    const isAdapterGcr = !isAgPdp && adapterPriceGcr &&
+      lineItems.data.some((item) => item.price?.id === adapterPriceGcr);
+    const gcrItemType = isCartridge ? "cartridge" : isAdapterGcr ? "adapter" : !isAgPdp ? "kit" : "unit";
 
     // GCR estimated delivery: session creation + promiseDays, YYYY-MM-DD
     let estimatedDeliveryDate: string | undefined;
@@ -713,19 +719,22 @@ async function handleStripeWebhook(request: Request) {
     const unitPrice = requiredEnv("STRIPE_PRICE_UNIT");
     const cartridgePrice = process.env.STRIPE_PRICE_SPARE_CARTRIDGE || "";
     const kitPrice = process.env.STRIPE_PRICE_KIT || "";
+    const adapterPrice = process.env.STRIPE_PRICE_MOUNT_ADAPTER || "";
     const isCartridge = !isAgPdp && cartridgePrice &&
       lineItems.data.some((item) => item.price?.id === cartridgePrice);
     const isKit = !isAgPdp && !isCartridge && kitPrice &&
       lineItems.data.some((item) => item.price?.id === kitPrice);
+    const isAdapter = !isAgPdp && !isCartridge && !isKit && adapterPrice &&
+      lineItems.data.some((item) => item.price?.id === adapterPrice);
 
     // ItemType guard: unknown price IDs are logged and skipped
     const knownPrices = new Set(
-      [unitPrice, sparePrice, cartridgePrice, kitPrice].filter(Boolean),
+      [unitPrice, sparePrice, cartridgePrice, kitPrice, adapterPrice].filter(Boolean),
     );
     const unknownItems = lineItems.data.filter(
       (item) => item.price?.id && !knownPrices.has(item.price.id),
     );
-    if (!isAgPdp && !isCartridge && !isKit && unknownItems.length > 0) {
+    if (!isAgPdp && !isCartridge && !isKit && !isAdapter && unknownItems.length > 0) {
       console.warn("Unknown price IDs in checkout session — skipping order creation", {
         sessionId: session.id,
         unknownPriceIds: unknownItems.map((item) => item.price?.id),
@@ -737,6 +746,8 @@ async function handleStripeWebhook(request: Request) {
     let itemType: string;
     if (isCartridge) {
       itemType = "cartridge";
+    } else if (isAdapter) {
+      itemType = "adapter";
     } else if (isKit) {
       itemType = "kit";
     } else if (isAgPdp && bumpTaken) {
@@ -790,7 +801,7 @@ async function handleStripeWebhook(request: Request) {
         name: session.customer_details?.name || "",
         orderTs,
         amount: typeof session.amount_total === "number" ? session.amount_total / 100 : 0,
-        unitQty: (itemType === "kit" || itemType === "cartridge") ? 0 : (Number(session.metadata?.requested_unit_qty) || 1),
+        unitQty: (itemType === "kit" || itemType === "cartridge" || itemType === "adapter") ? 0 : (Number(session.metadata?.requested_unit_qty) || 1),
         bumpTaken,
         itemType,
         repeatCustomer,
@@ -860,7 +871,7 @@ async function handleStripeWebhook(request: Request) {
         OrderNumber: orderNumber,
         OrderTS: orderTs,
         ItemType: itemType,
-        UnitQty: (itemType === "kit" || itemType === "cartridge") ? 0 : (Number(session.metadata?.requested_unit_qty) || 1),
+        UnitQty: (itemType === "kit" || itemType === "cartridge" || itemType === "adapter") ? 0 : (Number(session.metadata?.requested_unit_qty) || 1),
         BumpTaken: bumpTaken,
         OTOAccepted: false,
         ShippingMethod: shippingMethod,

@@ -114,6 +114,9 @@ function buildOrderRow(
   } else if (itemType === "cartridge") {
     item = "Spare cartridge";
     spareCartridge = "No";
+  } else if (itemType === "adapter") {
+    item = "Mount adapter";
+    spareCartridge = "No";
   } else {
     const prefix = unitQty > 1 ? `${unitQty}x ` : "";
     item = `${prefix}H1-230KM complete set`;
@@ -128,7 +131,7 @@ function buildOrderRow(
     }
   }
 
-  const shipping = (shippingMethod === "express" || itemType === "cartridge") ? "Express" : "Standard";
+  const shipping = (shippingMethod === "express" || itemType === "cartridge" || itemType === "adapter") ? "Express" : "Standard";
 
   return [
     batchedET,

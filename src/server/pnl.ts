@@ -214,8 +214,8 @@ function aggregateMonthOrders(
 
     if (refunded) continue; // skip refunded orders from unit counts
 
-    if (itemType === "kit" || itemType === "cartridge") {
-      // Standalone kit or cartridge order (UnitQty = 0)
+    if (itemType === "kit" || itemType === "cartridge" || itemType === "adapter") {
+      // Standalone kit, cartridge, or adapter order (UnitQty = 0)
       result.kitStandaloneCount++;
       result.kitStandaloneRevenue += amount;
       continue;
