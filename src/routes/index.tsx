@@ -997,6 +997,10 @@ function ProofWall({ onReviewsLoaded }: { onReviewsLoaded?: (count: number) => v
               {avg.toFixed(1)} out of 5 based on {reviews.length} reviews
             </p>
           )}
+          <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
+            <strong className="font-semibold text-foreground/70">Where these reviews come from.</strong>{" "}
+            Every review here is from a verified AG customer. We invite each one by email after their unit has been in the shower for a while. We don't pay for reviews, and we don't edit them beyond removing personal details. What customers write is what gets published, good or bad.
+          </p>
         </div>
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3">
