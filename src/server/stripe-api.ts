@@ -6,7 +6,6 @@ import {
   buildCartridgeConfirmationEmail,
   buildKitConfirmationEmail,
   buildAdapterConfirmationEmail,
-  buildReviewNudgeEmail,
   buildRecoveryEmail,
   buildShippingEmail,
   buildCheckInEmail,
@@ -1558,92 +1557,6 @@ async function handleListReviews() {
   }
 }
 
-// ─── E2 nudge-1: one-shot review nudge for batch-1 non-responders ───────────
-
-const NUDGE1_ROSTER = [
-  "AG-2A4DET",
-  "AG-YRSVCM",
-  "AG-P33EST",
-  "AG-E5PUQ5",
-  "AG-57KSZH",
-  "AG-5Z4NW3",
-  "AG-HY2DMV",
-  "AG-RFCPFD",
-  "AG-MVPMTS",
-];
-
-async function handleE2Nudge1(request: Request) {
-  const authError = checkFulfillAuth(request);
-  if (authError) return authError;
-
-  const results: Array<{ orderNumber: string; status: string; error?: string }> = [];
-
-  for (const orderNumber of NUDGE1_ROSTER) {
-    const order = await findOrderByOrderNumber(orderNumber);
-    if (!order) {
-      results.push({ orderNumber, status: "order_not_found" });
-      continue;
-    }
-    const f = order.fields;
-
-    // Idempotency: skip if already nudged
-    if (f.NudgeSentTS) {
-      results.push({ orderNumber, status: "skipped_already_nudged" });
-      continue;
-    }
-
-    const email = (f.Email as string) || "";
-    if (!email) {
-      results.push({ orderNumber, status: "no_email" });
-      continue;
-    }
-
-    // Look up existing unused token from Reviews table
-    try {
-      const config = { apiKey: process.env.AIRTABLE_API_KEY!, baseId: process.env.AIRTABLE_BASE_ID! };
-      const formula = encodeURIComponent(`AND({OrderNumber}='${orderNumber}',NOT({TokenUsed}))`);
-      const tokenRes = await fetch(
-        `https://api.airtable.com/v0/${encodeURIComponent(config.baseId)}/${encodeURIComponent("tblTwgPuy0D18LGMv")}?filterByFormula=${formula}&maxRecords=1`,
-        { headers: { Authorization: `Bearer ${config.apiKey}`, "Content-Type": "application/json" } },
-      );
-      if (!tokenRes.ok) {
-        results.push({ orderNumber, status: "token_lookup_failed", error: `${tokenRes.status}` });
-        continue;
-      }
-      const tokenData = (await tokenRes.json()) as { records: Array<{ fields: Record<string, unknown> }> };
-      const tokenRecord = tokenData.records[0];
-      if (!tokenRecord) {
-        results.push({ orderNumber, status: "no_unused_token" });
-        continue;
-      }
-
-      const token = tokenRecord.fields.Token as string;
-      const reviewLink = `https://agsoftener.com/review?token=${token}`;
-      const firstName = extractFirstName((f.Name as string) || "");
-      const emailContent = buildReviewNudgeEmail({ firstName, reviewLink });
-      await sendEmail({ to: email, ...emailContent });
-
-      await updateOrderFields(order.id, {
-        NudgeSentTS: new Date().toISOString(),
-      });
-
-      results.push({ orderNumber, status: "sent" });
-    } catch (err) {
-      results.push({
-        orderNumber,
-        status: "failed",
-        error: err instanceof Error ? err.message : String(err),
-      });
-    }
-  }
-
-  const sent = results.filter((r) => r.status === "sent").length;
-  const skipped = results.filter((r) => r.status === "skipped_already_nudged").length;
-  const failed = results.filter((r) => r.status !== "sent" && r.status !== "skipped_already_nudged").length;
-
-  return json({ roster: NUDGE1_ROSTER.length, sent, skipped, failed, results });
-}
-
 // ─── Router ─────────────────────────────────────────────────────────────────────
 
 export async function handleStripeApi(request: Request) {
@@ -1703,10 +1616,6 @@ export async function handleStripeApi(request: Request) {
 
   if (url.pathname === "/api/reviews" && request.method === "GET") {
     return handleListReviews();
-  }
-
-  if (url.pathname === "/api/e2-nudge1" && request.method === "POST") {
-    return handleE2Nudge1(request);
   }
 
   return undefined;
