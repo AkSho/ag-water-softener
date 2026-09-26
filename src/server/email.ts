@@ -302,6 +302,27 @@ ${SIGN_OFF}`,
   };
 }
 
+export function buildReviewNudgeEmail({
+  firstName,
+  reviewLink,
+}: {
+  firstName: string;
+  reviewLink: string;
+}) {
+  const name = firstName || "there";
+
+  return {
+    subject: "Re: How's the water?",
+    text: `Hi ${name},
+
+Just a quick nudge on this one. If you have a minute, I'd still love to hear how the softener's been working out: ${reviewLink}
+
+And if it hasn't gone well, I want to hear that even more.
+
+${SIGN_OFF}`,
+  };
+}
+
 // ─── Daily digest (internal, no sign-off) ─────────────────────────────────
 
 import type { DigestData } from "./records";
