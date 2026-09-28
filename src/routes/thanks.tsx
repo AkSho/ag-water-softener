@@ -150,26 +150,18 @@ function ThanksPage() {
       track("bump_accepted", { source: summary.bumpSource });
     }
 
-    // --- Google Ads conversion tag ---
-    const gtagScript = document.createElement("script");
-    gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=AW-18415554350";
-    gtagScript.async = true;
-    document.head.appendChild(gtagScript);
-    gtagScript.onload = () => {
-      (window as any).dataLayer = (window as any).dataLayer || [];
-      function gtag(...args: any[]) { (window as any).dataLayer.push(args); }
-      gtag("js", new Date());
-      gtag("config", "AW-18415554350");
+    // --- Google Ads conversion event (gtag loaded sitewide in __root.tsx) ---
+    if (typeof (window as any).gtag === "function") {
       if (summary.customerEmail) {
-        gtag("set", "user_data", { email: summary.customerEmail });
+        (window as any).gtag("set", "user_data", { email: summary.customerEmail });
       }
-      gtag("event", "conversion", {
+      (window as any).gtag("event", "conversion", {
         send_to: "AW-18415554350/R8EmCICLz-kcEK6enM1E",
         value: typeof summary.amountTotal === "number" ? summary.amountTotal / 100 : 0,
         currency: summary.currency?.toUpperCase() || "USD",
         transaction_id: summary.id,
       });
-    };
+    }
     // --- end conversion tag ---
 
     // --- Microsoft UET conversion tag ---
