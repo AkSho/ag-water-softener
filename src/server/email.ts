@@ -173,7 +173,9 @@ export function formatPromiseDate(orderDate: Date, days: number = 18): string {
 
 export function extractFirstName(fullName: string | null | undefined): string {
   if (!fullName) return "";
-  return fullName.trim().split(/\s+/)[0] || "";
+  const first = fullName.trim().split(/\s+/)[0] || "";
+  if (!first) return "";
+  return first.charAt(0).toUpperCase() + first.slice(1);
 }
 
 export function formatLongDate(dateStr: string): string {

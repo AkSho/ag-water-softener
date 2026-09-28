@@ -566,14 +566,14 @@ async function handleExpressUpgrade(
   const existingNotes = (f.Notes as string) || "";
   const today = new Date().toISOString().split("T")[0];
 
-  // Recompute PromisedBy: +10 days from original OrderTS
-  const newPromisedBy = orderTs
-    ? (() => {
-        const d = new Date(orderTs);
-        d.setDate(d.getDate() + 10);
-        return d.toISOString().split("T")[0];
-      })()
-    : "";
+  // Recompute PromisedBy: +10 days from upgrade payment date (now),
+  // not original OrderTS — upgraded order ships on next batch after payment
+  const upgradeDate = new Date();
+  const newPromisedBy = (() => {
+    const d = new Date(upgradeDate);
+    d.setDate(d.getDate() + 10);
+    return d.toISOString().split("T")[0];
+  })();
 
   // Append to Notes
   const upgradeNote = `Express upgrade paid ${today}`;
@@ -596,9 +596,7 @@ async function handleExpressUpgrade(
 
   // Send confirmation email
   const firstName = extractFirstName((f.Name as string) || session.customer_details?.name || "");
-  const expectedDate = newPromisedBy
-    ? formatPromiseDate(new Date(orderTs), 10)
-    : "";
+  const expectedDate = formatPromiseDate(upgradeDate, 10);
   const email = (f.Email as string) || session.customer_details?.email || "";
 
   if (email) {
