@@ -34,7 +34,7 @@ const FAQS = [
   { q: "I already tried a shower filter and it did not help. How is this different?", a: "A filter removes chlorine with carbon and similar media. Dissolved calcium and magnesium pass through those media, so hard water stays hard with a filter installed. The AG uses ion-exchange resin, which removes the hardness minerals themselves. The 60-day guarantee lets you test that on your own water." },
   { q: "Does soft water feel slippery at first?", a: "For some people, yes, briefly. That silky feeling is what skin feels like when soap actually rinses away instead of combining with hardness minerals and clinging to you as residue. Research published in the Journal of Investigative Dermatology measured exactly this: hard water leaves significantly more surfactant deposited on skin after washing. What hard water taught you to interpret as \"squeaky clean\" was residue. Most people stop noticing the change within a week and then can't stand hotel hard water afterward." },
   { q: "Does the salt make my shower water salty?", a: "You'll never smell or feel it. Ion exchange swaps hardness minerals for a small amount of sodium, the same trade every whole-house softener makes, and the water remains ordinary soft water. The salt you pour into the tank is used to rinse the resin during regeneration, then drains away." },
-  { q: "What are the ongoing costs?", a: "Plain softener salt from the grocery store and one $45 replacement canister about once a year. The salt runs a few dollars a bag, and there's no cartridge subscription." },
+  { q: "What are the ongoing costs?", a: "Plain softener salt from the grocery store and one replacement canister about once a year, $64 shipped on its own or $39 added to your original order. The salt runs a few dollars a bag, and there's no cartridge subscription." },
   { q: "Will it fit my shower?", a: "The AG Water Softener works with standard shower setups and most showerheads, mounts on the pipe or stands on the floor, and includes every hose and connector needed for both options. If your setup turns out to be the rare exception, the 60-day guarantee applies from day one." },
   { q: "Can I use a shower filter with a water softener?", a: "Yes. The AG softens; any standard $25 shower filter removes chlorine. Together they run about $274, less than bundled filter-and-softener systems like the Arius at $349.76 (their checkout price as of September 11, 2026). The softening half is the part a filter can't do." },
   { q: "Does a water softener lower the TDS reading?", a: "No, and this surprises a lot of folks. A TDS meter measures the total of everything dissolved in the water. A water softener works by ion exchange. The canister swaps out the calcium and magnesium that make water hard and releases sodium in their place. The total dissolved amount stays about the same and sometimes reads slightly higher, so a TDS meter shows little or no change on fully softened water. The meter reads the same whether the unit is working or still in the box. Hardness test strips measure the hard minerals themselves. That\u2019s the tool that shows the before and after." },
@@ -1277,7 +1277,7 @@ function ProductDetails() {
 
 function CostTable() {
   const rows = [
-    { name: "AG Water Softener", day1: "$249", yr1: "$249", yr2: "$294" },
+    { name: "AG Water Softener", day1: "$249", yr1: "$249", yr2: "$313" },
     { name: "Jolie", day1: "$169", yr1: "$274", yr2: "$414" },
     { name: "Canopy", day1: "$150", yr1: "$231", yr2: "$339" },
   ];
@@ -1323,7 +1323,7 @@ function CostTable() {
               Jolie and Canopy are shower filters. They remove chlorine and do that job well, and neither removes the calcium and magnesium that make water hard. The AG costs more on day one because the cartridge holds ion-exchange resin instead of carbon, and resin is what softening requires.
             </p>
             <p>
-              The AG runs on one $45 replacement canister a year, and plain salt from the grocery store. Filter cartridges replace every 90 days. That difference is the whole table.
+              The AG runs on one replacement canister a year, $64 shipped on its own or $39 when it ships with your unit, plus plain salt from the grocery store. Filter cartridges replace every 90 days. That difference is the whole table.
             </p>
           </div>
         </div>
