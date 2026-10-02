@@ -301,7 +301,7 @@ function WaterSoftenerForApartmentPage() {
                   </td>
                   <td className="border border-border px-4 py-3">$249</td>
                   <td className="border border-border px-4 py-3">$249</td>
-                  <td className="border border-border px-4 py-3">$294</td>
+                  <td className="border border-border px-4 py-3">$313</td>
                 </tr>
                 <tr className="bg-surface/50">
                   <td className="border border-border px-4 py-3 font-semibold">
@@ -317,8 +317,7 @@ function WaterSoftenerForApartmentPage() {
 
           <div className="mt-6 space-y-6">
             <p>
-              The AG runs on one $45 replacement canister a year, and plain salt
-              from the grocery store. Jolie's filter cartridges run $35 about
+              The AG runs on one replacement canister a year, $64 shipped on its own or $39 when it ships with your unit, plus plain salt from the grocery store. Jolie's filter cartridges run $35 about
               every 90 days. And the two rows aren't doing the same job: the AG
               softens, while Jolie filters chlorine and leaves hardness in the
               water. The table exists because the filter route costs more over
