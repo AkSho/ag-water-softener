@@ -740,6 +740,32 @@ export interface FulfillmentAction {
   error?: string;
 }
 
+/** Pure eligibility check for review-ask emails. Used in both the send loop
+ *  and the digest eligible-count so the two can never drift. */
+export function isReviewAskEligible(
+  f: Record<string, unknown>,
+  now: Date,
+): boolean {
+  const status = (f.Status as string) || "";
+  if (status !== "delivered") return false;
+  if (f.Refunded) return false;
+  if (f.ReviewAskSentTS) return false;
+
+  const deliveredDate = f.DeliveredDate as string;
+  if (!deliveredDate) return false;
+
+  const askDate = new Date(new Date(deliveredDate).getTime() + 10 * 86400_000);
+  if (now < askDate) return false;
+
+  const checkInTs = f.CheckInTS as string;
+  if (checkInTs) {
+    const checkInDate = new Date(checkInTs);
+    if (now.getTime() - checkInDate.getTime() < 5 * 86400_000) return false;
+  }
+
+  return true;
+}
+
 export async function processFulfillment(
   sendFn: (params: { to: string; subject: string; text: string }) => Promise<void>,
   buildShipping: (params: { firstName: string; carrier: string; tracking: string; promisedBy: string }) => { subject: string; text: string },
@@ -841,21 +867,8 @@ export async function processFulfillment(
 
     // 4. Review-ask: DeliveredDate + 10 days elapsed, delivered, not refunded/cancelled, not already sent
     //    Orders without DeliveredDate are never asked (by design — undated orders surface in digest).
-    if (status === "delivered" && !f.Refunded && !f.ReviewAskSentTS) {
-      const deliveredDate = f.DeliveredDate as string;
-      if (!deliveredDate) continue;
-
-      const now = new Date();
-      const askDate = new Date(new Date(deliveredDate).getTime() + 10 * 86400_000);
-      if (now < askDate) continue;
-
-      // 5-day CheckInTS guard: don't email if check-in was sent within last 5 days
-      const checkInTs = f.CheckInTS as string;
-      if (checkInTs) {
-        const checkInDate = new Date(checkInTs);
-        if (now.getTime() - checkInDate.getTime() < 5 * 86400_000) continue;
-      }
-
+    //    When REVIEW_ASK_PAUSED=1, skip entirely — no sends, no tokens, no stamps written.
+    if (process.env.REVIEW_ASK_PAUSED !== "1" && isReviewAskEligible(f, new Date())) {
       const firstName = extractName(f.Name as string);
       const orderNumber = (f.OrderNumber as string) || "";
       const sessionId = (f.StripeSessionId as string) || "";
@@ -1083,6 +1096,7 @@ export interface DigestData {
     readyNoNotify: number;
     deliveredNoCheckIn: number;
     shippedNoDeliveryDate: Array<{ orderNumber: string; daysSinceShipped: number }>;
+    reviewAskEligible: number;
   };
   dataHealth: {
     verdictMismatches: number;
@@ -1127,6 +1141,7 @@ export async function getDailyMetrics(
     readyNoNotify: 0,
     deliveredNoCheckIn: 0,
     shippedNoDeliveryDate: [] as Array<{ orderNumber: string; daysSinceShipped: number }>,
+    reviewAskEligible: 0,
   };
   const dataHealth = {
     verdictMismatches: 0,
@@ -1233,6 +1248,9 @@ export async function getDailyMetrics(
         }
       }
     }
+
+    // Review-ask eligible count (for paused digest line)
+    if (isReviewAskEligible(f, new Date(nowMs))) fulfillment.reviewAskEligible++;
 
     // Data health: verdict direct with referrer/UTM
     if ((f.Verdict as string) === "direct") {

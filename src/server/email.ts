@@ -428,6 +428,9 @@ export function buildDigestEmail(data: DigestData, errors: Record<string, string
       fLines.push(`shipped 18+ days, no DeliveredDate (review-ask blocked): ${f.shippedNoDeliveryDate.length}`);
       for (const s of f.shippedNoDeliveryDate) fLines.push(`  ${s.orderNumber} ${s.daysSinceShipped}d since shipped`);
     }
+    if (process.env.REVIEW_ASK_PAUSED === "1") {
+      fLines.push(`review asks: PAUSED (${f.reviewAskEligible} eligible queued)`);
+    }
     sections.push(
       "── Fulfillment health ──\n" +
       (fLines.length > 0 ? fLines.join("\n") : "all clear"),

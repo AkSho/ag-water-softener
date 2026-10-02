@@ -1318,7 +1318,7 @@ async function handleDigest(request: Request) {
       mtdOrders: 0, mtdGross: 0,
       verdicts: {},
       selfReports: {},
-      fulfillment: { intakeStale: 0, supplierNoTracking: 0, batchedAwaitingTracking: [], pastPromised: [], readyNoNotify: 0, deliveredNoCheckIn: 0 },
+      fulfillment: { intakeStale: 0, supplierNoTracking: 0, batchedAwaitingTracking: [], pastPromised: [], readyNoNotify: 0, deliveredNoCheckIn: 0, shippedNoDeliveryDate: [], reviewAskEligible: 0 },
       dataHealth: { verdictMismatches: 0, orphanOtos: 0, missingRows: [], revenueMatch: true, airtableRevenue: 0, stripeRevenue: 0 },
     };
   }
