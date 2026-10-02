@@ -9,137 +9,44 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WaterSoftenerForApartmentRouteImport } from './routes/water-softener-for-apartment'
-import { Route as ThanksRouteImport } from './routes/thanks'
-import { Route as TermsRouteImport } from './routes/terms'
-import { Route as SparesKitRouteImport } from './routes/spares-kit'
-import { Route as SpareCartridgeRouteImport } from './routes/spare-cartridge'
-import { Route as SoftwatercareVsShowerstickVsAgRouteImport } from './routes/softwatercare-vs-showerstick-vs-ag'
-import { Route as ShowerstickAlternativeRouteImport } from './routes/showerstick-alternative'
-import { Route as ShowerHeadWaterSoftenerRouteImport } from './routes/shower-head-water-softener'
-import { Route as ShowerFilterVsWaterSoftenerRouteImport } from './routes/shower-filter-vs-water-softener'
-import { Route as ShippingRouteImport } from './routes/shipping'
-import { Route as SetupRouteImport } from './routes/setup'
-import { Route as ReviewRouteImport } from './routes/review'
-import { Route as ReturnsRouteImport } from './routes/returns'
-import { Route as RedditShowerWaterSoftenerRouteImport } from './routes/reddit-shower-water-softener'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as PreventLimescaleInShowerRouteImport } from './routes/prevent-limescale-in-shower'
-import { Route as PortableWaterSoftenerForShowerRouteImport } from './routes/portable-water-softener-for-shower'
-import { Route as JolieAlternativeForHardWaterRouteImport } from './routes/jolie-alternative-for-hard-water'
-import { Route as DoShowerFiltersWorkForHardWaterRouteImport } from './routes/do-shower-filters-work-for-hard-water'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as CanopyAlternativeForHardWaterRouteImport } from './routes/canopy-alternative-for-hard-water'
-import { Route as BestShowerWaterSoftenerRouteImport } from './routes/best-shower-water-softener'
-import { Route as AriusVsAgWaterSoftenerRouteImport } from './routes/arius-vs-ag-water-softener'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AriusVsAgWaterSoftenerRouteImport } from './routes/arius-vs-ag-water-softener'
+import { Route as BestShowerWaterSoftenerRouteImport } from './routes/best-shower-water-softener'
+import { Route as CanopyAlternativeForHardWaterRouteImport } from './routes/canopy-alternative-for-hard-water'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as DoShowerFiltersWorkForHardWaterRouteImport } from './routes/do-shower-filters-work-for-hard-water'
+import { Route as JolieAlternativeForHardWaterRouteImport } from './routes/jolie-alternative-for-hard-water'
+import { Route as PortableWaterSoftenerForShowerRouteImport } from './routes/portable-water-softener-for-shower'
+import { Route as PreventLimescaleInShowerRouteImport } from './routes/prevent-limescale-in-shower'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RedditShowerWaterSoftenerRouteImport } from './routes/reddit-shower-water-softener'
+import { Route as ReturnsRouteImport } from './routes/returns'
+import { Route as ReviewRouteImport } from './routes/review'
+import { Route as SetupRouteImport } from './routes/setup'
+import { Route as ShippingRouteImport } from './routes/shipping'
+import { Route as ShowerFilterVsWaterSoftenerRouteImport } from './routes/shower-filter-vs-water-softener'
+import { Route as ShowerHeadWaterSoftenerRouteImport } from './routes/shower-head-water-softener'
+import { Route as ShowerstickAlternativeRouteImport } from './routes/showerstick-alternative'
+import { Route as SoftwatercareVsShowerstickVsAgRouteImport } from './routes/softwatercare-vs-showerstick-vs-ag'
+import { Route as SpareCartridgeRouteImport } from './routes/spare-cartridge'
+import { Route as SparesKitRouteImport } from './routes/spares-kit'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as ThanksRouteImport } from './routes/thanks'
+import { Route as WaterSoftenerForApartmentRouteImport } from './routes/water-softener-for-apartment'
 
-const WaterSoftenerForApartmentRoute =
-  WaterSoftenerForApartmentRouteImport.update({
-    id: '/water-softener-for-apartment',
-    path: '/water-softener-for-apartment',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ThanksRoute = ThanksRouteImport.update({
-  id: '/thanks',
-  path: '/thanks',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
+const AriusVsAgWaterSoftenerRoute = AriusVsAgWaterSoftenerRouteImport.update({
+  id: '/arius-vs-ag-water-softener',
+  path: '/arius-vs-ag-water-softener',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SparesKitRoute = SparesKitRouteImport.update({
-  id: '/spares-kit',
-  path: '/spares-kit',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SpareCartridgeRoute = SpareCartridgeRouteImport.update({
-  id: '/spare-cartridge',
-  path: '/spare-cartridge',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SoftwatercareVsShowerstickVsAgRoute =
-  SoftwatercareVsShowerstickVsAgRouteImport.update({
-    id: '/softwatercare-vs-showerstick-vs-ag',
-    path: '/softwatercare-vs-showerstick-vs-ag',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ShowerstickAlternativeRoute = ShowerstickAlternativeRouteImport.update({
-  id: '/showerstick-alternative',
-  path: '/showerstick-alternative',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ShowerHeadWaterSoftenerRoute = ShowerHeadWaterSoftenerRouteImport.update({
-  id: '/shower-head-water-softener',
-  path: '/shower-head-water-softener',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ShowerFilterVsWaterSoftenerRoute =
-  ShowerFilterVsWaterSoftenerRouteImport.update({
-    id: '/shower-filter-vs-water-softener',
-    path: '/shower-filter-vs-water-softener',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ShippingRoute = ShippingRouteImport.update({
-  id: '/shipping',
-  path: '/shipping',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SetupRoute = SetupRouteImport.update({
-  id: '/setup',
-  path: '/setup',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ReviewRoute = ReviewRouteImport.update({
-  id: '/review',
-  path: '/review',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ReturnsRoute = ReturnsRouteImport.update({
-  id: '/returns',
-  path: '/returns',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RedditShowerWaterSoftenerRoute =
-  RedditShowerWaterSoftenerRouteImport.update({
-    id: '/reddit-shower-water-softener',
-    path: '/reddit-shower-water-softener',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PreventLimescaleInShowerRoute =
-  PreventLimescaleInShowerRouteImport.update({
-    id: '/prevent-limescale-in-shower',
-    path: '/prevent-limescale-in-shower',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const PortableWaterSoftenerForShowerRoute =
-  PortableWaterSoftenerForShowerRouteImport.update({
-    id: '/portable-water-softener-for-shower',
-    path: '/portable-water-softener-for-shower',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const JolieAlternativeForHardWaterRoute =
-  JolieAlternativeForHardWaterRouteImport.update({
-    id: '/jolie-alternative-for-hard-water',
-    path: '/jolie-alternative-for-hard-water',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const DoShowerFiltersWorkForHardWaterRoute =
-  DoShowerFiltersWorkForHardWaterRouteImport.update({
-    id: '/do-shower-filters-work-for-hard-water',
-    path: '/do-shower-filters-work-for-hard-water',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
+const BestShowerWaterSoftenerRoute = BestShowerWaterSoftenerRouteImport.update({
+  id: '/best-shower-water-softener',
+  path: '/best-shower-water-softener',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CanopyAlternativeForHardWaterRoute =
@@ -148,21 +55,114 @@ const CanopyAlternativeForHardWaterRoute =
     path: '/canopy-alternative-for-hard-water',
     getParentRoute: () => rootRouteImport,
   } as any)
-const BestShowerWaterSoftenerRoute = BestShowerWaterSoftenerRouteImport.update({
-  id: '/best-shower-water-softener',
-  path: '/best-shower-water-softener',
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AriusVsAgWaterSoftenerRoute = AriusVsAgWaterSoftenerRouteImport.update({
-  id: '/arius-vs-ag-water-softener',
-  path: '/arius-vs-ag-water-softener',
+const DoShowerFiltersWorkForHardWaterRoute =
+  DoShowerFiltersWorkForHardWaterRouteImport.update({
+    id: '/do-shower-filters-work-for-hard-water',
+    path: '/do-shower-filters-work-for-hard-water',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const JolieAlternativeForHardWaterRoute =
+  JolieAlternativeForHardWaterRouteImport.update({
+    id: '/jolie-alternative-for-hard-water',
+    path: '/jolie-alternative-for-hard-water',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PortableWaterSoftenerForShowerRoute =
+  PortableWaterSoftenerForShowerRouteImport.update({
+    id: '/portable-water-softener-for-shower',
+    path: '/portable-water-softener-for-shower',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PreventLimescaleInShowerRoute =
+  PreventLimescaleInShowerRouteImport.update({
+    id: '/prevent-limescale-in-shower',
+    path: '/prevent-limescale-in-shower',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const RedditShowerWaterSoftenerRoute =
+  RedditShowerWaterSoftenerRouteImport.update({
+    id: '/reddit-shower-water-softener',
+    path: '/reddit-shower-water-softener',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ReturnsRoute = ReturnsRouteImport.update({
+  id: '/returns',
+  path: '/returns',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReviewRoute = ReviewRouteImport.update({
+  id: '/review',
+  path: '/review',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SetupRoute = SetupRouteImport.update({
+  id: '/setup',
+  path: '/setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShippingRoute = ShippingRouteImport.update({
+  id: '/shipping',
+  path: '/shipping',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShowerFilterVsWaterSoftenerRoute =
+  ShowerFilterVsWaterSoftenerRouteImport.update({
+    id: '/shower-filter-vs-water-softener',
+    path: '/shower-filter-vs-water-softener',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ShowerHeadWaterSoftenerRoute = ShowerHeadWaterSoftenerRouteImport.update({
+  id: '/shower-head-water-softener',
+  path: '/shower-head-water-softener',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShowerstickAlternativeRoute = ShowerstickAlternativeRouteImport.update({
+  id: '/showerstick-alternative',
+  path: '/showerstick-alternative',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SoftwatercareVsShowerstickVsAgRoute =
+  SoftwatercareVsShowerstickVsAgRouteImport.update({
+    id: '/softwatercare-vs-showerstick-vs-ag',
+    path: '/softwatercare-vs-showerstick-vs-ag',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SpareCartridgeRoute = SpareCartridgeRouteImport.update({
+  id: '/spare-cartridge',
+  path: '/spare-cartridge',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SparesKitRoute = SparesKitRouteImport.update({
+  id: '/spares-kit',
+  path: '/spares-kit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ThanksRoute = ThanksRouteImport.update({
+  id: '/thanks',
+  path: '/thanks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WaterSoftenerForApartmentRoute =
+  WaterSoftenerForApartmentRouteImport.update({
+    id: '/water-softener-for-apartment',
+    path: '/water-softener-for-apartment',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -353,158 +353,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/water-softener-for-apartment': {
-      id: '/water-softener-for-apartment'
-      path: '/water-softener-for-apartment'
-      fullPath: '/water-softener-for-apartment'
-      preLoaderRoute: typeof WaterSoftenerForApartmentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/thanks': {
-      id: '/thanks'
-      path: '/thanks'
-      fullPath: '/thanks'
-      preLoaderRoute: typeof ThanksRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/spares-kit': {
-      id: '/spares-kit'
-      path: '/spares-kit'
-      fullPath: '/spares-kit'
-      preLoaderRoute: typeof SparesKitRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/spare-cartridge': {
-      id: '/spare-cartridge'
-      path: '/spare-cartridge'
-      fullPath: '/spare-cartridge'
-      preLoaderRoute: typeof SpareCartridgeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/softwatercare-vs-showerstick-vs-ag': {
-      id: '/softwatercare-vs-showerstick-vs-ag'
-      path: '/softwatercare-vs-showerstick-vs-ag'
-      fullPath: '/softwatercare-vs-showerstick-vs-ag'
-      preLoaderRoute: typeof SoftwatercareVsShowerstickVsAgRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/showerstick-alternative': {
-      id: '/showerstick-alternative'
-      path: '/showerstick-alternative'
-      fullPath: '/showerstick-alternative'
-      preLoaderRoute: typeof ShowerstickAlternativeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/shower-head-water-softener': {
-      id: '/shower-head-water-softener'
-      path: '/shower-head-water-softener'
-      fullPath: '/shower-head-water-softener'
-      preLoaderRoute: typeof ShowerHeadWaterSoftenerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/shower-filter-vs-water-softener': {
-      id: '/shower-filter-vs-water-softener'
-      path: '/shower-filter-vs-water-softener'
-      fullPath: '/shower-filter-vs-water-softener'
-      preLoaderRoute: typeof ShowerFilterVsWaterSoftenerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/shipping': {
-      id: '/shipping'
-      path: '/shipping'
-      fullPath: '/shipping'
-      preLoaderRoute: typeof ShippingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/setup': {
-      id: '/setup'
-      path: '/setup'
-      fullPath: '/setup'
-      preLoaderRoute: typeof SetupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/review': {
-      id: '/review'
-      path: '/review'
-      fullPath: '/review'
-      preLoaderRoute: typeof ReviewRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/returns': {
-      id: '/returns'
-      path: '/returns'
-      fullPath: '/returns'
-      preLoaderRoute: typeof ReturnsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reddit-shower-water-softener': {
-      id: '/reddit-shower-water-softener'
-      path: '/reddit-shower-water-softener'
-      fullPath: '/reddit-shower-water-softener'
-      preLoaderRoute: typeof RedditShowerWaterSoftenerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/prevent-limescale-in-shower': {
-      id: '/prevent-limescale-in-shower'
-      path: '/prevent-limescale-in-shower'
-      fullPath: '/prevent-limescale-in-shower'
-      preLoaderRoute: typeof PreventLimescaleInShowerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/portable-water-softener-for-shower': {
-      id: '/portable-water-softener-for-shower'
-      path: '/portable-water-softener-for-shower'
-      fullPath: '/portable-water-softener-for-shower'
-      preLoaderRoute: typeof PortableWaterSoftenerForShowerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/jolie-alternative-for-hard-water': {
-      id: '/jolie-alternative-for-hard-water'
-      path: '/jolie-alternative-for-hard-water'
-      fullPath: '/jolie-alternative-for-hard-water'
-      preLoaderRoute: typeof JolieAlternativeForHardWaterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/do-shower-filters-work-for-hard-water': {
-      id: '/do-shower-filters-work-for-hard-water'
-      path: '/do-shower-filters-work-for-hard-water'
-      fullPath: '/do-shower-filters-work-for-hard-water'
-      preLoaderRoute: typeof DoShowerFiltersWorkForHardWaterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/canopy-alternative-for-hard-water': {
-      id: '/canopy-alternative-for-hard-water'
-      path: '/canopy-alternative-for-hard-water'
-      fullPath: '/canopy-alternative-for-hard-water'
-      preLoaderRoute: typeof CanopyAlternativeForHardWaterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/best-shower-water-softener': {
-      id: '/best-shower-water-softener'
-      path: '/best-shower-water-softener'
-      fullPath: '/best-shower-water-softener'
-      preLoaderRoute: typeof BestShowerWaterSoftenerRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/arius-vs-ag-water-softener': {
@@ -514,11 +367,158 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AriusVsAgWaterSoftenerRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/best-shower-water-softener': {
+      id: '/best-shower-water-softener'
+      path: '/best-shower-water-softener'
+      fullPath: '/best-shower-water-softener'
+      preLoaderRoute: typeof BestShowerWaterSoftenerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/canopy-alternative-for-hard-water': {
+      id: '/canopy-alternative-for-hard-water'
+      path: '/canopy-alternative-for-hard-water'
+      fullPath: '/canopy-alternative-for-hard-water'
+      preLoaderRoute: typeof CanopyAlternativeForHardWaterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/do-shower-filters-work-for-hard-water': {
+      id: '/do-shower-filters-work-for-hard-water'
+      path: '/do-shower-filters-work-for-hard-water'
+      fullPath: '/do-shower-filters-work-for-hard-water'
+      preLoaderRoute: typeof DoShowerFiltersWorkForHardWaterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jolie-alternative-for-hard-water': {
+      id: '/jolie-alternative-for-hard-water'
+      path: '/jolie-alternative-for-hard-water'
+      fullPath: '/jolie-alternative-for-hard-water'
+      preLoaderRoute: typeof JolieAlternativeForHardWaterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portable-water-softener-for-shower': {
+      id: '/portable-water-softener-for-shower'
+      path: '/portable-water-softener-for-shower'
+      fullPath: '/portable-water-softener-for-shower'
+      preLoaderRoute: typeof PortableWaterSoftenerForShowerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prevent-limescale-in-shower': {
+      id: '/prevent-limescale-in-shower'
+      path: '/prevent-limescale-in-shower'
+      fullPath: '/prevent-limescale-in-shower'
+      preLoaderRoute: typeof PreventLimescaleInShowerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reddit-shower-water-softener': {
+      id: '/reddit-shower-water-softener'
+      path: '/reddit-shower-water-softener'
+      fullPath: '/reddit-shower-water-softener'
+      preLoaderRoute: typeof RedditShowerWaterSoftenerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/returns': {
+      id: '/returns'
+      path: '/returns'
+      fullPath: '/returns'
+      preLoaderRoute: typeof ReturnsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/review': {
+      id: '/review'
+      path: '/review'
+      fullPath: '/review'
+      preLoaderRoute: typeof ReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/setup': {
+      id: '/setup'
+      path: '/setup'
+      fullPath: '/setup'
+      preLoaderRoute: typeof SetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shipping': {
+      id: '/shipping'
+      path: '/shipping'
+      fullPath: '/shipping'
+      preLoaderRoute: typeof ShippingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shower-filter-vs-water-softener': {
+      id: '/shower-filter-vs-water-softener'
+      path: '/shower-filter-vs-water-softener'
+      fullPath: '/shower-filter-vs-water-softener'
+      preLoaderRoute: typeof ShowerFilterVsWaterSoftenerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shower-head-water-softener': {
+      id: '/shower-head-water-softener'
+      path: '/shower-head-water-softener'
+      fullPath: '/shower-head-water-softener'
+      preLoaderRoute: typeof ShowerHeadWaterSoftenerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/showerstick-alternative': {
+      id: '/showerstick-alternative'
+      path: '/showerstick-alternative'
+      fullPath: '/showerstick-alternative'
+      preLoaderRoute: typeof ShowerstickAlternativeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/softwatercare-vs-showerstick-vs-ag': {
+      id: '/softwatercare-vs-showerstick-vs-ag'
+      path: '/softwatercare-vs-showerstick-vs-ag'
+      fullPath: '/softwatercare-vs-showerstick-vs-ag'
+      preLoaderRoute: typeof SoftwatercareVsShowerstickVsAgRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/spare-cartridge': {
+      id: '/spare-cartridge'
+      path: '/spare-cartridge'
+      fullPath: '/spare-cartridge'
+      preLoaderRoute: typeof SpareCartridgeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/spares-kit': {
+      id: '/spares-kit'
+      path: '/spares-kit'
+      fullPath: '/spares-kit'
+      preLoaderRoute: typeof SparesKitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/thanks': {
+      id: '/thanks'
+      path: '/thanks'
+      fullPath: '/thanks'
+      preLoaderRoute: typeof ThanksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/water-softener-for-apartment': {
+      id: '/water-softener-for-apartment'
+      path: '/water-softener-for-apartment'
+      fullPath: '/water-softener-for-apartment'
+      preLoaderRoute: typeof WaterSoftenerForApartmentRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
