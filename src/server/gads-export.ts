@@ -88,12 +88,14 @@ export async function runGadsExport(dryRun: boolean = false): Promise<GadsExport
     const status = (f.Status as string) || "";
     const refunded = f.Refunded as boolean || false;
     const exported = f.GadsExported as boolean || false;
+    const amount = (f.Amount as number) || 0;
     return (
       verdict === "google-paid" &&
       gclid.length > 0 &&
       status !== "cancelled" &&
       !refunded &&
-      !exported
+      !exported &&
+      amount > 0 // never export a defaulted value; row waits for a real Amount
     );
   });
 
@@ -118,7 +120,10 @@ export async function runGadsExport(dryRun: boolean = false): Promise<GadsExport
     const f = row.fields;
     const gclid = (f.FT_Gclid as string) || "";
     const orderTs = (f.OrderTS as string) || new Date().toISOString();
-    const amount = (f.Amount as number) || 0;
+    // Checkout total (units, bump, checkout-time express shipping) plus an
+    // accepted OTO, which is charged as a separate PaymentIntent.
+    const otoAmount = (f.OTOAccepted as boolean) ? ((f.OTOAmount as number) || 0) : 0;
+    const amount = ((f.Amount as number) || 0) + otoAmount;
     return [
       gclid,
       CONVERSION_NAME,
