@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "gads:tail": "npx tsx --env-file=.env.local scripts/gads-sheet-tail.ts"
+    "gads:tail": "npx tsx scripts/gads-sheet-tail.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

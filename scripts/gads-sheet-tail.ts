@@ -6,11 +6,41 @@
 //   npm run gads:tail          # last 10 rows
 //   npm run gads:tail -- 25    # last 25 rows
 //
-// Requires: GADS_SHEET_ID, GOOGLE_SA_KEY (same as the export)
+// Requires: GADS_SHEET_ID, GOOGLE_SA_KEY (same as the export). Read from
+// .env.local directly, not via --env-file: Node's parser truncates a
+// double-quoted JSON value at its first inner quote. A variable already set
+// in the process environment wins.
 
+import { existsSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { getServiceAccountKey, getAccessToken, readRange } from "../src/server/sheets";
 
+function loadEnvLocal(keys: string[]) {
+  const file = resolve(process.cwd(), ".env.local");
+  if (!existsSync(file)) return;
+  for (const line of readFileSync(file, "utf8").split(/\r?\n/)) {
+    const eq = line.indexOf("=");
+    if (eq < 0) continue;
+    const key = line.slice(0, eq).trim();
+    if (!keys.includes(key) || process.env[key]) continue;
+    let value = line.slice(eq + 1).trim();
+    // Strip one pair of wrapping quotes; inner quotes stay
+    const q = value[0];
+    if ((q === '"' || q === "'") && value.length >= 2 && value.endsWith(q)) {
+      value = value.slice(1, -1);
+    }
+    // Trim trailing whitespace and one trailing literal \n (a stored trailing
+    // newline in the pulled value); inner \n sequences in the key stay
+    value = value.trimEnd();
+    if (value.endsWith("\\n")) value = value.slice(0, -2);
+    process.env[key] = value;
+  }
+}
+
 async function main() {
+  loadEnvLocal(["GADS_SHEET_ID", "GOOGLE_SA_KEY"]);
+
+
   const arg = process.argv[2];
   const n = arg === undefined ? 10 : Number(arg);
   if (!Number.isInteger(n) || n < 1) {
