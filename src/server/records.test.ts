@@ -95,7 +95,7 @@ describe("carrier-neutral email templates", () => {
       carrier,
       deliveredDate: "2026-09-25",
     });
-    assert.equal(result.subject, "Tracking shows your AG Water Softener delivered");
+    assert.equal(result.subject, "Your AG Water Softener arrived");
     assert.ok(!result.text.includes("FedEx"));
   });
 });
