@@ -132,6 +132,171 @@ function SoftwatercareVsShowerstickVsAgPage() {
           below has changed, tell us and we will correct it.
         </p>
 
+        <p className="mt-6 text-[15px] leading-[1.7]">
+          <a href="/" className="underline hover:opacity-70">See the AG Water Softener</a>
+        </p>
+        {/* Table */}
+        <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
+          Side by side
+        </h2>
+        <div className="mt-6 text-[15px] leading-[1.7] text-foreground/90">
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse border border-border text-[14px] leading-[1.6]">
+              <thead>
+                <tr className="bg-surface">
+                  <th className="border border-border px-4 py-3 text-left font-semibold" />
+                  <th className="border border-border px-4 py-3 text-left font-semibold">
+                    SoftWaterCare
+                  </th>
+                  <th className="border border-border px-4 py-3 text-left font-semibold">
+                    ShowerStick
+                  </th>
+                  <th className="border border-border px-4 py-3 text-left font-semibold">
+                    AG Water Softener
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="border border-border px-4 py-3 font-semibold">
+                    Chemistry
+                  </td>
+                  <td className="border border-border px-4 py-3">
+                    Ion-exchange resin + ACF filter
+                  </td>
+                  <td className="border border-border px-4 py-3">
+                    Ion-exchange resin
+                  </td>
+                  <td className="border border-border px-4 py-3">
+                    Ion-exchange resin
+                  </td>
+                </tr>
+                <tr className="bg-surface/50">
+                  <td className="border border-border px-4 py-3 font-semibold">
+                    Where it lives in your shower
+                  </td>
+                  <td className="border border-border px-4 py-3">
+                    On the shower floor or outside the tub; needs a handheld
+                    head, theirs is a $36 add-on or use your own
+                  </td>
+                  <td className="border border-border px-4 py-3">
+                    Hangs on the shower pipe with a clamp, used with a handheld
+                    head
+                  </td>
+                  <td className="border border-border px-4 py-3">
+                    In line at the shower arm, works with your existing
+                    showerhead
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-border px-4 py-3 font-semibold">
+                    Recharge frequency
+                  </td>
+                  <td className="border border-border px-4 py-3">
+                    About once a month
+                  </td>
+                  <td className="border border-border px-4 py-3">
+                    About once a week
+                  </td>
+                  <td className="border border-border px-4 py-3">
+                    Every 3 to 5 weeks
+                  </td>
+                </tr>
+                <tr className="bg-surface/50">
+                  <td className="border border-border px-4 py-3 font-semibold">
+                    What a recharge takes
+                  </td>
+                  <td className="border border-border px-4 py-3">
+                    Prep salt solution 1–2 days ahead, pump circulation 4–5
+                    hours, rest overnight, flush 3 min
+                  </td>
+                  <td className="border border-border px-4 py-3">
+                    About 5 minutes: pour salt water through the port and flush
+                  </td>
+                  <td className="border border-border px-4 py-3">
+                    About 30 minutes, pumped cycle in included brine tank
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-border px-4 py-3 font-semibold">
+                    Salt type
+                  </td>
+                  <td className="border border-border px-4 py-3">
+                    Water softener pellets or crystals only
+                  </td>
+                  <td className="border border-border px-4 py-3">
+                    Plain table salt
+                  </td>
+                  <td className="border border-border px-4 py-3">
+                    Plain non-iodized salt
+                  </td>
+                </tr>
+                <tr className="bg-surface/50">
+                  <td className="border border-border px-4 py-3 font-semibold">
+                    Chlorine filtration
+                  </td>
+                  <td className="border border-border px-4 py-3">
+                    Built-in ACF filter
+                  </td>
+                  <td className="border border-border px-4 py-3">
+                    Sold as a separate add-on
+                  </td>
+                  <td className="border border-border px-4 py-3">
+                    Not included
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-border px-4 py-3 font-semibold">
+                    Price
+                  </td>
+                  <td className="border border-border px-4 py-3">$238</td>
+                  <td className="border border-border px-4 py-3">
+                    $260{" "}
+                    <span className="text-[12px] text-muted-foreground">
+                      (on sale from $299, checked Aug 18, 2026)
+                    </span>
+                  </td>
+                  <td className="border border-border px-4 py-3">$249</td>
+                </tr>
+                <tr className="bg-surface/50">
+                  <td className="border border-border px-4 py-3 font-semibold">
+                    Returns
+                  </td>
+                  <td className="border border-border px-4 py-3">
+                    30-day money-back
+                  </td>
+                  <td className="border border-border px-4 py-3">
+                    14-day returns
+                  </td>
+                  <td className="border border-border px-4 py-3">
+                    60-day money-back
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-border px-4 py-3 font-semibold">
+                    Warranty
+                  </td>
+                  <td className="border border-border px-4 py-3">2 years</td>
+                  <td className="border border-border px-4 py-3">12 months</td>
+                  <td className="border border-border px-4 py-3">12 months</td>
+                </tr>
+                <tr className="bg-surface/50">
+                  <td className="border border-border px-4 py-3 font-semibold">
+                    Availability
+                  </td>
+                  <td className="border border-border px-4 py-3">
+                    Available to order
+                  </td>
+                  <td className="border border-border px-4 py-3">In stock</td>
+                  <td className="border border-border px-4 py-3">
+                    In stock, free shipping, 12 to 18 days
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
         {/* Three-panel hero */}
         <div
           className="mt-10 grid gap-0 overflow-hidden border border-border sm:grid-cols-3"
@@ -308,167 +473,6 @@ function SoftwatercareVsShowerstickVsAgPage() {
           </p>
         </div>
 
-        {/* Table */}
-        <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
-          Side by side
-        </h2>
-        <div className="mt-6 text-[15px] leading-[1.7] text-foreground/90">
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse border border-border text-[14px] leading-[1.6]">
-              <thead>
-                <tr className="bg-surface">
-                  <th className="border border-border px-4 py-3 text-left font-semibold" />
-                  <th className="border border-border px-4 py-3 text-left font-semibold">
-                    SoftWaterCare
-                  </th>
-                  <th className="border border-border px-4 py-3 text-left font-semibold">
-                    ShowerStick
-                  </th>
-                  <th className="border border-border px-4 py-3 text-left font-semibold">
-                    AG Water Softener
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="border border-border px-4 py-3 font-semibold">
-                    Chemistry
-                  </td>
-                  <td className="border border-border px-4 py-3">
-                    Ion-exchange resin + ACF filter
-                  </td>
-                  <td className="border border-border px-4 py-3">
-                    Ion-exchange resin
-                  </td>
-                  <td className="border border-border px-4 py-3">
-                    Ion-exchange resin
-                  </td>
-                </tr>
-                <tr className="bg-surface/50">
-                  <td className="border border-border px-4 py-3 font-semibold">
-                    Where it lives in your shower
-                  </td>
-                  <td className="border border-border px-4 py-3">
-                    On the shower floor or outside the tub; needs a handheld
-                    head, theirs is a $36 add-on or use your own
-                  </td>
-                  <td className="border border-border px-4 py-3">
-                    Hangs on the shower pipe with a clamp, used with a handheld
-                    head
-                  </td>
-                  <td className="border border-border px-4 py-3">
-                    In line at the shower arm, works with your existing
-                    showerhead
-                  </td>
-                </tr>
-                <tr>
-                  <td className="border border-border px-4 py-3 font-semibold">
-                    Recharge frequency
-                  </td>
-                  <td className="border border-border px-4 py-3">
-                    About once a month
-                  </td>
-                  <td className="border border-border px-4 py-3">
-                    About once a week
-                  </td>
-                  <td className="border border-border px-4 py-3">
-                    Every 3 to 5 weeks
-                  </td>
-                </tr>
-                <tr className="bg-surface/50">
-                  <td className="border border-border px-4 py-3 font-semibold">
-                    What a recharge takes
-                  </td>
-                  <td className="border border-border px-4 py-3">
-                    Prep salt solution 1–2 days ahead, pump circulation 4–5
-                    hours, rest overnight, flush 3 min
-                  </td>
-                  <td className="border border-border px-4 py-3">
-                    About 5 minutes: pour salt water through the port and flush
-                  </td>
-                  <td className="border border-border px-4 py-3">
-                    About 30 minutes, pumped cycle in included brine tank
-                  </td>
-                </tr>
-                <tr>
-                  <td className="border border-border px-4 py-3 font-semibold">
-                    Salt type
-                  </td>
-                  <td className="border border-border px-4 py-3">
-                    Water softener pellets or crystals only
-                  </td>
-                  <td className="border border-border px-4 py-3">
-                    Plain table salt
-                  </td>
-                  <td className="border border-border px-4 py-3">
-                    Plain non-iodized salt
-                  </td>
-                </tr>
-                <tr className="bg-surface/50">
-                  <td className="border border-border px-4 py-3 font-semibold">
-                    Chlorine filtration
-                  </td>
-                  <td className="border border-border px-4 py-3">
-                    Built-in ACF filter
-                  </td>
-                  <td className="border border-border px-4 py-3">
-                    Sold as a separate add-on
-                  </td>
-                  <td className="border border-border px-4 py-3">
-                    Not included
-                  </td>
-                </tr>
-                <tr>
-                  <td className="border border-border px-4 py-3 font-semibold">
-                    Price
-                  </td>
-                  <td className="border border-border px-4 py-3">$238</td>
-                  <td className="border border-border px-4 py-3">
-                    $260{" "}
-                    <span className="text-[12px] text-muted-foreground">
-                      (on sale from $299, checked Aug 18, 2026)
-                    </span>
-                  </td>
-                  <td className="border border-border px-4 py-3">$249</td>
-                </tr>
-                <tr className="bg-surface/50">
-                  <td className="border border-border px-4 py-3 font-semibold">
-                    Returns
-                  </td>
-                  <td className="border border-border px-4 py-3">
-                    30-day money-back
-                  </td>
-                  <td className="border border-border px-4 py-3">
-                    14-day returns
-                  </td>
-                  <td className="border border-border px-4 py-3">
-                    60-day money-back
-                  </td>
-                </tr>
-                <tr>
-                  <td className="border border-border px-4 py-3 font-semibold">
-                    Warranty
-                  </td>
-                  <td className="border border-border px-4 py-3">2 years</td>
-                  <td className="border border-border px-4 py-3">12 months</td>
-                  <td className="border border-border px-4 py-3">12 months</td>
-                </tr>
-                <tr className="bg-surface/50">
-                  <td className="border border-border px-4 py-3 font-semibold">
-                    Availability
-                  </td>
-                  <td className="border border-border px-4 py-3">
-                    Available to order
-                  </td>
-                  <td className="border border-border px-4 py-3">In stock</td>
-                  <td className="border border-border px-4 py-3">
-                    In stock, free shipping, 12 to 18 days
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
 
         {/* How to choose */}
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">

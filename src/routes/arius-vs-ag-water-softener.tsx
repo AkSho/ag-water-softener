@@ -101,6 +101,55 @@ function AriusVsAgPage() {
           Checked against the live Arius product page on October 4, 2026. If anything below has changed, tell us and we will correct it.
         </p>
 
+        <p className="mt-6 text-[15px] leading-[1.7]">
+          <a href="/" className="underline hover:opacity-70">See the AG Water Softener</a>
+        </p>
+        <div className="mt-4">
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse border border-border text-[14px] leading-[1.6]">
+                <thead>
+                  <tr className="bg-surface">
+                    <th className="border border-border px-4 py-3 text-left font-semibold"></th>
+                    <th className="border border-border px-4 py-3 text-left font-semibold">Arius One</th>
+                    <th className="border border-border px-4 py-3 text-left font-semibold">AG Water Softener</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="border border-border px-4 py-3 font-semibold">Price</td>
+                    <td className="border border-border px-4 py-3">$298.56 (listed as 40% off $499.95, checked October 4, 2026)</td>
+                    <td className="border border-border px-4 py-3">$249</td>
+                  </tr>
+                  <tr className="bg-surface/50">
+                    <td className="border border-border px-4 py-3 font-semibold">Availability</td>
+                    <td className="border border-border px-4 py-3">Sold on pre-order only, shipping mid-October per their page (checked October 4, 2026)</td>
+                    <td className="border border-border px-4 py-3">In stock, ships with tracking</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-border px-4 py-3 font-semibold">Regeneration</td>
+                    <td className="border border-border px-4 py-3">Manual: add salt, ~4 hr brine soak, turn valve, run ~10 min. Roughly every 2 weeks</td>
+                    <td className="border border-border px-4 py-3">Pumped cycle in the included brine tank, ~30 min, every 3 to 5 weeks</td>
+                  </tr>
+                  <tr className="bg-surface/50">
+                    <td className="border border-border px-4 py-3 font-semibold">Guarantee</td>
+                    <td className="border border-border px-4 py-3">60-day money-back</td>
+                    <td className="border border-border px-4 py-3">60-day money-back</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-border px-4 py-3 font-semibold">Warranty</td>
+                    <td className="border border-border px-4 py-3">Not listed separately</td>
+                    <td className="border border-border px-4 py-3">12 months against defects</td>
+                  </tr>
+                  <tr className="bg-surface/50">
+                    <td className="border border-border px-4 py-3 font-semibold">Reviews</td>
+                    <td className="border border-border px-4 py-3">Prototype testers (per Arius disclosure)</td>
+                    <td className="border border-border px-4 py-3">Early customers</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+        </div>
+
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
             The Arius One (formerly the Aquus One) and the AG Water Softener both use ion-exchange resin to soften shower water. That puts them in the same small category of products that actually remove hardness, as opposed to the hundreds of <a href="/shower-filter-vs-water-softener" className="underline hover:opacity-70">shower filters sold as softeners</a> that cannot. The mechanism argument is settled between these two. What differs is how the resin gets recharged and what the purchase terms look like.
@@ -175,49 +224,6 @@ function AriusVsAgPage() {
             The Arius One is sold on pre-order only, shipping mid-October per their page (checked October 4, 2026), at $298.56, listed as 40% off a $499.95 regular price. Their product reviews are from prototype testers, which Arius discloses on the page.
           </p>
 
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse border border-border text-[14px] leading-[1.6]">
-              <thead>
-                <tr className="bg-surface">
-                  <th className="border border-border px-4 py-3 text-left font-semibold"></th>
-                  <th className="border border-border px-4 py-3 text-left font-semibold">Arius One</th>
-                  <th className="border border-border px-4 py-3 text-left font-semibold">AG Water Softener</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="border border-border px-4 py-3 font-semibold">Price</td>
-                  <td className="border border-border px-4 py-3">$298.56 (listed as 40% off $499.95, checked October 4, 2026)</td>
-                  <td className="border border-border px-4 py-3">$249</td>
-                </tr>
-                <tr className="bg-surface/50">
-                  <td className="border border-border px-4 py-3 font-semibold">Availability</td>
-                  <td className="border border-border px-4 py-3">Sold on pre-order only, shipping mid-October per their page (checked October 4, 2026)</td>
-                  <td className="border border-border px-4 py-3">In stock, ships with tracking</td>
-                </tr>
-                <tr>
-                  <td className="border border-border px-4 py-3 font-semibold">Regeneration</td>
-                  <td className="border border-border px-4 py-3">Manual: add salt, ~4 hr brine soak, turn valve, run ~10 min. Roughly every 2 weeks</td>
-                  <td className="border border-border px-4 py-3">Pumped cycle in the included brine tank, ~30 min, every 3 to 5 weeks</td>
-                </tr>
-                <tr className="bg-surface/50">
-                  <td className="border border-border px-4 py-3 font-semibold">Guarantee</td>
-                  <td className="border border-border px-4 py-3">60-day money-back</td>
-                  <td className="border border-border px-4 py-3">60-day money-back</td>
-                </tr>
-                <tr>
-                  <td className="border border-border px-4 py-3 font-semibold">Warranty</td>
-                  <td className="border border-border px-4 py-3">Not listed separately</td>
-                  <td className="border border-border px-4 py-3">12 months against defects</td>
-                </tr>
-                <tr className="bg-surface/50">
-                  <td className="border border-border px-4 py-3 font-semibold">Reviews</td>
-                  <td className="border border-border px-4 py-3">Prototype testers (per Arius disclosure)</td>
-                  <td className="border border-border px-4 py-3">Early customers</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
         </div>
 
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">

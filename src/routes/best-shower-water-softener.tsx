@@ -159,11 +159,11 @@ function BestShowerWaterSoftenerPage() {
         </div>
 
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
-          ShowerSoft, $239.99, currently unavailable
+          ShowerSoft, $239.99
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            A two-cartridge resin design sold only through Amazon. As of late August 2026 the listing shows no stock and no restock date. Their own capacity table puts hard-water households at about weekly regeneration even with both cartridges installed. Worth a look if it comes back. Hard to rank while it can't be bought.
+            A two-cartridge resin system, sold by ShowerSoft and shipped from Amazon. As of October 4, 2026 it's in stock at $239.99, rated 4.9 from 16 reviews. It softens the same way the AG does, with ion-exchange resin, split across two cartridges. It costs about $9 less than the AG, and returns run on Amazon's 30-day refund or replacement window, against the AG's 60-day money-back guarantee from delivery.
           </p>
         </div>
 
