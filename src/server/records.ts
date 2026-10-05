@@ -1014,6 +1014,21 @@ export async function listApprovedReviews(): Promise<ApprovedReview[]> {
   });
 }
 
+// In-memory cache for the PDP's server-side review load, so SSR doesn't call
+// Airtable on every view. Per serverless instance; empty results (which may be
+// an Airtable error) are not cached.
+const REVIEWS_CACHE_TTL_MS = 5 * 60_000;
+let reviewsCache: { at: number; reviews: ApprovedReview[] } | null = null;
+
+export async function listApprovedReviewsCached(): Promise<ApprovedReview[]> {
+  if (reviewsCache && Date.now() - reviewsCache.at < REVIEWS_CACHE_TTL_MS) {
+    return reviewsCache.reviews;
+  }
+  const reviews = await listApprovedReviews();
+  if (reviews.length > 0) reviewsCache = { at: Date.now(), reviews };
+  return reviews;
+}
+
 // ─── Phase 3 stubs ───────────────────────────────────────────────────────────
 
 export async function writeSpend(

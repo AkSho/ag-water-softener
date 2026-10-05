@@ -14,7 +14,7 @@ const PAGE_FAQS = [
   },
   {
     q: "When does Arius ship?",
-    a: "As of September 1, 2026, the Arius One is sold as in stock, and their checkout quotes shipping at 5 to 8 business days. Check ariuswater.com for the current status.",
+    a: "The Arius One is sold on pre-order only, shipping mid-October per their page (checked October 4, 2026). Check ariuswater.com for the current status.",
   },
   {
     q: "How often do you have to regenerate each one?",
@@ -22,7 +22,7 @@ const PAGE_FAQS = [
   },
   {
     q: "Which one should a renter pick?",
-    a: "The AG threads onto a standard half-inch shower arm, so there are no plumbing changes and nothing to ask a landlord about. Check the Arius product page for their install requirements. Both are sold as in stock as of September 1, 2026.",
+    a: "The AG threads onto a standard half-inch shower arm, so there are no plumbing changes and nothing to ask a landlord about. Check the Arius product page for their install requirements. The Arius One is sold on pre-order only, shipping mid-October per their page (checked October 4, 2026).",
   },
 ];
 
@@ -53,7 +53,7 @@ export const Route = createFileRoute("/arius-vs-ag-water-softener")({
           "@type": "Article",
           headline: "Arius vs AG Water Softener: the side-by-side comparison",
           datePublished: "2026-08-10",
-          dateModified: "2026-09-01",
+          dateModified: "2026-10-04",
           author: { "@type": "Organization", name: "AG Water Softener" },
         }),
       },
@@ -95,10 +95,10 @@ function AriusVsAgPage() {
           Arius vs AG Water Softener: the side-by-side comparison
         </h1>
         <p className="text-sm text-muted-foreground">
-          Updated Sep 1, 2026
+          Updated Oct 4, 2026
         </p>
         <p className="mt-3 text-[13px] italic text-muted-foreground">
-          Checked against the live Arius product page on September 1, 2026. If anything below has changed, tell us and we will correct it.
+          Checked against the live Arius product page on October 4, 2026. If anything below has changed, tell us and we will correct it.
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
@@ -135,9 +135,8 @@ function AriusVsAgPage() {
           <div className="flex flex-col items-center justify-center bg-surface/40 p-6 sm:p-8">
             <p className="text-center font-display text-lg leading-tight sm:text-xl">Arius One</p>
             <div className="mt-4 space-y-1 text-center text-[14px] text-foreground/80">
-              <p>$349.76</p>
-              <p>In stock</p>
-              <p className="text-[13px] text-muted-foreground">5 to 8 business days, per Arius checkout</p>
+              <p>$298.56</p>
+              <p>Pre-order only, ships mid-October</p>
             </div>
           </div>
         </div>
@@ -173,7 +172,7 @@ function AriusVsAgPage() {
         </h2>
         <div className="mt-6 text-[15px] leading-[1.7] text-foreground/90">
           <p className="mb-6">
-            As of September 1, 2026, the Arius One is sold as in stock at $349.76, listed as 30% off a $499.95 regular price. Their product reviews are from prototype testers, which Arius discloses on the page.
+            The Arius One is sold on pre-order only, shipping mid-October per their page (checked October 4, 2026), at $298.56, listed as 40% off a $499.95 regular price. Their product reviews are from prototype testers, which Arius discloses on the page.
           </p>
 
           <div className="overflow-x-auto">
@@ -188,12 +187,12 @@ function AriusVsAgPage() {
               <tbody>
                 <tr>
                   <td className="border border-border px-4 py-3 font-semibold">Price</td>
-                  <td className="border border-border px-4 py-3">$349.76 (listed as 30% off $499.95, checked September 1, 2026)</td>
+                  <td className="border border-border px-4 py-3">$298.56 (listed as 40% off $499.95, checked October 4, 2026)</td>
                   <td className="border border-border px-4 py-3">$249</td>
                 </tr>
                 <tr className="bg-surface/50">
                   <td className="border border-border px-4 py-3 font-semibold">Availability</td>
-                  <td className="border border-border px-4 py-3">In stock (checked September 1, 2026)</td>
+                  <td className="border border-border px-4 py-3">Sold on pre-order only, shipping mid-October per their page (checked October 4, 2026)</td>
                   <td className="border border-border px-4 py-3">In stock, ships with tracking</td>
                 </tr>
                 <tr>
@@ -222,6 +221,18 @@ function AriusVsAgPage() {
         </div>
 
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
+          Arius makes the same case against whole-house softeners
+        </h2>
+        <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
+          <p>
+            In an October 1, 2026 post titled "Whole-House Water Softener Alternatives," Arius argues that a whole-house softener rarely suits a renter. It is plumbed into the main line, needs professional installation, can cost thousands of dollars, and stays with the property when you move out. Their answer is a compact ion-exchange softener at the shower. We agree, and it is the reason the AG exists.
+          </p>
+          <p>
+            So the choice between these two shower units isn't about whether to soften. Both use ion-exchange resin, and both connect without permanent plumbing changes. The differences are what sits beside the resin and what each costs to run. The Arius adds a chlorine filter cartridge, which their post says is replaced about every 90 days, and their post puts its recharge at every one to two weeks. The AG softens only, recharges every 3 to 5 weeks, and costs about $50 less.
+          </p>
+        </div>
+
+        <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
           How to decide
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
@@ -229,7 +240,7 @@ function AriusVsAgPage() {
             If you want filtration and softening in one unit and the Arius price fits your budget, it is a legitimate option. The ion-exchange chemistry is real, and the combined-unit design means one less device in your shower.
           </p>
           <p>
-            If you'd rather spend $100 less and recharge less often, that's the case for <a href="/" className="underline hover:opacity-70">the AG Water Softener</a>. It recharges every 3 to 5 weeks instead of every 2, in about 30 minutes, with a 12-month warranty beyond the guarantee. It handles 2.1 gallons per minute at the shower arm, regenerates about 1,300 gallons of capacity per recharge, and threads onto any standard shower connection with no tools and no plumbing changes.
+            If you'd rather spend about $50 less and recharge less often, that's the case for <a href="/" className="underline hover:opacity-70">the AG Water Softener</a>. It recharges every 3 to 5 weeks instead of every one to two weeks, per their own post, in about 30 minutes, with a 12-month warranty beyond the guarantee. It handles 2.1 gallons per minute at the shower arm, regenerates about 1,300 gallons of capacity per recharge, and threads onto any standard shower connection with no tools and no plumbing changes.
           </p>
           <p>
             Either way, confirm your water is hard first. <a href="https://www.myapartmentwaterquality.com/" className="underline hover:opacity-70">Check your water free</a> with our lookup tool or test it yourself. If your water reads soft, neither product will change anything you notice. If it reads hard, the real question is which recharge routine you will stick with.

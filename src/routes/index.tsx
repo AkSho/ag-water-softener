@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
 import { useEffect, useRef, useState } from "react";
 import {
   Check,
@@ -26,7 +27,7 @@ export const openWaterReport = () =>
 
 type BandSearch = { band?: "hard" | "veryhard" };
 
-const FAQS = [
+const FAQS: { q: string; a: string | null }[] = [
   { q: "Will the AG Water Softener lower my water pressure?", a: "The AG Water Softener is engineered for full-flow showering, and pressure preservation was a core design requirement, since it's the most common complaint about lesser shower products." },
   { q: "How do I know the softening claim is real and this isn't another mislabeled filter?", a: "You test it yourself, in your own bathroom, on day one. The AG Water Softener works with any standard water-hardness test strip. A pack costs a few bucks on Amazon or at a hardware store. Dip one in your tap water and one in the treated water and compare the colors. Hardness strips are an industry-standard measure and they cannot be flattered by marketing. If your treated water doesn't test soft, use the guarantee." },
   { q: "I rent. Will this come down cleanly when I move?", a: "Yes. The AG Water Softener attaches to the shower pipe the same way a showerhead does, or simply sits on the floor. Removal takes minutes and leaves your shower exactly as you found it. Nothing is drilled or glued, and there's no plumbing change for a landlord to notice or a deposit to absorb." },
@@ -36,9 +37,28 @@ const FAQS = [
   { q: "Does the salt make my shower water salty?", a: "You'll never smell or feel it. Ion exchange swaps hardness minerals for a small amount of sodium, the same trade every whole-house softener makes, and the water remains ordinary soft water. The salt you pour into the tank is used to rinse the resin during regeneration, then drains away." },
   { q: "What are the ongoing costs?", a: "Plain softener salt from the grocery store and one replacement canister about once a year, $64 shipped on its own or $39 added to your original order. The salt runs a few dollars a bag, and there's no cartridge subscription." },
   { q: "Will it fit my shower?", a: "The AG Water Softener works with standard shower setups and most showerheads, mounts on the pipe or stands on the floor, and includes every hose and connector needed for both options. If your setup turns out to be the rare exception, the 60-day guarantee applies from day one." },
-  { q: "Can I use a shower filter with a water softener?", a: "Yes. The AG softens; any standard $25 shower filter removes chlorine. Together they run about $274, less than bundled filter-and-softener systems like the Arius at $349.76 (their checkout price as of September 11, 2026). The softening half is the part a filter can't do." },
+  { q: "Can I use a shower filter with a water softener?", a: "Yes. The AG softens; any standard $25 shower filter removes chlorine. Together they run about $274, less than bundled filter-and-softener systems like the Arius at $298.56 (their listed price as of October 4, 2026). The softening half is the part a filter can't do." },
   { q: "Does a water softener lower the TDS reading?", a: "No, and this surprises a lot of folks. A TDS meter measures the total of everything dissolved in the water. A water softener works by ion exchange. The canister swaps out the calcium and magnesium that make water hard and releases sodium in their place. The total dissolved amount stays about the same and sometimes reads slightly higher, so a TDS meter shows little or no change on fully softened water. The meter reads the same whether the unit is working or still in the box. Hardness test strips measure the hard minerals themselves. That\u2019s the tool that shows the before and after." },
+  { q: "How many gallons does it treat before I need to recharge, and does that depend on my water hardness?", a: "About 1,300 gallons per recharge, which is 3 to 5 weeks of daily showers for most households. Yes, it depends on hardness. Harder water fills the resin faster, so you recharge sooner." },
+  { q: "I'm on heavily chlorinated city water. Does that wear the resin out faster?", a: "Yes. Chlorine shortens resin life. The cartridge is rated for about a year on municipal water. A replacement is $64 shipped on its own or $39 when it ships with your unit." },
+  // Held until the owner supplies the answer (pump material, duty cycle, warranty coverage).
+  // Entries with a null answer are left out of the page and the FAQPage schema.
+  { q: "There's a pump that sits in salt water during recharge. How long does it last?", a: null },
 ];
+
+const LIVE_FAQS = FAQS.filter((f): f is { q: string; a: string } => f.a !== null);
+
+// Approved reviews, loaded server-side (cached 5 min) so the trust line, review
+// cards, and review schema are in the served HTML.
+const getPdpReviews = createServerFn({ method: "GET" }).handler(async () => {
+  try {
+    const { listApprovedReviewsCached } = await import("@/server/records");
+    return await listApprovedReviewsCached();
+  } catch (err) {
+    console.error("PDP reviews load failed", err instanceof Error ? err.message : String(err));
+    return [];
+  }
+});
 
 export const Route = createFileRoute("/")({
   validateSearch: (raw: Record<string, unknown>): BandSearch => {
@@ -96,7 +116,7 @@ export const Route = createFileRoute("/")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "FAQPage",
-          "mainEntity": FAQS.map(f => ({
+          "mainEntity": LIVE_FAQS.map(f => ({
             "@type": "Question",
             "name": f.q,
             "acceptedAnswer": { "@type": "Answer", "text": f.a }
@@ -105,6 +125,7 @@ export const Route = createFileRoute("/")({
       },
     ],
   }),
+  loader: () => getPdpReviews(),
   component: ProductPage,
 });
 
@@ -151,7 +172,7 @@ const PRICE = 249;
 const PRODUCT_TITLE = "The AG Water Softener";
 
 function ProductPage() {
-  const [reviewCount, setReviewCount] = useState(0);
+  const reviews = Route.useLoaderData();
 
   useEffect(() => {
     fbPixel("track", "ViewContent", {
@@ -167,14 +188,14 @@ function ProductPage() {
     <div className="min-h-screen bg-background pb-24 lg:pb-0">
       <AnnouncementBar />
       <SiteHeader />
-      <ProductHero />
-      <TabBar reviewCount={reviewCount} />
+      <ProductHero reviews={reviews} />
+      <TabBar reviewCount={reviews.length} />
       <VacationMoment />
       <WhyNothingWorked />
       <WhatSoftWaterChanges />
       <ForgottenFix />
       <MeetTheSoftener />
-      <ProofWall onReviewsLoaded={setReviewCount} />
+      <ProofWall reviews={reviews} />
 
       <InstallAndMaintenance />
       <ProductDetails />
@@ -239,7 +260,7 @@ function BandPrehead() {
 }
 
 
-function ProductHero() {
+function ProductHero({ reviews }: { reviews: ReviewData[] }) {
   const [finish, setFinish] = useState(FINISHES[0].id);
   const [subscribe, setSubscribe] = useState(false);
   const [qty, setQty] = useState(1);
@@ -300,6 +321,8 @@ function ProductHero() {
               Most of a whole-house system's price is the plumbing and the installer. This is the part that actually softens your water.
             </p>
           </div>
+
+          <TrustLine reviews={reviews} />
 
           {/* Finishes — hidden by feature flag */}
           {PDP_FEATURES.finishes && (
@@ -961,25 +984,31 @@ type ReviewData = {
   submittedAt: string;
 };
 
-function ProofWall({ onReviewsLoaded }: { onReviewsLoaded?: (count: number) => void }) {
-  const [reviews, setReviews] = useState<ReviewData[]>([]);
+function reviewAverage(reviews: ReviewData[]) {
+  return reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
+}
+
+/* Trust line under the price block. Count, average, and reading come from the same
+   review data as the reviews section, so they move as reviews are approved. */
+function TrustLine({ reviews }: { reviews: ReviewData[] }) {
+  const n = reviews.length;
+  const reading = reviews.find((r) => r.hardnessBefore != null && r.hardnessAfter != null);
+  return (
+    <p className="mt-4 text-[13px] leading-[1.6] text-foreground/80">
+      {n > 0 && `${n} ${n === 1 ? "review" : "reviews"} from verified buyers, ${reviewAverage(reviews).toFixed(1)} average. `}
+      60-day money-back guarantee, starting the day it arrives. 12-month warranty.
+      {reading && ` ${reading.name}${reading.city ? ` in ${reading.city}` : ""} measured water hardness of ${reading.hardnessBefore} ppm before and ${reading.hardnessAfter} ppm after.`}
+    </p>
+  );
+}
+
+function ProofWall({ reviews }: { reviews: ReviewData[] }) {
   const [expanded, setExpanded] = useState(false);
   const MOBILE_CAP = 2;
 
-  useEffect(() => {
-    fetch("/api/reviews")
-      .then((r) => r.json())
-      .then((d: { reviews: ReviewData[] }) => {
-        const list = d.reviews || [];
-        setReviews(list);
-        onReviewsLoaded?.(list.length);
-      })
-      .catch(() => {});
-  }, []);
-
   if (reviews.length === 0) return null;
 
-  const avg = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
+  const avg = reviewAverage(reviews);
   const showAggregate = reviews.length >= 5;
 
   return (
@@ -1356,7 +1385,7 @@ function FAQSection() {
           </div>
           <div>
             <ul className="divide-y divide-border/60 border-y border-border/60">
-              {FAQS.map((f, i) => {
+              {LIVE_FAQS.map((f, i) => {
                 const isOpen = open === i;
                 return (
                   <li key={f.q}>
