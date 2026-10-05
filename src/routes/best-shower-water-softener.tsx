@@ -10,10 +10,10 @@ export const Route = createFileRoute("/best-shower-water-softener")({
       {
         name: "description",
         content:
-          "A ranking of shower water softeners from the folks behind the AG. Prices and claims checked August 2026, and a $10 pack of test strips can verify all of it.",
+          "A ranking of shower water softeners from the folks behind the AG. Prices and claims checked October 4, 2026, and a $10 pack of test strips can verify all of it.",
       },
       { property: "og:title", content: "Best shower water softener in 2026, ranked by a company that makes one" },
-      { property: "og:description", content: "A ranking of shower water softeners from the folks behind the AG. Prices and claims checked August 2026, and a $10 pack of test strips can verify all of it." },
+      { property: "og:description", content: "A ranking of shower water softeners from the folks behind the AG. Prices and claims checked October 4, 2026, and a $10 pack of test strips can verify all of it." },
       { property: "og:url", content: "https://agsoftener.com/best-shower-water-softener" },
       { property: "og:type", content: "article" },
       { property: "og:image", content: "https://agsoftener.com/assets/hero.png" },
@@ -110,10 +110,10 @@ function BestShowerWaterSoftenerPage() {
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            This list comes from us at AG, so our softener leads it. Take that how you want. What we can promise is that every price and claim below was pulled from live listings in August 2026, and none of it asks for your trust: a $10 pack of hardness test strips settles the whole category. Dip one before the unit and one after. Softened water changes the strip. Filtered water doesn't.
+            This list comes from us at AG, so our softener leads it. Take that how you want. What we can promise is that every price and claim below was pulled from live listings on October 4, 2026, and none of it asks for your trust: a $10 pack of hardness test strips settles the whole category. Dip one before the unit and one after. Softened water changes the strip. Filtered water doesn't.
           </p>
           <p>
-            One thing about this category before the list. Most products sold as "shower water softeners" are filters wearing the name. Carbon and KDF reduce chlorine. So does vitamin C. That's worth something, but none of them touch the calcium and magnesium that make water hard. Only ion exchange resin does. <a href="https://waterfilterguru.com/best-shower-water-filter-reviews/" className="underline hover:opacity-70">Water Filter Guru's lab testing</a> this year found the same thing: not one shower filter they tested lowered hardness. So the list sticks to products with a real resin bed, and everything else gets covered at the end.
+            One thing about this category before the list. Most products sold as "shower water softeners" are filters wearing the name. Carbon and KDF reduce chlorine. So does vitamin C. That's worth something, but none of them touch the calcium and magnesium that make water hard. Only ion exchange resin does. <a href="https://waterfilterguru.com/best-shower-water-filter-reviews/" className="underline hover:opacity-70">Water Filter Guru's lab testing</a> this year found the same thing: none of the shower filters they tested lowered total hardness; one, the Canopy, cut carbonate hardness while total hardness rose. So the list sticks to products with a real resin bed, and everything else gets covered at the end.
           </p>
         </div>
 
@@ -136,16 +136,16 @@ function BestShowerWaterSoftenerPage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            The longest track record in the category and the product that proved shower-scale softening works. It runs a real resin bed, and the reviews on their site are deep and specific, many from people with eczema or hard-water hair damage. The trade-off is capacity. The smaller resin bed means regenerating about once a week, a routine some owners settle into and others get tired of. Price checked August 2026: $260, marked down from $299.
+            The longest track record in the category and the product that proved shower-scale softening works. It runs a real resin bed, and the reviews on their site are deep and specific, many from people with eczema or hard-water hair damage. The trade-off is capacity. The smaller resin bed means regenerating about once a week, a routine some owners settle into and others get tired of. Price checked October 4, 2026: $260, marked down from $299.
           </p>
         </div>
 
         <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
-          On The Go portable softener, about $190
+          On The Go portable softener, about $165
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            An RV softener adapted for shower duty. It holds the most resin of anything here, so you won't regenerate often. The trade-offs are size and setup: it's a tank, not a wall unit, and hooking it to a shower takes adapter fittings you buy separately. Water Filter Guru's renter guide is built around this exact rig, which tells you it works and that it takes real setup. Price checked August 2026.
+            An RV softener adapted for shower duty. It holds the most resin of anything here, so you won't regenerate often. The trade-offs are size and setup: it's a tank, not a wall unit, and hooking it to a shower takes adapter fittings you buy separately. Water Filter Guru's renter guide is built around this exact rig, which tells you it works and that it takes real setup. Price checked October 4, 2026.
           </p>
         </div>
 
@@ -154,7 +154,7 @@ function BestShowerWaterSoftenerPage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            The most advertised product in the category, sold on their site and Amazon with the biggest review count in the group. It pairs a resin stage with carbon filtration in one system. On paper it's the closest product to ours in price and claim. Their published specs don't say how many gallons one regeneration treats, and that number decides how often you'll be doing maintenance, so ask for it before you buy. Price checked August 2026.
+            The most advertised product in the category, sold on their site and Amazon with the biggest review count in the group. It pairs a resin stage with carbon filtration in one system. On paper it's the closest product to ours in price and claim. Their published specs don't say how many gallons one regeneration treats, and that number decides how often you'll be doing maintenance, so ask for it before you buy. Price checked October 4, 2026.
           </p>
         </div>
 

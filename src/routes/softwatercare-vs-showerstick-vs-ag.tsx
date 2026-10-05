@@ -6,7 +6,7 @@ import { PreferredSourceBlock } from "@/components/PreferredSourceBlock";
 const PAGE_FAQS = [
   {
     q: "How often does each one need a recharge?",
-    a: "The ShowerStick needs a recharge about once a week, though each one takes only about 5 minutes. SoftWaterCare runs about a month for one person and the AG runs 3 to 5 weeks, so those two are close on frequency. The processes differ more than the schedules: SoftWaterCare\u2019s spans a couple of days including salt prep, and the AG\u2019s takes about 30 minutes.",
+    a: "The ShowerStick gives about 58 minutes of soft water at 10 gpg before regenerating, per their product page, which works out to roughly weekly for a daily shower. SoftWaterCare runs about a month for one person and the AG runs 3 to 5 weeks, so those two are close on frequency. The processes differ more than the schedules: SoftWaterCare\u2019s spans a couple of days including salt prep, and the AG\u2019s takes about 30 minutes.",
   },
   {
     q: "Is SoftWaterCare a shower filter?",
@@ -14,7 +14,7 @@ const PAGE_FAQS = [
   },
   {
     q: "Which one should a renter pick?",
-    a: "All three install without plumbing changes, so none requires landlord permission. Pick the ShowerStick if a 5-minute weekly chore suits you better than a longer monthly one, and a handheld head is fine. SoftWaterCare makes sense if you want filter and softener in one box and don\u2019t mind the recharge project. The AG is for people who want the shortest recharge and the longest guarantee, and who are fine adding a cheap filter for chlorine. We make the AG, so weigh this paragraph accordingly.",
+    a: "All three install without plumbing changes, so none requires landlord permission. Pick the ShowerStick if a quick weekly chore suits you better than a longer monthly one, and a handheld head is fine. SoftWaterCare makes sense if you want filter and softener in one box and don\u2019t mind the recharge project. The AG is for people who want the shortest recharge and the longest guarantee, and who are fine adding a cheap filter for chlorine. We make the AG, so weigh this paragraph accordingly.",
   },
   {
     q: "Does SoftWaterCare work?",
@@ -128,7 +128,7 @@ function SoftwatercareVsShowerstickVsAgPage() {
           Updated Oct 4, 2026
         </p>
         <p className="mt-3 text-[13px] italic text-muted-foreground">
-          Checked against live product pages on August 18, 2026. If anything
+          Checked against live product pages on October 4, 2026. If anything
           below has changed, tell us and we will correct it.
         </p>
 
@@ -196,7 +196,7 @@ function SoftwatercareVsShowerstickVsAgPage() {
                     About once a month
                   </td>
                   <td className="border border-border px-4 py-3">
-                    About once a week
+                    About 58 minutes of soft water at 10 gpg before regenerating, per their product page, which works out to roughly weekly for a daily shower
                   </td>
                   <td className="border border-border px-4 py-3">
                     Every 3 to 5 weeks
@@ -211,7 +211,7 @@ function SoftwatercareVsShowerstickVsAgPage() {
                     hours, rest overnight, flush 3 min
                   </td>
                   <td className="border border-border px-4 py-3">
-                    About 5 minutes: pour salt water through the port and flush
+                    Pour salt water through the port and flush
                   </td>
                   <td className="border border-border px-4 py-3">
                     About 30 minutes, pumped cycle in included brine tank
@@ -222,7 +222,7 @@ function SoftwatercareVsShowerstickVsAgPage() {
                     Salt type
                   </td>
                   <td className="border border-border px-4 py-3">
-                    Water softener pellets or crystals only
+                    Non-iodized table salt or softener salt pellets, per their recharge guide
                   </td>
                   <td className="border border-border px-4 py-3">
                     Plain table salt
@@ -253,7 +253,7 @@ function SoftwatercareVsShowerstickVsAgPage() {
                   <td className="border border-border px-4 py-3">
                     $260{" "}
                     <span className="text-[12px] text-muted-foreground">
-                      (on sale from $299, checked Aug 18, 2026)
+                      (on sale from $299, checked October 4, 2026)
                     </span>
                   </td>
                   <td className="border border-border px-4 py-3">$249</td>
@@ -322,7 +322,7 @@ function SoftwatercareVsShowerstickVsAgPage() {
             </p>
             <div className="mt-4 space-y-1 text-center text-[14px] text-foreground/80">
               <p>$260</p>
-              <p>Weekly recharge (~5 min)</p>
+              <p>Weekly recharge</p>
               <p>14-day returns</p>
             </div>
           </div>
@@ -403,11 +403,7 @@ function SoftwatercareVsShowerstickVsAgPage() {
                 ShowerStick
               </a>
             </strong>
-            . Theirs is the lightest procedure of the three: pour a salt solution
-            through the port, flush for 15 to 30 seconds, and you're done in
-            about 5 minutes. The trade is frequency. Their site puts
-            regeneration at about once a week, so the small chore comes around
-            four times as often as the other two.
+            . Theirs is the lightest procedure of the three: pour a salt solution through the port and flush. The trade is frequency. Their product page gives about 58 minutes of soft water at 10 gpg before regenerating, which works out to roughly weekly for a daily shower, so the small chore comes around four times as often as the other two.
           </p>
           <p>
             <strong>AG.</strong> About 30 minutes with the included pump and brine tank, and no advance salt prep. Add plain non-iodized salt and water, plug in the pump, and let the cycle run. Typical interval is every 3
@@ -424,8 +420,7 @@ function SoftwatercareVsShowerstickVsAgPage() {
             SoftWaterCare's larger canister holds more resin, and their own FAQ
             puts a recharge at about 30 days for one person showering 10 minutes
             a day in hard water. The AG runs 3 to 5 weeks on the same kind of
-            use. Add a second person and both shorten. The ShowerStick sits apart
-            at about once a week, and each product is making a different trade.
+            use. Add a second person and both shorten. The ShowerStick sits apart at roughly weekly, and each product is making a different trade.
             The ShowerStick keeps each recharge tiny and asks for it often.
             SoftWaterCare and the AG both ask rarely, and differ in what the ask
             costs you.
@@ -484,8 +479,7 @@ function SoftwatercareVsShowerstickVsAgPage() {
             chlorine filtration and the lowest sticker price at $238, though you
             should budget for the handheld add-on and plan around the recharge
             project. The ShowerStick suits people who'd rather have a tiny weekly
-            chore than a longer monthly one, and it uses plain table salt. Their
-            site says they have been selling them since 2004.
+            chore than a longer monthly one, and it uses plain table salt. It has two decades on the market.
           </p>
           <p>
             The AG Water Softener sits between them on price at $249. It recharges in about 30 minutes every 3 to 5 weeks with a pumped cycle in its brine tank and
@@ -530,7 +524,7 @@ function SoftwatercareVsShowerstickVsAgPage() {
             >
               SoftWaterCare product page
             </a>
-            , accessed August 18, 2026
+            , accessed October 4, 2026
           </li>
           <li>
             <a
@@ -541,7 +535,7 @@ function SoftwatercareVsShowerstickVsAgPage() {
             >
               SoftWaterCare FAQ
             </a>
-            , accessed August 18, 2026
+            , accessed October 4, 2026
           </li>
           <li>
             <a
@@ -552,7 +546,7 @@ function SoftwatercareVsShowerstickVsAgPage() {
             >
               SoftWaterCare recharge guide
             </a>
-            , accessed August 18, 2026
+            , accessed October 4, 2026
           </li>
           <li>
             <a
@@ -563,7 +557,7 @@ function SoftwatercareVsShowerstickVsAgPage() {
             >
               ShowerStick (WaterSticks) product page
             </a>
-            , accessed August 18, 2026
+            , accessed October 4, 2026
           </li>
           <li>
             <a
@@ -574,7 +568,7 @@ function SoftwatercareVsShowerstickVsAgPage() {
             >
               ShowerStick FAQ
             </a>
-            , accessed August 18, 2026
+            , accessed October 4, 2026
           </li>
         </ul>
 
