@@ -294,6 +294,8 @@ function ProductHero({ reviews }: { reviews: ReviewData[] }) {
             AG Water Softener
           </h1>
 
+          <ReviewStarRow reviews={reviews} />
+
           {/* Subhead */}
           <p className="mt-2 max-w-prose text-[15px] leading-[1.65] text-foreground/90 md:mt-3">
             The AG Water Softener pulls the hard-water minerals out of your shower before they ever touch your hair and skin, so the soft, swishy hair you only get on vacation becomes what home feels like. Most people notice the difference in their very first shower.
@@ -988,17 +990,34 @@ function reviewAverage(reviews: ReviewData[]) {
   return reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
 }
 
-/* Trust line under the price block. Count, average, and reading come from the same
-   review data as the reviews section, so they move as reviews are approved. */
-function TrustLine({ reviews }: { reviews: ReviewData[] }) {
+/* Star row under the H1 and trust lines under the price block. Count, average, and
+   reading come from the same review data as the reviews section, so they move as
+   reviews are approved. Stars = average rounded to the nearest whole star. */
+function ReviewStarRow({ reviews }: { reviews: ReviewData[] }) {
   const n = reviews.length;
+  if (n === 0) return null;
+  const avg = reviewAverage(reviews);
+  return (
+    <a href="#proof" className="mt-2 inline-flex items-center gap-2 text-[13px] text-foreground/80 hover:opacity-70">
+      <span role="img" aria-label={`Rated ${avg.toFixed(1)} out of 5`}>
+        {"\u2B50".repeat(Math.round(avg))}
+      </span>
+      <span className="underline">{n} verified {n === 1 ? "review" : "reviews"}</span>
+    </a>
+  );
+}
+
+function TrustLine({ reviews }: { reviews: ReviewData[] }) {
   const reading = reviews.find((r) => r.hardnessBefore != null && r.hardnessAfter != null);
   return (
-    <p className="mt-4 text-[13px] leading-[1.6] text-foreground/80">
-      {n > 0 && `${n} ${n === 1 ? "review" : "reviews"} from verified buyers, ${reviewAverage(reviews).toFixed(1)} average. `}
-      60-day money-back guarantee, starting the day it arrives. 12-month warranty.
-      {reading && ` ${reading.name}${reading.city ? ` in ${reading.city}` : ""} measured water hardness of ${reading.hardnessBefore} ppm before and ${reading.hardnessAfter} ppm after.`}
-    </p>
+    <div className="mt-4 space-y-1 text-[13px] leading-[1.6] text-foreground/80">
+      <p>60-day money-back guarantee · 12-month warranty</p>
+      {reading && (
+        <p>
+          {`${reading.hardnessBefore} ppm before, ${reading.hardnessAfter} ppm after. ${reading.name}${reading.city ? `, ${reading.city}` : ""}`}
+        </p>
+      )}
+    </div>
   );
 }
 
