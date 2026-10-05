@@ -30,7 +30,7 @@ export const Route = createFileRoute("/best-shower-water-softener")({
           "@type": "Article",
           headline: "Best shower water softener in 2026, ranked by a company that makes one",
           datePublished: "2026-08-27",
-          dateModified: "2026-08-27",
+          dateModified: "2026-10-04",
           author: { "@type": "Organization", name: "AG Water Softener" },
         }),
       },
@@ -105,7 +105,7 @@ function BestShowerWaterSoftenerPage() {
           Best shower water softener in 2026, ranked by a company that makes one
         </h1>
         <p className="text-sm text-muted-foreground">
-          Updated Aug 27, 2026
+          Updated Oct 4, 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">

@@ -49,7 +49,7 @@ export const Route = createFileRoute("/canopy-alternative-for-hard-water")({
           "@type": "Article",
           headline: "Canopy alternative for hard water",
           datePublished: "2026-08-10",
-          dateModified: "2026-08-10",
+          dateModified: "2026-10-04",
           author: { "@type": "Organization", name: "AG Water Softener" },
         }),
       },
@@ -91,7 +91,7 @@ function CanopyAlternativePage() {
           Canopy alternative for hard water
         </h1>
         <p className="text-sm text-muted-foreground">
-          Updated Aug 10, 2026
+          Updated Oct 4, 2026
         </p>
         <p className="mt-3 text-[13px] italic text-muted-foreground">
           Checked against the live Canopy product page on August 10, 2026. If anything below has changed, tell us and we will correct it.

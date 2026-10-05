@@ -49,7 +49,7 @@ export const Route = createFileRoute("/shower-filter-vs-water-softener")({
           "@type": "Article",
           headline: "Shower filter vs water softener: which one fixes your water",
           datePublished: "2026-07-28",
-          dateModified: "2026-09-17",
+          dateModified: "2026-10-04",
           author: { "@type": "Organization", name: "AG Water Softener" },
         }),
       },
@@ -101,7 +101,7 @@ function ShowerFilterVsSoftenerPage() {
           Shower filter vs water softener: which one fixes your water
         </h1>
         <p className="text-sm text-muted-foreground">
-          Updated Sep 17, 2026
+          Updated Oct 4, 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">

@@ -70,7 +70,7 @@ export const Route = createFileRoute("/softwatercare-vs-showerstick-vs-ag")({
           headline:
             "SoftWaterCare vs ShowerStick vs AG: three shower softeners compared",
           datePublished: "2026-08-18",
-          dateModified: "2026-09-17",
+          dateModified: "2026-10-04",
           author: {
             "@type": "Organization",
             name: "AG Water Softener",
@@ -125,7 +125,7 @@ function SoftwatercareVsShowerstickVsAgPage() {
           SoftWaterCare vs ShowerStick vs AG: three shower softeners compared
         </h1>
         <p className="text-sm text-muted-foreground">
-          Updated Sep 17, 2026
+          Updated Oct 4, 2026
         </p>
         <p className="mt-3 text-[13px] italic text-muted-foreground">
           Checked against live product pages on August 18, 2026. If anything
