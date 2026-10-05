@@ -201,7 +201,7 @@ function WaterSoftenerForApartmentPage() {
             softener for apartment shower water is the whole job, because the
             shower is where hard water meets hair and skin. A portable water
             softener for apartment living should also come off in minutes and
-            move with you. That's what makes a renter friendly water softener:
+            move with you. That's what makes a renter-friendly water softener:
             real ion-exchange softening with nothing a landlord has to approve.
           </p>
         </div>
@@ -427,6 +427,17 @@ function WaterSoftenerForApartmentPage() {
           </li>
           <li>
             <a
+              href="https://www.tampa.gov/sites/default/files/document/2026/2025-water-quality-report.pdf"
+              className="underline hover:opacity-70"
+              rel="nofollow noopener"
+              target="_blank"
+            >
+              City of Tampa 2025 Water Quality Report
+            </a>
+            , hardness figures, accessed October 4, 2026
+          </li>
+          <li>
+            <a
               href="https://www.portablewatersoftener.com/shop/water-softeners/portable-standard-water-softener"
               className="underline hover:opacity-70"
               rel="nofollow noopener"
@@ -438,7 +449,7 @@ function WaterSoftenerForApartmentPage() {
           </li>
           <li>
             <a
-              href="https://proaquawater.com/products/portable-water-softener-pro-16-000-grain-premium-grade"
+              href="https://proaquawater.com/products/portable-rv-water-softener-pro-grade-16-000-grain-trailers-boats-car-washing"
               className="underline hover:opacity-70"
               rel="nofollow noopener"
               target="_blank"

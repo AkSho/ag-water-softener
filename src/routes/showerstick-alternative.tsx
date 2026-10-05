@@ -108,7 +108,7 @@ function ShowerstickAlternativePage() {
             <p className="mt-4 text-center font-display text-lg leading-tight sm:text-xl">AG Water Softener</p>
             <div className="mt-4 space-y-1 text-center text-[14px] text-foreground/80">
               <p>$249</p>
-              <p>Automatic recharge</p>
+              <p>Recharge every 3 to 5 weeks</p>
               <p>60-day guarantee</p>
               <p>In stock</p>
             </div>
@@ -136,7 +136,7 @@ function ShowerstickAlternativePage() {
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            A good ShowerStick alternative is another true ion-exchange softener, and the AG Water Softener is the one we make. Both use the same resin and the same salt, so both soften. The AG differs in where it sits and how it recharges: in line at the shower arm with your own showerhead, recharging automatically every 3 to 5 weeks instead of by hand about once a week. It costs $249 with a 60-day money-back guarantee.
+            A good ShowerStick alternative is another true ion-exchange softener, and the AG Water Softener is the one we make. Both use the same resin and the same salt, so both soften. The AG differs in where it sits and how it recharges: in line at the shower arm with your own showerhead, recharging every 3 to 5 weeks instead of about once a week. It costs $249 with a 60-day money-back guarantee.
           </p>
           <p>
             The ShowerStick deserves credit before comparison. It has been softening showers with real ion-exchange resin since 2004, it's handmade in the USA by a family company, and its long review base is a big part of why anyone believes a shower-sized softener works at all. If you've researched this category, you found it, and you found people vouching for it, for good reason.
@@ -207,7 +207,7 @@ function ShowerstickAlternativePage() {
                 <tr className="bg-surface/50">
                   <td className="border border-border px-4 py-3 font-semibold">Regeneration</td>
                   <td className="border border-border px-4 py-3">Drain the unit with head and hose on the floor, dissolve a cup of table salt in a liter bottle, pour into the port, flush; typically weekly</td>
-                  <td className="border border-border px-4 py-3">Automatic recharge from an included brine tank; add salt and the cycle runs itself</td>
+                  <td className="border border-border px-4 py-3">Move the cartridge to the included brine tank, add table salt, plug in the pump for about 30 minutes, reinstall; every 3 to 5 weeks</td>
                 </tr>
                 <tr>
                   <td className="border border-border px-4 py-3 font-semibold">Verifying it works</td>
@@ -252,7 +252,7 @@ function ShowerstickAlternativePage() {
             The last row is theirs: a product with twenty years of users has answered questions a newer one hasn't. Their regeneration routine also isn't the horror story competitors sometimes imply; their customers describe it as easy and about five minutes.
           </p>
           <p>
-            The case for AG is smaller and specific. It lives at the shower arm instead of hanging in the shower with you, it works with the showerhead you already like, its recharge runs automatically from an included brine tank, and you get 60 days to change your mind instead of 14. Softeners fail when the upkeep stops happening or the hardware never fit the bathroom. Those are the margins AG is built on.
+            The case for AG is smaller and specific. It lives at the shower arm instead of hanging in the shower with you, it works with the showerhead you already like, its recharge is a pumped cycle in the included brine tank, roughly monthly, and you get 60 days to change your mind instead of 14. Softeners fail when the upkeep stops happening or the hardware never fit the bathroom. Those are the margins AG is built on.
           </p>
         </div>
 
@@ -261,7 +261,7 @@ function ShowerstickAlternativePage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            If the longest track record in the category matters most to you and the handheld-head setup suits your shower, the ShowerStick is a legitimate buy, and we'd genuinely rather you own one than a fake-softener showerhead. If you want the same soft water at the shower arm, with your own showerhead, an automatic recharge, and a 60-day window to verify it with a test strip, that's the case for AG. For SoftWaterCare vs ShowerStick vs AG, see the <a href="/softwatercare-vs-showerstick-vs-ag" className="underline hover:opacity-70">three-way comparison</a>.
+            If the longest track record in the category matters most to you and the handheld-head setup suits your shower, the ShowerStick is a legitimate buy, and we'd genuinely rather you own one than a fake-softener showerhead. If you want the same soft water at the shower arm, with your own showerhead, a monthly rather than weekly recharge, and a 60-day window to verify it with a test strip, that's the case for AG. For SoftWaterCare vs ShowerStick vs AG, see the <a href="/softwatercare-vs-showerstick-vs-ag" className="underline hover:opacity-70">three-way comparison</a>.
           </p>
           <p>
             Either way, confirm your water is actually hard first: <a href="https://www.myapartmentwaterquality.com/" className="underline hover:opacity-70">check it free with our lookup tool</a> or run a strip. Both products are wasted on soft water.
