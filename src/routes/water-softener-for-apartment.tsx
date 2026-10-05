@@ -62,7 +62,7 @@ export const Route = createFileRoute("/water-softener-for-apartment")({
           headline:
             "Water softener for an apartment: what actually works",
           datePublished: "2026-07-28",
-          dateModified: "2026-09-17",
+          dateModified: "2026-10-04",
           author: {
             "@type": "Organization",
             name: "AG Water Softener",
@@ -117,15 +117,18 @@ function WaterSoftenerForApartmentPage() {
           Water softener for an apartment: what actually works
         </h1>
         <p className="text-sm text-muted-foreground">
-          Updated Sep 17, 2026
+          Updated Oct 4, 2026
         </p>
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            A water softener can work in an apartment. The whole-house version is
-            off the table, so the fix happens at the shower instead. This page
-            covers your unit; building-wide systems are a landlord purchase, and
-            a different conversation.
+            Yes, a water softener for an apartment works, as long as it softens
+            at the shower instead of at the main line. The options that fit a
+            rental are a shower-arm softener, which connects without plumbing
+            changes, and a portable RV softener on the shower floor. Both use
+            ion-exchange resin and salt, which is what actually removes hardness.
+            Shower filters don't, and whole-house systems need a plumber and a
+            landlord's sign-off.
           </p>
         </div>
 
@@ -185,6 +188,21 @@ function WaterSoftenerForApartmentPage() {
           <p>
             What doesn't belong on this list: shower filters. That surprises a
             lot of people, so it gets its own section.
+          </p>
+        </div>
+
+        <h2 className="mt-14 font-display text-2xl leading-[1.1] sm:text-3xl">
+          What makes a softener renter friendly
+        </h2>
+        <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
+          <p>
+            A hard water softener for apartments has to remove calcium and
+            magnesium and leave the plumbing alone. For most renters, a water
+            softener for apartment shower water is the whole job, because the
+            shower is where hard water meets hair and skin. A portable water
+            softener for apartment living should also come off in minutes and
+            move with you. That's what makes a renter friendly water softener:
+            real ion-exchange softening with nothing a landlord has to approve.
           </p>
         </div>
 
@@ -265,7 +283,19 @@ function WaterSoftenerForApartmentPage() {
             Location is a guide, but a rough one. Las Vegas has a hard-water
             reputation and measures 291 ppm by its own utility's report. Madison,
             Wisconsin has no such reputation and measures harder, at 18 to 20
-            grains per gallon by the city's numbers. Test rather than guess.
+            grains per gallon by the city's numbers. One AG customer, Conor in
+            Tampa, FL, measured 190 ppm at the tap and 5 ppm after the softener.
+            Tampa's water department reports an average total hardness of 211
+            mg/L for 2025 (
+            <a
+              href="https://www.tampa.gov/sites/default/files/document/2026/2025-water-quality-report.pdf"
+              className="underline hover:opacity-70"
+              rel="nofollow noopener"
+              target="_blank"
+            >
+              City of Tampa 2025 Water Quality Report
+            </a>
+            ). Test rather than guess.
           </p>
         </div>
 
@@ -324,7 +354,7 @@ function WaterSoftenerForApartmentPage() {
               two years without touching the problem this page is about.
             </p>
             <p className="text-[13px] italic text-muted-foreground">
-              Figures checked against retailer listings: Jolie pricing September 17,
+              Figures checked against retailer listings: Jolie pricing October 4,
               2026. If they change their prices, tell us and we'll update the
               table.
             </p>
@@ -404,7 +434,7 @@ function WaterSoftenerForApartmentPage() {
             >
               On The Go Portable Water Softener
             </a>
-            , pricing, accessed August 19, 2026
+            , pricing, accessed October 4, 2026
           </li>
           <li>
             <a
@@ -415,11 +445,11 @@ function WaterSoftenerForApartmentPage() {
             >
               Pro+Aqua Portable Water Softener
             </a>
-            , pricing, accessed August 19, 2026
+            , pricing, accessed October 4, 2026
           </li>
           <li>
-            jolieskinco.com, pricing checked against retailer listings, August
-            19, 2026
+            jolieskinco.com, pricing checked against retailer listings, October
+            4, 2026
           </li>
         </ul>
 

@@ -21,13 +21,13 @@ const PAGE_FAQS = [
 export const Route = createFileRoute("/showerstick-alternative")({
   head: () => ({
     meta: [
-      { title: "Affordable ShowerStick Alternative: In Stock at $249" },
+      { title: "Affordable ShowerStick alternative: in stock at $249" },
       {
         name: "description",
         content:
           "The ShowerStick softens but needs a salt recharge every week. Here is how it compares with the AG, which recharges every 3 to 5 weeks, on price and terms.",
       },
-      { property: "og:title", content: "Affordable ShowerStick Alternative: In Stock at $249" },
+      { property: "og:title", content: "Affordable ShowerStick alternative: in stock at $249" },
       { property: "og:description", content: "The ShowerStick softens but needs a salt recharge every week. Here is how it compares with the AG, which recharges every 3 to 5 weeks, on price and terms." },
       { property: "og:url", content: "https://agsoftener.com/showerstick-alternative" },
       { property: "og:type", content: "article" },
@@ -45,7 +45,7 @@ export const Route = createFileRoute("/showerstick-alternative")({
           "@type": "Article",
           headline: "ShowerStick alternative: the side-by-side comparison",
           datePublished: "2026-07-28",
-          dateModified: "2026-09-17",
+          dateModified: "2026-10-04",
           author: { "@type": "Organization", name: "AG Water Softener" },
         }),
       },
@@ -87,7 +87,7 @@ function ShowerstickAlternativePage() {
           ShowerStick alternative: the side-by-side comparison
         </h1>
         <p className="text-sm text-muted-foreground">
-          Updated Sep 17, 2026
+          Updated Oct 4, 2026
         </p>
 
         <div
@@ -136,6 +136,9 @@ function ShowerstickAlternativePage() {
 
         <div className="mt-8 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
+            A good ShowerStick alternative is another true ion-exchange softener, and the AG Water Softener is the one we make. Both use the same resin and the same salt, so both soften. The AG differs in where it sits and how it recharges: in line at the shower arm with your own showerhead, recharging automatically every 3 to 5 weeks instead of by hand about once a week. It costs $249 with a 60-day money-back guarantee.
+          </p>
+          <p>
             The ShowerStick deserves credit before comparison. It has been softening showers with real ion-exchange resin since 2004, it's handmade in the USA by a family company, and its long review base is a big part of why anyone believes a shower-sized softener works at all. If you've researched this category, you found it, and you found people vouching for it, for good reason.
           </p>
           <p>
@@ -148,7 +151,7 @@ function ShowerstickAlternativePage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            Almost always, it comes down to recharge frequency. The ShowerStick's smaller resin bed regenerates about once a week. The AG holds a bigger bed: about 1,300 gallons per recharge, which is three to five weeks of daily showers for most households. Same chemistry and the same salt, but a different amount of your time. The rest of the differences are on the table below.
+            Almost always, it comes down to recharge frequency. Some shoppers search for it as a shower stick water softener; WaterSticks sells it as the ShowerStick. The ShowerStick's smaller resin bed regenerates about once a week. At 10 grains per gallon, the U.S. average they cite, a ShowerStick gives about 58 minutes of soft water before it needs regenerating, per watersticks.com, as of October 4, 2026. The AG holds a bigger bed: about 1,300 gallons per recharge, which is three to five weeks of daily showers for most households. Same chemistry and the same salt, but a different amount of your time. The rest of the differences are on the table below.
           </p>
         </div>
 
@@ -213,7 +216,7 @@ function ShowerstickAlternativePage() {
                 </tr>
                 <tr className="bg-surface/50">
                   <td className="border border-border px-4 py-3 font-semibold">Price</td>
-                  <td className="border border-border px-4 py-3">$260 <span className="text-[12px] text-muted-foreground">(on sale from $299, checked Aug 30, 2026)</span></td>
+                  <td className="border border-border px-4 py-3">$260 <span className="text-[12px] text-muted-foreground">(on sale from $299, checked October 4, 2026)</span></td>
                   <td className="border border-border px-4 py-3">$249</td>
                 </tr>
                 <tr>
@@ -228,7 +231,7 @@ function ShowerstickAlternativePage() {
                 </tr>
                 <tr>
                   <td className="border border-border px-4 py-3 font-semibold">Availability</td>
-                  <td className="border border-border px-4 py-3">Handmade in small daily batches; in stock as of Aug 30, 2026, though past runs have sold out</td>
+                  <td className="border border-border px-4 py-3">Handmade in small daily batches; in stock as of October 4, 2026, though past runs have sold out</td>
                   <td className="border border-border px-4 py-3">In stock</td>
                 </tr>
                 <tr className="bg-surface/50">
@@ -258,7 +261,7 @@ function ShowerstickAlternativePage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            If the longest track record in the category matters most to you and the handheld-head setup suits your shower, the ShowerStick is a legitimate buy, and we'd genuinely rather you own one than a fake-softener showerhead. If you want the same soft water at the shower arm, with your own showerhead, an automatic recharge, and a 60-day window to verify it with a test strip, that's the case for AG. For a wider view that includes SoftWaterCare, see the <a href="/softwatercare-vs-showerstick-vs-ag" className="underline hover:opacity-70">three-way comparison</a>.
+            If the longest track record in the category matters most to you and the handheld-head setup suits your shower, the ShowerStick is a legitimate buy, and we'd genuinely rather you own one than a fake-softener showerhead. If you want the same soft water at the shower arm, with your own showerhead, an automatic recharge, and a 60-day window to verify it with a test strip, that's the case for AG. For SoftWaterCare vs ShowerStick vs AG, see the <a href="/softwatercare-vs-showerstick-vs-ag" className="underline hover:opacity-70">three-way comparison</a>.
           </p>
           <p>
             Either way, confirm your water is actually hard first: <a href="https://www.myapartmentwaterquality.com/" className="underline hover:opacity-70">check it free with our lookup tool</a> or run a strip. Both products are wasted on soft water.
