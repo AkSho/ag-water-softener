@@ -324,8 +324,6 @@ function ProductHero({ reviews }: { reviews: ReviewData[] }) {
             </p>
           </div>
 
-          <TrustLine reviews={reviews} />
-
           {/* Finishes — hidden by feature flag */}
           {PDP_FEATURES.finishes && (
             <div className="mt-8">
@@ -412,7 +410,7 @@ function ProductHero({ reviews }: { reviews: ReviewData[] }) {
             >
               <span className="block">Add to Cart</span>
               <span className="mt-1 block text-[10px] font-normal normal-case tracking-normal opacity-80">
-                {money(PRICE * qty)} · 60-day money-back guarantee
+                {money(PRICE * qty)} · 60-day money-back guarantee · 12-month warranty · Free shipping
               </span>
             </button>
           </div>
@@ -990,34 +988,26 @@ function reviewAverage(reviews: ReviewData[]) {
   return reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
 }
 
-/* Star row under the H1 and trust lines under the price block. Count, average, and
-   reading come from the same review data as the reviews section, so they move as
-   reviews are approved. Stars = average rounded to the nearest whole star. */
+/* Star row under the H1. Count, average, and reading come from the same review data
+   as the reviews section, so they move as reviews are approved. Stars = average
+   rounded to the nearest whole star; reading = newest review with both values. */
 function ReviewStarRow({ reviews }: { reviews: ReviewData[] }) {
   const n = reviews.length;
   if (n === 0) return null;
   const avg = reviewAverage(reviews);
-  return (
-    <a href="#proof" className="mt-2 inline-flex items-center gap-2 text-[13px] text-foreground/80 hover:opacity-70">
-      <span role="img" aria-label={`Rated ${avg.toFixed(1)} out of 5`}>
-        {"\u2B50".repeat(Math.round(avg))}
-      </span>
-      <span className="underline">{n} verified {n === 1 ? "review" : "reviews"}</span>
-    </a>
-  );
-}
-
-function TrustLine({ reviews }: { reviews: ReviewData[] }) {
   const reading = reviews.find((r) => r.hardnessBefore != null && r.hardnessAfter != null);
   return (
-    <div className="mt-4 space-y-1 text-[13px] leading-[1.6] text-foreground/80">
-      <p>60-day money-back guarantee · 12-month warranty</p>
-      {reading && (
-        <p>
-          {`${reading.hardnessBefore} ppm before, ${reading.hardnessAfter} ppm after. ${reading.name}${reading.city ? `, ${reading.city}` : ""}`}
-        </p>
-      )}
-    </div>
+    <a href="#proof" className="mt-2 inline-flex flex-wrap items-center gap-x-2 text-[13px] text-foreground/80 group">
+      <span role="img" aria-label={`Rated ${avg.toFixed(1)} out of 5`} className="text-[11px] leading-none opacity-100">
+        {"\u2B50".repeat(Math.round(avg))}
+      </span>
+      <span className="group-hover:opacity-70">
+        <span className="underline">{n} verified {n === 1 ? "review" : "reviews"}</span>
+        {reading && (
+          <span className="text-muted-foreground">{` · ${reading.hardnessBefore} ppm before, ${reading.hardnessAfter} ppm after`}</span>
+        )}
+      </span>
+    </a>
   );
 }
 
