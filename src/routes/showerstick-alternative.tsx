@@ -207,7 +207,7 @@ function ShowerstickAlternativePage() {
                 <tr className="bg-surface/50">
                   <td className="border border-border px-4 py-3 font-semibold">Regeneration</td>
                   <td className="border border-border px-4 py-3">Drain the unit with head and hose on the floor, dissolve a cup of table salt in a liter bottle, pour into the port, flush; typically weekly</td>
-                  <td className="border border-border px-4 py-3">Move the cartridge to the included brine tank, add table salt, plug in the pump for about 30 minutes, reinstall; every 3 to 5 weeks</td>
+                  <td className="border border-border px-4 py-3">Move the cartridge to the included brine tank, add plain non-iodized salt, plug in the pump for about 30 minutes, reinstall; every 3 to 5 weeks</td>
                 </tr>
                 <tr>
                   <td className="border border-border px-4 py-3 font-semibold">Verifying it works</td>

@@ -35,7 +35,7 @@ const FAQS: { q: string; a: string | null }[] = [
   { q: "I already tried a shower filter and it did not help. How is this different?", a: "A filter removes chlorine with carbon and similar media. Dissolved calcium and magnesium pass through those media, so hard water stays hard with a filter installed. The AG uses ion-exchange resin, which removes the hardness minerals themselves. The 60-day guarantee lets you test that on your own water." },
   { q: "Does soft water feel slippery at first?", a: "For some people, yes, briefly. That silky feeling is what skin feels like when soap actually rinses away instead of combining with hardness minerals and clinging to you as residue. Research published in the Journal of Investigative Dermatology measured exactly this: hard water leaves significantly more surfactant deposited on skin after washing. What hard water taught you to interpret as \"squeaky clean\" was residue. Most people stop noticing the change within a week and then can't stand hotel hard water afterward." },
   { q: "Does the salt make my shower water salty?", a: "You'll never smell or feel it. Ion exchange swaps hardness minerals for a small amount of sodium, the same trade every whole-house softener makes, and the water remains ordinary soft water. The salt you pour into the tank is used to rinse the resin during regeneration, then drains away." },
-  { q: "What are the ongoing costs?", a: "Plain softener salt from the grocery store and one replacement canister about once a year, $64 shipped on its own or $39 added to your original order. The salt runs a few dollars a bag, and there's no cartridge subscription." },
+  { q: "What are the ongoing costs?", a: "Plain non-iodized salt from the grocery store and one replacement canister about once a year, $64 shipped on its own or $39 added to your original order. The salt runs a few dollars a bag, and there's no cartridge subscription." },
   { q: "Will it fit my shower?", a: "The AG Water Softener works with standard shower setups and most showerheads, mounts on the pipe or stands on the floor, and includes every hose and connector needed for both options. If your setup turns out to be the rare exception, the 60-day guarantee applies from day one." },
   { q: "Can I use a shower filter with a water softener?", a: "Yes. The AG softens; any standard $25 shower filter removes chlorine. Together they run about $274, less than bundled filter-and-softener systems like the Arius at $298.56 (their listed price as of October 4, 2026). The softening half is the part a filter can't do." },
   { q: "Does a water softener lower the TDS reading?", a: "No, and this surprises a lot of folks. A TDS meter measures the total of everything dissolved in the water. A water softener works by ion exchange. The canister swaps out the calcium and magnesium that make water hard and releases sodium in their place. The total dissolved amount stays about the same and sometimes reads slightly higher, so a TDS meter shows little or no change on fully softened water. The meter reads the same whether the unit is working or still in the box. Hardness test strips measure the hard minerals themselves. That\u2019s the tool that shows the before and after." },
@@ -1179,19 +1179,27 @@ function InstallAndMaintenance() {
           <ol className="mt-4 space-y-3 text-[14px] leading-[1.65]">
             <li className="grid grid-cols-[auto_1fr] gap-3">
               <span className="text-muted-foreground tabular-nums">1.</span>
-              <span>Pour softener salt into the salt tank</span>
+              <span>Attach the cartridge to the pump adapter</span>
             </li>
             <li className="grid grid-cols-[auto_1fr] gap-3">
               <span className="text-muted-foreground tabular-nums">2.</span>
-              <span>Let it soak to form brine</span>
+              <span>Set the pump at the bottom of the brine tank, drain hose outside</span>
             </li>
             <li className="grid grid-cols-[auto_1fr] gap-3">
               <span className="text-muted-foreground tabular-nums">3.</span>
-              <span>Turn the valve to REGEN and run the water</span>
+              <span>Add 500 grams of plain non-iodized salt and fill the tank with water</span>
+            </li>
+            <li className="grid grid-cols-[auto_1fr] gap-3">
+              <span className="text-muted-foreground tabular-nums">4.</span>
+              <span>Plug in the pump and let the cycle run about 30 minutes</span>
+            </li>
+            <li className="grid grid-cols-[auto_1fr] gap-3">
+              <span className="text-muted-foreground tabular-nums">5.</span>
+              <span>Rinse the pump and reinstall the cartridge</span>
             </li>
           </ol>
           <p className="mt-6 text-[15px] leading-[1.7] text-foreground/90">
-            Your hands-on time is about ten minutes. The full recharge takes about 30 minutes, and the soaking part happens while you step away. Shower normally the rest of the time.
+            Your hands-on time is about ten minutes. The pump runs the 30-minute cycle on its own, and you shower normally the rest of the time.
           </p>
           <div className="mt-8">
             <p className="mb-4 text-center font-display text-2xl font-bold leading-tight text-foreground sm:text-3xl">
@@ -1199,7 +1207,7 @@ function InstallAndMaintenance() {
             </p>
             <img
               src="/assets/recharge-guide-steps.png"
-              alt="Four-step AG softener recharge with the included brine tank, about 30 minutes"
+              alt="AG softener recharge with the included brine tank and pump, about 30 minutes"
               width={1448}
               height={810}
               loading="lazy"

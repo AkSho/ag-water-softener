@@ -160,10 +160,10 @@ function AriusVsAgPage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            Both systems soften water the same way, with ion-exchange resin that has to be recharged with salt. The difference is who does the work. With Arius you add salt, wait about 4 hours for the brine to form, turn the valve to REGEN, and run it for about 10 minutes, roughly every 2 weeks for two people. The AG recharges itself from its brine tank in about 30 minutes, every 3 to 5 weeks. You add salt and walk away. Over a year, that's roughly 26 recharge sessions for the Arius at their two-person cadence, and somewhere between 10 and 17 for the AG.
+            Both systems soften water the same way, with ion-exchange resin that has to be recharged with salt. The difference is who does the work. With Arius you add salt, wait about 4 hours for the brine to form, turn the valve to REGEN, and run it for about 10 minutes, roughly every 2 weeks for two people. The AG recharges in its included brine tank: add salt and water, plug in the pump, and the cycle runs about 30 minutes, every 3 to 5 weeks. Over a year, that's roughly 26 recharge sessions for the Arius at their two-person cadence, and somewhere between 10 and 17 for the AG.
           </p>
           <p>
-            Neither regeneration is difficult. The question is whether a 4-hour manual cycle every 2 weeks fits your routine, or whether automatic recharging every few weeks is the version you will actually keep doing. Softeners that stop getting recharged stop softening, and that pattern is more common than any product failure.
+            Neither regeneration is difficult. The question is whether a 4-hour manual cycle every 2 weeks fits your routine, or whether a 30-minute pumped recharge every 3 to 5 weeks is the version you will actually keep doing. Softeners that stop getting recharged stop softening, and that pattern is more common than any product failure.
           </p>
         </div>
 
@@ -198,7 +198,7 @@ function AriusVsAgPage() {
                 <tr>
                   <td className="border border-border px-4 py-3 font-semibold">Regeneration</td>
                   <td className="border border-border px-4 py-3">Manual: add salt, ~4 hr brine soak, turn valve, run ~10 min. Roughly every 2 weeks</td>
-                  <td className="border border-border px-4 py-3">Automatic from included brine tank, ~30 min, every 3 to 5 weeks</td>
+                  <td className="border border-border px-4 py-3">Pumped cycle in the included brine tank, ~30 min, every 3 to 5 weeks</td>
                 </tr>
                 <tr className="bg-surface/50">
                   <td className="border border-border px-4 py-3 font-semibold">Guarantee</td>

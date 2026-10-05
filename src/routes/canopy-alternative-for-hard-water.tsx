@@ -164,7 +164,7 @@ function CanopyAlternativePage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> uses ion-exchange resin, the same chemistry as a whole-home softener, sized for a shower arm. It removes dissolved calcium and magnesium instead of filtering particles. It recharges itself from an included brine tank in about 30 minutes, every 3 to 5 weeks, with plain non-iodized salt. It costs $249 and ships free with tracking. The guarantee is 60 days money-back, with a 12-month warranty behind it.
+            <a href="/" className="underline hover:opacity-70">The AG Water Softener</a> uses ion-exchange resin, the same chemistry as a whole-home softener, sized for a shower arm. It removes dissolved calcium and magnesium instead of filtering particles. It recharges in an included brine tank with a 30-minute pumped cycle, every 3 to 5 weeks, using plain non-iodized salt. It costs $249 and ships free with tracking. The guarantee is 60 days money-back, with a 12-month warranty behind it.
           </p>
         </div>
 

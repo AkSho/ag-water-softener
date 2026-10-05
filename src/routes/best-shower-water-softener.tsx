@@ -122,7 +122,7 @@ function BestShowerWaterSoftenerPage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            We built the AG for one situation: you rent, or your building's plumbing is off limits, and you want soft water at the one shower you use. It hangs on the wall and connects to a hose line by hand. The resin bed treats about 1,300 gallons per recharge. For most households that's three to five weeks of daily showers. Recharging takes about thirty minutes with table salt. It ships today, and the 60-day guarantee is built on the strip test: dip before, dip after, and if the strip doesn't change, send it back. If that's your situation, <a href="/" className="underline hover:opacity-70">the AG Water Softener</a> is here.
+            We built the AG for one situation: you rent, or your building's plumbing is off limits, and you want soft water at the one shower you use. It hangs on the wall and connects to a hose line by hand. The resin bed treats about 1,300 gallons per recharge. For most households that's three to five weeks of daily showers. Recharging takes about thirty minutes with plain non-iodized salt. It ships today, and the 60-day guarantee is built on the strip test: dip before, dip after, and if the strip doesn't change, send it back. If that's your situation, <a href="/" className="underline hover:opacity-70">the AG Water Softener</a> is here.
           </p>
           <p>
             Who it's not for: if you own your home and can open up the plumbing, a whole-house system softens every tap, and most of its higher price is installation. And no resin product is zero maintenance. The recharge is the cost of actually removing minerals.

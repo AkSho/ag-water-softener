@@ -73,7 +73,7 @@ export const Route = createFileRoute("/setup")({
             {
               "@type": "HowToStep",
               name: "Add the salt",
-              text: "Add 500 grams of table salt, then fill the tank to about 80 percent full. Stir, or wait 5 minutes.",
+              text: "Add 500 grams of plain non-iodized salt, then fill the tank to about 80 percent full. Stir, or wait 5 minutes.",
             },
             {
               "@type": "HowToStep",
@@ -256,7 +256,7 @@ function SetupPage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            The filter recharges with plain table salt every 3 to 5 weeks. The cycle takes about 30
+            The filter recharges with plain non-iodized salt every 3 to 5 weeks. The cycle takes about 30
             minutes.
           </p>
         </div>
@@ -298,7 +298,7 @@ function SetupPage() {
           </li>
           <li>
             <p className="text-[15px] leading-[1.7] text-foreground/90">
-              <strong>Add the salt.</strong> Add 500 grams of table salt, then fill the tank to
+              <strong>Add the salt.</strong> Add 500 grams of plain non-iodized salt, then fill the tank to
               about 80 percent full. Stir, or wait 5 minutes.
             </p>
             <img

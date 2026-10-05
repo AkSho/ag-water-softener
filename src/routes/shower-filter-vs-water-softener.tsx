@@ -142,7 +142,7 @@ function ShowerFilterVsSoftenerPage() {
         </h2>
         <div className="mt-6 space-y-6 text-[15px] leading-[1.7] text-foreground/90">
           <p>
-            A softener uses ion exchange: water passes through a bed of resin beads that swap calcium and magnesium ions for sodium ions. This is the same process inside a $2,000 whole-house system, and it is the only consumer chemistry that removes hardness. When the resin fills up, an automatic salt recharge resets it.
+            A softener uses ion exchange: water passes through a bed of resin beads that swap calcium and magnesium ions for sodium ions. This is the same process inside a $2,000 whole-house system, and it is the only consumer chemistry that removes hardness. When the resin fills up, a 30-minute salt recharge in the included brine tank resets it.
           </p>
           <p>
             A softener does little for chlorine. That is the filter's job. The two devices are answers to two different questions.

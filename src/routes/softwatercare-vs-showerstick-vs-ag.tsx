@@ -177,7 +177,7 @@ function SoftwatercareVsShowerstickVsAgPage() {
             </p>
             <div className="mt-4 space-y-1 text-center text-[14px] text-foreground/80">
               <p>$249</p>
-              <p>Automatic recharge (~30 min)</p>
+              <p>Pumped recharge (~30 min)</p>
               <p>60-day money-back</p>
             </div>
           </div>
@@ -245,9 +245,7 @@ function SoftwatercareVsShowerstickVsAgPage() {
             four times as often as the other two.
           </p>
           <p>
-            <strong>AG.</strong> About 30 minutes, no pump, no power bank, no
-            advance salt prep. Add plain non-iodized salt to the included brine
-            tank, and the recharge cycle runs itself. Typical interval is every 3
+            <strong>AG.</strong> About 30 minutes with the included pump and brine tank, and no advance salt prep. Add plain non-iodized salt and water, plug in the pump, and let the cycle run. Typical interval is every 3
             to 5 weeks.
           </p>
         </div>
@@ -389,7 +387,7 @@ function SoftwatercareVsShowerstickVsAgPage() {
                     About 5 minutes: pour salt water through the port and flush
                   </td>
                   <td className="border border-border px-4 py-3">
-                    About 30 minutes, automatic from included brine tank
+                    About 30 minutes, pumped cycle in included brine tank
                   </td>
                 </tr>
                 <tr>
@@ -486,8 +484,7 @@ function SoftwatercareVsShowerstickVsAgPage() {
             site says they have been selling them since 2004.
           </p>
           <p>
-            The AG Water Softener sits between them on price at $249. It
-            recharges automatically in about 30 minutes every few weeks and
+            The AG Water Softener sits between them on price at $249. It recharges in about 30 minutes every 3 to 5 weeks with a pumped cycle in its brine tank and
             works with the showerhead you already have. It does not filter
             chlorine.
           </p>
