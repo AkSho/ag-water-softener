@@ -62,8 +62,7 @@ async function main() {
   console.log("|---|---|---|---|---|");
   tail.forEach((r, i) => {
     const [gclid = "", , time = "", value = "", currency = ""] = r.map(String);
-    const shortGclid = gclid.length > 16 ? `${gclid.slice(0, 12)}…${gclid.slice(-4)}` : gclid;
-    console.log(`| ${data.length - tail.length + i + 2} | ${shortGclid} | ${time} | ${value} | ${currency} |`);
+    console.log(`| ${data.length - tail.length + i + 2} | ${gclid} | ${time} | ${value} | ${currency} |`);
   });
 }
 
