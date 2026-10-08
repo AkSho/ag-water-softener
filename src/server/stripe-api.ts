@@ -216,9 +216,10 @@ async function sendMetaCapiPurchase({
     event_source_url: `${resolveOrigin(request)}/thanks?session_id=${encodeURIComponent(session.id)}`,
     user_data: userData,
     custom_data: {
+      // Excludes sales tax, matching the Google Ads offline export
       value:
         typeof session.amount_total === "number"
-          ? session.amount_total / 100
+          ? (session.amount_total - (session.total_details?.amount_tax ?? 0)) / 100
           : 0,
       currency: "usd",
       num_items: totalQuantity,
@@ -508,6 +509,7 @@ async function getCheckoutSession(request: Request) {
       id: session.id,
       paymentStatus: session.payment_status,
       amountTotal: session.amount_total,
+      amountTax: session.total_details?.amount_tax ?? 0,
       formattedTotal: formatMoney(session.amount_total, session.currency),
       currency: session.currency,
       customerEmail: session.customer_details?.email ?? undefined,

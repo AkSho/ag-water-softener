@@ -21,6 +21,7 @@ type OrderSummary = {
   id?: string;
   formattedTotal?: string;
   amountTotal?: number;
+  amountTax?: number;
   currency?: string;
   customerEmail?: string;
   shippingCountry?: string;
@@ -132,6 +133,11 @@ function ThanksPage() {
     const purchaseKey = `agPurchaseTracked:${summary.id}`;
     if (window.localStorage.getItem(purchaseKey)) return;
 
+    // Ad-platform conversion value excludes sales tax (matches the offline export)
+    const conversionValue = typeof summary.amountTotal === "number"
+      ? (summary.amountTotal - (summary.amountTax ?? 0)) / 100
+      : 0;
+
     track("purchase", {
       transaction_id: summary.id,
       revenue: typeof summary.amountTotal === "number" ? summary.amountTotal / 100 : undefined,
@@ -140,7 +146,7 @@ function ThanksPage() {
     });
 
     fbPixel("track", "Purchase", {
-      value: typeof summary.amountTotal === "number" ? summary.amountTotal / 100 : 0,
+      value: conversionValue,
       currency: summary.currency?.toUpperCase() || "USD",
       content_ids: summary.items?.map((i) => i.id) || [],
       content_type: "product",
@@ -157,7 +163,7 @@ function ThanksPage() {
       }
       (window as any).gtag("event", "conversion", {
         send_to: "AW-18415554350/R8EmCICLz-kcEK6enM1E",
-        value: typeof summary.amountTotal === "number" ? summary.amountTotal / 100 : 0,
+        value: conversionValue,
         currency: summary.currency?.toUpperCase() || "USD",
         transaction_id: summary.id,
       });
@@ -166,7 +172,7 @@ function ThanksPage() {
 
     // --- Microsoft UET conversion tag ---
     (window as any).uetq = (window as any).uetq || [];
-    const uetRevenue = typeof summary.amountTotal === "number" ? summary.amountTotal / 100 : 0;
+    const uetRevenue = conversionValue;
     const pushUetPurchase = () => {
       (window as any).uetq.push("event", "purchase", {
         revenue_value: uetRevenue,
