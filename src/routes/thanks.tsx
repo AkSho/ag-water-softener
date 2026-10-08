@@ -140,7 +140,7 @@ function ThanksPage() {
 
     track("purchase", {
       transaction_id: summary.id,
-      revenue: typeof summary.amountTotal === "number" ? summary.amountTotal / 100 : undefined,
+      revenue: typeof summary.amountTotal === "number" ? conversionValue : undefined,
       currency: summary.currency?.toUpperCase() || "USD",
       items: summary.items,
     });
