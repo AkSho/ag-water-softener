@@ -214,6 +214,7 @@ export interface UpsertOrderInput {
   name: string;
   orderTs: string;
   amount: number;
+  taxAmount: number;
   unitQty: number;
   bumpTaken: boolean;
   shipName: string;
@@ -372,6 +373,7 @@ export async function upsertOrder(
     Name: input.name || "",
     OrderTS: input.orderTs,
     Amount: input.amount,
+    TaxAmount: input.taxAmount,
     UnitQty: input.unitQty,
     BumpTaken: input.bumpTaken,
     BumpSource: input.bumpSource || "",
@@ -407,8 +409,8 @@ export async function upsertOrder(
   const existing = await findOrderBySessionId(config, input.stripeSessionId);
 
   if (existing) {
-    // OrderTS and Amount always take Stripe values (source of truth)
-    const STRIPE_SOURCE_OF_TRUTH = new Set(["OrderTS", "Amount"]);
+    // OrderTS, Amount and TaxAmount always take Stripe values (source of truth)
+    const STRIPE_SOURCE_OF_TRUTH = new Set(["OrderTS", "Amount", "TaxAmount"]);
     const updateFields: Record<string, unknown> = {};
     for (const [k, v] of Object.entries(fields)) {
       if (STRIPE_SOURCE_OF_TRUTH.has(k)) {

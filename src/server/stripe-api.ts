@@ -482,7 +482,9 @@ async function getCheckoutSession(request: Request) {
       : undefined;
     let gcrShipping = (expressRate && chosenRate === expressRate) ? "express" : "standard";
     if (gcrShipping === "standard" && session.amount_total != null && session.amount_subtotal != null) {
-      if (session.amount_total - session.amount_subtotal === 1900) gcrShipping = "express";
+      // Exclude tax: amount_total includes it once Stripe Tax collects
+      const tax = session.total_details?.amount_tax ?? 0;
+      if (session.amount_total - tax - session.amount_subtotal === 1900) gcrShipping = "express";
     }
     const isAgPdp = session.metadata?.source === "ag_pdp";
     const cartridgePrice = process.env.STRIPE_PRICE_SPARE_CARTRIDGE || "";
@@ -704,9 +706,11 @@ async function handleStripeWebhook(request: Request) {
           : session.shipping_cost.shipping_rate.id)
       : undefined;
     let shippingMethod = (expressRate && chosenRate === expressRate) ? "express" : "standard";
-    // Fallback: if rate ID unavailable, infer from amount difference
+    // Fallback: if rate ID unavailable, infer from amount difference.
+    // Exclude tax: amount_total includes it once Stripe Tax collects.
     if (shippingMethod === "standard" && session.amount_total != null && session.amount_subtotal != null) {
-      if (session.amount_total - session.amount_subtotal === 1900) {
+      const tax = session.total_details?.amount_tax ?? 0;
+      if (session.amount_total - tax - session.amount_subtotal === 1900) {
         shippingMethod = "express";
       }
     }
@@ -799,6 +803,7 @@ async function handleStripeWebhook(request: Request) {
         name: session.customer_details?.name || "",
         orderTs,
         amount: typeof session.amount_total === "number" ? session.amount_total / 100 : 0,
+        taxAmount: (session.total_details?.amount_tax ?? 0) / 100,
         unitQty: (itemType === "kit" || itemType === "cartridge" || itemType === "adapter") ? 0 : (Number(session.metadata?.requested_unit_qty) || 1),
         bumpTaken,
         itemType,

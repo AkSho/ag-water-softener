@@ -34,7 +34,8 @@ interface MonthStripeData {
   charges: number; // gross charge amount in dollars
   refunds: number; // refund amount in dollars (positive)
   fees: number; // Stripe fees in dollars (positive)
-  shippingRevenue: number; // express shipping charges in dollars
+  shippingRevenue: number; // express shipping charges in dollars, excl. tax
+  taxCollected: number; // sales tax on paid checkout sessions, in dollars
   payouts: number; // payout amount in dollars (positive)
   chargeCount: number;
   refundDetails: BalanceTxnDetail[];
@@ -102,8 +103,9 @@ export async function getStripeMonthData(month: string): Promise<MonthStripeData
     if (page.data.length > 0) startingAfter = page.data[page.data.length - 1].id;
   }
 
-  // Shipping revenue + paid session count from checkout sessions
+  // Shipping revenue, sales tax + paid session count from checkout sessions
   let shippingRevenue = 0;
+  let taxCollected = 0;
   let paidSessionCount = 0;
   hasMore = true;
   startingAfter = undefined;
@@ -118,10 +120,12 @@ export async function getStripeMonthData(month: string): Promise<MonthStripeData
     for (const s of page.data) {
       if (s.payment_status !== "paid") continue;
       paidSessionCount++;
-      const shipCost = s.shipping_cost?.amount_total;
+      // amount_subtotal is shipping before tax; amount_total includes it
+      const shipCost = s.shipping_cost?.amount_subtotal;
       if (shipCost && shipCost > 0) {
         shippingRevenue += shipCost; // in cents
       }
+      taxCollected += s.total_details?.amount_tax ?? 0; // in cents
     }
 
     hasMore = page.has_more;
@@ -155,6 +159,7 @@ export async function getStripeMonthData(month: string): Promise<MonthStripeData
     refunds: refunds / 100,
     fees: Math.abs(fees) / 100,
     shippingRevenue: shippingRevenue / 100,
+    taxCollected: taxCollected / 100,
     payouts: payouts / 100,
     chargeCount: paidSessionCount,
     refundDetails,
@@ -207,7 +212,8 @@ function aggregateMonthOrders(
     if (orderMonth !== month) continue;
 
     const itemType = (f.ItemType as string) || "";
-    const amount = (f.Amount as number) || 0;
+    // Revenue excludes sales tax (Amount includes it)
+    const amount = ((f.Amount as number) || 0) - ((f.TaxAmount as number) || 0);
     const unitQty = (f.UnitQty as number) || 0;
     const shippingMethod = (f.ShippingMethod as string) || "standard";
     const refunded = (f.Refunded as boolean) || false;
@@ -385,12 +391,13 @@ function buildMonthTab(
   rows[MONTH_ROWS.header] = [`'${month}`, "Accrual", "Cash", "Notes"];
   rows[MONTH_ROWS.status] = ["Status", "draft", "", ""];
 
-  // Revenue — Stripe charges is the verified gross. Break out OTO, kit, and shipping
+  // Revenue — Stripe charges is the verified gross. Sales tax collected is not
+  // revenue and comes off first. Break out OTO, kit, and shipping (all excl. tax)
   // from Airtable; unit sales (incl. bumps) is the remainder.
   const otoRev = orderData.otoRevenue;
   const kitRev = orderData.kitStandaloneRevenue;
   const shipRev = stripeData.shippingRevenue;
-  const unitSalesRev = stripeData.charges - otoRev - kitRev - shipRev;
+  const unitSalesRev = stripeData.charges - stripeData.taxCollected - otoRev - kitRev - shipRev;
 
   rows[MONTH_ROWS.revenueHeader] = ["REVENUE", "", "", ""];
   rows[MONTH_ROWS.unitSales] = [

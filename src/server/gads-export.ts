@@ -120,10 +120,11 @@ export async function runGadsExport(dryRun: boolean = false): Promise<GadsExport
     const f = row.fields;
     const gclid = (f.FT_Gclid as string) || "";
     const orderTs = (f.OrderTS as string) || new Date().toISOString();
-    // Checkout total (units, bump, checkout-time express shipping) plus an
-    // accepted OTO, which is charged as a separate PaymentIntent.
+    // Checkout total (units, bump, checkout-time express shipping) less sales
+    // tax, plus an accepted OTO, which is charged as a separate PaymentIntent.
     const otoAmount = (f.OTOAccepted as boolean) ? ((f.OTOAmount as number) || 0) : 0;
-    const amount = ((f.Amount as number) || 0) + otoAmount;
+    const taxAmount = (f.TaxAmount as number) || 0;
+    const amount = Math.round((((f.Amount as number) || 0) - taxAmount + otoAmount) * 100) / 100;
     return [
       gclid,
       CONVERSION_NAME,
